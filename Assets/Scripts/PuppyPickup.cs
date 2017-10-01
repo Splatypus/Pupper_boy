@@ -51,6 +51,13 @@ public class PuppyPickup : MonoBehaviour {
                 itemInMouth.transform.parent = mouth;
                 itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
                 itemInMouth.GetComponent<Rigidbody>().useGravity = false;
+
+                // do stuff with interactable object
+                Interactable interactable = itemInMouth.GetComponent<Interactable>();
+                if(interactable)
+                {
+                    interactable.onPickup();
+                }
             }
         }
 
