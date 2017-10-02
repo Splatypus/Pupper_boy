@@ -26,6 +26,9 @@ public class BirdMovement : MonoBehaviour {
     [Header("Fly Down")]
     public Transform bird_bath_pos;
 
+    [Header("Bath stats")]
+    public float dist_for_bath_runaway;
+
     BirdState m_state;
     float time_in_state = 0.0f;
     Rigidbody rb;
@@ -38,7 +41,7 @@ public class BirdMovement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        //UpdateState();
+        UpdateState();
         MoveBird();
     }
 
@@ -54,15 +57,17 @@ public class BirdMovement : MonoBehaviour {
 
         float dist_to_dog = (Dog.transform.position - transform.position).magnitude;
 
-        if (dist_to_dog < dist_start_flight)
+        if (m_state == BirdState.Wander && dist_to_dog < dist_start_flight)
         {
             if (m_state != BirdState.FlyAway)
                 time_in_state = 0.0f;
             m_state = BirdState.FlyAway;
         }
-            
-
-        // worry about going back to the bath later
+        if ((m_state == BirdState.BathMode || m_state == BirdState.FlyDown) && dist_to_dog < dist_for_bath_runaway)
+        {
+            m_state = BirdState.FlyAway;
+        }
+        
     }
 
     void MoveBird()
@@ -78,8 +83,12 @@ public class BirdMovement : MonoBehaviour {
             case BirdState.FlyDown:
                 FlyDown();
                 break;
+            case BirdState.BathMode:
+                UpdateState();
+                break;
         }
     }
+
 
     void WanderMove()
     {
