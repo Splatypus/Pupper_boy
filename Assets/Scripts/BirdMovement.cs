@@ -37,6 +37,8 @@ public class BirdMovement : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         Dog = GameObject.FindGameObjectWithTag("Player");
         flight_vector.Normalize();
+
+        // animation state is wander/hop
 	}
 
 	// Update is called once per frame
@@ -62,12 +64,14 @@ public class BirdMovement : MonoBehaviour {
             if (m_state != BirdState.FlyAway)
                 time_in_state = 0.0f;
             m_state = BirdState.FlyAway;
+            // animation state is flying
         }
         if ((m_state == BirdState.BathMode || m_state == BirdState.FlyDown) && dist_to_dog < dist_for_bath_runaway)
         {
             m_state = BirdState.FlyAway;
+            // animation state is flying (is there an issue if we go from fly->fly?)
         }
-        
+
     }
 
     void MoveBird()
@@ -129,6 +133,9 @@ public class BirdMovement : MonoBehaviour {
         {
             m_state = BirdState.BathMode;
             rb.velocity = Vector3.zero;
+
+            // set animation state to sitting on birdbath
+            // can also do some stuff with getting him to play in the bath
         }
     }
 
