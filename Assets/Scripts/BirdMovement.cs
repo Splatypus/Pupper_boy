@@ -5,7 +5,7 @@ using UnityEngine;
 public class BirdMovement : MonoBehaviour {
 
     GameObject Dog;
-    enum BirdState {Wander, FlyAway, BathMode};
+    enum BirdState {Wander, FlyAway, FlyDown, BathMode};
 
     // bird will wander then if you get close will fly away, then later come back
     // and chill on the bird bath
@@ -15,8 +15,16 @@ public class BirdMovement : MonoBehaviour {
     public float hop_force;
     public float wander_circle_center_dist;
     public float wander_circle_radius;
-
     public float dist_start_flight;
+
+    [Header("Flight Stats")]
+    public float flight_height_target;
+    public float flight_speed;
+    public Vector3 flight_vector;
+    public float flight_wait_delay;
+
+    [Header("Fly Down")]
+    public Transform bird_bath_pos;
 
     BirdState m_state;
     float time_in_state = 0.0f;
@@ -25,11 +33,12 @@ public class BirdMovement : MonoBehaviour {
 	void Start () {
         rb = GetComponent<Rigidbody>();
         Dog = GameObject.FindGameObjectWithTag("Player");
+        flight_vector.Normalize();
 	}
 
 	// Update is called once per frame
 	void Update () {
-        UpdateState();
+        //UpdateState();
         MoveBird();
     }
 
@@ -41,13 +50,17 @@ public class BirdMovement : MonoBehaviour {
             Dog = GameObject.FindGameObjectWithTag("Player");
             m_state = BirdState.Wander;
         }
-
-        m_state = BirdState.Wander;
+        
 
         float dist_to_dog = (Dog.transform.position - transform.position).magnitude;
 
         if (dist_to_dog < dist_start_flight)
+        {
+            if (m_state != BirdState.FlyAway)
+                time_in_state = 0.0f;
             m_state = BirdState.FlyAway;
+        }
+            
 
         // worry about going back to the bath later
     }
@@ -62,12 +75,16 @@ public class BirdMovement : MonoBehaviour {
             case BirdState.FlyAway:
                 FlyAway();
                 break;
+            case BirdState.FlyDown:
+                FlyDown();
+                break;
         }
     }
 
     void WanderMove()
     {
-        if(time_in_state > time_per_hop)
+        UpdateState();
+        if (time_in_state > time_per_hop)
         {
             time_in_state = 0.0f;
 
@@ -87,6 +104,30 @@ public class BirdMovement : MonoBehaviour {
 
     void FlyAway()
     {
+        if(transform.position.y > flight_height_target)
+        {
+            // wait then fly down
+            Invoke("StartFlyDown", flight_wait_delay);
+        }
 
+        rb.velocity = flight_vector * flight_speed;
+    }
+
+    void FlyDown()
+    {
+        rb.velocity = (bird_bath_pos.position - transform.position).normalized * flight_speed;
+        if((bird_bath_pos.position - transform.position).magnitude < 0.1f)
+        {
+            m_state = BirdState.BathMode;
+            rb.velocity = Vector3.zero;
+        }
+    }
+
+    void StartFlyDown()
+    {
+        m_state = BirdState.FlyDown;
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+        transform.position = new Vector3(transform.position.x, flight_height_target, transform.position.z);
     }
 }
