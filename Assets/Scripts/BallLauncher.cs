@@ -7,7 +7,7 @@ public class BallLauncher : MonoBehaviour {
     [SerializeField] private Vector3 launchDirection;           //direction of ball launch
     [SerializeField] private float launchForce;                 //force of launch, applied in direction specified above
 
-    [SerializeField] private Vector3 storePosition;             //position within ball launcher to store it until launch
+    [SerializeField] private Vector3 storePosition;           //position within ball launcher to store it until launch
 
     private GameObject ballForLaunch = null;                    //ball about to be launched
 

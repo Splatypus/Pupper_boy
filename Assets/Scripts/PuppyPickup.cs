@@ -10,6 +10,7 @@ public class PuppyPickup : MonoBehaviour {
 
     private List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
     private BallLauncher launcherInRange = null;                                //ball launcher that is in range (if one exists)
+    private ToyBox boxInRange = null;                                           //toy box that is in range (if one exists)
 
 
 	// Use this for initialization
@@ -31,6 +32,12 @@ public class PuppyPickup : MonoBehaviour {
                 {
                     Debug.Log("Loading Ball");
                     launcherInRange.LoadBall(itemInMouth);
+                }
+                //Next, check if we're in range of the toy box.  If so, toss it in.
+                else if(boxInRange && itemInMouth)
+                {
+                    Debug.Log("Toss in box");
+                    boxInRange.TossInBox(itemInMouth);
                 }
                 //Otherwise, drop it
                 else
@@ -93,6 +100,12 @@ public class PuppyPickup : MonoBehaviour {
             Debug.Log("Launcher in range");
             launcherInRange = other.GetComponent<BallLauncher>();
         }
+        //if it's a toy box, store it in boxInRange
+        else if (other.tag == "Box")
+        {
+            Debug.Log("Box In Range");
+            boxInRange = other.GetComponent<ToyBox>();
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -108,8 +121,16 @@ public class PuppyPickup : MonoBehaviour {
         {
             Debug.Log("Launcher out of range");
             launcherInRange = null;
-        }
+		} 
+        //if it's a toy box, set boxInRange to null
+		else if (other.tag == "Launcher")
+		{
+			Debug.Log("Box out of range");
+			boxInRange = null;
+		}
     }
+
+
 
 
     GameObject ClosestObject()
