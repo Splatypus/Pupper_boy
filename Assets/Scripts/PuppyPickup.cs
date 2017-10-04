@@ -17,6 +17,7 @@ public class PuppyPickup : MonoBehaviour {
     [SerializeField] private Transform butt;                                    //ass
     [SerializeField] private AudioClip[] borks;
     private AudioSource m_audio_source;
+    private int bork_index = 0;
 
     private List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
     private BallLauncher launcherInRange = null;                                //ball launcher that is in range (if one exists)
@@ -60,24 +61,21 @@ public class PuppyPickup : MonoBehaviour {
                 }
                 itemInMouth = null;
             }
-            else if (foodInRange != null)
+            else if (foodInRange != null && foodInRange.CanEat())
             {
-                if(foodInRange.CanEat())
+                foodInRange.EatFood();
+
+                // eat some goddamn food
+                m_num_food++;
+                if (m_num_food >= num_food_for_memes)
                 {
-                    foodInRange.EatFood();
-
-                    // eat some goddamn food
-                    m_num_food++;
-                    if (m_num_food >= num_food_for_memes)
-                    {
-                        Debug.Log("ENTER MEME ZONE!!!!");
-                    }
-                    else if (m_num_food % num_food_for_poop == 0)
-                    {
-                        Invoke("poop", time_for_poop);
-                    }
+                    Debug.Log("ENTER MEME ZONE!!!!");
                 }
-
+                else if (m_num_food % num_food_for_poop == 0)
+                {
+                    Invoke("poop", time_for_poop);
+                }
+                
             }
             //otherwise, see if there are objects in range and pick up the closest one
             else if(objectsInRange.Count > 0)
@@ -97,14 +95,14 @@ public class PuppyPickup : MonoBehaviour {
             }
             else
             {
+                int prev_index = bork_index;
                 // bork
-                int bork_index = Random.Range(0, borks.Length);
-                /*
-                while (m_audio_source.clip != borks[bork_index])
+                bork_index = Random.Range(0, borks.Length);
+                
+                while (bork_index == prev_index)
                 {
                     bork_index = Random.Range(0, borks.Length);
                 }
-                */
                 
                 m_audio_source.clip = borks[bork_index];
                 m_audio_source.Play();
