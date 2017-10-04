@@ -14,6 +14,14 @@ public class FlightMode : MonoBehaviour {
     private TrailRenderer tr;
     private ParticleSystem ps;
 
+    [SerializeField] private AudioSource launchSound;
+    [SerializeField] private AudioSource flightSound;
+    [SerializeField] private AudioSource flightMusic;
+
+    [SerializeField] private float fadeTime;
+    private Coroutine fadeRoutine = null;
+    private float musicStartVolume;
+
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +30,8 @@ public class FlightMode : MonoBehaviour {
         ps = this.GetComponent<ParticleSystem>();
 
         tr.enabled = false;
+
+        musicStartVolume = flightMusic.volume;
 	}
 	
 	// Update is called once per frame
@@ -33,6 +43,9 @@ public class FlightMode : MonoBehaviour {
 
             this.transform.Rotate(new Vector3(-1f * vertical, horiztonal, 0f));
             rb.velocity = transform.forward * speedOfFlight;
+
+            if (!launchSound.isPlaying && !flightSound.isPlaying)
+                flightSound.Play();
         }
 
         if(Input.GetKeyDown(KeyCode.F))
@@ -52,6 +65,17 @@ public class FlightMode : MonoBehaviour {
         ps.Play();
         this.transform.Rotate(new Vector3(-1f * takeoffAngle, 0f, 0f));
         isFlying = true;
+
+        launchSound.Play();
+        if(flightMusic.isPlaying)
+            flightMusic.Stop();
+        if (fadeRoutine != null)
+        {
+            StopCoroutine(fadeRoutine);
+            fadeRoutine = null;
+        }
+        flightMusic.volume = musicStartVolume;
+        flightMusic.Play();
     }
 
     public void DeactivateFlightMode()
@@ -61,10 +85,31 @@ public class FlightMode : MonoBehaviour {
         tr.enabled = false;
         ps.Stop();
         isFlying = false;
+
+        if(launchSound.isPlaying)
+            launchSound.Stop();
+        if(flightSound.isPlaying)
+            flightSound.Stop();
+        fadeRoutine = StartCoroutine(FadeMusic());
     }
 
     public bool IsFlying()
     {
         return isFlying;
+    }
+
+    private IEnumerator FadeMusic()
+    {
+        float startVolume = flightMusic.volume;
+        float startTime = Time.time;
+        while (flightMusic.volume > 0.01f)
+        {
+            float lerpAmount = 1f - ((Time.time - startTime) / fadeTime);
+            flightMusic.volume = startVolume * lerpAmount;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        flightMusic.Stop();
+        fadeRoutine = null;
     }
 }
