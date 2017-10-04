@@ -255,11 +255,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!95 &336537237 stripped
-Animator:
-  m_PrefabParentObject: {fileID: 95986325023341340, guid: 4aa1c8374bf5c8641bd869e7c625ebf2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1922726360}
 --- !u!1 &425420575
 GameObject:
   m_ObjectHideFlags: 0
@@ -1053,21 +1048,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 9
       objectReference: {fileID: 0}
-    - target: {fileID: 114594442796968994, guid: 4aa1c8374bf5c8641bd869e7c625ebf2,
-        type: 2}
-      propertyPath: m_Animator
-      value: 
-      objectReference: {fileID: 336537237}
-    - target: {fileID: 114594442796968994, guid: 4aa1c8374bf5c8641bd869e7c625ebf2,
-        type: 2}
-      propertyPath: pup_Animator
-      value: 
-      objectReference: {fileID: 336537237}
-    - target: {fileID: 95986325023341340, guid: 4aa1c8374bf5c8641bd869e7c625ebf2,
-        type: 2}
-      propertyPath: m_Avatar
-      value: 
-      objectReference: {fileID: 9000000, guid: acc5a13d0c682b54ca362f36b75757d1, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4aa1c8374bf5c8641bd869e7c625ebf2, type: 2}
   m_IsPrefabParent: 0
