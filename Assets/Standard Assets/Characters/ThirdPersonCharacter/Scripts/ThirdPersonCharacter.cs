@@ -46,11 +46,18 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
-
-			// convert the world relative moveInput vector into a local-relative
-			// turn amount and forward amount required to head in the desired
-			// direction.
-			if (move.magnitude > 1f) move.Normalize();
+            if (pup_Animator.GetBool("spin_tail"))
+            {
+                //m_Rigidbody.velocity = Vector3.zero;
+                //Debug.Log("stop im spinning dont move");
+                //return;
+                move = Vector3.zero;
+            }
+                
+            // convert the world relative moveInput vector into a local-relative
+            // turn amount and forward amount required to head in the desired
+            // direction.
+            if (move.magnitude > 1f) move.Normalize();
 			move = transform.InverseTransformDirection(move);
 			CheckGroundStatus();
 			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
@@ -121,6 +128,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
             bool is_moving = m_ForwardAmount > 0.0f;
             //bool is_moving = m_Rigidbody.velocity.magnitude > float.Epsilon;
             pup_Animator.SetBool("is_moving", is_moving);
+            pup_Animator.SetBool("spin_tail", Input.GetKey(KeyCode.Q));
             // update the animator parameters
             m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
