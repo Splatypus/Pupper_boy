@@ -21,4 +21,9 @@ public class Interactable : MonoBehaviour {
             
         }
     }
+
+    public void onDrop()
+    {
+
+    }
 }

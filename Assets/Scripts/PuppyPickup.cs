@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PuppyPickup : MonoBehaviour {
 
+    public int num_food_for_poop = 2;
+    public float time_for_poop = 10.0f;
+    public GameObject poop_obj;
+
+    public int num_food_for_memes = 10;
+    int m_num_food = 0;
+
     private GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
     private Vector3 prevPosition = new Vector3(0f, 0f, 0f);                     //when ball is let go, this is used to calculate it's momentum
     [SerializeField] private Transform mouth;                                   //location of the mouth to move items to
@@ -11,7 +18,7 @@ public class PuppyPickup : MonoBehaviour {
     private List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
     private BallLauncher launcherInRange = null;                                //ball launcher that is in range (if one exists)
     private ToyBox boxInRange = null;                                           //toy box that is in range (if one exists)
-
+    private FoodDispenser foodInRange = null;
 
 	// Use this for initialization
 	void Start () {
@@ -54,6 +61,7 @@ public class PuppyPickup : MonoBehaviour {
             //otherwise, see if there are objects in range and pick up the closest one
             else if(objectsInRange.Count > 0)
             {
+
                 itemInMouth = ClosestObject();
                 itemInMouth.transform.parent = mouth;
                 itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
@@ -105,6 +113,10 @@ public class PuppyPickup : MonoBehaviour {
         {
             Debug.Log("Box In Range");
             boxInRange = other.GetComponent<ToyBox>();
+        }
+        else if (other.tag == "Food")
+        {
+            foodInRange = other.GetComponent<FoodDispenser>();
         }
     }
 
