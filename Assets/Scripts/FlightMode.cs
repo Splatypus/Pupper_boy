@@ -22,6 +22,8 @@ public class FlightMode : MonoBehaviour {
     private Coroutine fadeRoutine = null;
     private float musicStartVolume;
 
+    public bool can_fly = false;
+    PuppyPickup pickup;
 
 	// Use this for initialization
 	void Start () {
@@ -32,10 +34,14 @@ public class FlightMode : MonoBehaviour {
         tr.enabled = false;
 
         musicStartVolume = flightMusic.volume;
-	}
+
+        pickup = FindObjectOfType<PuppyPickup>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
+        if (!can_fly)
+            return;
 		if(isFlying)
         {
             float vertical = Input.GetAxis("Vertical") * tiltSensitivity;
@@ -46,6 +52,13 @@ public class FlightMode : MonoBehaviour {
 
             if (!launchSound.isPlaying && !flightSound.isPlaying)
                 flightSound.Play();
+
+            // nobody knows about my easter egg but the miserable folk who read this code
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                // poop
+                pickup.poop();
+            }
         }
 
         if(Input.GetKeyDown(KeyCode.F))

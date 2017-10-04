@@ -70,9 +70,11 @@ public class PuppyPickup : MonoBehaviour {
                 m_num_food++;
                 if (m_num_food >= num_food_for_memes)
                 {
-                    Debug.Log("ENTER MEME ZONE!!!!");
+                    //Debug.Log("ENTER MEME ZONE!!!!");
+                    FlightMode flight = FindObjectOfType<FlightMode>();
+                    flight.can_fly = true;
                 }
-                else if (m_num_food % num_food_for_poop == 0)
+                if (m_num_food % num_food_for_poop == 0)
                 {
                     Invoke("poop", time_for_poop);
                 }
@@ -115,9 +117,9 @@ public class PuppyPickup : MonoBehaviour {
             prevPosition = itemInMouth.transform.position;
 	}
 
-    private void poop()
+    public void poop()
     {
-        Debug.Log("poop!");
+        //Debug.Log("poop!");
 
         Instantiate(poop_obj, butt.transform.position, butt.transform.rotation);
         int i= Random.Range(0, poops.Length);
