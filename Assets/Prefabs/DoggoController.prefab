@@ -749,6 +749,7 @@ GameObject:
   - component: {fileID: 136495678401750534}
   - component: {fileID: 114192978612048568}
   - component: {fileID: 114594442796968994}
+  - component: {fileID: 114385186043884262}
   m_Layer: 0
   m_Name: DoggoController
   m_TagString: Player
@@ -2452,6 +2453,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521b611700410be45810047f0a74e899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114385186043884262
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1741664074183008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b50dfc632df4ca442ace5c685d281033, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFlying: 0
+  speedOfFlight: 30
+  takeoffAngle: 30
+  tiltSensitivity: 2
 --- !u!114 &114462860841976566
 MonoBehaviour:
   m_ObjectHideFlags: 1
