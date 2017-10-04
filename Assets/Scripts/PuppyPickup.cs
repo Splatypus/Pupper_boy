@@ -14,7 +14,11 @@ public class PuppyPickup : MonoBehaviour {
     private GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
     private Vector3 prevPosition = new Vector3(0f, 0f, 0f);                     //when ball is let go, this is used to calculate it's momentum
     [SerializeField] private Transform mouth;                                   //location of the mouth to move items to
-    [SerializeField] private Transform butt;
+    [SerializeField] private Transform butt;                                    //ass
+    [SerializeField] private AudioClip[] borks;
+    [SerializeField] private AudioClip[] poops;
+    private AudioSource m_audio_source;
+    private int bork_index = 0;
 
     private List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
     private BallLauncher launcherInRange = null;                                //ball launcher that is in range (if one exists)
@@ -23,8 +27,7 @@ public class PuppyPickup : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //itemInMouth = null;
-        //objectsInRange = new List<GameObject>();
+        m_audio_source = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -59,24 +62,23 @@ public class PuppyPickup : MonoBehaviour {
                 }
                 itemInMouth = null;
             }
-            else if (foodInRange != null)
+            else if (foodInRange != null && foodInRange.CanEat())
             {
-                if(foodInRange.CanEat())
+                foodInRange.EatFood();
+
+                // eat some goddamn food
+                m_num_food++;
+                if (m_num_food >= num_food_for_memes)
                 {
-                    foodInRange.EatFood();
-
-                    // eat some goddamn food
-                    m_num_food++;
-                    if (m_num_food >= num_food_for_memes)
-                    {
-                        Debug.Log("ENTER MEME ZONE!!!!");
-                    }
-                    else if (m_num_food % num_food_for_poop == 0)
-                    {
-                        Invoke("poop", time_for_poop);
-                    }
+                    //Debug.Log("ENTER MEME ZONE!!!!");
+                    FlightMode flight = FindObjectOfType<FlightMode>();
+                    flight.can_fly = true;
                 }
-
+                if (m_num_food % num_food_for_poop == 0)
+                {
+                    Invoke("poop", time_for_poop);
+                }
+                
             }
             //otherwise, see if there are objects in range and pick up the closest one
             else if(objectsInRange.Count > 0)
@@ -94,6 +96,20 @@ public class PuppyPickup : MonoBehaviour {
                     interactable.onPickup();
                 }
             }
+            else
+            {
+                int prev_index = bork_index;
+                // bork
+                bork_index = Random.Range(0, borks.Length);
+                
+                while (bork_index == prev_index)
+                {
+                    bork_index = Random.Range(0, borks.Length);
+                }
+                
+                m_audio_source.clip = borks[bork_index];
+                m_audio_source.Play();
+            }
         }
 
         //update prevPosition
@@ -101,11 +117,14 @@ public class PuppyPickup : MonoBehaviour {
             prevPosition = itemInMouth.transform.position;
 	}
 
-    private void poop()
+    public void poop()
     {
-        Debug.Log("poop!");
+        //Debug.Log("poop!");
 
         Instantiate(poop_obj, butt.transform.position, butt.transform.rotation);
+        int i= Random.Range(0, poops.Length);
+        m_audio_source.clip = poops[i];
+        m_audio_source.Play();
     }
 
     private void LateUpdate()
@@ -162,7 +181,7 @@ public class PuppyPickup : MonoBehaviour {
             launcherInRange = null;
 		} 
         //if it's a toy box, set boxInRange to null
-		else if (other.tag == "Launcher")
+		else if (other.tag == "Box")
 		{
 			Debug.Log("Box out of range");
 			boxInRange = null;
