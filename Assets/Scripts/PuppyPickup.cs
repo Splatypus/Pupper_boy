@@ -17,6 +17,7 @@ public class PuppyPickup : MonoBehaviour {
     [SerializeField] private Transform butt;                                    //ass
     [SerializeField] private AudioClip[] borks;
     private AudioSource m_audio_source;
+    private int bork_index = 0;
 
     private List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
     private BallLauncher launcherInRange = null;                                //ball launcher that is in range (if one exists)
@@ -97,14 +98,14 @@ public class PuppyPickup : MonoBehaviour {
             }
             else
             {
+                int prev_index = bork_index;
                 // bork
-                int bork_index = Random.Range(0, borks.Length);
-                /*
-                while (m_audio_source.clip != borks[bork_index])
+                bork_index = Random.Range(0, borks.Length);
+                
+                while (bork_index != prev_index)
                 {
                     bork_index = Random.Range(0, borks.Length);
                 }
-                */
                 
                 m_audio_source.clip = borks[bork_index];
                 m_audio_source.Play();
