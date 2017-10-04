@@ -59,6 +59,12 @@ public class PuppyPickup : MonoBehaviour {
                     //calculate the momentum of the ball due to the dog's turning.
                     //If you don't it will always fall straight to the ground
                     itemInMouth.GetComponent<Rigidbody>().velocity = (itemInMouth.transform.position - prevPosition) / Time.deltaTime;
+
+                    Interactable interactable = itemInMouth.GetComponent<Interactable>();
+                    if (interactable)
+                    {
+                        interactable.onDrop();
+                    }
                 }
                 itemInMouth = null;
             }

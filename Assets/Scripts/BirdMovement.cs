@@ -9,6 +9,7 @@ public class BirdMovement : MonoBehaviour {
 
     // bird will wander then if you get close will fly away, then later come back
     // and chill on the bird bath
+    public bool wander_on_land = false;
 
     [Header("Wander Stats")]
     public float time_per_hop;
@@ -160,7 +161,14 @@ public class BirdMovement : MonoBehaviour {
         transform.right = -rb.velocity.normalized;
         if ((bird_bath_pos.position - transform.position).magnitude < 0.1f)
         {
-            m_state = BirdState.BathMode;
+            if(wander_on_land)
+            {
+                rb.useGravity = true;
+                m_state = BirdState.Wander;
+            }
+            else
+                m_state = BirdState.BathMode;
+
             rb.velocity = Vector3.zero;
             transform.position = bird_bath_pos.position;
             transform.rotation = bird_bath_pos.rotation;
