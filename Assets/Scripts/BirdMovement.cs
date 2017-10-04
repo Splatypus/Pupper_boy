@@ -162,7 +162,9 @@ public class BirdMovement : MonoBehaviour {
         {
             m_state = BirdState.BathMode;
             rb.velocity = Vector3.zero;
-
+            transform.position = bird_bath_pos.position;
+            transform.rotation = bird_bath_pos.rotation;
+            rb.angularVelocity = Vector3.zero;
             // set animation state to sitting on birdbath
             // can also do some stuff with getting him to play in the bath
             m_animator.SetBool("flying", false);
