@@ -61,24 +61,21 @@ public class PuppyPickup : MonoBehaviour {
                 }
                 itemInMouth = null;
             }
-            else if (foodInRange != null)
+            else if (foodInRange != null && foodInRange.CanEat())
             {
-                if(foodInRange.CanEat())
+                foodInRange.EatFood();
+
+                // eat some goddamn food
+                m_num_food++;
+                if (m_num_food >= num_food_for_memes)
                 {
-                    foodInRange.EatFood();
-
-                    // eat some goddamn food
-                    m_num_food++;
-                    if (m_num_food >= num_food_for_memes)
-                    {
-                        Debug.Log("ENTER MEME ZONE!!!!");
-                    }
-                    else if (m_num_food % num_food_for_poop == 0)
-                    {
-                        Invoke("poop", time_for_poop);
-                    }
+                    Debug.Log("ENTER MEME ZONE!!!!");
                 }
-
+                else if (m_num_food % num_food_for_poop == 0)
+                {
+                    Invoke("poop", time_for_poop);
+                }
+                
             }
             //otherwise, see if there are objects in range and pick up the closest one
             else if(objectsInRange.Count > 0)
@@ -102,7 +99,7 @@ public class PuppyPickup : MonoBehaviour {
                 // bork
                 bork_index = Random.Range(0, borks.Length);
                 
-                while (bork_index != prev_index)
+                while (bork_index == prev_index)
                 {
                     bork_index = Random.Range(0, borks.Length);
                 }
