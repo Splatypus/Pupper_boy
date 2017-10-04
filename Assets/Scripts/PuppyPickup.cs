@@ -14,7 +14,9 @@ public class PuppyPickup : MonoBehaviour {
     private GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
     private Vector3 prevPosition = new Vector3(0f, 0f, 0f);                     //when ball is let go, this is used to calculate it's momentum
     [SerializeField] private Transform mouth;                                   //location of the mouth to move items to
-    [SerializeField] private Transform butt;
+    [SerializeField] private Transform butt;                                    //ass
+    [SerializeField] private AudioClip[] borks;
+    private AudioSource m_audio_source;
 
     private List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
     private BallLauncher launcherInRange = null;                                //ball launcher that is in range (if one exists)
@@ -23,8 +25,7 @@ public class PuppyPickup : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        //itemInMouth = null;
-        //objectsInRange = new List<GameObject>();
+        m_audio_source = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -94,6 +95,20 @@ public class PuppyPickup : MonoBehaviour {
                     interactable.onPickup();
                 }
             }
+            else
+            {
+                // bork
+                int bork_index = Random.Range(0, borks.Length);
+                /*
+                while (m_audio_source.clip != borks[bork_index])
+                {
+                    bork_index = Random.Range(0, borks.Length);
+                }
+                */
+                
+                m_audio_source.clip = borks[bork_index];
+                m_audio_source.Play();
+            }
         }
 
         //update prevPosition
@@ -162,7 +177,7 @@ public class PuppyPickup : MonoBehaviour {
             launcherInRange = null;
 		} 
         //if it's a toy box, set boxInRange to null
-		else if (other.tag == "Launcher")
+		else if (other.tag == "Box")
 		{
 			Debug.Log("Box out of range");
 			boxInRange = null;
