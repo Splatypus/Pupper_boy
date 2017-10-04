@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ToyBox : MonoBehaviour {
 
-    private List<GameObject> toysInBox = new List<GameObject>();             //list of all toys in the box
-    [SerializeField] private float tossForce;                                //force applied to ball when tossed
-    [SerializeField] private Vector3 storePosition;                          //position where toys are stored
+    [SerializeField] private GameObject[] toysInBox;             //list of all toys in the box
+    [SerializeField] private float tossForce;                    //force applied to ball when tossed
+    [SerializeField] private Vector3 launchPosition;             //position where toys are tossed
 
 
 
@@ -15,14 +15,9 @@ public class ToyBox : MonoBehaviour {
 		
 	}
 
-    private void LateUpdate()
+    private void Update()
     {
-       foreach (GameObject toy in toysInBox)
-        {
-            toy.transform.rotation = this.transform.rotation;
-            toy.transform.localPosition = storePosition;
-        }
-
+        
     }
 
     public void TossInBox(GameObject toy)
@@ -36,23 +31,11 @@ public class ToyBox : MonoBehaviour {
 
     public void AddToy(GameObject toy)
     {
-        toy.transform.parent = this.transform;
-        toy.transform.localPosition = storePosition;
-        toy.GetComponent<Rigidbody>().useGravity = false;
+        Destroy(toy);
 
-        if (toysInBox.Count > 0)
-        {
-            int rand = Random.Range(0, toysInBox.Count);
-            GameObject outToy = toysInBox[rand];
-            outToy.transform.parent = null;
-            toysInBox.Remove(outToy);
-            outToy.GetComponent<Rigidbody>().useGravity = true;
-            outToy.transform.Translate(new Vector3(0f, 2f, 0f));
-            outToy.GetComponent<Rigidbody>().AddForce(new Vector3(4f, tossForce, 0f), ForceMode.Impulse);
-            Debug.Log("Toy Removed");
-        }
-
-        toysInBox.Add(toy);
+        int rand = Random.Range(0, toysInBox.Length);
+        GameObject outToy = (GameObject)Instantiate(toysInBox[rand], this.transform.position + launchPosition, Quaternion.identity) as GameObject;
+        outToy.GetComponent<Rigidbody>().AddForce(new Vector3(4f, tossForce, 0f), ForceMode.Impulse);
         Debug.Log("Toy Added");
     }
 }
