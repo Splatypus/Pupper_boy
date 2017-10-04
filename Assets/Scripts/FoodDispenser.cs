@@ -13,4 +13,14 @@ public class FoodDispenser : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public bool CanEat()
+    {
+        return true;
+    }
+
+    public void EatFood()
+    {
+        Debug.Log("food was eaten");
+    }
 }

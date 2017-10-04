@@ -14,6 +14,7 @@ public class PuppyPickup : MonoBehaviour {
     private GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
     private Vector3 prevPosition = new Vector3(0f, 0f, 0f);                     //when ball is let go, this is used to calculate it's momentum
     [SerializeField] private Transform mouth;                                   //location of the mouth to move items to
+    [SerializeField] private Transform butt;
 
     private List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
     private BallLauncher launcherInRange = null;                                //ball launcher that is in range (if one exists)
@@ -31,6 +32,7 @@ public class PuppyPickup : MonoBehaviour {
         //determine if E key has been pressed.  E key is used to pickup and drop objects
         if(Input.GetKeyDown(KeyCode.E))
         {
+            Debug.Log("got e");
             //first, if there is an object in the dog's mouth, drop it or load it into a launcher
             if(itemInMouth != null)
             {
@@ -57,7 +59,25 @@ public class PuppyPickup : MonoBehaviour {
                 }
                 itemInMouth = null;
             }
+            else if (foodInRange != null)
+            {
+                if(foodInRange.CanEat())
+                {
+                    foodInRange.EatFood();
 
+                    // eat some goddamn food
+                    m_num_food++;
+                    if (m_num_food >= num_food_for_memes)
+                    {
+                        Debug.Log("ENTER MEME ZONE!!!!");
+                    }
+                    else if (m_num_food % num_food_for_poop == 0)
+                    {
+                        Invoke("poop", time_for_poop);
+                    }
+                }
+
+            }
             //otherwise, see if there are objects in range and pick up the closest one
             else if(objectsInRange.Count > 0)
             {
@@ -80,6 +100,13 @@ public class PuppyPickup : MonoBehaviour {
         if (itemInMouth != null)
             prevPosition = itemInMouth.transform.position;
 	}
+
+    private void poop()
+    {
+        Debug.Log("poop!");
+
+        Instantiate(poop_obj, butt.transform.position, butt.transform.rotation);
+    }
 
     private void LateUpdate()
     {
@@ -140,6 +167,10 @@ public class PuppyPickup : MonoBehaviour {
 			Debug.Log("Box out of range");
 			boxInRange = null;
 		}
+        else if (other.tag == "Food")
+        {
+            foodInRange = null;
+        }
     }
 
 
