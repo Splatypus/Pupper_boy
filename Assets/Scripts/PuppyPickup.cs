@@ -16,6 +16,7 @@ public class PuppyPickup : MonoBehaviour {
     [SerializeField] private Transform mouth;                                   //location of the mouth to move items to
     [SerializeField] private Transform butt;                                    //ass
     [SerializeField] private AudioClip[] borks;
+    [SerializeField] private AudioClip[] poops;
     private AudioSource m_audio_source;
     private int bork_index = 0;
 
@@ -119,6 +120,9 @@ public class PuppyPickup : MonoBehaviour {
         Debug.Log("poop!");
 
         Instantiate(poop_obj, butt.transform.position, butt.transform.rotation);
+        int i= Random.Range(0, poops.Length);
+        m_audio_source.clip = poops[i];
+        m_audio_source.Play();
     }
 
     private void LateUpdate()
