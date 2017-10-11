@@ -756,6 +756,7 @@ GameObject:
   - component: {fileID: 82016781703761266}
   - component: {fileID: 82125817914305790}
   - component: {fileID: 82096822523299586}
+  - component: {fileID: 114474764441504420}
   m_Layer: 0
   m_Name: DoggoController
   m_TagString: Player
@@ -2345,7 +2346,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 57c5f4d4cf2799a4d9f4094f6bec90d7, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2424,7 +2425,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -2505,7 +2506,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9d597cda55f8a9a48b1c40c17a8eef2d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.7
+  m_Volume: 0.28
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -2585,7 +2586,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: fe023a9af5223494393701ba14ab0c38, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.7
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2818,7 +2819,7 @@ MonoBehaviour:
   num_food_for_poop: 2
   time_for_poop: 3
   poop_obj: {fileID: 1009354235982140, guid: b7954e516054f674e89c013344dea4c2, type: 2}
-  num_food_for_memes: 10
+  num_food_for_memes: 1
   mouth: {fileID: 4054110087415274}
   butt: {fileID: 4417860265428546}
   borks:
@@ -2828,6 +2829,17 @@ MonoBehaviour:
   poops:
   - {fileID: 8300000, guid: 2ec35a8f60954934884c2eb99439b94d, type: 3}
   - {fileID: 8300000, guid: 2ec35a8f60954934884c2eb99439b94d, type: 3}
+--- !u!114 &114474764441504420
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1741664074183008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 006ae2974ccb1694581518cd97558cf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114594442796968994
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2858,7 +2870,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136064033335848806
 CapsuleCollider:
@@ -3121,7 +3133,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -454641244
+  randomSeed: -1759595701
   InitialModule:
     serializedVersion: 3
     enabled: 1

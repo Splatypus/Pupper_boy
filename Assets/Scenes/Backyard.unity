@@ -370,21 +370,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114385186043884262, guid: 4aa1c8374bf5c8641bd869e7c625ebf2,
-        type: 2}
-      propertyPath: can_fly
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 135651061133908248, guid: 4aa1c8374bf5c8641bd869e7c625ebf2,
-        type: 2}
-      propertyPath: m_Radius
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 114462860841976566, guid: 4aa1c8374bf5c8641bd869e7c625ebf2,
-        type: 2}
-      propertyPath: num_food_for_memes
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4aa1c8374bf5c8641bd869e7c625ebf2, type: 2}
   m_IsPrefabParent: 0
@@ -643,22 +628,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: -0.02, y: 0.09, z: 0.65}
   m_Center: {x: 0, y: 0.03, z: 0}
---- !u!1 &195136953 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1741664074183008, guid: 4aa1c8374bf5c8641bd869e7c625ebf2,
-    type: 2}
-  m_PrefabInternal: {fileID: 60380634}
---- !u!114 &195136966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 195136953}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 006ae2974ccb1694581518cd97558cf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &199136204 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
