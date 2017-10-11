@@ -23,7 +23,8 @@ public class FlightMode : MonoBehaviour {
     private float musicStartVolume;
 
     public bool can_fly = false;
-    PuppyPickup pickup;
+    private PuppyPickup pickup;
+    private Vector3 euler_rotation;
 
 	// Use this for initialization
 	void Start () {
@@ -72,6 +73,7 @@ public class FlightMode : MonoBehaviour {
 
     public void ActivateFlightMode()
     {
+        euler_rotation = transform.eulerAngles;
         this.GetComponent<Rigidbody>().useGravity = false;
         this.GetComponent<ThirdPersonUserControl>().enabled = false;
         tr.enabled = true;
@@ -93,6 +95,9 @@ public class FlightMode : MonoBehaviour {
 
     public void DeactivateFlightMode()
     {
+        //float cur_y = transform.eulerAngles.y;
+        euler_rotation.y = transform.eulerAngles.y;
+        transform.eulerAngles = euler_rotation;
         this.GetComponent<Rigidbody>().useGravity = true;
         this.GetComponent<ThirdPersonUserControl>().enabled = true;
         tr.enabled = false;
