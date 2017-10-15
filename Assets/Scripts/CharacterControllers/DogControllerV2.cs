@@ -19,12 +19,8 @@ public class DogControllerV2 : MonoBehaviour {
     [SerializeField]
     float jumpPower = 1;
 
-    [SerializeField]
-    bool useStoreRight = false;
-
     Vector3 directionPos;
-    Vector3 lookPos; // don't need?
-    Vector3 storeDir;
+    Vector3 cam_right, cam_fwd;
 
     float horizontal;
     float vertical;
@@ -50,16 +46,16 @@ public class DogControllerV2 : MonoBehaviour {
         vertical = Input.GetAxis("Vertical");
         jumpInput = Input.GetButtonDown("Jump");
 
-        // we can make it so that if horizontal == 0 then we do this. Not really sure why, 
-        /*if(useStoreRight && horizontal == 0)
-        {
-            storeDir = cam.right;
-        }*/
-        storeDir = cam.right;
+        
 
         if (onGround)
         {
-            rigidBody.AddForce(((storeDir * horizontal) + (cam.forward * vertical)) * speed / Time.deltaTime);
+            
+            //cam_right = cam.right;
+            cam_right = Vector3.ProjectOnPlane(cam.right, transform.up);
+            //cam_fwd = cam.forward;
+            cam_fwd = Vector3.ProjectOnPlane(cam.forward, transform.up);
+            rigidBody.AddForce(((cam_right * horizontal) + (cam_fwd * vertical)) * speed / Time.deltaTime);
 
             // TODO: make jump work (oops)
             // I think after I set up the jump animations I will work on this
@@ -75,10 +71,10 @@ public class DogControllerV2 : MonoBehaviour {
         float animValue = Mathf.Abs(vertical) + Mathf.Abs(horizontal);
 
         anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime); // maybe should be FixedDeltaTime?
-
+        
         if(horizontal != 0 || vertical != 0)
         {
-            directionPos = transform.position + (storeDir * horizontal) + (cam.forward * vertical);
+            directionPos = transform.position + (cam_right * horizontal) + (cam_fwd * vertical);
 
             Vector3 dir = directionPos - transform.position;
             dir.y = 0;
@@ -88,6 +84,7 @@ public class DogControllerV2 : MonoBehaviour {
             if (angle != 0)
                 rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), turnspeed * Time.deltaTime);
         }
+        
     }
 
     private void OnCollisionEnter(Collision collision)

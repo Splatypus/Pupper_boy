@@ -2194,7 +2194,7 @@ MonoBehaviour:
   flightSound: {fileID: 82555786697041676}
   flightMusic: {fileID: 82482690051453094}
   fadeTime: 2
-  can_fly: 1
+  can_fly: 0
 --- !u!114 &114616766617029552
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2246,7 +2246,6 @@ MonoBehaviour:
   speed: 5
   turnspeed: 5
   jumpPower: 5
-  useStoreRight: 0
 --- !u!135 &135850262971135358
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2403,7 +2402,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 235199159
+  randomSeed: -2020323318
   InitialModule:
     serializedVersion: 3
     enabled: 1
