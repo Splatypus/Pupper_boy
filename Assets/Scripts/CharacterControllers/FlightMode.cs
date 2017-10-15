@@ -25,9 +25,10 @@ public class FlightMode : MonoBehaviour {
     public bool can_fly = false;
     private PuppyPickup pickup;
     private Vector3 euler_rotation;
+    RigidbodyConstraints initial_rb_constratins;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         rb = this.GetComponent<Rigidbody>();
         tr = this.GetComponent<TrailRenderer>();
         ps = this.GetComponent<ParticleSystem>();
@@ -37,6 +38,8 @@ public class FlightMode : MonoBehaviour {
         musicStartVolume = flightMusic.volume;
 
         pickup = FindObjectOfType<PuppyPickup>();
+
+        initial_rb_constratins = rb.constraints;
     }
 	
 	// Update is called once per frame
@@ -75,7 +78,8 @@ public class FlightMode : MonoBehaviour {
     {
         euler_rotation = transform.eulerAngles;
         this.GetComponent<Rigidbody>().useGravity = false;
-        this.GetComponent<ThirdPersonUserControl>().enabled = false;
+        this.GetComponent<DogControllerV2>().enabled = false;
+        rb.constraints = RigidbodyConstraints.None;
         tr.enabled = true;
         ps.Play();
         this.transform.Rotate(new Vector3(-1f * takeoffAngle, 0f, 0f));
@@ -99,7 +103,8 @@ public class FlightMode : MonoBehaviour {
         euler_rotation.y = transform.eulerAngles.y;
         transform.eulerAngles = euler_rotation;
         this.GetComponent<Rigidbody>().useGravity = true;
-        this.GetComponent<ThirdPersonUserControl>().enabled = true;
+        this.GetComponent<DogControllerV2>().enabled = true;
+        rb.constraints = initial_rb_constratins;
         tr.enabled = false;
         ps.Stop();
         isFlying = false;
