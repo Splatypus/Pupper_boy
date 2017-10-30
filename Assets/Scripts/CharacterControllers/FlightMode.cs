@@ -44,9 +44,20 @@ public class FlightMode : MonoBehaviour {
 
         initial_rb_constratins = rb.constraints;
     }
-	
-	// Update is called once per frame
-	void FixedUpdate () {
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (isFlying)
+                DeactivateFlightMode();
+            else
+                ActivateFlightMode();
+        }
+    }
+
+    // Update is called once per frame
+    void FixedUpdate () {
         if (!can_fly)
             return;
 		if(isFlying)
@@ -74,13 +85,7 @@ public class FlightMode : MonoBehaviour {
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            if (isFlying)
-                DeactivateFlightMode();
-            else
-                ActivateFlightMode();
-        }
+        
 	}
 
     public void ActivateFlightMode()
