@@ -1734,7 +1734,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!82 &82160312773235402
 AudioSource:
@@ -2194,7 +2194,7 @@ MonoBehaviour:
   flightSound: {fileID: 82555786697041676}
   flightMusic: {fileID: 82482690051453094}
   fadeTime: 2
-  can_fly: 0
+  can_fly: 1
 --- !u!114 &114616766617029552
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2402,7 +2402,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -2020323318
+  randomSeed: 995832026
   InitialModule:
     serializedVersion: 3
     enabled: 1

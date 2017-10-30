@@ -129,7 +129,7 @@ public class DogControllerV2 : MonoBehaviour {
             if(childAnimator != anim)
             {
                 anim.avatar = childAnimator.avatar;
-                Destroy(childAnimator);
+                Destroy(childAnimator); // why?
                 break;
             }
         }

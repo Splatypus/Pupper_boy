@@ -27,8 +27,11 @@ public class FlightMode : MonoBehaviour {
     private Vector3 euler_rotation;
     RigidbodyConstraints initial_rb_constratins;
 
+    Animator anim;
+
     // Use this for initialization
     void Start () {
+        anim = GetComponent<Animator>();
         rb = this.GetComponent<Rigidbody>();
         tr = this.GetComponent<TrailRenderer>();
         ps = this.GetComponent<ParticleSystem>();
@@ -43,7 +46,7 @@ public class FlightMode : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
         if (!can_fly)
             return;
 		if(isFlying)
@@ -52,16 +55,22 @@ public class FlightMode : MonoBehaviour {
             float horiztonal = Input.GetAxis("Horizontal") * tiltSensitivity;
 
             this.transform.Rotate(new Vector3(-1f * vertical, horiztonal, 0f));
+            
             rb.velocity = transform.forward * speedOfFlight;
 
             if (!launchSound.isPlaying && !flightSound.isPlaying)
                 flightSound.Play();
 
-            // nobody knows about my easter egg but the miserable folk who read this code
+            // poop while flying
             if(Input.GetKeyDown(KeyCode.R))
             {
                 // poop
                 pickup.poop();
+            }
+
+            if(anim)
+            {
+                anim.SetFloat("Forward", 1.0f, 0.0f, Time.deltaTime); // maybe should be FixedDeltaTime?
             }
         }
 
@@ -78,7 +87,10 @@ public class FlightMode : MonoBehaviour {
     {
         euler_rotation = transform.eulerAngles;
         this.GetComponent<Rigidbody>().useGravity = false;
-        this.GetComponent<DogControllerV2>().enabled = false;
+        if (this.GetComponent<DogControllerV2>())
+            this.GetComponent<DogControllerV2>().enabled = false;
+        else if (this.GetComponent<ThirdPersonUserControl>())
+            this.GetComponent<ThirdPersonUserControl>().enabled = false;
         rb.constraints = RigidbodyConstraints.None;
         tr.enabled = true;
         ps.Play();
@@ -103,7 +115,11 @@ public class FlightMode : MonoBehaviour {
         euler_rotation.y = transform.eulerAngles.y;
         transform.eulerAngles = euler_rotation;
         this.GetComponent<Rigidbody>().useGravity = true;
-        this.GetComponent<DogControllerV2>().enabled = true;
+        //this.GetComponent<DogControllerV2>().enabled = true;
+        if (this.GetComponent<DogControllerV2>())
+            this.GetComponent<DogControllerV2>().enabled = true;
+        else if (this.GetComponent<ThirdPersonUserControl>())
+            this.GetComponent<ThirdPersonUserControl>().enabled = true;
         rb.constraints = initial_rb_constratins;
         tr.enabled = false;
         ps.Stop();
