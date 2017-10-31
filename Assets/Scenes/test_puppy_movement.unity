@@ -482,16 +482,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 114442051019817608, guid: f1f8530513e9b734b8d907bbf0e98dad,
-        type: 2}
-      propertyPath: dig_look_zone
-      value: 
-      objectReference: {fileID: 1957584620}
-    - target: {fileID: 114442051019817608, guid: f1f8530513e9b734b8d907bbf0e98dad,
-        type: 2}
-      propertyPath: extra_movement_for_dig
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f1f8530513e9b734b8d907bbf0e98dad, type: 2}
   m_IsPrefabParent: 0
@@ -750,8 +740,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!135 &1957584620 stripped
-SphereCollider:
-  m_PrefabParentObject: {fileID: 135850262971135358, guid: f1f8530513e9b734b8d907bbf0e98dad,
-    type: 2}
-  m_PrefabInternal: {fileID: 1185500594}
