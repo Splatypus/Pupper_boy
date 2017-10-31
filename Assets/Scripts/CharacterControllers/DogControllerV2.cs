@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+using UnityEngine.UI; // for debug text
+
 public class DogControllerV2 : MonoBehaviour {
 
     #region Component Variables
@@ -11,6 +13,8 @@ public class DogControllerV2 : MonoBehaviour {
     [SerializeField] PhysicMaterial mFriction;
     Transform cam;
     #endregion
+
+    public Text debug_text;
 
     [SerializeField]
     float speed = 0.8f;
@@ -46,9 +50,11 @@ public class DogControllerV2 : MonoBehaviour {
         vertical = Input.GetAxis("Vertical");
         jumpInput = Input.GetButtonDown("Jump");
 
-        
 
-        if (onGround)
+
+        //if (onGround)
+        // need to do stuff in here otherwise it doesn't work??
+        if (true)
         {
             
             //cam_right = cam.right;
@@ -95,6 +101,7 @@ public class DogControllerV2 : MonoBehaviour {
         onGround = true;
         rigidBody.drag = 5;
         anim.SetBool("onAir", false);
+        debug_text.text = "grounded";
     }
 
     private void OnCollisionExit(Collision collision)
@@ -103,6 +110,7 @@ public class DogControllerV2 : MonoBehaviour {
         onGround = false;
         rigidBody.drag = 0;
         anim.SetBool("onAir", true);
+        debug_text.text = "flying";
     }
 
     void HandleFriction()
