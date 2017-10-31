@@ -19,7 +19,7 @@ public class PlayerDig : MonoBehaviour {
             {
                 //print("have a place to look!");
 
-                Collider[] inGrabber = Physics.OverlapSphere(dig_look_zone.transform.position, dig_look_zone.radius);
+                Collider[] inGrabber = Physics.OverlapSphere(dig_look_zone.transform.position, dig_look_zone.radius * 0.5f);
 
                 foreach( Collider c in inGrabber)
                 {
