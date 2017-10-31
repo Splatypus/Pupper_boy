@@ -446,6 +446,7 @@ GameObject:
   - component: {fileID: 54952641544717262}
   - component: {fileID: 136754744964293902}
   - component: {fileID: 114947540783427308}
+  - component: {fileID: 114442051019817608}
   - component: {fileID: 114285401388421124}
   - component: {fileID: 96532567077237910}
   - component: {fileID: 199988106981365652}
@@ -2195,6 +2196,18 @@ MonoBehaviour:
   flightMusic: {fileID: 82482690051453094}
   fadeTime: 2
   can_fly: 1
+--- !u!114 &114442051019817608
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1458715000964328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c253b33aa2e635469cea8b2a2f563e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dig_look_zone: {fileID: 0}
 --- !u!114 &114616766617029552
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2243,6 +2256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zFriction: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1, type: 2}
   mFriction: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
+  debug_text: {fileID: 0}
   speed: 5
   turnspeed: 5
   jumpPower: 5
@@ -2402,7 +2416,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 995832026
+  randomSeed: 725464194
   InitialModule:
     serializedVersion: 3
     enabled: 1

@@ -35,7 +35,7 @@ public class PuppyPickup : MonoBehaviour {
         //determine if E key has been pressed.  E key is used to pickup and drop objects
         if(Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("got e");
+            //Debug.Log("got e");
             //first, if there is an object in the dog's mouth, drop it or load it into a launcher
             if(itemInMouth != null)
             {

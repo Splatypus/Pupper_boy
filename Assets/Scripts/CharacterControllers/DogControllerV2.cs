@@ -101,7 +101,7 @@ public class DogControllerV2 : MonoBehaviour {
         onGround = true;
         rigidBody.drag = 5;
         anim.SetBool("onAir", false);
-        debug_text.text = "grounded";
+        //debug_text.text = "grounded";
     }
 
     private void OnCollisionExit(Collision collision)
@@ -110,7 +110,7 @@ public class DogControllerV2 : MonoBehaviour {
         onGround = false;
         rigidBody.drag = 0;
         anim.SetBool("onAir", true);
-        debug_text.text = "flying";
+        //debug_text.text = "flying";
     }
 
     void HandleFriction()
