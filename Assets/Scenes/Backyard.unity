@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 8
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.7607844, g: 0.7607844, b: 0.7607844, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.002
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 871061062}
   m_IndirectSpecularColor: {r: 0.8015039, g: 0.7082219, b: 0.6230049, a: 1}
 --- !u!157 &3
 LightmapSettings:
@@ -2944,6 +2944,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_IsPrefabParent: 0
+--- !u!108 &871061062 stripped
+Light:
+  m_PrefabParentObject: {fileID: 108387176674646788, guid: 44ccd06623b2ec64abadcb4029f7aed0,
+    type: 2}
+  m_PrefabInternal: {fileID: 2043895658}
 --- !u!1001 &883708167
 Prefab:
   m_ObjectHideFlags: 0
