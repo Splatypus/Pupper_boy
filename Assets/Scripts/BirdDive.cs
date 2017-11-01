@@ -13,9 +13,12 @@ public class BirdDive : MonoBehaviour {
     // and chill on the bird bath
     public bool wander_on_land = false;
 
+    public birdTracker birdTracker;
+
     [Header("Dive Points")]
     public GameObject objectA;
     public GameObject objectB;
+    public float stagger = 1;
 
     [Header("Wander Stats")]
     public float time_per_hop;
@@ -77,6 +80,7 @@ public class BirdDive : MonoBehaviour {
             if (isDiving)
             {
                 m_state = BirdState.Dive;
+                m_animator.SetBool("flying", true);
             }
             else
             {
@@ -105,6 +109,7 @@ public class BirdDive : MonoBehaviour {
         if (m_state == BirdState.Dive && dist_to_dog < dist_start_flight)
         {
             isDiving = false;
+            birdTracker.birdsDiving--;
             m_state = BirdState.FlyAway;
             m_animator.SetBool("flying", true);
         }
@@ -214,7 +219,7 @@ public class BirdDive : MonoBehaviour {
 
     void diveBomb()
     {
-        transform.position = Vector3.Lerp(objectA.transform.position, objectB.transform.position, Mathf.PingPong(Time.time, 1));
+        transform.position = Vector3.Lerp(objectA.transform.position, objectB.transform.position, Mathf.PingPong(Time.time, stagger));
     }
 
 }
