@@ -60,8 +60,8 @@ function Update(){
 
 function OnGUI(){
 	if(showGUI){
-		GUI.Label(Rect(10,0,100,20),"Day "+day.ToString());
-		GUI.Label(Rect(10,20,100,40),digitalDisplay(Mathf.Floor(min/60).ToString()) + ":" + digitalDisplay((min-Mathf.Floor(min/60)*60).ToString()));
+		//GUI.Label(Rect(10,0,100,20),"Day "+day.ToString());
+		//GUI.Label(Rect(10,20,100,40),digitalDisplay(Mathf.Floor(min/60).ToString()) + ":" + digitalDisplay((min-Mathf.Floor(min/60)*60).ToString()));
 	}
 	//GUI.Label(Rect(10,40,100,60),texOffset.ToString()); //texture offset
 }

@@ -50,7 +50,14 @@ public class DogControllerV2 : MonoBehaviour {
         vertical = Input.GetAxis("Vertical");
         jumpInput = Input.GetButtonDown("Jump");
 
-
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            speed = 8;
+        }
+        else
+        {
+            speed = 5;
+        }
 
         //if (onGround)
         // need to do stuff in here otherwise it doesn't work??

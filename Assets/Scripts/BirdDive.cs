@@ -62,6 +62,7 @@ public class BirdDive : MonoBehaviour {
         evt.functionName = "hop_forward";
         clip = m_animator.runtimeAnimatorController.animationClips[0];
         clip.AddEvent(evt);
+        m_animator.SetBool("flying", true);
     }
 
     // Update is called once per frame
