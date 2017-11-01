@@ -5,7 +5,7 @@ using UnityEngine;
 public class AIbase : MonoBehaviour {
 
     public GameObject[] Dialog;
-    public GameObject Player;
+    private GameObject Player;
     public float range;
     public GameObject Toy;
 
@@ -65,6 +65,7 @@ public class AIbase : MonoBehaviour {
         foreach (GameObject i in Dialog) {
             i.SetActive(false);
         }
+        Player = GameObject.FindGameObjectWithTag("Player");
     }
 
 }

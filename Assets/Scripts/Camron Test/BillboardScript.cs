@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class BillboardScript : MonoBehaviour {
 
-    public Camera cam;
+    private Camera cam;
 
 	// Use this for initialization
 	void Start () {
-		
+        cam = Camera.main;
 	}
 	
 	// Update is called once per frame
