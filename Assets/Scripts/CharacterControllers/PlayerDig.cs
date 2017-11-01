@@ -8,6 +8,7 @@ public class PlayerDig : MonoBehaviour {
     private SphereCollider dig_look_zone;
     [SerializeField]
     float extra_movement_for_dig;
+    [SerializeField] private AudioSource dig_sound;
 
     private void Update()
     {
@@ -28,6 +29,7 @@ public class PlayerDig : MonoBehaviour {
                     {
                         //print("got me some diggle zoner " + digZone);
                         move_to_next_zone(digZone);
+                        dig_sound.Play();
                         return; // probably should not do this. xd
                     }
                     
