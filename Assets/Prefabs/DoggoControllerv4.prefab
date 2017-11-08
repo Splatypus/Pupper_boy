@@ -2206,8 +2206,8 @@ Rigidbody:
   m_GameObject: {fileID: 1447941198375708}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 4
-  m_AngularDrag: 999
+  m_Drag: 0
+  m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -2764,7 +2764,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1447941198375708}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1ae8a704ea74d14aa3f397b6d055f6e, type: 3}
   m_Name: 
@@ -2964,7 +2964,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 291521463
+  randomSeed: -1285850222
   InitialModule:
     serializedVersion: 3
     enabled: 1

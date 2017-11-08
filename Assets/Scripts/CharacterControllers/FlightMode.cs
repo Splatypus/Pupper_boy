@@ -31,7 +31,7 @@ public class FlightMode : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        anim = GetComponent<Animator>();
+        anim = GetComponentInChildren<Animator>();
         rb = this.GetComponent<Rigidbody>();
         tr = this.GetComponent<TrailRenderer>();
         ps = this.GetComponent<ParticleSystem>();
@@ -112,6 +112,7 @@ public class FlightMode : MonoBehaviour {
         }
         flightMusic.volume = musicStartVolume;
         flightMusic.Play();
+        anim.SetBool("isFlying", true);
     }
 
     public void DeactivateFlightMode()
@@ -135,6 +136,7 @@ public class FlightMode : MonoBehaviour {
         if(flightSound.isPlaying)
             flightSound.Stop();
         fadeRoutine = StartCoroutine(FadeMusic());
+        anim.SetBool("isFlying", false);
     }
 
     public bool IsFlying()
