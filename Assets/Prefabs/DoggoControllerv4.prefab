@@ -475,7 +475,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4571191276323112}
   - component: {fileID: 54069208274955672}
-  - component: {fileID: 136091113816333576}
   - component: {fileID: 114617946213332872}
   - component: {fileID: 114938348412177154}
   - component: {fileID: 114106085908731474}
@@ -486,8 +485,8 @@ GameObject:
   - component: {fileID: 82162542660557278}
   - component: {fileID: 82118116528835564}
   - component: {fileID: 114532767797915932}
-  - component: {fileID: 95392474987960488}
   - component: {fileID: 82059924588672866}
+  - component: {fileID: 65479630872301480}
   m_Layer: 0
   m_Name: DoggoControllerv4
   m_TagString: Player
@@ -1192,7 +1191,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4571191276323112}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4072437482676146
 Transform:
@@ -1321,7 +1320,7 @@ Transform:
   - {fileID: 4878235288201494}
   - {fileID: 4895552069212834}
   m_Father: {fileID: 4571191276323112}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4256435598516138
 Transform:
@@ -1514,7 +1513,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4571191276323112}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4405401752066586
 Transform:
@@ -1660,17 +1659,17 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1447941198375708}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 253.10976, y: 4.57, z: 247.8031}
+  m_LocalRotation: {x: -0, y: -0.7307916, z: -0, w: 0.6826007}
+  m_LocalPosition: {x: 192.49, y: 3.35, z: 297.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 4238778694826806}
   - {fileID: 4929928420055628}
   - {fileID: 4371444027632162}
   - {fileID: 4070059811602790}
-  - {fileID: 4238778694826806}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -93.906006, z: 0}
 --- !u!4 &4638799253071812
 Transform:
   m_ObjectHideFlags: 1
@@ -2064,7 +2063,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4571191276323112}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4949317581226712
 Transform:
@@ -2214,6 +2213,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &65479630872301480
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1447941198375708}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7, y: 1, z: 1.88}
+  m_Center: {x: 0, y: 0.6, z: -0.08}
 --- !u!82 &82059924588672866
 AudioSource:
   m_ObjectHideFlags: 1
@@ -2614,23 +2625,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!95 &95392474987960488
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1447941198375708}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 797fa37d5195da044a73c477a61368a2, type: 3}
-  m_Controller: {fileID: 9100000, guid: 382eb1f97532c094e821c2c695395061, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!95 &95486127529756668
 Animator:
   serializedVersion: 3
@@ -2770,7 +2764,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1447941198375708}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1ae8a704ea74d14aa3f397b6d055f6e, type: 3}
   m_Name: 
@@ -2778,7 +2772,7 @@ MonoBehaviour:
   zFriction: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1, type: 2}
   mFriction: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
   debug_text: {fileID: 0}
-  speed: 5
+  speed: 250
   turnspeed: 5
   jumpPower: 5
 --- !u!114 &114868909785812858
@@ -2831,19 +2825,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &136091113816333576
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1447941198375708}
-  m_Material: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.8
-  m_Height: 1.6
-  m_Direction: 2
-  m_Center: {x: 0, y: 0.8, z: 0.35}
 --- !u!137 &137098162567704734
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
@@ -2983,7 +2964,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1483629349
+  randomSeed: 291521463
   InitialModule:
     serializedVersion: 3
     enabled: 1

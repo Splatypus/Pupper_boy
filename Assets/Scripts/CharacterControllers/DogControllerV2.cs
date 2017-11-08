@@ -8,7 +8,7 @@ public class DogControllerV2 : MonoBehaviour {
     #region Component Variables
     Rigidbody rigidBody;
     Animator anim;
-    CapsuleCollider capCol;
+    BoxCollider capCol;
     [SerializeField] PhysicMaterial zFriction;
     [SerializeField] PhysicMaterial mFriction;
     Transform cam;
@@ -37,7 +37,7 @@ public class DogControllerV2 : MonoBehaviour {
     void Start () {
         rigidBody = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
-        capCol = GetComponent<CapsuleCollider>();
+        capCol = GetComponent<BoxCollider>();
         SetupAnimatior();
     }
 	
@@ -64,29 +64,20 @@ public class DogControllerV2 : MonoBehaviour {
             m_speed = speed;
         }
 
+
         //if (onGround)
         // need to do stuff in here otherwise it doesn't work??
-        if (true)
+        //if (true)
+        if (onGround)
         {
-            
-            //cam_right = cam.right;
             cam_right = Vector3.ProjectOnPlane(cam.right, transform.up);
-            //cam_fwd = cam.forward;
             cam_fwd = Vector3.ProjectOnPlane(cam.forward, transform.up);
+            
             //rigidBody.AddForce(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
             Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
+
             rigidBody.velocity =  new_velocity; //(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
             
-
-            // TODO: make jump work (oops)
-            // I think after I set up the jump animations I will work on this
-            /*
-            if(jumpInput)
-            {
-                anim.SetTrigger("Jump");
-                rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-            }
-            */
         }
         
         float animValue = Mathf.Abs(vertical) + Mathf.Abs(horizontal);
