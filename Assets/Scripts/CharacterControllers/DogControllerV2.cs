@@ -30,6 +30,8 @@ public class DogControllerV2 : MonoBehaviour {
     float vertical;
     bool jumpInput;
     bool onGround;
+
+    float m_speed;
     
 
     void Start () {
@@ -42,9 +44,12 @@ public class DogControllerV2 : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         HandleFriction();
+
+        move();
 	}
 
-    void FixedUpdate()
+    //void FixedUpdate()
+    void move()
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
@@ -52,11 +57,11 @@ public class DogControllerV2 : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            speed = 8;
+            m_speed = speed * 1.75f;
         }
         else
         {
-            speed = 5;
+            m_speed = speed;
         }
 
         //if (onGround)
@@ -68,7 +73,7 @@ public class DogControllerV2 : MonoBehaviour {
             cam_right = Vector3.ProjectOnPlane(cam.right, transform.up);
             //cam_fwd = cam.forward;
             cam_fwd = Vector3.ProjectOnPlane(cam.forward, transform.up);
-            rigidBody.AddForce(((cam_right * horizontal) + (cam_fwd * vertical)) * speed / Time.deltaTime);
+            rigidBody.AddForce(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed / Time.deltaTime);
 
             // TODO: make jump work (oops)
             // I think after I set up the jump animations I will work on this
@@ -115,7 +120,7 @@ public class DogControllerV2 : MonoBehaviour {
     {
         //if(collision.gameObject.tag == "Floor")
         onGround = false;
-        rigidBody.drag = 0;
+        rigidBody.drag = 5;
         anim.SetBool("onAir", true);
         //debug_text.text = "flying";
     }
