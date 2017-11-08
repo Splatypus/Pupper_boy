@@ -73,7 +73,10 @@ public class DogControllerV2 : MonoBehaviour {
             cam_right = Vector3.ProjectOnPlane(cam.right, transform.up);
             //cam_fwd = cam.forward;
             cam_fwd = Vector3.ProjectOnPlane(cam.forward, transform.up);
-            rigidBody.AddForce(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed / Time.deltaTime);
+            //rigidBody.AddForce(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
+            Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
+            rigidBody.velocity =  new_velocity; //(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
+            
 
             // TODO: make jump work (oops)
             // I think after I set up the jump animations I will work on this
@@ -87,7 +90,6 @@ public class DogControllerV2 : MonoBehaviour {
         }
         
         float animValue = Mathf.Abs(vertical) + Mathf.Abs(horizontal);
-
         anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime); // maybe should be FixedDeltaTime?
         
         if(horizontal != 0 || vertical != 0)
@@ -105,6 +107,7 @@ public class DogControllerV2 : MonoBehaviour {
         
     }
 
+    
     private void OnCollisionEnter(Collision collision)
     {
         // TODO: eventually make sure that you are actually on the ground and not just hitting anything. This only works on flatworld
@@ -120,13 +123,16 @@ public class DogControllerV2 : MonoBehaviour {
     {
         //if(collision.gameObject.tag == "Floor")
         onGround = false;
-        rigidBody.drag = 5;
+        rigidBody.drag = 0;
         anim.SetBool("onAir", true);
         //debug_text.text = "flying";
     }
+    
 
+    
     void HandleFriction()
     {
+        
         // if there's no input
         if(horizontal == 0 && vertical == 0)
         {
@@ -136,22 +142,12 @@ public class DogControllerV2 : MonoBehaviour {
         {
             capCol.material = zFriction;
         }
+        
     }
+    
 
     void SetupAnimatior()
     {
-        anim = GetComponent<Animator>();
-
-        // allow us to get the avatar from our child is what I think this is doing
-        // something about making swaping models from children easier?
-        foreach(var childAnimator in GetComponentsInChildren<Animator>())
-        {
-            if(childAnimator != anim)
-            {
-                anim.avatar = childAnimator.avatar;
-                Destroy(childAnimator); // why?
-                break;
-            }
-        }
+        anim = GetComponentInChildren<Animator>();
     }
 }
