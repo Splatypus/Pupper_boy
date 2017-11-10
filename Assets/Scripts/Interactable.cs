@@ -9,8 +9,25 @@ public class Interactable : MonoBehaviour {
     public AudioClip[] pickup_sounds;
     public AudioClip[] drop_sounds;
 
+    public enum Tag {Ball, Smell};
+    public List<Tag> tagList = new List<Tag>();
+
     AudioSource m_source;
-    
+
+    public bool hasTag(Tag t) {
+        return tagList.Contains(t);
+    }
+
+    public void addTag(Tag t) {
+        if (!hasTag(t)) {
+            tagList.Add(t);
+        }
+    }
+
+    public void removeTag(Tag t) {
+        tagList.Remove(t);
+    }
+
     public void onPickup()
     {
         if(play_sound)
