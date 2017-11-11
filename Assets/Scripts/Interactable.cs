@@ -14,19 +14,24 @@ public class Interactable : MonoBehaviour {
 
     AudioSource m_source;
 
+    //checks if this item has tag t, returns true if it does
     public bool hasTag(Tag t) {
         return tagList.Contains(t);
     }
 
+    //adds a tag to this items list of tags
     public void addTag(Tag t) {
         if (!hasTag(t)) {
             tagList.Add(t);
         }
     }
 
+    //removes tag
     public void removeTag(Tag t) {
         tagList.Remove(t);
     }
+
+
 
     public void onPickup()
     {
