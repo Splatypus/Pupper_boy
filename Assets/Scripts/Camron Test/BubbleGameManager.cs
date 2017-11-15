@@ -11,10 +11,13 @@ public class BubbleGameManager : MiniGameManager {
     public int numberOfActiveObjectives;
     List<int> activeObjectives;
 
+    List<int> highscores = new List<int>(10); //Sorted where highest score is at position [9] and lowest is at [0]
+
     //called when the minigame is started
     public override void GameStart() {
         base.GameStart();
         score = 0;
+        //activate objectives
         for (int i = 0; i < numberOfActiveObjectives; i++) {
             activeObjectives[i] = SelectObjective();
             objectives[activeObjectives[i]].SetActive(true);
@@ -24,14 +27,21 @@ public class BubbleGameManager : MiniGameManager {
     //deactivate all when game is over #TODO: add highscore setting and all that
     public override void GameEnd() {
         base.GameEnd();
+        //disable objectives
         for (int i = 0; i < objectives.Length; i++) {
             objectives[i].SetActive(false);
         }
+        //if a new high score has been set, update the list of high scores
+        if (score > highscores[0]) {
+            highscores[0] = score;
+        }
+        highscores.Sort();
     }
 
     //called when an objective (bubble) is reached
     public void ObjectiveReached(int index) {
         score++;
+        print("Score: " + score);
         NewObjective(index);
     }
 
