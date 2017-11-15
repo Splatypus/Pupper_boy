@@ -10,11 +10,19 @@ public class PlayerDig : MonoBehaviour {
     float extra_movement_for_dig;
     [SerializeField] private AudioSource dig_sound;
 
+    Animator anim;
+
+    private void Start()
+    {
+        anim = GetComponentInChildren<Animator>();
+    }
+
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Q))
         {
             //print("got q!");
+            
 
             if(dig_look_zone)
             {
@@ -28,6 +36,7 @@ public class PlayerDig : MonoBehaviour {
                     if(digZone)
                     {
                         //print("got me some diggle zoner " + digZone);
+                        anim.SetTrigger("Dig");
                         move_to_next_zone(digZone);
                         dig_sound.Play();
                         return; // probably should not do this. xd
