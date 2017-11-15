@@ -8,7 +8,7 @@ public class MiniGameManager : MonoBehaviour {
     public float timeLimit;
 
 
-    //public ArrayList highscores = new ArrayList();
+    //public ArrayList highscores = new ArrayList(10);
     float startTime;
 
 
