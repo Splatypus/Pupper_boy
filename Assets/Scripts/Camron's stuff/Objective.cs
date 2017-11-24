@@ -24,7 +24,7 @@ public class Objective : MonoBehaviour {
 	}
 
     //let the manager know that this objective has been reached by the player
-    void OnCollisionEnter(Collision col) {
+    void OnTriggerEnter(Collider col) {
         if (col.gameObject.CompareTag("Player")) {
             manager.ObjectiveReached(ID);
         }

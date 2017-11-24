@@ -4,28 +4,25 @@ using UnityEngine;
 
 public class MiniGameManager : MonoBehaviour {
 
-    public GameObject relatedNPC;
+    //public GameObject relatedNPC;
     public float timeLimit;
-
+    public bool isPlaying = false;
 
     //public ArrayList highscores = new ArrayList(10);
-    float startTime;
+    public float startTime;
 
 
     //called to start the minigame
     public virtual void GameStart() {
         startTime = Time.time;
+        isPlaying = true;
     }
 
     //called to start the minigame
     public virtual void GameEnd() {
         //end event, add scores n stuff
+        isPlaying = false;
     }
-
-    // Use this for initialization
-    void Start () {
-		
-	}
 	
 	// Update is called once per frame
 	void Update () {

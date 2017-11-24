@@ -81,10 +81,19 @@ public class BubbleGameManager : MiniGameManager {
             objectives[i].SetActive(false);
         }
         activeObjectives = new List<int>(numberOfActiveObjectives);
+        activeObjectives.Add(0);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    void OnTriggerEnter(Collider col) {
+        if (col.gameObject.CompareTag("Player") && !isPlaying) {
+            GameStart();
+        }
+    }
+
+    // Update is called once per frame
+    void Update () {
+        if (startTime + timeLimit < Time.time) {
+            GameEnd();
+        }
+    }
 }
