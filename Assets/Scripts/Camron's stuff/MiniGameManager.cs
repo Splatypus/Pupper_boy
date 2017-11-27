@@ -22,6 +22,7 @@ public class MiniGameManager : MonoBehaviour {
     public virtual void GameEnd() {
         //end event, add scores n stuff
         isPlaying = false;
+        print("Game Ended");
     }
 	
 	// Update is called once per frame

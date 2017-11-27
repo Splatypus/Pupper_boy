@@ -11,7 +11,8 @@ public class BubbleGameManager : MiniGameManager {
     public int numberOfActiveObjectives;
     List<int> activeObjectives;
 
-    List<int> highscores = new List<int>(10); //Sorted where highest score is at position [9] and lowest is at [0]
+    List<int> highscores = new List<int>(); //Sorted where highest score is at position [9] and lowest is at [0]
+    public int maxHighScores = 10;
 
     //called when the minigame is started
     public override void GameStart() {
@@ -32,10 +33,13 @@ public class BubbleGameManager : MiniGameManager {
             objectives[i].SetActive(false);
         }
         //if a new high score has been set, update the list of high scores
-        if (score > highscores[0]) {
+        if (highscores.Count < maxHighScores) {
+            highscores.Add(score);
+            highscores.Sort();
+        } else if (highscores.Count > 0 && score > highscores[0]) {
             highscores[0] = score;
+            highscores.Sort();
         }
-        highscores.Sort();
     }
 
     //called when an objective (bubble) is reached
