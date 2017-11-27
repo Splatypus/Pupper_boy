@@ -20,7 +20,7 @@ public class ControlMenu : MonoBehaviour {
             
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
-                text.text = "WASD: Move\nE: Bark/Pickup/Drop\nQ: Chase Tail\nSpace: jump\nF: ???";
+                text.text = "WASD: Move\nMouse: Turn Camera\nE: Bark/Pickup/Drop\nQ: Dig\nF: ???";
                 isshown = true;
             }
         }
