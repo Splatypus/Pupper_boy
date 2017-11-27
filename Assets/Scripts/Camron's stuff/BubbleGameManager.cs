@@ -81,7 +81,9 @@ public class BubbleGameManager : MiniGameManager {
             objectives[i].SetActive(false);
         }
         activeObjectives = new List<int>(numberOfActiveObjectives);
-        activeObjectives.Add(0);
+        for (int i = 0; i < numberOfActiveObjectives; i++) { //yes this sucks, but lists dont allow for setting an initial length.
+            activeObjectives.Add(0);
+        }
     }
 
     void OnTriggerEnter(Collider col) {
