@@ -11,6 +11,7 @@ public class PlayerDig : MonoBehaviour {
     [SerializeField] private AudioSource dig_sound;
 
     Animator anim;
+    DigZone curZone;
 
     private void Start()
     {
@@ -22,12 +23,17 @@ public class PlayerDig : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Q))
         {
             //print("got q!");
-            
+            if(curZone != null)
+            {
+                //anim.SetTrigger("Dig");
+                move_to_next_zone(curZone);
+                dig_sound.Play();
+            }
 
+            /*
             if(dig_look_zone)
             {
                 //print("have a place to look!");
-
                 Collider[] inGrabber = Physics.OverlapSphere(dig_look_zone.transform.position, dig_look_zone.radius * 0.5f);
 
                 foreach( Collider c in inGrabber)
@@ -44,6 +50,7 @@ public class PlayerDig : MonoBehaviour {
                     
                 }
             }
+            */
         }
     }
 
@@ -61,5 +68,27 @@ public class PlayerDig : MonoBehaviour {
         dist_to_move = (zone_to_go_to.transform.position - digZone.transform.position).magnitude + extra_movement_for_dig;
 
         transform.position += (zone_to_go_to.transform.position - digZone.transform.position).normalized * dist_to_move;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        DigZone digZone = other.GetComponent<DigZone>();
+        if(digZone != null)
+        {
+            print("digger entered into a trigger named " + other.name);
+            curZone = digZone;
+        }
+            
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        DigZone digZone = other.GetComponent<DigZone>();
+        if (digZone != null)
+        {
+            print("digger LEFT trigger " + other.name);
+            curZone = digZone;
+        }
+            
     }
 }
