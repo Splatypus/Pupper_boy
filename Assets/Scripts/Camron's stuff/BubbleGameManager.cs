@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BubbleGameManager : MiniGameManager {
 
-
+    public GameObject bubble_particle_system;
 
     public GameObject[] objectives;
     public int score = 0;
@@ -17,6 +17,7 @@ public class BubbleGameManager : MiniGameManager {
     //called when the minigame is started
     public override void GameStart() {
         base.GameStart();
+        bubble_particle_system.SetActive(true);
         score = 0;
         //activate objectives
         for (int i = 0; i < numberOfActiveObjectives; i++) {
@@ -28,6 +29,7 @@ public class BubbleGameManager : MiniGameManager {
     //deactivate all when game is over #TODO: add highscore setting and all that
     public override void GameEnd() {
         base.GameEnd();
+        bubble_particle_system.SetActive(false);
         //disable objectives
         for (int i = 0; i < objectives.Length; i++) {
             objectives[i].SetActive(false);
@@ -61,6 +63,7 @@ public class BubbleGameManager : MiniGameManager {
                 break;
             }
         }
+        bubble_particle_system.transform.forward = objectives[i].transform.position - transform.position;
         return i;
     }
 
@@ -80,6 +83,7 @@ public class BubbleGameManager : MiniGameManager {
 
 	// Use this for initialization
 	void Start () {
+        bubble_particle_system.SetActive(false);
         for (int i = 0; i < objectives.Length; i++) {
             objectives[i].GetComponent<Objective>().SetUp(this, i);
             objectives[i].SetActive(false);

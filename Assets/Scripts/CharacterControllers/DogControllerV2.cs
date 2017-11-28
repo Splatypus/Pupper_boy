@@ -72,9 +72,10 @@ public class DogControllerV2 : MonoBehaviour {
         {
             cam_right = Vector3.ProjectOnPlane(cam.right, transform.up);
             cam_fwd = Vector3.ProjectOnPlane(cam.forward, transform.up);
-            
+
             //rigidBody.AddForce(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
-            Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
+            //Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
+            Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed);
 
             rigidBody.velocity =  new_velocity; //(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
             

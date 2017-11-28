@@ -8,6 +8,8 @@ public class PlayerDig : MonoBehaviour {
     private SphereCollider dig_look_zone;
     [SerializeField]
     float extra_movement_for_dig;
+    [SerializeField]
+    float extra_movement_for_dig_y = 0.25f;
     [SerializeField] private AudioSource dig_sound;
 
     Animator anim;
@@ -25,9 +27,11 @@ public class PlayerDig : MonoBehaviour {
             //print("got q!");
             if(curZone != null)
             {
+                Rigidbody rb = GetComponent<Rigidbody>();
+                rb.velocity = Vector3.zero;
                 //anim.SetTrigger("Dig");
                 move_to_next_zone(curZone);
-                dig_sound.Play();
+                dig_sound.Play(); // re-enable this once the sound effect is real
             }
 
             /*
@@ -67,7 +71,7 @@ public class PlayerDig : MonoBehaviour {
         // we will move our extra 
         dist_to_move = (zone_to_go_to.transform.position - digZone.transform.position).magnitude + extra_movement_for_dig;
 
-        transform.position += (zone_to_go_to.transform.position - digZone.transform.position).normalized * dist_to_move;
+        transform.position += (zone_to_go_to.transform.position - digZone.transform.position).normalized * dist_to_move + new Vector3(0,extra_movement_for_dig_y,0);
     }
 
     private void OnTriggerEnter(Collider other)
