@@ -51,7 +51,7 @@ public class FlightMode : MonoBehaviour {
         {
             if (isFlying)
                 DeactivateFlightMode();
-            else
+            else if(can_fly)
                 ActivateFlightMode();
         }
     }

@@ -91,7 +91,7 @@ public class PlayerDig : MonoBehaviour {
         if (digZone != null)
         {
             print("digger LEFT trigger " + other.name);
-            curZone = digZone;
+            curZone = null;
         }
             
     }
