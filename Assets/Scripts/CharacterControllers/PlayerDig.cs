@@ -14,10 +14,12 @@ public class PlayerDig : MonoBehaviour {
 
     Animator anim;
     DigZone curZone;
+    IconManager my_icon;
 
     private void Start()
     {
         anim = GetComponentInChildren<Animator>();
+        my_icon = GetComponentInChildren<IconManager>();
     }
 
     private void Update()
@@ -81,6 +83,8 @@ public class PlayerDig : MonoBehaviour {
         {
             print("digger entered into a trigger named " + other.name);
             curZone = digZone;
+            my_icon.set_single_icon(Icons.Exclamation); // make this dig when dig is ready
+            my_icon.set_single_bubble_active(true);
         }
             
     }
@@ -92,6 +96,7 @@ public class PlayerDig : MonoBehaviour {
         {
             print("digger LEFT trigger " + other.name);
             curZone = null;
+            my_icon.set_single_bubble_active(false);
         }
             
     }
