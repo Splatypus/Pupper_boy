@@ -117,7 +117,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1069889461871390
 GameObject:
   m_ObjectHideFlags: 1
@@ -2342,7 +2342,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 5
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 5
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -3016,6 +3016,18 @@ MonoBehaviour:
   doubleIconBubble: {fileID: 1058633074519976}
   doubleIcon1: {fileID: 114619530193594752}
   doubleIcon2: {fileID: 114310241315217252}
+  icon_sprites:
+  - {fileID: 21300000, guid: 4073c6745b7be7644a7f68d565daeef5, type: 3}
+  - {fileID: 21300000, guid: 444ed615244a40540adecf478143053a, type: 3}
+  - {fileID: 21300000, guid: ad161cd56dce60440a6f02de19d0425a, type: 3}
+  - {fileID: 21300000, guid: b670a3896b2dc564aade73490bc4e3d1, type: 3}
+  - {fileID: 21300000, guid: 6c69b47123b2bb44bb4bba7b4fb019c5, type: 3}
+  - {fileID: 21300000, guid: 3cbd4bdb13535a349b93bb14a2c37334, type: 3}
+  - {fileID: 21300000, guid: a10d1034235d89941befde232922b0a4, type: 3}
+  - {fileID: 21300000, guid: 489a6801277c9994dba551a1d8516dd0, type: 3}
+  - {fileID: 21300000, guid: a35c4af3a2ceb044dab4383984f1bb39, type: 3}
+  - {fileID: 21300000, guid: 0a6a5202fecb38041ae32f1e6c33dfa1, type: 3}
+  - {fileID: 21300000, guid: a05a8c11115cba740b19c51d9fbac9ce, type: 3}
 --- !u!114 &114504628061769868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3301,7 +3313,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1959397355
+  randomSeed: 768526764
   InitialModule:
     serializedVersion: 3
     enabled: 1

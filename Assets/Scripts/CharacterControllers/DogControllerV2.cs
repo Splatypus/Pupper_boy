@@ -51,7 +51,7 @@ public class DogControllerV2 : MonoBehaviour {
 	void Update () {
         HandleFriction();
 
-        debug_text.text = "mat: " + capCol.material;
+        debug_text.text = "vel: " + rigidBody.velocity + "\nangular: " + rigidBody.angularVelocity;
 
         move();    
     }
@@ -138,6 +138,8 @@ public class DogControllerV2 : MonoBehaviour {
         if(horizontal == 0 && vertical == 0)
         {
             capCol.material = mFriction;
+            
+            // trying this to stop spinning
         }
         else
         {
