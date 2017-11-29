@@ -1,22 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BubbleGameManager : MiniGameManager {
 
     public GameObject bubble_particle_system;
-
-    public GameObject[] objectives;
     public int score = 0;
     public int numberOfActiveObjectives;
     List<int> activeObjectives;
 
-    List<int> highscores = new List<int>(); //Sorted where highest score is at position [9] and lowest is at [0]
+    public Text scoreText;
+
+    [SerializeField] List<int> highscores = new List<int>(); //Sorted where highest score is at position [9] and lowest is at [0]
     public int maxHighScores = 10;
 
     //called when the minigame is started
     public override void GameStart() {
         base.GameStart();
+        scoreText.text = "Score: 0";
         bubble_particle_system.SetActive(true);
         score = 0;
         //activate objectives
@@ -29,6 +31,8 @@ public class BubbleGameManager : MiniGameManager {
     //deactivate all when game is over #TODO: add highscore setting and all that
     public override void GameEnd() {
         base.GameEnd();
+        //reset score text and particle systems
+        scoreText.text = "";
         bubble_particle_system.SetActive(false);
         //disable objectives
         for (int i = 0; i < objectives.Length; i++) {
@@ -45,9 +49,9 @@ public class BubbleGameManager : MiniGameManager {
     }
 
     //called when an objective (bubble) is reached
-    public void ObjectiveReached(int index) {
+    public override void ObjectiveReached(int index) {
         score++;
-        print("Score: " + score);
+        scoreText.text = "Score: " + score;
         NewObjective(index);
     }
 
@@ -82,12 +86,17 @@ public class BubbleGameManager : MiniGameManager {
 
 
 	// Use this for initialization
-	void Start () {
-        bubble_particle_system.SetActive(false);
+	public override void Start () {
+        //Do base start. Find player character, etc
+        base.Start();
+        //Hide bubble particle system
+        bubble_particle_system.SetActive(false); 
+        //Disable objectives to start
         for (int i = 0; i < objectives.Length; i++) {
             objectives[i].GetComponent<Objective>().SetUp(this, i);
             objectives[i].SetActive(false);
         }
+        //set up objective list
         activeObjectives = new List<int>(numberOfActiveObjectives);
         for (int i = 0; i < numberOfActiveObjectives; i++) { //yes this sucks, but lists dont allow for setting an initial length.
             activeObjectives.Add(0);
@@ -101,9 +110,7 @@ public class BubbleGameManager : MiniGameManager {
     }
 
     // Update is called once per frame
-    void Update () {
-        if (startTime + timeLimit < Time.time) {
-            GameEnd();
-        }
+    public override void Update () {
+        base.Update();
     }
 }

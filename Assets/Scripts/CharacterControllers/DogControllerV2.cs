@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿ using System.Collections;
 using UnityEngine;
 
 using UnityEngine.UI; // for debug text
@@ -51,7 +51,12 @@ public class DogControllerV2 : MonoBehaviour {
 	void Update () {
         HandleFriction();
 
-        debug_text.text = "vel: " + rigidBody.velocity + "\nangular: " + rigidBody.angularVelocity;
+        if(debug_text)
+        {
+            //debug_text.text = "vel: " + rigidBody.velocity + "\nangular: " + rigidBody.angularVelocity;
+            debug_text.text = "onGround: " + onGround;
+        }
+
 
         move();    
     }
@@ -113,20 +118,25 @@ public class DogControllerV2 : MonoBehaviour {
     {
         // TODO: eventually make sure that you are actually on the ground and not just hitting anything. This only works on flatworld
         // just need to mark the floor as the floor and I think that we are good!
-        //if(collision.gameObject.tag == "Floor")
-        onGround = true;
-        rigidBody.drag = 5;
-        anim.SetBool("onAir", false);
-        //debug_text.text = "grounded";
+        if (collision.gameObject.tag == "Ground")
+        {
+            onGround = true;
+            rigidBody.drag = 5;
+            anim.SetBool("onAir", false);
+            //debug_text.text = "grounded";
+        }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        //if(collision.gameObject.tag == "Floor")
-        onGround = false;
-        rigidBody.drag = 0;
-        anim.SetBool("onAir", true);
-        //debug_text.text = "flying";
+        if(collision.gameObject.tag == "Ground")
+        {
+            onGround = false;
+            rigidBody.drag = 0;
+            anim.SetBool("onAir", true);
+            //debug_text.text = "flying";
+        }
+
     }
     
 
