@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class BubbleGameManager : MiniGameManager {
 
     public GameObject bubble_particle_system;
-
-    public GameObject[] objectives;
     public int score = 0;
     public int numberOfActiveObjectives;
     List<int> activeObjectives;
@@ -33,6 +31,7 @@ public class BubbleGameManager : MiniGameManager {
     //deactivate all when game is over #TODO: add highscore setting and all that
     public override void GameEnd() {
         base.GameEnd();
+        //reset score text and particle systems
         scoreText.text = "";
         bubble_particle_system.SetActive(false);
         //disable objectives
@@ -50,7 +49,7 @@ public class BubbleGameManager : MiniGameManager {
     }
 
     //called when an objective (bubble) is reached
-    public void ObjectiveReached(int index) {
+    public override void ObjectiveReached(int index) {
         score++;
         scoreText.text = "Score: " + score;
         NewObjective(index);

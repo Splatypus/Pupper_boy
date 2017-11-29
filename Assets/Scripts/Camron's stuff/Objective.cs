@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Objective : MonoBehaviour {
 
-    BubbleGameManager manager;
+    MiniGameManager manager;
     int ID;
 
 
-    public void SetUp(BubbleGameManager m, int i) {
+    public void SetUp(MiniGameManager m, int i) {
         manager = m;
         ID = i;
     }

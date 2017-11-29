@@ -10,6 +10,7 @@ public class MiniGameManager : MonoBehaviour {
     public bool isPlaying = false;
     public GameObject PlayerCharacter;
     public Text canvasTimeField; //reference to the text box that displays time. Must be set
+    public GameObject[] objectives;
 
     //public ArrayList highscores = new ArrayList(10);
     public float startTime;
@@ -44,4 +45,9 @@ public class MiniGameManager : MonoBehaviour {
             canvasTimeField.text = "Time: " + ((int)(startTime + timeLimit - Time.time)).ToString();
         }
 	}
+
+    public virtual void ObjectiveReached(int ID) {
+
+    }
+
 }
