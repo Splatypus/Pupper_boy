@@ -28,7 +28,7 @@ public class MiniGameManager : MonoBehaviour {
         isPlaying = false;
         print("Game Ended");
         //clear time UI
-        canvasTimeField.GetComponent<GUIText>().text = "";
+        canvasTimeField.text = "";
     }
 
     public virtual void Start() {
@@ -38,11 +38,13 @@ public class MiniGameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	public virtual void Update () {
-        if (startTime + timeLimit < Time.time) {
-            GameEnd();
-        } else if (isPlaying) {
-            //canvasTimeField.GetComponent<Text>().text = (startTime + timeLimit - Time.time).ToString();
-            canvasTimeField.text = "Time: " + ((int)(startTime + timeLimit - Time.time)).ToString();
+        if (isPlaying) {
+            if (startTime + timeLimit < Time.time) {
+                GameEnd();
+            } else {
+                //canvasTimeField.GetComponent<Text>().text = (startTime + timeLimit - Time.time).ToString();
+                canvasTimeField.text = "Time: " + ((int)(startTime + timeLimit - Time.time)).ToString();
+            }
         }
 	}
 
