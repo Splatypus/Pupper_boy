@@ -38,7 +38,6 @@ public class DogControllerV2 : MonoBehaviour {
     bool onGround;
 
     float m_speed;
-    
 
     void Start () {
         rigidBody = GetComponent<Rigidbody>();
