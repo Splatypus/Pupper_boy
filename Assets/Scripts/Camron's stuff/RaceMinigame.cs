@@ -26,10 +26,10 @@ public class RaceMinigame : MiniGameManager {
         float timeTaken = startTime + timeLimit - Time.time;
         if (timeTaken > timeLimit) {
             //Failure condition
-            print("Too Slow :(");
+            OnFailure();
         } else {
             //Victory Condition
-            print("Finished in time!");
+            OnVictory();
             //if a new high score has been set, update the list of high scores by replacing the slowest time
             if (highscores.Count < maxHighScores) {
                 highscores.Add(timeTaken);
@@ -44,6 +44,15 @@ public class RaceMinigame : MiniGameManager {
         for (int i = 0; i < objectives.Length; i++) {
             objectives[i].SetActive(false);
         }
+    }
+
+    //victory and fail conditions to be overridden in the case of an event that needs to happen on one of these, such as notifying an NPC to progress a quest or something
+    public virtual void OnVictory() {
+        print("Finished in time!");
+    }
+
+    public virtual void OnFailure() {
+        print("Too Slow :(");
     }
 
     //called when an objective (bubble) is reached
