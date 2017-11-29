@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MiniGameManager : MonoBehaviour {
 
     //public GameObject relatedNPC;
     public float timeLimit;
     public bool isPlaying = false;
+    public GameObject PlayerCharacter;
+    public Text canvasTimeField; //reference to the text box that displays time. Must be set
 
     //public ArrayList highscores = new ArrayList(10);
     public float startTime;
@@ -23,12 +26,22 @@ public class MiniGameManager : MonoBehaviour {
         //end event, add scores n stuff
         isPlaying = false;
         print("Game Ended");
+        //clear time UI
+        canvasTimeField.GetComponent<GUIText>().text = "";
+    }
+
+    public virtual void Start() {
+        //set the player character reference on start
+        PlayerCharacter = GameObject.FindGameObjectWithTag("Player");
     }
 	
 	// Update is called once per frame
-	void Update () {
+	public virtual void Update () {
         if (startTime + timeLimit < Time.time) {
             GameEnd();
+        } else if (isPlaying) {
+            //canvasTimeField.GetComponent<Text>().text = (startTime + timeLimit - Time.time).ToString();
+            canvasTimeField.text = "Time: " + ((int)(startTime + timeLimit - Time.time)).ToString();
         }
 	}
 }
