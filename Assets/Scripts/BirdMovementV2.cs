@@ -20,19 +20,38 @@ public class BirdMovementV2 : MonoBehaviour {
     [SerializeField] private PhysicMaterial waitMat;
     #endregion
 
+    #region Flight Info
+    [Header("Flight Variables")]
+    public float DogDistanceUntilFlight;
+    #endregion
+
+
+
     // private variables
     Animator anim;
     Rigidbody rb;
     BoxCollider col;
+    GameObject player;
 
     private void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         col = GetComponent<BoxCollider>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
-#region Animation Events
+    private void Update()
+    {
+        if( curState == BirdState.Wander &&
+            Vector3.Distance(transform.position, player.transform.position) < DogDistanceUntilFlight)
+        {
+            curState = BirdState.FlyAway;
+            anim.SetBool("flying", true);
+        }
+    }
+
+    #region Animation Events
     void have_friction()
     {
         col.material = waitMat;
