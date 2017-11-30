@@ -14,12 +14,22 @@ public class FlightMode : MonoBehaviour {
     private TrailRenderer tr;
     private ParticleSystem ps;
 
+    [SerializeField] private AudioSource BackgroundMusic;
     [SerializeField] private AudioSource launchSound;
     [SerializeField] private AudioSource flightSound;
     [SerializeField] private AudioSource flightMusic;
 
+    BoxCollider collider;
+    [SerializeField] private PhysicMaterial flightMaterial;
+
     [SerializeField] private float fadeTime;
+    [SerializeField] private float fadeBGTime;
+
+    float BGMusicNormalVolume;
+
     private Coroutine fadeRoutine = null;
+    private Coroutine BGFadeOutRoutine = null;
+    private Coroutine BGFadeInRoutine = null;
     private float musicStartVolume;
 
     public bool can_fly = false;
@@ -35,6 +45,8 @@ public class FlightMode : MonoBehaviour {
         rb = this.GetComponent<Rigidbody>();
         tr = this.GetComponent<TrailRenderer>();
         ps = this.GetComponent<ParticleSystem>();
+        collider = GetComponent<BoxCollider>();
+        BGMusicNormalVolume = BackgroundMusic.volume;
 
         tr.enabled = false;
 
@@ -90,6 +102,7 @@ public class FlightMode : MonoBehaviour {
 
     public void ActivateFlightMode()
     {
+        // set up rigid body and controller to be good for flight
         euler_rotation = transform.eulerAngles;
         this.GetComponent<Rigidbody>().useGravity = false;
         if (this.GetComponent<DogControllerV2>())
@@ -97,11 +110,16 @@ public class FlightMode : MonoBehaviour {
         else if (this.GetComponent<ThirdPersonUserControl>())
             this.GetComponent<ThirdPersonUserControl>().enabled = false;
         rb.constraints = RigidbodyConstraints.None;
+        this.transform.Rotate(new Vector3(-1f * takeoffAngle, 0f, 0f));
+        collider.material = flightMaterial;
+
+        // set up trail and particle effect
         tr.enabled = true;
         ps.Play();
-        this.transform.Rotate(new Vector3(-1f * takeoffAngle, 0f, 0f));
+        
         isFlying = true;
 
+        // set up sounds for flight
         launchSound.Play();
         if(flightMusic.isPlaying)
             flightMusic.Stop();
@@ -112,6 +130,15 @@ public class FlightMode : MonoBehaviour {
         }
         flightMusic.volume = musicStartVolume;
         flightMusic.Play();
+
+        // if bg music is currently fading in, stop fading it in
+        if(BGFadeInRoutine != null)
+        {
+            StopCoroutine(BGFadeInRoutine);
+            BGFadeInRoutine = null;
+        }
+        BGFadeOutRoutine = StartCoroutine(FadeBGOut());
+
         anim.SetBool("isFlying", true);
     }
 
@@ -136,12 +163,51 @@ public class FlightMode : MonoBehaviour {
         if(flightSound.isPlaying)
             flightSound.Stop();
         fadeRoutine = StartCoroutine(FadeMusic());
+        BGFadeInRoutine = StartCoroutine(FadeBGIn());
+
+        // if bg music is currently fading in, stop fading it out
+        if (BGFadeOutRoutine != null)
+        {
+            StopCoroutine(BGFadeOutRoutine);
+            BGFadeOutRoutine = null;
+        }
+
         anim.SetBool("isFlying", false);
     }
 
     public bool IsFlying()
     {
         return isFlying;
+    }
+
+    private IEnumerator FadeBGOut()
+    {
+        float startVolume = BackgroundMusic.volume;
+        float startTime = Time.time;
+        while (BackgroundMusic.volume > 0.01f)
+        {
+            float lerpAmount = 1f - ((Time.time - startTime) / fadeBGTime);
+            BackgroundMusic.volume = startVolume * lerpAmount;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+
+        BackgroundMusic.Pause();
+        BGFadeOutRoutine = null;
+    }
+
+    private IEnumerator FadeBGIn()
+    {
+        float startVolume = BGMusicNormalVolume;
+        float startTime = Time.time;
+        BackgroundMusic.UnPause();
+        while (BackgroundMusic.volume < 1.0f)
+        {
+            float lerpAmount = ((Time.time - startTime) / fadeBGTime);
+            BackgroundMusic.volume = startVolume * lerpAmount;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+        BackgroundMusic.volume = 1.0f;
+        BGFadeInRoutine = null;
     }
 
     private IEnumerator FadeMusic()
