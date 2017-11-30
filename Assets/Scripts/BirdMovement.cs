@@ -44,14 +44,7 @@ public class BirdMovement : MonoBehaviour {
         m_animator = GetComponent<Animator>();
 
         // animation state is wander/hop
-        AnimationClip clip;
 
-        AnimationEvent evt = new AnimationEvent();
-
-        evt.time = 0.0f;
-        evt.functionName = "hop_forward";
-        clip = m_animator.runtimeAnimatorController.animationClips[0];
-        clip.AddEvent(evt);
     }
 
 	// Update is called once per frame
