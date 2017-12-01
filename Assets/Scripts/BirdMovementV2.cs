@@ -186,8 +186,12 @@ public class BirdMovementV2 : MonoBehaviour {
 
         // update velocity
         Vector3 line = (attackWanderWaypoints[attackWanderWaypointIndex].position - transform.position).normalized;
-        transform.right = -line;
+        //transform.right = -line;
+        // try this to stop flipping?
+        transform.right = -Vector3.ProjectOnPlane(line, Vector3.up);
         rb.velocity = line * flightStartVelocity.magnitude;
+
+        
     }
 
     #region Animation Events
