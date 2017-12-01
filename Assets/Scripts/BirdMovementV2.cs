@@ -5,7 +5,7 @@ using UnityEngine;
 public class BirdMovementV2 : MonoBehaviour {
 
     // state enum stuff
-    public enum BirdState { Wander, FlyAway, FlyDown, BathMode };
+    public enum BirdState { Wander, FlyAway, FlyWander, FlyDown, BathMode };
     public BirdState curState = BirdState.Wander;
 
     #region Wander Info
@@ -20,11 +20,25 @@ public class BirdMovementV2 : MonoBehaviour {
     [SerializeField] private PhysicMaterial waitMat;
     #endregion
 
-    #region Flight Info
-    [Header("Flight Variables")]
+    #region Flight Start Info
+    [Header("Flight Start Variables")]
     public float DogDistanceUntilFlight;
+    public float borkDistanceUntilFlight; // TODO: make this work
+    public Vector3 flightStartVelocity;
+    private float startHeight;
     #endregion
 
+    #region Flight Wander
+    [Header("Flight Wander Variables")]
+    public float heightToStartFlightWander = 30.0f;
+    private Vector3 airPosDest;
+    #endregion
+
+    #region Flight Land
+    [Header("Flight Landing Variables")]
+    public Transform landingDest;
+    public BirdState landingState = BirdState.Wander;
+    #endregion
 
 
     // private variables
@@ -43,23 +57,97 @@ public class BirdMovementV2 : MonoBehaviour {
 
     private void Update()
     {
-        if( curState == BirdState.Wander &&
+        // when wandering all we have to do is watch out for the dog, movement is controlled by animation events
+        if( (curState == BirdState.Wander || curState == BirdState.FlyDown) &&
             Vector3.Distance(transform.position, player.transform.position) < DogDistanceUntilFlight)
         {
-            curState = BirdState.FlyAway;
-            anim.SetBool("flying", true);
+            startFlight();
         }
+        else if(curState == BirdState.FlyAway && transform.position.y - startHeight >= heightToStartFlightWander)
+        {
+            // We have reached our goal height, so now enter into a holding pattern until we are able to land
+            startFlightWander();
+        }
+        else if (curState == BirdState.FlyWander && Vector3.Distance(transform.position, airPosDest) < 0.5f)
+        {
+            startFlyDown();
+        }
+        else if (curState == BirdState.FlyDown && Vector3.Distance(transform.position, landingDest.position) < 0.1f)
+        {
+            finishFlight();
+        }
+    }
+
+    private void startFlight()
+    {
+        // set behavior state
+        curState = BirdState.FlyAway;
+
+        // set up animation
+        anim.SetBool("flying", true);
+
+        // turn bird away from player
+        /// project the vector from player to bird onto bird's up vector
+        Vector3 birdPlayerVec = transform.position - player.transform.position;
+        birdPlayerVec = Vector3.ProjectOnPlane(birdPlayerVec, transform.up);
+
+        /// make the bird look in this direction
+        transform.right = -birdPlayerVec.normalized;
+
+        // start flying away
+        /// turn off gravity and collider so that we fly up and don't hit things
+        /// maybe don't turn off collier?
+        rb.useGravity = false;
+        col.enabled = false;
+        rb.velocity = flightStartVelocity;
+        startHeight = transform.position.y;
+    }
+
+    private void startFlightWander()
+    {
+        // change state
+        curState = BirdState.FlyWander;
+
+        // Fix velocity to be in holding
+        airPosDest = landingDest.position;
+        airPosDest.y = transform.position.y;
+        /// set up velocity to move us to airPosDest
+        rb.velocity = (airPosDest - transform.position).normalized * flightStartVelocity.magnitude;
+
+        // rotate the bird
+        transform.right = -(airPosDest - transform.position).normalized;
+    }
+
+    private void startFlyDown()
+    {
+        curState = BirdState.FlyDown;
+
+        rb.velocity = (landingDest.position - transform.position).normalized * flightStartVelocity.magnitude;
+        transform.right = -landingDest.forward;
+    }
+
+    private void finishFlight()
+    {
+        transform.position = landingDest.position;
+
+        col.enabled = true;
+        rb.useGravity = true;
+
+        curState = landingState;
+        anim.SetBool("flying", false);
     }
 
     #region Animation Events
     void have_friction()
     {
-        col.material = waitMat;
+        if (curState == BirdState.Wander)
+            col.material = waitMat;
     }
 
     void small_hop_forward()
     {
-        rb.AddForce(transform.right * -WanderHopForce);
+        if (curState == BirdState.Wander)
+            rb.AddForce(transform.right * -WanderHopForce);
     }
     
     void hop_forward()
