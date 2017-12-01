@@ -5,7 +5,7 @@ using UnityEngine;
 public class BirdMovementV2 : MonoBehaviour {
 
     // state enum stuff
-    public enum BirdState { Wander, FlyAway, FlyWander, FlyDown, BathMode };
+    public enum BirdState { Wander, FlyAway, FlyWander, FlyDown, BathMode, AttackWander};
     public BirdState curState = BirdState.Wander;
 
     #region Wander Info
@@ -40,6 +40,12 @@ public class BirdMovementV2 : MonoBehaviour {
     public BirdState landingState = BirdState.Wander;
     #endregion
 
+    #region Attack Wander
+    [Header("Attack Wander Variables")]
+    public Transform[] attackWanderWaypoints;
+    private int attackWanderWaypointIndex = 0;
+    #endregion
+
 
     // private variables
     Animator anim;
@@ -53,12 +59,17 @@ public class BirdMovementV2 : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<BoxCollider>();
         player = GameObject.FindGameObjectWithTag("Player");
+
+        if(curState == BirdState.AttackWander)
+        {
+            startAttack();
+        }
     }
 
     private void Update()
     {
         // when wandering all we have to do is watch out for the dog, movement is controlled by animation events
-        if( (curState == BirdState.Wander || curState == BirdState.FlyDown) &&
+        if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.AttackWander) &&
             Vector3.Distance(transform.position, player.transform.position) < DogDistanceUntilFlight)
         {
             startFlight();
@@ -75,6 +86,11 @@ public class BirdMovementV2 : MonoBehaviour {
         else if (curState == BirdState.FlyDown && Vector3.Distance(transform.position, landingDest.position) < 0.1f)
         {
             finishFlight();
+        }
+        else if(curState == BirdState.AttackWander &&
+                Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.2f)
+        {
+            nextAttackWaypoint();
         }
     }
 
@@ -101,6 +117,31 @@ public class BirdMovementV2 : MonoBehaviour {
         col.enabled = false;
         rb.velocity = flightStartVelocity;
         startHeight = transform.position.y;
+    }
+
+    private void startAttack()
+    {
+        anim.SetBool("flying", true);
+
+        // find best box to start me out on
+        float minDist = float.MaxValue;
+        for(int i = 0; i < attackWanderWaypoints.Length; ++i)
+        {
+            float dist = Vector3.Distance(attackWanderWaypoints[i].position, transform.position);
+            if (dist < minDist)
+            {
+                attackWanderWaypointIndex = i;
+                minDist = dist;
+            }
+        }
+
+        Vector3 line = (attackWanderWaypoints[attackWanderWaypointIndex].position - transform.position).normalized;
+        transform.right = -line;
+
+        // start flying
+        rb.useGravity = false;
+        col.enabled = false;
+        rb.velocity = line * flightStartVelocity.magnitude;
     }
 
     private void startFlightWander()
@@ -135,6 +176,18 @@ public class BirdMovementV2 : MonoBehaviour {
 
         curState = landingState;
         anim.SetBool("flying", false);
+    }
+
+    private void nextAttackWaypoint()
+    {
+        // update index
+        attackWanderWaypointIndex++;
+        attackWanderWaypointIndex = attackWanderWaypointIndex % attackWanderWaypoints.Length;
+
+        // update velocity
+        Vector3 line = (attackWanderWaypoints[attackWanderWaypointIndex].position - transform.position).normalized;
+        transform.right = -line;
+        rb.velocity = line * flightStartVelocity.magnitude;
     }
 
     #region Animation Events
