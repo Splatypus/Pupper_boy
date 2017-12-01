@@ -1725,6 +1725,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &295605310 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1485530021616356, guid: 7c5cbe28d9747894f997bc050f5504af,
+    type: 2}
+  m_PrefabInternal: {fileID: 859443108}
 --- !u!1 &312239005
 GameObject:
   m_ObjectHideFlags: 0
@@ -7416,6 +7421,14 @@ Prefab:
         type: 2}
       propertyPath: fadeBGTime
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1447941198375708, guid: 7c5cbe28d9747894f997bc050f5504af, type: 2}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1485530021616356, guid: 7c5cbe28d9747894f997bc050f5504af, type: 2}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7c5cbe28d9747894f997bc050f5504af, type: 2}
@@ -13612,12 +13625,13 @@ MonoBehaviour:
   WanderNumHopsToTurnAround: 3
   moveMat: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
   waitMat: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
-  DogDistanceUntilFlight: 8
-  borkDistanceUntilFlight: 0
+  DogDistanceUntilFlight: 15
+  borkDistanceUntilFlight: 25
   flightStartVelocity: {x: -3, y: 4, z: 0}
   heightToStartFlightWander: 30
   landingDest: {fileID: 707985970}
   landingState: 4
+  pModel: {fileID: 295605310}
 --- !u!1001 &2013898828
 Prefab:
   m_ObjectHideFlags: 0
