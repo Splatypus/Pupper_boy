@@ -78,7 +78,7 @@ public class BirdMovementV2 : MonoBehaviour {
         }
     }
 
-    private void startFlight()
+    public void startFlight()
     {
         // set behavior state
         curState = BirdState.FlyAway;
