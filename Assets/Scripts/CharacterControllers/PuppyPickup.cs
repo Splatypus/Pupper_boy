@@ -25,9 +25,12 @@ public class PuppyPickup : MonoBehaviour {
     private ToyBox boxInRange = null;                                           //toy box that is in range (if one exists)
     private FoodDispenser foodInRange = null;
 
+    BirdMovementV2[] birds;
+
 	// Use this for initialization
 	void Start () {
         m_audio_source = GetComponent<AudioSource>();
+        birds = FindObjectsOfType<BirdMovementV2>();
 	}
 	
 	// Update is called once per frame
@@ -115,6 +118,11 @@ public class PuppyPickup : MonoBehaviour {
                 
                 m_audio_source.clip = borks[bork_index];
                 m_audio_source.Play();
+
+                foreach(BirdMovementV2 bird in birds)
+                {
+                    bird.getBarkedAt(transform.position);
+                }
             }
         }
 

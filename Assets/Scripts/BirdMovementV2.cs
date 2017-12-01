@@ -94,7 +94,16 @@ public class BirdMovementV2 : MonoBehaviour {
         }
     }
 
-    public void startFlight()
+    public void getBarkedAt(Vector3 bark_pos)
+    {
+        if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.AttackWander) &&
+            Vector3.Distance(transform.position, player.transform.position) < borkDistanceUntilFlight)
+        {
+            startFlight();
+        }
+    }
+
+    private void startFlight()
     {
         // set behavior state
         curState = BirdState.FlyAway;
