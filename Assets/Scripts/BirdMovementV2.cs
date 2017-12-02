@@ -66,11 +66,22 @@ public class BirdMovementV2 : MonoBehaviour {
             startAttack();
         }
     }
-
+    float t = 0.0f;
     private void Update()
     {
         // PLACEHOLDER
-        transform.right = desiredRight;
+        //transform.right = desiredRight;
+        if(Vector3.Distance(transform.right, desiredRight) > float.Epsilon)
+        {
+            print("doing lerp t = " + t);
+            t += Time.deltaTime;
+            transform.right = Vector3.Lerp(transform.right, desiredRight, t / 50);
+        }
+        else
+        {
+            t = 0.0f;
+        }
+        //transform.right = Vector3.Lerp()
 
         // when wandering all we have to do is watch out for the dog, movement is controlled by animation events
         if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.BathMode || curState == BirdState.AttackWander) &&
