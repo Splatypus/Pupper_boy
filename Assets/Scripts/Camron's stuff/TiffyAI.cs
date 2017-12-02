@@ -14,6 +14,8 @@ public class TiffyAI : AIbase {
     public GameObject rewardSpawn;
     public GameObject reward;
 
+    public GameObject[] birds;
+
 
     public override void ToyInRange() {
         if (state == States.Rescued) {
@@ -37,8 +39,17 @@ public class TiffyAI : AIbase {
 
     public override void Update() {
         base.Update();
-        if (Input.GetKeyDown(KeyCode.B)) {
-            Saved();
+        //check if tiffy is safe now and if so run saved
+        if (state == States.Hiding) {
+            bool isSafe = true;
+            for (int i = 0; i < birds.Length && isSafe; i++) {
+                if (birds[i].GetComponent<BirdMovementV2>().curState == BirdMovementV2.BirdState.AttackWander) {
+                    isSafe = false;
+                }
+            }
+            if (isSafe) {
+                Saved();
+            }
         }
         if (state == States.Rescued && moveDistance > 0) {
             transform.position += Vector3.back * Time.deltaTime * speed;
