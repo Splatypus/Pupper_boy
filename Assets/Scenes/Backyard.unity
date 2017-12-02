@@ -4317,6 +4317,34 @@ Transform:
   m_Father: {fileID: 533437185}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &593589420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 593589421}
+  m_Layer: 0
+  m_Name: rewardSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &593589421
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 593589420}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.78, y: 0.396, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1171547226}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &607861502
 GameObject:
   m_ObjectHideFlags: 0
@@ -4529,7 +4557,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -182806212
+  randomSeed: 1524170851
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -10415,6 +10443,22 @@ Prefab:
       propertyPath: bubble_particle_system
       value: 
       objectReference: {fileID: 611039868}
+    - target: {fileID: 114727836385790178, guid: 107deb627ee39084cb4e516d6df999fa,
+        type: 2}
+      propertyPath: rewardSpawn
+      value: 
+      objectReference: {fileID: 593589420}
+    - target: {fileID: 114727836385790178, guid: 107deb627ee39084cb4e516d6df999fa,
+        type: 2}
+      propertyPath: reward
+      value: 
+      objectReference: {fileID: 1167057413576644, guid: 6aabb0307c910b746bd5a0e8b0bd6b3a,
+        type: 2}
+    - target: {fileID: 114727836385790178, guid: 107deb627ee39084cb4e516d6df999fa,
+        type: 2}
+      propertyPath: rewardScore
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 107deb627ee39084cb4e516d6df999fa, type: 2}
   m_IsPrefabParent: 0
@@ -12129,6 +12173,7 @@ Transform:
   - {fileID: 1554841846}
   - {fileID: 1769514668}
   - {fileID: 1348588873}
+  - {fileID: 593589421}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12200,11 +12245,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Dialog: []
-  range: 5
-  Toy: {fileID: 0}
+  ToyTag: 2
   moveDistance: 5
   speed: 2.2
   state: 0
+--- !u!135 &1178411045
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1178411043}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.2939496
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1190514764
 GameObject:
   m_ObjectHideFlags: 0

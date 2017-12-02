@@ -6,8 +6,7 @@ public class AIbase : MonoBehaviour {
 
     public GameObject[] Dialog;
     private GameObject Player;
-    public float range;
-    public GameObject Toy;
+    public Interactable.Tag ToyTag;
     
 
     private bool inRange = false;
@@ -24,7 +23,6 @@ public class AIbase : MonoBehaviour {
     }
 
     public virtual void ToyInRange() {
-        Destroy(Toy);
         EndDisplay();
         Display(Dialog[1]);
     }
@@ -48,18 +46,23 @@ public class AIbase : MonoBehaviour {
 
     // Update is called once per frame
     public virtual void Update () {
-        if (!inRange && Vector3.Distance(gameObject.transform.position, Player.transform.position) < range) {
+    }
+
+    void OnTriggerEnter(Collider col) {
+        if (col.gameObject.CompareTag("Player")) {
             inRange = true;
             OnInRange();
-        } else if (inRange && Vector3.Distance(gameObject.transform.position, Player.transform.position) > range) {
-            inRange = false;
-            OnExitRange();
-        }
-        if (Toy != null && Vector3.Distance(gameObject.transform.position, Toy.transform.position) < range) {
+        } else if (col.gameObject.GetComponent<Interactable>() != null && col.gameObject.GetComponent<Interactable>().hasTag(ToyTag)) {
             ToyInRange();
         }
     }
 
+    void OnTriggerExit(Collider col) {
+        if (col.gameObject.CompareTag("Player")) {
+            inRange = false;
+            OnExitRange();
+        }
+    }
 
     // Use this for initialization
     public virtual void Start() {
