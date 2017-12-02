@@ -8,6 +8,7 @@ public class AIbase : MonoBehaviour {
     private GameObject Player;
     public float range;
     public GameObject Toy;
+    
 
     private bool inRange = false;
     private GameObject activeIcon;
@@ -44,9 +45,9 @@ public class AIbase : MonoBehaviour {
             activeIcon.SetActive(false);
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    public virtual void Update () {
         if (!inRange && Vector3.Distance(gameObject.transform.position, Player.transform.position) < range) {
             inRange = true;
             OnInRange();
@@ -61,7 +62,7 @@ public class AIbase : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start() {
+    public virtual void Start() {
         foreach (GameObject i in Dialog) {
             i.SetActive(false);
         }
