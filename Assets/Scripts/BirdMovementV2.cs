@@ -91,7 +91,6 @@ public class BirdMovementV2 : MonoBehaviour {
         //        Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.3f)
         else if(curState == BirdState.AttackWander)
         {
-            print("dist: " + Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position));
             if(Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.3f)
                 nextAttackWaypoint();
         }
@@ -147,13 +146,19 @@ public class BirdMovementV2 : MonoBehaviour {
             }
         }
 
+        transform.position = attackWanderWaypoints[attackWanderWaypointIndex].position;
+        /*
+        attackWanderWaypointIndex++;
+
         Vector3 line = (attackWanderWaypoints[attackWanderWaypointIndex].position - transform.position).normalized;
         transform.right = -line;
+        */
 
+        nextAttackWaypoint();
         // start flying
         rb.useGravity = false;
         col.enabled = false;
-        rb.velocity = line * flightStartVelocity.magnitude;
+        //rb.velocity = line * flightStartVelocity.magnitude;
     }
 
     private void startFlightWander()
