@@ -9,21 +9,23 @@ public class PlayerDig2 : MonoBehaviour {
     public float sec1_rot_speed = 1.0f;
     public float sec1_fall_speed = 1.0f;
     public float sec1_duration = 4.0f;
+
+    public float sec2_rot_speed = 1.0f;
+    public float sec2_rise_speed = 1.0f;
     [Space(10)]
 
     float time_in_cur_state = 0.0f;
 
-    [SerializeField]
-    private SphereCollider dig_look_zone;
+
     [SerializeField]
     float extra_movement_for_dig;
-    [SerializeField]
-    float extra_movement_for_dig_y = 0.25f;
     [SerializeField] private AudioSource dig_sound;
 
     Animator anim;
     DigZone curZone;
+    DigZone other_side_anim;
     IconManager my_icon;
+    BoxCollider col;
 
     bool amDigging = false;
 
@@ -31,8 +33,14 @@ public class PlayerDig2 : MonoBehaviour {
     {
         anim = GetComponentInChildren<Animator>();
         my_icon = GetComponentInChildren<IconManager>();
+        col = GetComponent<BoxCollider>();
     }
+
+
     int cur_state = 0;
+    float t = 0.0f;
+
+
     private void Update()
     {
         if(amDigging)
@@ -47,7 +55,42 @@ public class PlayerDig2 : MonoBehaviour {
                 {
                     time_in_cur_state = 0.0f;
                     cur_state++;
+
+                    // move along
+                    move_to_next_zone(other_side_anim);
+
+                    // rotate up
+                    transform.forward = Vector3.up;
+                    t = 0.0f;
                 }
+            }
+            else if (cur_state == 1)
+            {
+                if (Mathf.Abs(transform.eulerAngles.x) > 0.1f)
+                {
+                    t += Time.deltaTime;
+                    float x_rot = Mathf.Lerp(-90, 0, t * sec2_rot_speed);
+                    Vector3 new_angle = transform.eulerAngles;
+                    new_angle.x = x_rot;
+                    transform.eulerAngles = new_angle;
+                }
+                transform.position = transform.position + new Vector3(0, sec2_rise_speed * Time.deltaTime, 0);
+                //if(Physics.BoxCast(col.center, col.extents, )
+                int layermask = 1 << LayerMask.NameToLayer("Ground");
+
+                Collider[] cols = Physics.OverlapBox(col.center, col.size, transform.rotation, layermask, QueryTriggerInteraction.Ignore);
+                foreach(Collider c in cols)
+                {
+                    print("hitting " + c.name);
+                }
+                print("nop!");
+
+                if(!Physics.CheckBox(col.center, col.size, transform.rotation, layermask, QueryTriggerInteraction.Ignore))
+                {
+                    cur_state++;
+                }
+                
+                
             }
         }
         else
@@ -67,8 +110,10 @@ public class PlayerDig2 : MonoBehaviour {
 
                     amDigging = true;
                     // disable collider and gravity
-                    GetComponent<BoxCollider>().enabled = false;
+                    col.enabled = false;
                     GetComponent<Rigidbody>().useGravity = false;
+
+                    other_side_anim = curZone;
 
                     //dig_sound.Play(); // re-enable this once the sound effect is real
                 }
@@ -82,7 +127,7 @@ public class PlayerDig2 : MonoBehaviour {
     {
         DigZone zone_to_go_to = digZone.other_side;
 
-        print("I am at " + digZone + " going to " + zone_to_go_to);
+        //print("I am at " + digZone + " going to " + zone_to_go_to);
 
         // eventually we will play some animation or something, this is just placeholder
         // the above comment also means that we likely will never actually change this behavior
@@ -91,7 +136,7 @@ public class PlayerDig2 : MonoBehaviour {
         // we will move our extra 
         dist_to_move = (zone_to_go_to.transform.position - digZone.transform.position).magnitude + extra_movement_for_dig;
 
-        transform.position += (zone_to_go_to.transform.position - digZone.transform.position).normalized * dist_to_move + new Vector3(0, extra_movement_for_dig_y, 0);
+        transform.position += (zone_to_go_to.transform.position - digZone.transform.position).normalized * dist_to_move;
     }
 
     private void OnTriggerEnter(Collider other)
