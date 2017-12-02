@@ -15,6 +15,11 @@ public class BubbleGameManager : MiniGameManager {
     [SerializeField] List<int> highscores = new List<int>(); //Sorted where highest score is at position [9] and lowest is at [0]
     public int maxHighScores = 10;
 
+    public GameObject rewardSpawn;
+    public GameObject reward;
+    public int rewardScore;
+    private bool rewardGiven = false;
+
     //called when the minigame is started
     public override void GameStart() {
         base.GameStart();
@@ -45,6 +50,10 @@ public class BubbleGameManager : MiniGameManager {
         } else if (highscores.Count > 0 && score > highscores[0]) {
             highscores[0] = score;
             highscores.Sort();
+        }
+        if (reward != null && score >= rewardScore && !rewardGiven) {
+            Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
+            rewardGiven = true;
         }
     }
 

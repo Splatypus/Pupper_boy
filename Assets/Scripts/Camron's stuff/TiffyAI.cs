@@ -22,7 +22,8 @@ public class TiffyAI : AIbase {
 
     public void Saved() {
         //anim.SetFloat("Forward", 1.0f, 0.1f, Time.deltaTime);
-        anim.SetFloat("Forward", 1.0f);
+        anim.SetFloat("Forward", 0.8f);
+        state = States.Rescued;
     }
 
     public override void Start() {
@@ -39,8 +40,7 @@ public class TiffyAI : AIbase {
             transform.position += Vector3.back * Time.deltaTime * speed;
             moveDistance -= Time.deltaTime * speed;
             if (moveDistance < 0) {
-                anim.SetFloat("Forward", 0.0f, 0.1f, Time.deltaTime);
-                state = States.Rescued;
+                anim.SetFloat("Forward", 0.0f); //, 0.1f, Time.deltaTime);
             }
         }
     }
