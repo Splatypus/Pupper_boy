@@ -52,6 +52,7 @@ public class BirdMovementV2 : MonoBehaviour {
     Rigidbody rb;
     BoxCollider col;
     GameObject player;
+    Vector3 desiredRight;
 
     private void Start()
     {
@@ -68,6 +69,9 @@ public class BirdMovementV2 : MonoBehaviour {
 
     private void Update()
     {
+        // PLACEHOLDER
+        transform.right = desiredRight;
+
         // when wandering all we have to do is watch out for the dog, movement is controlled by animation events
         if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.BathMode || curState == BirdState.AttackWander) &&
             Vector3.Distance(transform.position, player.transform.position) < DogDistanceUntilFlight)
@@ -119,7 +123,8 @@ public class BirdMovementV2 : MonoBehaviour {
         birdPlayerVec = Vector3.ProjectOnPlane(birdPlayerVec, transform.up);
 
         /// make the bird look in this direction
-        transform.right = -birdPlayerVec.normalized;
+        //transform.right = -birdPlayerVec.normalized;
+        desiredRight = -birdPlayerVec.normalized;
 
         // start flying away
         /// turn off gravity and collider so that we fly up and don't hit things
@@ -173,7 +178,8 @@ public class BirdMovementV2 : MonoBehaviour {
         rb.velocity = (airPosDest - transform.position).normalized * flightStartVelocity.magnitude;
 
         // rotate the bird
-        transform.right = -(airPosDest - transform.position).normalized;
+        //transform.right = -(airPosDest - transform.position).normalized;
+        desiredRight = -(airPosDest - transform.position).normalized;
     }
 
     private void startFlyDown()
@@ -181,7 +187,8 @@ public class BirdMovementV2 : MonoBehaviour {
         curState = BirdState.FlyDown;
 
         rb.velocity = (landingDest.position - transform.position).normalized * flightStartVelocity.magnitude;
-        transform.right = -landingDest.forward;
+        //transform.right = -landingDest.forward;
+        desiredRight = -landingDest.forward;
     }
 
     private void finishFlight()
@@ -205,7 +212,8 @@ public class BirdMovementV2 : MonoBehaviour {
         Vector3 line = (attackWanderWaypoints[attackWanderWaypointIndex].position - transform.position).normalized;
         //transform.right = -line;
         // try this to stop flipping?
-        transform.right = -Vector3.ProjectOnPlane(line, Vector3.up);
+        //transform.right = -Vector3.ProjectOnPlane(line, Vector3.up);
+        desiredRight = -Vector3.ProjectOnPlane(line, Vector3.up);
         rb.velocity = line * flightStartVelocity.magnitude;
 
         
