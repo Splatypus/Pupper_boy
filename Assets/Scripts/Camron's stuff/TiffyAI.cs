@@ -11,12 +11,16 @@ public class TiffyAI : AIbase {
     public enum States { Hiding, Rescued, Happy };
     public States state = States.Hiding;
 
+    public GameObject rewardSpawn;
+    public GameObject reward;
+
 
     public override void ToyInRange() {
         if (state == States.Rescued) {
             base.ToyInRange();
             state = States.Happy;
             Display(Dialog[2]);
+            Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
         }
     }
 
