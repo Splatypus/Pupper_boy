@@ -9,6 +9,7 @@ public class FoodDispenser : MonoBehaviour {
     [SerializeField] private GameObject food_holder;
 
     [SerializeField] private AudioClip[] eating_clips;
+    [SerializeField] private bool refill;
     AudioSource m_source;
     
 
@@ -33,7 +34,9 @@ public class FoodDispenser : MonoBehaviour {
         m_source.clip = eating_clips[i];
         m_source.Play();
         food_holder.SetActive(false);
-        Invoke("activeate_food", refill_time);
+
+        if(refill)
+            Invoke("activeate_food", refill_time);
     }
 
     private void activeate_food()
