@@ -15,7 +15,7 @@ public class AIbase : MonoBehaviour {
 
     //Triggers when the player enters the range
     public virtual void OnInRange() {
-        Display(Dialog[0]);
+        //Display(Dialog[0]);
     }
     //Trigger when the player leaves range
     public virtual void OnExitRange() {
@@ -24,7 +24,7 @@ public class AIbase : MonoBehaviour {
 
     public virtual void ToyInRange() {
         EndDisplay();
-        Display(Dialog[1]);
+        //Display(Dialog[1]);
     }
 
     //Trigger when the player barks while in rage
@@ -54,6 +54,7 @@ public class AIbase : MonoBehaviour {
             OnInRange();
         } else if (col.gameObject.GetComponent<Interactable>() != null && col.gameObject.GetComponent<Interactable>().hasTag(ToyTag)) {
             ToyInRange();
+            Destroy(col.gameObject);
         }
     }
 

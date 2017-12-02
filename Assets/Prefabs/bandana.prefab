@@ -37,9 +37,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4802457236363692}
   - component: {fileID: 95882264215502346}
+  - component: {fileID: 54338992703443220}
+  - component: {fileID: 65600032241452662}
+  - component: {fileID: 114592243220822544}
   m_Layer: 0
   m_Name: bandana
-  m_TagString: Untagged
+  m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -92,7 +95,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1167057413576644}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 152.477, y: 3.683, z: 435.085}
+  m_LocalPosition: {x: 182.59555, y: 1.13, z: 379.89273}
   m_LocalScale: {x: 6.565396, y: 6.5653963, z: 6.5653963}
   m_Children:
   - {fileID: 4542081248682752}
@@ -139,6 +142,33 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1063960928699858}
   m_Mesh: {fileID: 4300000, guid: 755f44fe538adb541b05bd729d0fc623, type: 3}
+--- !u!54 &54338992703443220
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1167057413576644}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &65600032241452662
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1167057413576644}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.15, y: 0.05, z: 0.1}
+  m_Center: {x: 0, y: 0.02, z: 0}
 --- !u!95 &95882264215502346
 Animator:
   serializedVersion: 3
@@ -156,3 +186,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114592243220822544
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1167057413576644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac17be6c1d90e9b45b5ad9c5dbc37dc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  play_sound: 0
+  pickup_sounds: []
+  drop_sounds: []
+  tagList: 02000000

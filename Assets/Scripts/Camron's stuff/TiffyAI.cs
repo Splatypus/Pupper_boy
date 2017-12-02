@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,9 +19,10 @@ public class TiffyAI : AIbase {
 
     public override void ToyInRange() {
         if (state == States.Rescued) {
+            print("TOYTHING");
             base.ToyInRange();
             state = States.Happy;
-            Display(Dialog[2]);
+           // Display(Dialog[2]);
             Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
         }
     }

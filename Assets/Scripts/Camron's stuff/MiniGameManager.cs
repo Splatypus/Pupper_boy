@@ -20,6 +20,7 @@ public class MiniGameManager : MonoBehaviour {
     public virtual void GameStart() {
         startTime = Time.time;
         isPlaying = true;
+        canvasTimeField.gameObject.SetActive(true);
     }
 
     //called to start the minigame
@@ -29,11 +30,13 @@ public class MiniGameManager : MonoBehaviour {
         print("Game Ended");
         //clear time UI
         canvasTimeField.text = "";
+        canvasTimeField.gameObject.SetActive(false);
     }
 
     public virtual void Start() {
         //set the player character reference on start
         PlayerCharacter = GameObject.FindGameObjectWithTag("Player");
+        canvasTimeField.gameObject.SetActive(false);
     }
 	
 	// Update is called once per frame

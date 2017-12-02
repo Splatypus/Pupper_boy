@@ -73,7 +73,7 @@ public class BirdMovementV2 : MonoBehaviour {
         //transform.right = desiredRight;
         if(Vector3.Distance(transform.right, desiredRight) > float.Epsilon)
         {
-            print("doing lerp t = " + t);
+           // print("doing lerp t = " + t);
             t += Time.deltaTime;
             transform.right = Vector3.Lerp(transform.right, desiredRight, t / 50);
         }
@@ -108,6 +108,12 @@ public class BirdMovementV2 : MonoBehaviour {
         {
             if(Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.3f)
                 nextAttackWaypoint();
+
+            if(Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) > 50f)
+            {
+                transform.position = attackWanderWaypoints[attackWanderWaypointIndex].position;
+                nextAttackWaypoint();
+            }
         }
     }
 

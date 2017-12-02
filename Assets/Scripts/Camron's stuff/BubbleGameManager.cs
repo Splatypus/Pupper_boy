@@ -23,6 +23,7 @@ public class BubbleGameManager : MiniGameManager {
     //called when the minigame is started
     public override void GameStart() {
         base.GameStart();
+        scoreText.gameObject.SetActive(true);
         scoreText.text = "Score: 0";
         bubble_particle_system.SetActive(true);
         score = 0;
@@ -37,6 +38,7 @@ public class BubbleGameManager : MiniGameManager {
     public override void GameEnd() {
         base.GameEnd();
         //reset score text and particle systems
+        scoreText.gameObject.SetActive(true);
         scoreText.text = "";
         bubble_particle_system.SetActive(false);
         //disable objectives
@@ -98,6 +100,7 @@ public class BubbleGameManager : MiniGameManager {
 	public override void Start () {
         //Do base start. Find player character, etc
         base.Start();
+        scoreText.gameObject.SetActive(false);
         //Hide bubble particle system
         bubble_particle_system.SetActive(false); 
         //Disable objectives to start
