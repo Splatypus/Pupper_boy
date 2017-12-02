@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 871061062}
-  m_IndirectSpecularColor: {r: 0.75560623, g: 0.65156347, b: 0.50859123, a: 1}
+  m_IndirectSpecularColor: {r: 0.75560457, g: 0.6515625, b: 0.5085914, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -2599,6 +2599,16 @@ Prefab:
       propertyPath: landingDest
       value: 
       objectReference: {fileID: 2051483078}
+    - target: {fileID: 114745359077000798, guid: d310319e7075ffa4db9109d7bb289e3d,
+        type: 2}
+      propertyPath: DogDistanceUntilFlight
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114745359077000798, guid: d310319e7075ffa4db9109d7bb289e3d,
+        type: 2}
+      propertyPath: borkDistanceUntilFlight
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
   m_IsPrefabParent: 0
@@ -6875,6 +6885,16 @@ Prefab:
       propertyPath: landingDest
       value: 
       objectReference: {fileID: 1263530509}
+    - target: {fileID: 114745359077000798, guid: d310319e7075ffa4db9109d7bb289e3d,
+        type: 2}
+      propertyPath: DogDistanceUntilFlight
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114745359077000798, guid: d310319e7075ffa4db9109d7bb289e3d,
+        type: 2}
+      propertyPath: borkDistanceUntilFlight
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
   m_IsPrefabParent: 0
@@ -7341,6 +7361,16 @@ Prefab:
       propertyPath: landingDest
       value: 
       objectReference: {fileID: 876272600}
+    - target: {fileID: 114745359077000798, guid: d310319e7075ffa4db9109d7bb289e3d,
+        type: 2}
+      propertyPath: DogDistanceUntilFlight
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114745359077000798, guid: d310319e7075ffa4db9109d7bb289e3d,
+        type: 2}
+      propertyPath: borkDistanceUntilFlight
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
   m_IsPrefabParent: 0
@@ -7464,6 +7494,16 @@ Prefab:
       propertyPath: landingDest
       value: 
       objectReference: {fileID: 530391671}
+    - target: {fileID: 114745359077000798, guid: d310319e7075ffa4db9109d7bb289e3d,
+        type: 2}
+      propertyPath: DogDistanceUntilFlight
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114745359077000798, guid: d310319e7075ffa4db9109d7bb289e3d,
+        type: 2}
+      propertyPath: borkDistanceUntilFlight
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
   m_IsPrefabParent: 0
@@ -12485,6 +12525,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1810565965}
+  - component: {fileID: 1810565966}
   m_Layer: 0
   m_Name: DOGHOUSE
   m_TagString: Untagged
@@ -12513,6 +12554,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1810565966
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1810565964}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.481476, y: 5.0850773, z: 7.422455}
+  m_Center: {x: 1.4577026, y: -23.042538, z: 13.83226}
 --- !u!1001 &1818489103
 Prefab:
   m_ObjectHideFlags: 0
