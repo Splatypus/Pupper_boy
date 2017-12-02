@@ -69,7 +69,7 @@ public class BirdMovementV2 : MonoBehaviour {
     private void Update()
     {
         // when wandering all we have to do is watch out for the dog, movement is controlled by animation events
-        if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.AttackWander) &&
+        if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.BathMode || curState == BirdState.AttackWander) &&
             Vector3.Distance(transform.position, player.transform.position) < DogDistanceUntilFlight)
         {
             startFlight();
@@ -87,10 +87,13 @@ public class BirdMovementV2 : MonoBehaviour {
         {
             finishFlight();
         }
-        else if(curState == BirdState.AttackWander &&
-                Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.2f)
+        //else if(curState == BirdState.AttackWander &&
+        //        Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.3f)
+        else if(curState == BirdState.AttackWander)
         {
-            nextAttackWaypoint();
+            print("dist: " + Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position));
+            if(Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.3f)
+                nextAttackWaypoint();
         }
     }
 
