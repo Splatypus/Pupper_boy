@@ -21,7 +21,8 @@ public class TiffyAI : AIbase {
     }
 
     public void Saved() {
-        anim.SetFloat("Forward", 1.0f, 0.1f, Time.deltaTime);
+        //anim.SetFloat("Forward", 1.0f, 0.1f, Time.deltaTime);
+        anim.SetFloat("Forward", 1.0f);
     }
 
     public override void Start() {
