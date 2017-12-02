@@ -60,7 +60,10 @@ public class PlayerDig2 : MonoBehaviour {
                     move_to_next_zone(other_side_anim);
 
                     // rotate up
-                    transform.forward = Vector3.up;
+                    //transform.forward = Vector3.up;
+                    Vector3 new_angle = transform.eulerAngles;
+                    new_angle.x = -90;
+                    transform.eulerAngles = new_angle;
                     t = 0.0f;
                 }
             }
@@ -74,20 +77,24 @@ public class PlayerDig2 : MonoBehaviour {
                     new_angle.x = x_rot;
                     transform.eulerAngles = new_angle;
                 }
+                else
+                {
+                    anim.SetBool("isDigging", false);
+                }
                 transform.position = transform.position + new Vector3(0, sec2_rise_speed * Time.deltaTime, 0);
                 //if(Physics.BoxCast(col.center, col.extents, )
                 int layermask = 1 << LayerMask.NameToLayer("Ground");
 
                 Collider[] cols = Physics.OverlapBox(col.center, col.size, transform.rotation, layermask, QueryTriggerInteraction.Ignore);
-                foreach(Collider c in cols)
-                {
-                    print("hitting " + c.name);
-                }
-                print("nop!");
 
-                if(!Physics.CheckBox(col.center, col.size, transform.rotation, layermask, QueryTriggerInteraction.Ignore))
+                if(!Physics.CheckBox(col.center + transform.position, col.size, transform.rotation, layermask, QueryTriggerInteraction.Ignore))
                 {
-                    cur_state++;
+                    //cur_state++;
+                    amDigging = false;
+                    
+                    col.enabled = true;
+                    GetComponent<Rigidbody>().useGravity = true;
+                    FindObjectOfType<DogControllerV2>().enabled = true;
                 }
                 
                 
@@ -111,9 +118,10 @@ public class PlayerDig2 : MonoBehaviour {
                     amDigging = true;
                     // disable collider and gravity
                     col.enabled = false;
-                    GetComponent<Rigidbody>().useGravity = false;
+                    rb.useGravity = false;
 
                     other_side_anim = curZone;
+                    cur_state = 0;
 
                     //dig_sound.Play(); // re-enable this once the sound effect is real
                 }
