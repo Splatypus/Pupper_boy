@@ -1132,7 +1132,7 @@ GameObject:
   - component: {fileID: 117846821}
   - component: {fileID: 117846820}
   m_Layer: 0
-  m_Name: attack_birdv2_2 (1)
+  m_Name: attack_bird_v2_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1207,7 +1207,7 @@ MonoBehaviour:
   borkDistanceUntilFlight: 20
   flightStartVelocity: {x: -4.5, y: 6, z: 0}
   heightToStartFlightWander: 30
-  landingDest: {fileID: 1263530509}
+  landingDest: {fileID: 2051483078}
   landingState: 0
   attackWanderWaypoints:
   - {fileID: 576086848}
@@ -2776,6 +2776,7 @@ Transform:
   - {fileID: 876272600}
   - {fileID: 2051483078}
   - {fileID: 530391671}
+  - {fileID: 742576053}
   m_Father: {fileID: 0}
   m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3212,7 +3213,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1505011538067632, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_Name
@@ -3707,7 +3708,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1505011538067632, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_Name
@@ -8219,7 +8220,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1505011538067632, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_Name
@@ -8957,6 +8958,34 @@ MeshFilter:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
   m_PrefabInternal: {fileID: 501816523}
+--- !u!1 &742576052
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 742576053}
+  m_Layer: 0
+  m_Name: attack_bird_landing_spot_5
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &742576053
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 742576052}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 97.6, y: -24.8, z: -28.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 322049288}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &749950921
 Prefab:
   m_ObjectHideFlags: 0
@@ -8999,7 +9028,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1505011538067632, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_Name
@@ -9214,7 +9243,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1505011538067632, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_Name
@@ -11792,7 +11821,7 @@ GameObject:
   - component: {fileID: 1090714578}
   - component: {fileID: 1090714577}
   m_Layer: 0
-  m_Name: attack_bird_v2 1 (1)
+  m_Name: attack_bird_v2_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11867,7 +11896,7 @@ MonoBehaviour:
   borkDistanceUntilFlight: 20
   flightStartVelocity: {x: -4.5, y: 6, z: 0}
   heightToStartFlightWander: 30
-  landingDest: {fileID: 1263530509}
+  landingDest: {fileID: 742576053}
   landingState: 0
   attackWanderWaypoints:
   - {fileID: 576086848}
@@ -13149,7 +13178,7 @@ GameObject:
   - component: {fileID: 1249164418}
   - component: {fileID: 1249164417}
   m_Layer: 0
-  m_Name: attack_birdv2_2 (2)
+  m_Name: attack_bird_v2_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13224,7 +13253,7 @@ MonoBehaviour:
   borkDistanceUntilFlight: 20
   flightStartVelocity: {x: -4.5, y: 6, z: 0}
   heightToStartFlightWander: 30
-  landingDest: {fileID: 1263530509}
+  landingDest: {fileID: 530391671}
   landingState: 0
   attackWanderWaypoints:
   - {fileID: 576086848}
@@ -13429,7 +13458,7 @@ GameObject:
   - component: {fileID: 1275673700}
   - component: {fileID: 1275673699}
   m_Layer: 0
-  m_Name: attack_birdv2_2
+  m_Name: attack_bird_v2_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13504,7 +13533,7 @@ MonoBehaviour:
   borkDistanceUntilFlight: 20
   flightStartVelocity: {x: -4.5, y: 6, z: 0}
   heightToStartFlightWander: 30
-  landingDest: {fileID: 1263530509}
+  landingDest: {fileID: 876272600}
   landingState: 0
   attackWanderWaypoints:
   - {fileID: 576086848}
@@ -14507,7 +14536,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1505011538067632, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_Name
@@ -15770,7 +15799,7 @@ Transform:
   - {fileID: 984853790}
   - {fileID: 419169144}
   m_Father: {fileID: 1662416872}
-  m_RootOrder: 0
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &1554841842
 Prefab:
@@ -15911,7 +15940,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114745359077000798, guid: d310319e7075ffa4db9109d7bb289e3d,
         type: 2}
@@ -16409,7 +16438,6 @@ Transform:
   m_LocalPosition: {x: 155.99063, y: 10.959424, z: 429.02203}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1551781391}
   - {fileID: 188489888}
   - {fileID: 2745866}
   - {fileID: 1234060751}
@@ -16417,6 +16445,7 @@ Transform:
   - {fileID: 377725462}
   - {fileID: 1237927997}
   - {fileID: 1865162889}
+  - {fileID: 1551781391}
   - {fileID: 1275673698}
   - {fileID: 117846819}
   - {fileID: 1249164416}
@@ -18446,7 +18475,7 @@ GameObject:
   - component: {fileID: 1943627393}
   - component: {fileID: 1943627392}
   m_Layer: 0
-  m_Name: attack_bird_v2 1
+  m_Name: attack_bird_v2_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
