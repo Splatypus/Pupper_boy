@@ -21,7 +21,7 @@ public class PuppyPickup : MonoBehaviour {
     private int bork_index = 0;
 
     private List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
-    private BallLauncher launcherInRange = null;                                //ball launcher that is in range (if one exists)
+    private BallLaunchV2 launcherInRange = null;                                //ball launcher that is in range (if one exists)
     private ToyBox boxInRange = null;                                           //toy box that is in range (if one exists)
     private FoodDispenser foodInRange = null;
 
@@ -43,10 +43,16 @@ public class PuppyPickup : MonoBehaviour {
             if(itemInMouth != null)
             {
                 //first check if we're in range of a ball launcher.  If so, load it
-                if (launcherInRange && itemInMouth.name == "Tennis Ball")
+                if (launcherInRange)
                 {
-                    Debug.Log("Loading Ball");
-                    launcherInRange.LoadBall(itemInMouth);
+                    Interactable i = itemInMouth.GetComponent<Interactable>();
+                    if(i != null && i.tagList.Contains(Interactable.Tag.Ball))
+                    {
+                        Debug.Log("Loading Ball");
+                        itemInMouth.transform.parent = null;
+                        launcherInRange.LoadBall(itemInMouth);
+                    }
+                    
                 }
                 //Next, check if we're in range of the toy box.  If so, toss it in.
                 else if(boxInRange && itemInMouth)
@@ -159,19 +165,19 @@ public class PuppyPickup : MonoBehaviour {
         //if it's a pickup item, add it to the list
         if (other.tag == "Pickup" && !objectsInRange.Contains(other.gameObject))
         {
-            Debug.Log("Object In");
+            //Debug.Log("Object In");
             objectsInRange.Add(other.gameObject);
         }
         //if it's a ball launcher, store it in launcherInRange
         else if (other.tag == "Launcher")
         {
-            Debug.Log("Launcher in range");
-            launcherInRange = other.GetComponent<BallLauncher>();
+            //Debug.Log("Launcher in range");
+            launcherInRange = other.GetComponent<BallLaunchV2>();
         }
         //if it's a toy box, store it in boxInRange
         else if (other.tag == "Box")
         {
-            Debug.Log("Box In Range");
+            //Debug.Log("Box In Range");
             boxInRange = other.GetComponent<ToyBox>();
         }
         else if (other.tag == "Food")
@@ -185,19 +191,19 @@ public class PuppyPickup : MonoBehaviour {
         //if it's a pickup item, remove it from the list
         if (other.tag == "Pickup" && objectsInRange.Contains(other.gameObject))
         {
-            Debug.Log("Object Out");
+            //Debug.Log("Object Out");
             objectsInRange.Remove(other.gameObject);
         }
         //if it's a ball launcher, set launcherInRange to null
         else if (other.tag == "Launcher")
         {
-            Debug.Log("Launcher out of range");
+            //Debug.Log("Launcher out of range");
             launcherInRange = null;
 		} 
         //if it's a toy box, set boxInRange to null
 		else if (other.tag == "Box")
 		{
-			Debug.Log("Box out of range");
+			//Debug.Log("Box out of range");
 			boxInRange = null;
 		}
         else if (other.tag == "Food")

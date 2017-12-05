@@ -68,9 +68,25 @@ GameObject:
   - component: {fileID: 4665405259458912}
   - component: {fileID: 65213978358817868}
   - component: {fileID: 114963999044272374}
+  - component: {fileID: 114751102619247894}
   m_Layer: 0
   m_Name: Launcher Intake
   m_TagString: Launcher
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1175483101381872
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4497159055335048}
+  m_Layer: 0
+  m_Name: LaunchPos
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,6 +102,21 @@ GameObject:
   - component: {fileID: 95625610631880948}
   m_Layer: 0
   m_Name: Launcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1288152882308884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4561191232302738}
+  m_Layer: 0
+  m_Name: BallStorage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,6 +241,32 @@ Transform:
   m_Father: {fileID: 4962348249718080}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4497159055335048
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1175483101381872}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 8.693, y: 2.23, z: 7.811}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4982220660596792}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4561191232302738
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1288152882308884}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.22, y: 0.07, z: 3.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4982220660596792}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4665405259458912
 Transform:
   m_ObjectHideFlags: 1
@@ -273,16 +330,18 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1127681872463370}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -23.95, y: 0.22698808, z: -23.84}
+  m_LocalRotation: {x: -0, y: -0.49789327, z: -0, w: 0.8672384}
+  m_LocalPosition: {x: 266.78772, y: 2.99, z: 218.35329}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4665405259458912}
   - {fileID: 4212317402130606}
   - {fileID: 4962348249718080}
+  - {fileID: 4561191232302738}
+  - {fileID: 4497159055335048}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -59.721004, z: 0}
 --- !u!23 &23104564538894836
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -480,13 +539,29 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114963999044272374
+--- !u!114 &114751102619247894
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1155463198748668}
   m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 204bf95ee1c4a7949878a167cc3e9430, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  launch_force: 12
+  launch_direction: {x: 0, y: 1.5, z: 0}
+  launch_start_pos: {fileID: 4497159055335048}
+  storePosition: {fileID: 4561191232302738}
+  launch_delay: 1
+--- !u!114 &114963999044272374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1155463198748668}
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b989a6311c5784257aa2a57135036821, type: 3}
   m_Name: 
