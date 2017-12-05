@@ -138,12 +138,12 @@ public class BirdMovementV2 : MonoBehaviour {
 
         // turn bird away from player
         /// project the vector from player to bird onto bird's up vector
-        Vector3 birdPlayerVec = transform.position - player.transform.position;
-        birdPlayerVec = Vector3.ProjectOnPlane(birdPlayerVec, transform.up);
+        //Vector3 birdPlayerVec = transform.position - player.transform.position;
+        //birdPlayerVec = Vector3.ProjectOnPlane(birdPlayerVec, transform.up);
 
         /// make the bird look in this direction
         //transform.right = -birdPlayerVec.normalized;
-        desiredRight = -birdPlayerVec.normalized;
+        
 
         // start flying away
         /// turn off gravity and collider so that we fly up and don't hit things
@@ -151,6 +151,9 @@ public class BirdMovementV2 : MonoBehaviour {
         rb.useGravity = false;
         col.enabled = false;
         rb.velocity = flightStartVelocity;
+
+        transform.right = -Vector3.ProjectOnPlane(flightStartVelocity, transform.up).normalized;
+
         startHeight = transform.position.y;
     }
 
