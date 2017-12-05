@@ -18,6 +18,7 @@ public class BirdMovementV2 : MonoBehaviour {
     public int WanderNumHopsToTurnAround;
     [SerializeField] private PhysicMaterial moveMat;
     [SerializeField] private PhysicMaterial waitMat;
+    public float randomStartupTimeMax = 1.0f;
     #endregion
 
     #region Flight Start Info
@@ -65,7 +66,20 @@ public class BirdMovementV2 : MonoBehaviour {
         {
             startAttack();
         }
+
+        if(curState == BirdState.Wander)
+        {
+            //anim.StopPlayback();
+            anim.enabled = false;
+            Invoke("startAnimating", Random.Range(0.0f, randomStartupTimeMax));
+        }
     }
+
+    private void startAnimating()
+    {
+        anim.enabled = true;
+    }
+
     float t = 0.0f;
     private void Update()
     {
