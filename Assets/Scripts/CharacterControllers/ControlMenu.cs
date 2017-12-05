@@ -10,8 +10,9 @@ public class ControlMenu : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         text = GetComponent<Text>();
-        isshown = false;
-	}
+        isshown = true;
+        text.text = "WASD: Move\nMouse: Turn Camera\nE: Bark/Pickup/Drop\nQ: Dig\nShift: Sprint\nF: ???";
+    }
 	
 	// Update is called once per frame
 	void Update () {
