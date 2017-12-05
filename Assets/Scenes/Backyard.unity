@@ -7986,6 +7986,23 @@ BoxCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_PrefabInternal: {fileID: 622004025}
+--- !u!1 &623482461 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1028693624073810, guid: 44ccd06623b2ec64abadcb4029f7aed0,
+    type: 2}
+  m_PrefabInternal: {fileID: 2043895658}
+--- !u!135 &623482466
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 623482461}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 38
+  m_Center: {x: 0, y: -13.26, z: 0}
 --- !u!1001 &626517294
 Prefab:
   m_ObjectHideFlags: 0
