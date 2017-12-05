@@ -23,8 +23,8 @@ public class BirdMovementV2 : MonoBehaviour {
     #region Flight Start Info
     [Header("Flight Start Variables")]
     public float DogDistanceUntilFlight;
-    public float borkDistanceUntilFlight; // TODO: make this work
-    public Vector3 flightStartVelocity;
+    public float borkDistanceUntilFlight;
+    public Vector3 flightStartVelocity; // TODO: MAKE THIS A FLOAT THE VECTOR ASPECT IS NEVER EVER USED!! BAD!! SAD!!
     private float startHeight;
     #endregion
 
@@ -138,8 +138,8 @@ public class BirdMovementV2 : MonoBehaviour {
 
         // turn bird away from player
         /// project the vector from player to bird onto bird's up vector
-        //Vector3 birdPlayerVec = transform.position - player.transform.position;
-        //birdPlayerVec = Vector3.ProjectOnPlane(birdPlayerVec, transform.up);
+        Vector3 birdPlayerVec = transform.position - player.transform.position;
+        birdPlayerVec = Vector3.ProjectOnPlane(birdPlayerVec, transform.up);
 
         /// make the bird look in this direction
         //transform.right = -birdPlayerVec.normalized;
@@ -150,9 +150,12 @@ public class BirdMovementV2 : MonoBehaviour {
         /// maybe don't turn off collier?
         rb.useGravity = false;
         col.enabled = false;
-        rb.velocity = flightStartVelocity;
 
-        transform.right = -Vector3.ProjectOnPlane(flightStartVelocity, transform.up).normalized;
+        //rb.velocity = flightStartVelocity;
+        Vector3 actualFlightVelocity = (Vector3.up + birdPlayerVec.normalized * 0.5f).normalized * flightStartVelocity.magnitude;
+        rb.velocity = actualFlightVelocity;
+
+        transform.right = -Vector3.ProjectOnPlane(actualFlightVelocity, transform.up).normalized;
 
         startHeight = transform.position.y;
     }
