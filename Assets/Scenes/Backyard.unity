@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 871061062}
-  m_IndirectSpecularColor: {r: 0.75560623, g: 0.65156347, b: 0.50859123, a: 1}
+  m_IndirectSpecularColor: {r: 0.75560457, g: 0.6515625, b: 0.5085914, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -395,6 +395,34 @@ BoxCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_PrefabInternal: {fileID: 41636899}
+--- !u!1 &45285032 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1020576400783088, guid: 08be1a2fe53a56948b8ea2415d7945e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1942168159}
+--- !u!114 &45285034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 45285032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 257
+  m_PreserveLineOfSight: 1
+  m_LineOfSightFeelerDistance: 10
+  m_MinimumDistanceFromTarget: 0
+  m_MinimumDistanceFromCamera: 0
+  m_UseCurbFeelers: 1
+  m_CurbFeelerDistance: 3
+  m_CurbResistance: 1
+  m_PositionSmoothing: 0
+  m_OptimalTargetDistance: 0
 --- !u!1 &48595366
 GameObject:
   m_ObjectHideFlags: 0
@@ -2167,7 +2195,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -302.41003
+      value: -314.89
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
       propertyPath: m_LocalPosition.y
@@ -10837,6 +10865,34 @@ Transform:
   m_Father: {fileID: 322049288}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &743266978 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1174753708155798, guid: ccf89df8c0b45ad4b910eea5486bfbdb,
+    type: 2}
+  m_PrefabInternal: {fileID: 581144038}
+--- !u!114 &743266981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 743266978}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_PreserveLineOfSight: 1
+  m_LineOfSightFeelerDistance: 10
+  m_MinimumDistanceFromTarget: 0
+  m_MinimumDistanceFromCamera: 0
+  m_UseCurbFeelers: 1
+  m_CurbFeelerDistance: 3
+  m_CurbResistance: 1
+  m_PositionSmoothing: 0
+  m_OptimalTargetDistance: 0
 --- !u!1 &750282767
 GameObject:
   m_ObjectHideFlags: 0
@@ -14184,7 +14240,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -240.62001
+      value: -233.9
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
       propertyPath: m_LocalPosition.y
@@ -14192,7 +14248,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -264.75632
+      value: -263.1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
       propertyPath: m_LocalRotation.x
@@ -22118,11 +22174,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400016, guid: 86d9af6539adb504bb1337f3de460a19, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 400016, guid: 86d9af6539adb504bb1337f3de460a19, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 163.1
+      value: 187.6
       objectReference: {fileID: 0}
     - target: {fileID: 400016, guid: 86d9af6539adb504bb1337f3de460a19, type: 3}
       propertyPath: m_LocalRotation.x
@@ -22346,7 +22402,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1020576400783088, guid: 08be1a2fe53a56948b8ea2415d7945e9, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 08be1a2fe53a56948b8ea2415d7945e9, type: 2}
