@@ -17,12 +17,22 @@ public class TiffyAI : AIbase {
     public GameObject[] birds;
 
 
+    public override void OnInRange() {
+        if (state == States.Hiding) {
+            Display(Dialog[0]);
+        } else if (state == States.Rescued) {
+            Display(Dialog[1]);
+        } else if (state == States.Happy) {
+            Display(Dialog[2]);
+        }
+    }
+
     public override void ToyInRange() {
         if (state == States.Rescued) {
             print("TOYTHING");
             base.ToyInRange();
             state = States.Happy;
-           // Display(Dialog[2]);
+            Display(Dialog[2]);
             Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
         }
     }
@@ -31,6 +41,7 @@ public class TiffyAI : AIbase {
         //anim.SetFloat("Forward", 1.0f, 0.1f, Time.deltaTime);
         anim.SetFloat("Forward", 0.8f);
         state = States.Rescued;
+        Display(Dialog[1]);
     }
 
     public override void Start() {
