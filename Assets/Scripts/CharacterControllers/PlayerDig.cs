@@ -33,9 +33,20 @@ public class PlayerDig : MonoBehaviour {
             {
                 Rigidbody rb = GetComponent<Rigidbody>();
                 rb.velocity = Vector3.zero;
-                move_to_next_zone(curZone);
-                houseText.setText(curZone.other_side.enteringYardName);
-                dig_sound.Play(); // re-enable this once the sound effect is real
+                if(curZone.isPathway)
+                {
+                    // for pathway
+                    move_to_next_zone(curZone);
+                    houseText.setText(curZone.other_side.enteringYardName);
+                    dig_sound.Play(); // re-enable this once the sound effect is real
+                }
+                else
+                {
+                    // for digging up object in yard
+                    Instantiate(curZone.objectToDigUp, curZone.transform.position, Quaternion.identity);
+                    // can give it some velocity and spin or whatever
+                    curZone.gameObject.SetActive(false);
+                }
             }
         }
     }
