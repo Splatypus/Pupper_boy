@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 871061062}
-  m_IndirectSpecularColor: {r: 0.75560457, g: 0.6515625, b: 0.5085914, a: 1}
+  m_IndirectSpecularColor: {r: 0.75560623, g: 0.65156347, b: 0.50859123, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -4764,6 +4764,11 @@ Prefab:
     - target: {fileID: 1369250889570792, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
       propertyPath: m_Name
       value: DigZone_front_side1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114196215066498164, guid: e0fe7335fd321b741beb09f2ae25f572,
+        type: 2}
+      propertyPath: enteringYardName
+      value: Home
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
@@ -14749,6 +14754,11 @@ Prefab:
       propertyPath: m_Name
       value: DigZone_left_side1
       objectReference: {fileID: 0}
+    - target: {fileID: 114196215066498164, guid: e0fe7335fd321b741beb09f2ae25f572,
+        type: 2}
+      propertyPath: enteringYardName
+      value: Home
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
   m_IsPrefabParent: 0
@@ -17404,6 +17414,11 @@ Prefab:
       propertyPath: m_Name
       value: DigZone_front3_side1
       objectReference: {fileID: 0}
+    - target: {fileID: 114196215066498164, guid: e0fe7335fd321b741beb09f2ae25f572,
+        type: 2}
+      propertyPath: enteringYardName
+      value: Bubble's Yard
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
   m_IsPrefabParent: 0
@@ -17547,6 +17562,11 @@ Prefab:
       propertyPath: other_side
       value: 
       objectReference: {fileID: 1837219586}
+    - target: {fileID: 114196215066498164, guid: e0fe7335fd321b741beb09f2ae25f572,
+        type: 2}
+      propertyPath: enteringYardName
+      value: Bubble's Yard
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
   m_IsPrefabParent: 0
@@ -21054,6 +21074,11 @@ Prefab:
     - target: {fileID: 1369250889570792, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
       propertyPath: m_Name
       value: DigZone_right_side1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114196215066498164, guid: e0fe7335fd321b741beb09f2ae25f572,
+        type: 2}
+      propertyPath: enteringYardName
+      value: Home
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
