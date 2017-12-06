@@ -6346,7 +6346,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -696540106
+  randomSeed: 253853975
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -23586,9 +23586,54 @@ Prefab:
       propertyPath: m_Color.r
       value: 0.766
       objectReference: {fileID: 0}
+    - target: {fileID: 4250581140107892, guid: 44ccd06623b2ec64abadcb4029f7aed0, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 68.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4250581140107892, guid: 44ccd06623b2ec64abadcb4029f7aed0, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -171
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 44ccd06623b2ec64abadcb4029f7aed0, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2043895659 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1709574517336388, guid: 44ccd06623b2ec64abadcb4029f7aed0,
+    type: 2}
+  m_PrefabInternal: {fileID: 2043895658}
+--- !u!54 &2043895660
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2043895659}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &2043895661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2043895659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d02160edc0e90314d9a012e49d5cffe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  direction: {x: 1, y: 0, z: 0}
+  Xmin: -400
+  Xmax: 300
+  Zmin: -270
+  Zmax: 430
 --- !u!1 &2051483077
 GameObject:
   m_ObjectHideFlags: 0
