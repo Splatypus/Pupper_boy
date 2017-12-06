@@ -2514,6 +2514,11 @@ Prefab:
       propertyPath: m_Name
       value: DigZone_left2_side1
       objectReference: {fileID: 0}
+    - target: {fileID: 114196215066498164, guid: e0fe7335fd321b741beb09f2ae25f572,
+        type: 2}
+      propertyPath: enteringYardName
+      value: Tiffany's Yard
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
   m_IsPrefabParent: 0
@@ -3944,8 +3949,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04dbb0f23f11aea47b7dec616696c412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeUntilFadeStarts: 1
-  timeToFade: 1
+  timeUntilFadeStarts: 1.5
+  timeToFadeOut: 1
+  timeToFadeIn: 0.25
 --- !u!1 &383762318
 GameObject:
   m_ObjectHideFlags: 0
@@ -19655,6 +19661,11 @@ Prefab:
       propertyPath: m_Name
       value: DigZone_right2_side1
       objectReference: {fileID: 0}
+    - target: {fileID: 114196215066498164, guid: e0fe7335fd321b741beb09f2ae25f572,
+        type: 2}
+      propertyPath: enteringYardName
+      value: Tiffany's Yard
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
   m_IsPrefabParent: 0
@@ -21956,6 +21967,11 @@ Prefab:
     - target: {fileID: 1369250889570792, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}
       propertyPath: m_Name
       value: DigZone_front_side2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114196215066498164, guid: e0fe7335fd321b741beb09f2ae25f572,
+        type: 2}
+      propertyPath: enteringYardName
+      value: Tiffany's Yard
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0fe7335fd321b741beb09f2ae25f572, type: 2}

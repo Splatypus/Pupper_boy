@@ -15,11 +15,13 @@ public class PlayerDig : MonoBehaviour {
     Animator anim;
     DigZone curZone;
     IconManager my_icon;
+    TextFadeOut houseText;
 
     private void Start()
     {
         anim = GetComponentInChildren<Animator>();
         my_icon = GetComponentInChildren<IconManager>();
+        houseText = FindObjectOfType<TextFadeOut>();
     }
 
     private void Update()
@@ -31,32 +33,10 @@ public class PlayerDig : MonoBehaviour {
             {
                 Rigidbody rb = GetComponent<Rigidbody>();
                 rb.velocity = Vector3.zero;
-                //anim.SetTrigger("Dig");
                 move_to_next_zone(curZone);
+                houseText.setText(curZone.other_side.enteringYardName);
                 dig_sound.Play(); // re-enable this once the sound effect is real
             }
-
-            /*
-            if(dig_look_zone)
-            {
-                //print("have a place to look!");
-                Collider[] inGrabber = Physics.OverlapSphere(dig_look_zone.transform.position, dig_look_zone.radius * 0.5f);
-
-                foreach( Collider c in inGrabber)
-                {
-                    DigZone digZone = c.GetComponent<DigZone>();
-                    if(digZone)
-                    {
-                        //print("got me some diggle zoner " + digZone);
-                        anim.SetTrigger("Dig");
-                        move_to_next_zone(digZone);
-                        dig_sound.Play();
-                        return; // probably should not do this. xd
-                    }
-                    
-                }
-            }
-            */
         }
     }
 

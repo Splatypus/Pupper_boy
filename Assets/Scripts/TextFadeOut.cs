@@ -8,54 +8,47 @@ public class TextFadeOut : MonoBehaviour
 
     Text text;
     [SerializeField] private float timeUntilFadeStarts = 1.0f;
-    [SerializeField] private float timeToFade = 1.0f;
+    [SerializeField] private float timeToFadeOut = 1.0f;
+    [SerializeField] private float timeToFadeIn = 0.25f;
 
     // Use this for initialization
     void Start()
     {
         text = GetComponent<Text>();
-        print("starting color: " + text.color);
         Color c = text.color;
         c.a = 0;
         text.color = c;
-        print("after color: " + text.color);
     }
 
     public void setText(string words)
     {
-        print("setting text to " + words);
         text.text = words;
         Color c = text.color;
         c.a = 1.0f;
         text.color = c;
-        //StartCoroutine(fadeText());
+        print("setting text to " + words);
+        StartCoroutine(fadeLerp(0, 1, timeToFadeIn));
         Invoke("startFade", timeUntilFadeStarts);
     }
 
     private void startFade()
     {
-        StartCoroutine(fadeText());
+        StartCoroutine(fadeLerp(1, 0, timeToFadeOut));
     }
 
-    private IEnumerator fadeText()
+    private IEnumerator fadeLerp(float start, float end, float lerp_time)
     {
         float startTime = Time.time;
-        while (text.color.a > 0)
+        float lerpAmount = 0.0f;
+        while (lerpAmount < 1.0f)
         {
-            float lerpAmount = 1f - ((Time.time - startTime) / timeToFade);
-            float alpha = 1.0f * lerpAmount;
+            lerpAmount = (Time.time - startTime) / lerp_time;
+            print("lerping in t = " + lerpAmount);
+            float alpha = Mathf.Lerp(start, end, lerpAmount);
             Color c = text.color;
             c.a = alpha;
             text.color = c;
             yield return new WaitForSeconds(Time.deltaTime);
-        }
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.I))
-        {
-            setText("Hello World!");
         }
     }
 }
