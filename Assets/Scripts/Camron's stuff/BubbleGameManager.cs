@@ -78,7 +78,8 @@ public class BubbleGameManager : MiniGameManager {
                 break;
             }
         }
-        bubble_particle_system.transform.forward = objectives[i].transform.position - transform.position;
+        //bubble_particle_system.transform.forward = objectives[i].transform.position - transform.position;
+        transform.forward = objectives[i].transform.position - transform.position;
         return i;
     }
 
