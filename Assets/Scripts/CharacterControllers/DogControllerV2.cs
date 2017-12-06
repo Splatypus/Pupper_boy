@@ -91,6 +91,14 @@ public class DogControllerV2 : MonoBehaviour {
             Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed);
 
             rigidBody.velocity =  new_velocity; //(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
+
+
+            // jump shit
+            if(jumpInput)
+            {
+                rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+                onGround = false;
+            }
             
         }
         
