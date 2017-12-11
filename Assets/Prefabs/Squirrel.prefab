@@ -237,6 +237,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1314082460278434
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4140809615687638}
+  m_Layer: 0
+  m_Name: realPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1327827679580180
 GameObject:
   m_ObjectHideFlags: 1
@@ -577,7 +592,9 @@ GameObject:
   - component: {fileID: 4142898804564634}
   - component: {fileID: 95275614853788266}
   - component: {fileID: 65906291692304064}
+  - component: {fileID: 135837564379655436}
   - component: {fileID: 54346193795614112}
+  - component: {fileID: 114686705143625484}
   m_Layer: 0
   m_Name: Squirrel
   m_TagString: Untagged
@@ -739,6 +756,19 @@ Transform:
   m_Father: {fileID: 4818003544845014}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4140809615687638
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1314082460278434}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 4.975}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4142898804564634}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4142898804564634
 Transform:
   m_ObjectHideFlags: 1
@@ -746,7 +776,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1825642322227836}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 192.99, y: 4, z: 225.83}
+  m_LocalPosition: {x: 191.918, y: 3.464, z: 222.236}
   m_LocalScale: {x: 10.826209, y: 10.826206, z: 10.826206}
   m_Children:
   - {fileID: 4913126570685560}
@@ -756,6 +786,7 @@ Transform:
   - {fileID: 4513849270321766}
   - {fileID: 4226620756207150}
   - {fileID: 4443221709098502}
+  - {fileID: 4140809615687638}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1247,6 +1278,46 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114686705143625484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1825642322227836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f71ac6e488c14409f9db7fc19adca6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actual_positon: {fileID: 4140809615687638}
+  minNumIdleLoops: 2
+  maxNumIdleLoops: 2
+  numMovementsBeforeSwap: 2
+  minNumMovementLoops: 2
+  maxNumMovementLoops: 5
+  WanderMaxAngleChange: 25
+  wanderMovementSpeed: 2
+  wanderJumpForce1: 150
+  constantMovement: 0
+  treesInMyYard:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!135 &135837564379655436
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1825642322227836}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!137 &137983202546611622
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
