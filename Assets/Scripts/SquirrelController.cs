@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SquirrelController : MonoBehaviour {
 
-    private enum SquirrelState { Idle, Wander, Escape};
+    private enum SquirrelState { Idle, Wander, Escape, ClimbTree};
     SquirrelState state = SquirrelState.Idle;
 
     public Transform actual_positon;
@@ -13,7 +13,6 @@ public class SquirrelController : MonoBehaviour {
     [SerializeField] private int minNumIdleLoops = 2;
     [SerializeField] private int maxNumIdleLoops = 2;
     [SerializeField] private int numMovementsBeforeSwap = 2;
-    public PhysicMaterial idleMaterial;
 
     [Header("Movement Stats")]
     [SerializeField] private int minNumMovementLoops = 2;
@@ -27,6 +26,12 @@ public class SquirrelController : MonoBehaviour {
     public GameObject[] treesInMyYard;
     [SerializeField] private float escapeMoveSpeed;
     [SerializeField] private float escapeJumpForce;
+    private GameObject treeTarget = null;
+
+    [Header("Climb Stats")]
+    [SerializeField] private float climbMoveSpeed;
+    [SerializeField] private float distToStartClimb;
+    public PhysicMaterial zeroFriction;
 
     private int num_loops_remaining;
     private int num_jumps_until_swap;
@@ -53,6 +58,11 @@ public class SquirrelController : MonoBehaviour {
         {
             onGround = true;
         }
+        else if (collision.gameObject.tag == "Tree")
+        {
+            print("start climbing");
+            startClimb();
+        }
     }
 
     private void OnCollisionExit(Collision collision)
@@ -65,7 +75,7 @@ public class SquirrelController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.tag == "Player" && (state == SquirrelState.Idle || state == SquirrelState.Wander))
         {
             print("RUN AWAY DOGGO IS NEAR");
             startEscape(other.gameObject);
@@ -94,8 +104,8 @@ public class SquirrelController : MonoBehaviour {
                 }
             }
         }
-
-        if(closest_tree == null)
+        treeTarget = closest_tree;
+        if (closest_tree == null)
         {
             // dog has trapped the squirrel in a corner
             // death is the only solution?
@@ -115,6 +125,14 @@ public class SquirrelController : MonoBehaviour {
         }
     }
 
+    private void Update()
+    {
+        if(state == SquirrelState.Escape && Vector3.Distance(actual_positon.position, treeTarget.transform.position) < distToStartClimb)
+        {
+            //startClimb();
+        }
+    }
+
     private void FixedUpdate()
     {
         if(constantMovement && onGround && state == SquirrelState.Wander)
@@ -128,6 +146,23 @@ public class SquirrelController : MonoBehaviour {
             if(rb.velocity.magnitude < escapeMoveSpeed)
                 rb.velocity = transform.forward * escapeMoveSpeed;
         }
+    }
+
+    void startClimb()
+    {
+        state = SquirrelState.ClimbTree;
+
+        // turn off collider
+        GetComponent<BoxCollider>().enabled = false;
+
+        // turn off gravity
+        rb.useGravity = false;
+
+        // rotate up to climb
+        transform.RotateAround(actual_positon.position, transform.right, 180);
+
+        // set up velocity
+        rb.velocity = transform.forward * climbMoveSpeed;
     }
 
     #region Animation Events
