@@ -30,14 +30,13 @@ public class SquirrelController : MonoBehaviour {
 
     [Header("Climb Stats")]
     [SerializeField] private float climbMoveSpeed;
-    [SerializeField] private float distToStartClimb;
-    public PhysicMaterial zeroFriction;
 
     private int num_loops_remaining;
     private int num_jumps_until_swap;
     private Rigidbody rb;
     private Animator anim;
     private bool onGround = false;
+    private BoxCollider col;
 
     private void Start()
     {
@@ -48,20 +47,30 @@ public class SquirrelController : MonoBehaviour {
         num_jumps_until_swap = numMovementsBeforeSwap;
 
         state = SquirrelState.Idle;
+        col = GetComponent<BoxCollider>();
     }
 
 
     // grounded stuff
     private void OnCollisionEnter(Collision collision)
     {
+        if(state == SquirrelState.Escape)
+        {
+            if (collision.gameObject.tag == "Tree")
+            {
+                print("start climbing");
+                startClimb();
+            }
+            else if(collision.gameObject.tag != "Ground")
+            {
+                // need to get through this thing
+                Physics.IgnoreCollision(collision.collider, col);
+            }
+        }
+
         if (collision.gameObject.tag == "Ground")
         {
             onGround = true;
-        }
-        else if (collision.gameObject.tag == "Tree")
-        {
-            print("start climbing");
-            startClimb();
         }
     }
 
@@ -125,14 +134,6 @@ public class SquirrelController : MonoBehaviour {
         }
     }
 
-    private void Update()
-    {
-        if(state == SquirrelState.Escape && Vector3.Distance(actual_positon.position, treeTarget.transform.position) < distToStartClimb)
-        {
-            //startClimb();
-        }
-    }
-
     private void FixedUpdate()
     {
         if(constantMovement && onGround && state == SquirrelState.Wander)
@@ -153,13 +154,15 @@ public class SquirrelController : MonoBehaviour {
         state = SquirrelState.ClimbTree;
 
         // turn off collider
-        GetComponent<BoxCollider>().enabled = false;
+        col.enabled = false;
 
         // turn off gravity
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
         rb.useGravity = false;
 
         // rotate up to climb
-        transform.RotateAround(actual_positon.position, transform.right, 180);
+        transform.RotateAround(actual_positon.position, transform.right, -90);
 
         // set up velocity
         rb.velocity = transform.forward * climbMoveSpeed;
