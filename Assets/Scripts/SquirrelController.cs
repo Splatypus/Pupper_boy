@@ -89,6 +89,13 @@ public class SquirrelController : MonoBehaviour {
             print("RUN AWAY DOGGO IS NEAR");
             startEscape(other.gameObject);
         }
+
+        if(state == SquirrelState.ClimbTree)
+        {
+            float death_timer = 0.01f * other.gameObject.transform.localScale.y;
+            print("squirrel suicide in " + death_timer);
+            Destroy(this.gameObject, death_timer);
+        }
     }
     
 
@@ -124,8 +131,7 @@ public class SquirrelController : MonoBehaviour {
         else
         {
             // rotate towards the tree I want to go to
-            //float angle_diff = Vector3.SignedAngle(DogToSquirrelVec, closest_tree.transform.position - actual_positon.position, transform.up);
-            float angle_diff = Vector3.SignedAngle(transform.forward, closest_tree.transform.position - actual_positon.position, transform.up);
+            float angle_diff = Vector3.SignedAngle(actual_positon.forward, closest_tree.transform.position - actual_positon.position, transform.up);
             print("angle diff: " + angle_diff);
             transform.RotateAround(actual_positon.position, transform.up, angle_diff);
 
@@ -154,7 +160,7 @@ public class SquirrelController : MonoBehaviour {
         state = SquirrelState.ClimbTree;
 
         // turn off collider
-        col.enabled = false;
+        //col.enabled = false;
 
         // turn off gravity
         rb.velocity = Vector3.zero;
