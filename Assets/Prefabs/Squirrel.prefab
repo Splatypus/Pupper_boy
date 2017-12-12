@@ -696,7 +696,7 @@ Transform:
   m_GameObject: {fileID: 1372564603097404}
   m_LocalRotation: {x: 0.22495106, y: -0, z: -0, w: 0.97437006}
   m_LocalPosition: {x: -0.026287636, y: -0.011352267, z: 4.9940357}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 4142898804564634}
   m_RootOrder: 2
@@ -764,7 +764,7 @@ Transform:
   m_GameObject: {fileID: 1314082460278434}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 4.975}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 4142898804564634}
   m_RootOrder: 7
@@ -838,7 +838,7 @@ Transform:
   m_GameObject: {fileID: 1197439217677650}
   m_LocalRotation: {x: -0.1650476, y: 0, z: -0, w: 0.9862856}
   m_LocalPosition: {x: -0.016361913, y: 0.011441487, z: 4.963903}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4332066183264660}
   - {fileID: 4970859311830448}
@@ -854,7 +854,7 @@ Transform:
   m_GameObject: {fileID: 1113011613396350}
   m_LocalRotation: {x: -0.27563736, y: 0, z: -0, w: 0.9612617}
   m_LocalPosition: {x: -0.0066122846, y: -0.016077854, z: 4.945143}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 4142898804564634}
   m_RootOrder: 1
@@ -950,7 +950,7 @@ Transform:
   m_GameObject: {fileID: 1179125971215938}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.016361913, y: -0.015567929, z: 4.9756413}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 4142898804564634}
   m_RootOrder: 6
@@ -977,7 +977,7 @@ Transform:
   m_GameObject: {fileID: 1342389219343668}
   m_LocalRotation: {x: -0.1650476, y: 0, z: -0, w: 0.9862856}
   m_LocalPosition: {x: -0.016361913, y: 0.011452428, z: 4.964058}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4818003544845014}
   - {fileID: 4013356964464006}
@@ -1159,7 +1159,7 @@ Transform:
   m_GameObject: {fileID: 1996650981033632}
   m_LocalRotation: {x: 0.22495106, y: -0, z: -0, w: 0.97437006}
   m_LocalPosition: {x: -0.0064361934, y: -0.0116418535, z: 5.00245}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 4142898804564634}
   m_RootOrder: 3
@@ -1172,7 +1172,7 @@ Transform:
   m_GameObject: {fileID: 1773815560864500}
   m_LocalRotation: {x: -0.27563736, y: 0, z: -0, w: 0.9612617}
   m_LocalPosition: {x: -0.026111543, y: -0.01529065, z: 4.9469132}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 4142898804564634}
   m_RootOrder: 0
@@ -1296,9 +1296,9 @@ MonoBehaviour:
   minNumMovementLoops: 2
   maxNumMovementLoops: 5
   WanderMaxAngleChange: 25
-  wanderMovementSpeed: 2
+  wanderMovementSpeed: 0.5
   wanderJumpForce1: 150
-  constantMovement: 0
+  constantMovement: 1
   treesInMyYard:
   - {fileID: 0}
   - {fileID: 0}
@@ -1306,6 +1306,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  escapeMoveSpeed: 12
+  escapeJumpForce: 200
 --- !u!135 &135837564379655436
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -1316,8 +1318,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 2
+  m_Center: {x: -0.015, y: 0.015, z: 4.945}
 --- !u!137 &137983202546611622
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

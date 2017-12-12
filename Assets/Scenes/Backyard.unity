@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 871061062}
-  m_IndirectSpecularColor: {r: 0.75560457, g: 0.6515625, b: 0.5085914, a: 1}
+  m_IndirectSpecularColor: {r: 0.75560623, g: 0.65156347, b: 0.50859123, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -382,25 +382,36 @@ Prefab:
       propertyPath: treesInMyYard.Array.data[5]
       value: 
       objectReference: {fileID: 1852132771}
-    - target: {fileID: 135837564379655436, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
+    - target: {fileID: 65906291692304064, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
-      propertyPath: m_Center.x
-      value: -0.015
+      propertyPath: m_Size.x
+      value: 0.09
       objectReference: {fileID: 0}
-    - target: {fileID: 135837564379655436, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
+    - target: {fileID: 65906291692304064, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
-      propertyPath: m_Center.y
-      value: 0.015
+      propertyPath: m_Size.y
+      value: 0.11
       objectReference: {fileID: 0}
-    - target: {fileID: 135837564379655436, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
+    - target: {fileID: 65906291692304064, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
-      propertyPath: m_Center.z
-      value: 4.945
+      propertyPath: m_Size.z
+      value: 0.3
       objectReference: {fileID: 0}
-    - target: {fileID: 135837564379655436, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
+    - target: {fileID: 65906291692304064, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
-      propertyPath: m_Radius
-      value: 2
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: 18f833af9b1def44ea2211fd40e38c75,
+        type: 2}
+    - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
+        type: 2}
+      propertyPath: wanderMovementSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
+        type: 2}
+      propertyPath: wanderJumpForce1
+      value: 200
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}

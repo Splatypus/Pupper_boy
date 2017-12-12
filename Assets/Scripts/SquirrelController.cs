@@ -13,6 +13,7 @@ public class SquirrelController : MonoBehaviour {
     [SerializeField] private int minNumIdleLoops = 2;
     [SerializeField] private int maxNumIdleLoops = 2;
     [SerializeField] private int numMovementsBeforeSwap = 2;
+    public PhysicMaterial idleMaterial;
 
     [Header("Movement Stats")]
     [SerializeField] private int minNumMovementLoops = 2;
@@ -24,6 +25,8 @@ public class SquirrelController : MonoBehaviour {
 
     [Header("Escape Stats")]
     public GameObject[] treesInMyYard;
+    [SerializeField] private float escapeMoveSpeed;
+    [SerializeField] private float escapeJumpForce;
 
     private int num_loops_remaining;
     private int num_jumps_until_swap;
@@ -108,6 +111,7 @@ public class SquirrelController : MonoBehaviour {
             transform.RotateAround(actual_positon.position, transform.up, angle_diff);
 
             // run that way real speedylike
+            anim.SetBool("isWander", true);
         }
     }
 
@@ -115,7 +119,14 @@ public class SquirrelController : MonoBehaviour {
     {
         if(constantMovement && onGround && state == SquirrelState.Wander)
         {
-            rb.velocity = wanderMovementSpeed * transform.forward;
+            if(rb.velocity.magnitude < wanderMovementSpeed)
+                rb.velocity = wanderMovementSpeed * transform.forward;
+        }
+
+        if(state == SquirrelState.Escape && onGround)
+        {
+            if(rb.velocity.magnitude < escapeMoveSpeed)
+                rb.velocity = transform.forward * escapeMoveSpeed;
         }
     }
 
@@ -169,6 +180,8 @@ public class SquirrelController : MonoBehaviour {
 
             // set up animator
             anim.SetBool("isWander", false);
+
+            BoxCollider mcol = GetComponent<BoxCollider>();
         }
         
     }
@@ -178,6 +191,10 @@ public class SquirrelController : MonoBehaviour {
         if (state == SquirrelState.Wander)
         {
             rb.AddForce(transform.forward * wanderJumpForce1);
+        }
+        if(state == SquirrelState.Escape)
+        {
+            rb.AddForce(transform.forward * escapeJumpForce);
         }
     }
     #endregion
