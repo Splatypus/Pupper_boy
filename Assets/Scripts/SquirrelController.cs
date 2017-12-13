@@ -125,8 +125,12 @@ public class SquirrelController : MonoBehaviour {
         {
             // dog has trapped the squirrel in a corner
             // death is the only solution?
-            
+
             // I think that they should run for the fence, but I really don't know the best thing to do at this point
+            float angle_diff = Vector3.SignedAngle(actual_positon.forward, player.transform.position - actual_positon.position, transform.up) + 180f;
+            //print("angle diff: " + angle_diff);
+            transform.RotateAround(actual_positon.position, transform.up, angle_diff);
+            anim.SetBool("isWander", true);
         }
         else
         {
