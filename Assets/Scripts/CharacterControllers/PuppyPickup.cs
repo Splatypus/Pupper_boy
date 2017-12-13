@@ -25,12 +25,15 @@ public class PuppyPickup : MonoBehaviour {
     private ToyBox boxInRange = null;                                           //toy box that is in range (if one exists)
     private FoodDispenser foodInRange = null;
 
+    private IconManager iconManager;
+
     BirdMovementV2[] birds;
 
 	// Use this for initialization
 	void Start () {
         m_audio_source = GetComponent<AudioSource>();
         birds = FindObjectsOfType<BirdMovementV2>();
+        iconManager = GetComponentInChildren<IconManager>();
 	}
 	
 	// Update is called once per frame
@@ -88,6 +91,9 @@ public class PuppyPickup : MonoBehaviour {
                     //Debug.Log("ENTER MEME ZONE!!!!");
                     FlightMode flight = FindObjectOfType<FlightMode>();
                     flight.can_fly = true;
+                    iconManager.set_single_icon(Icons.Flight);
+                    iconManager.set_single_bubble_active(true);
+                    Invoke("dissable_bubble_icon", 2.0f);
                 }
                 if (m_num_food % num_food_for_poop == 0)
                 {
@@ -136,6 +142,11 @@ public class PuppyPickup : MonoBehaviour {
         if (itemInMouth != null)
             prevPosition = itemInMouth.transform.position;
 	}
+
+    private void dissable_bubble_icon()
+    {
+        iconManager.set_single_bubble_active(false);
+    }
 
     public void poop()
     {

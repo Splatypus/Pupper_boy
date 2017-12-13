@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // there is a way to create this enum dynamically, but it looks questionable to me and I think it's better to hard code?
-public enum Icons { Afraid, Angry, Bird, Corgi, Exclamation, Happy, Pomeranian, Question, Sad, Squirrell, Terrier, Dig}
+public enum Icons { Afraid, Angry, Bird, Corgi, Exclamation, Happy, Pomeranian, Question, Sad, Squirrell, Terrier, Dig, Flight}
 // need to get sprites that match up to these, probably in an array that we can index into with enum int val
 
 public class IconManager : MonoBehaviour {

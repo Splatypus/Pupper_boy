@@ -12,9 +12,15 @@ public class BallLaunchV2 : MonoBehaviour {
     [SerializeField] private Transform storePosition;
     [SerializeField] private float launch_delay;
 
+    private AudioSource audioSource;
 
     private GameObject ballToLaunch = null;
     private Rigidbody ball_rb;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     public bool can_launch()
     {
@@ -47,6 +53,7 @@ public class BallLaunchV2 : MonoBehaviour {
     void LaunchBall()
     {
         print("LAUNCHER: shoot ball");
+        audioSource.Play();
         ballToLaunch.transform.position = launch_start_pos.position;
 
         SphereCollider sc = ballToLaunch.GetComponent<SphereCollider>();
