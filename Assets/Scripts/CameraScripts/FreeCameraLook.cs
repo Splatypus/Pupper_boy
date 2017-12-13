@@ -20,6 +20,7 @@ public class FreeCameraLook : Pivot
     private float lookAngle;
     private float tiltAngle;
 
+
     private const float LookDistance = 100f;
 
     private float smoothX = 0;

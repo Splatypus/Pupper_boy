@@ -6952,6 +6952,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4776689511775488, guid: ccf89df8c0b45ad4b910eea5486bfbdb, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -5.26
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ccf89df8c0b45ad4b910eea5486bfbdb, type: 2}
   m_IsPrefabParent: 0
@@ -11259,6 +11263,25 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &661620627 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1714560759926348, guid: ccf89df8c0b45ad4b910eea5486bfbdb,
+    type: 2}
+  m_PrefabInternal: {fileID: 581144038}
+--- !u!114 &661620633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 661620627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd263a82e9f60294fa51d08eb7c31310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxCamDis: 7
+  moveInPaddingDistance: 0.5
+  player: {fileID: 0}
 --- !u!1 &661764319
 GameObject:
   m_ObjectHideFlags: 0
@@ -17082,6 +17105,10 @@ Prefab:
     - target: {fileID: 400000, guid: 5a15747d0d4142245a915c83a61b4fe9, type: 3}
       propertyPath: m_LocalScale.z
       value: 88.74226
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 5a15747d0d4142245a915c83a61b4fe9, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5a15747d0d4142245a915c83a61b4fe9, type: 3}
