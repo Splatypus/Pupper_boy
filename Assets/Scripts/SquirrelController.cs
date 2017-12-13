@@ -90,10 +90,10 @@ public class SquirrelController : MonoBehaviour {
             startEscape(other.gameObject);
         }
 
-        if(state == SquirrelState.ClimbTree)
+        if(state == SquirrelState.ClimbTree && other.tag == "Tree")
         {
             float death_timer = 0.01f * other.gameObject.transform.localScale.y;
-            print("squirrel suicide in " + death_timer);
+            print("squirrel suicide in " + death_timer + " other scale is " + other.gameObject.transform.localScale.y);
             Destroy(this.gameObject, death_timer);
         }
     }
