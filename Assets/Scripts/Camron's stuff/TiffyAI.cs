@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TiffyAI : AIbase {
 
-    Animator anim;
+    Animator[] anim;
     public float moveDistance;
     public float speed;
 
@@ -46,14 +46,20 @@ public class TiffyAI : AIbase {
 
     public void Saved() {
         //anim.SetFloat("Forward", 1.0f, 0.1f, Time.deltaTime);
-        anim.SetFloat("Forward", 0.8f);
+
+        //anim.SetFloat("Forward", 0.8f);
+        foreach(Animator a in anim)
+        {
+            a.SetFloat("Forward", 0.8f);
+            a.SetTrigger("isSaved");
+        }
         state = States.Rescued;
         Display(Dialog[1]);
     }
 
     public override void Start() {
         base.Start();
-        anim = GetComponentInChildren<Animator>();
+        anim = GetComponentsInChildren<Animator>();
     }
 
     public override void Update() {
@@ -74,7 +80,12 @@ public class TiffyAI : AIbase {
             transform.position += Vector3.back * Time.deltaTime * speed;
             moveDistance -= Time.deltaTime * speed;
             if (moveDistance < 0) {
-                anim.SetFloat("Forward", 0.0f); //, 0.1f, Time.deltaTime);
+                //anim.SetFloat("Forward", 0.0f); //, 0.1f, Time.deltaTime);
+
+                foreach (Animator a in anim)
+                {
+                    a.SetFloat("Forward", 0.0f);
+                }
             }
         }
     }
