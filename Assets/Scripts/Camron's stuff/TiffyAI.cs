@@ -16,6 +16,9 @@ public class TiffyAI : AIbase {
 
     public GameObject[] birds;
 
+    public GameObject bandanaObject;
+    public GameObject noBandanaObject;
+
 
     public override void OnInRange() {
         if (state == States.Hiding) {
@@ -34,6 +37,10 @@ public class TiffyAI : AIbase {
             state = States.Happy;
             Display(Dialog[2]);
             Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
+            if (bandanaObject != null && noBandanaObject != null) {
+                bandanaObject.SetActive(true);
+                noBandanaObject.SetActive(false);
+            }
         }
     }
 
