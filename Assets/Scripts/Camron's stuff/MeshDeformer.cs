@@ -9,29 +9,57 @@ public class MeshDeformer : MonoBehaviour {
     Mesh deformingMesh;
     Vector3[] originalVertices, displacedVertices;
 
-    Vector3[] vertexVelocities;
-
     //starting data
     public float startHeight;
+    public float minHeight;
     public float recoverySpeed;
     public float downSpeed;
     public float cutoffEffectDistance;
     public bool enableDoubleSquareDeformDistance;
 
+    //easy tiling
+    public GameObject tiledObject;
+    public int spawnNorth, spawnSouth, spawnEast, spawnWest;
+    public float spawnHeightPadding = 4.0f;
+
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         //set mesh data
         deformingMesh = GetComponent<MeshFilter>().mesh;
+        //start the mesh a set distance above terrain
+        RaycastHit hit;
+        int layermask = 1 << 8;
         originalVertices = deformingMesh.vertices;
+        for (int i = 0; i < originalVertices.Length; i++) {
+            if (Physics.Raycast(originalVertices[i] + transform.position, Vector3.down, out hit, 10.0f, layermask)) {
+                originalVertices[i] = new Vector3(originalVertices[i].x, originalVertices[i].y - hit.distance + startHeight, originalVertices[i].z);
+                print("hit terrain, " + hit.distance);
+            }
+        }
+        //originalVertices = deformingMesh.vertices;
+        //set up displaced ver array
         displacedVertices = new Vector3[originalVertices.Length];
         for (int i = 0; i < originalVertices.Length; i++) {
             displacedVertices[i] = originalVertices[i];
         }
-        vertexVelocities = new Vector3[originalVertices.Length];
-
+        deformingMesh.vertices = displacedVertices;
+        deformingMesh.RecalculateNormals();
         //so we can compare to square magnitute of vectors rather than magnitute. 
         cutoffEffectDistance *= cutoffEffectDistance;
+
+        //tile more if we got em
+        if (tiledObject) { 
+            for (int i = -spawnSouth; i < spawnNorth; i++) {
+                for (int j = -spawnWest; j < spawnEast; j++) {
+                    Vector3 newlocation = new Vector3(transform.position.x + 9 * i, transform.position.y, transform.position.z + 9 * j);
+                    if (Physics.Raycast(newlocation + new Vector3(0.0f, 10.0f, 0.0f), Vector3.down, out hit, 20.0f, layermask) && (i != 0 || j != 0)) {
+                        Instantiate(tiledObject, newlocation + new Vector3(0.0f, 10.0f + spawnHeightPadding - hit.distance, 0.0f), transform.rotation);
+                    }
+                }
+            }
+        }
+
     }
 	
 	// Update is called once per frame
@@ -56,7 +84,7 @@ public class MeshDeformer : MonoBehaviour {
                 if (enableDoubleSquareDeformDistance)
                     dis *= dis;
                 float scaledDistance = downSpeed * Time.deltaTime / (1f + dis * dis);
-                displacedVertices[i] = new Vector3(displacedVertices[i].x, Mathf.Max(displacedVertices[i].y - scaledDistance, originalVertices[i].y - 1.0f), displacedVertices[i].z);
+                displacedVertices[i] = new Vector3(displacedVertices[i].x, Mathf.Max(displacedVertices[i].y - scaledDistance, originalVertices[i].y - startHeight + minHeight), displacedVertices[i].z);
                 deformingMesh.vertices = displacedVertices;
                 deformingMesh.RecalculateNormals();
             }
