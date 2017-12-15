@@ -34,7 +34,6 @@ public class MeshDeformer : MonoBehaviour {
         for (int i = 0; i < originalVertices.Length; i++) {
             if (Physics.Raycast(originalVertices[i] + transform.position, Vector3.down, out hit, 10.0f, layermask)) {
                 originalVertices[i] = new Vector3(originalVertices[i].x, originalVertices[i].y - hit.distance + startHeight, originalVertices[i].z);
-                print("hit terrain, " + hit.distance);
             }
         }
         //originalVertices = deformingMesh.vertices;
