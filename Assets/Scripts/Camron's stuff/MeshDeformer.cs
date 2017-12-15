@@ -44,6 +44,7 @@ public class MeshDeformer : MonoBehaviour {
         }
         deformingMesh.vertices = displacedVertices;
         deformingMesh.RecalculateNormals();
+        deformingMesh.RecalculateBounds();
         //so we can compare to square magnitute of vectors rather than magnitute. 
         cutoffEffectDistance *= cutoffEffectDistance;
 
