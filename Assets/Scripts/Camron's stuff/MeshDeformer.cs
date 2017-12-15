@@ -52,8 +52,8 @@ public class MeshDeformer : MonoBehaviour {
             for (int i = -spawnSouth; i < spawnNorth; i++) {
                 for (int j = -spawnWest; j < spawnEast; j++) {
                     Vector3 newlocation = new Vector3(transform.position.x + 9 * i, transform.position.y, transform.position.z + 9 * j);
-                    if (Physics.Raycast(newlocation + new Vector3(0.0f, 10.0f, 0.0f), Vector3.down, out hit, 20.0f, layermask) && (i != 0 || j != 0)) {
-                        Instantiate(tiledObject, newlocation + new Vector3(0.0f, 10.0f + spawnHeightPadding - hit.distance, 0.0f), transform.rotation);
+                    if (Physics.Raycast(newlocation + new Vector3(0.0f, 30.0f, 0.0f), Vector3.down, out hit, 60.0f, layermask) && (i != 0 || j != 0)) {
+                        Instantiate(tiledObject, newlocation + new Vector3(0.0f, 30.0f + spawnHeightPadding - hit.distance, 0.0f), transform.rotation);
                     }
                 }
             }
