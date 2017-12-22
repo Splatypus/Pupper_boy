@@ -28,6 +28,7 @@ public class PuppyPickup : MonoBehaviour {
     private IconManager iconManager;
 
     BirdMovementV2[] birds;
+    
 
 	// Use this for initialization
 	void Start () {
@@ -39,7 +40,8 @@ public class PuppyPickup : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         //determine if E key has been pressed.  E key is used to pickup and drop objects
-        if(Input.GetKeyDown(KeyCode.E))
+        //if(Input.GetKeyDown(KeyCode.E))
+        if(Input.GetButtonDown("Interact"))
         {
             //Debug.Log("got e");
             //first, if there is an object in the dog's mouth, drop it or load it into a launcher

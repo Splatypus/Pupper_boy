@@ -60,7 +60,8 @@ public class FlightMode : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        //if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetButtonDown("Fly"))
         {
             if (isFlying)
                 DeactivateFlightMode();
@@ -86,7 +87,8 @@ public class FlightMode : MonoBehaviour {
                 flightSound.Play();
 
             // poop while flying
-            if(Input.GetKeyDown(KeyCode.R))
+            //if(Input.GetKeyDown(KeyCode.R))
+            if(Input.GetButtonDown("PoopDivebomb"))
             {
                 // poop
                 pickup.poop();

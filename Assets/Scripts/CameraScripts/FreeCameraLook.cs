@@ -17,6 +17,11 @@ public class FreeCameraLook : Pivot
     [SerializeField]
     private bool lockCursor = false;
 
+    [SerializeField]
+    float joypadXMultiplier = 2.0f;
+    [SerializeField]
+    float joypadYMultiplier = 2.0f;
+
     private float lookAngle;
     private float tiltAngle;
 
@@ -65,8 +70,8 @@ public class FreeCameraLook : Pivot
 
     void HandleRotationMovement()
     {
-        float x = Input.GetAxis("Mouse X");
-        float y = Input.GetAxis("Mouse Y");
+        float x = Input.GetAxis("Mouse X") + Input.GetAxis("RightJoystickX") * joypadXMultiplier;
+        float y = Input.GetAxis("Mouse Y") + Input.GetAxis("RightJoystickY") * joypadYMultiplier;
 
         if (turnsmoothing > 0)
         {

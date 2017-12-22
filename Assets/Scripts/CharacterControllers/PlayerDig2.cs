@@ -102,7 +102,8 @@ public class PlayerDig2 : MonoBehaviour {
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Q))
+            //if (Input.GetKeyDown(KeyCode.Q))
+            if(Input.GetButtonDown("Dig"))
             {
                 if (curZone != null)
                 {

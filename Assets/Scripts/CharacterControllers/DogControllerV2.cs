@@ -68,9 +68,11 @@ public class DogControllerV2 : MonoBehaviour {
         vertical = Input.GetAxis("Vertical");
         jumpInput = Input.GetButtonDown("Jump");
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        //if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetAxis("Sprint") > float.Epsilon)
         {
             m_speed = speed * 1.75f;
+            
         }
         else
         {

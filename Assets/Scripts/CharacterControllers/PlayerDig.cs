@@ -26,7 +26,8 @@ public class PlayerDig : MonoBehaviour {
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Q))
+        //if(Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetButtonDown("Dig"))
         {
             //print("got q!");
             if(curZone != null)
