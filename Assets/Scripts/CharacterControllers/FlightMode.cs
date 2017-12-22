@@ -19,7 +19,7 @@ public class FlightMode : MonoBehaviour {
     [SerializeField] private AudioSource flightSound;
     [SerializeField] private AudioSource flightMusic;
 
-    BoxCollider collider;
+    BoxCollider col;
     [SerializeField] private PhysicMaterial flightMaterial;
 
     [SerializeField] private float fadeTime;
@@ -45,8 +45,9 @@ public class FlightMode : MonoBehaviour {
         rb = this.GetComponent<Rigidbody>();
         tr = this.GetComponent<TrailRenderer>();
         ps = this.GetComponent<ParticleSystem>();
-        collider = GetComponent<BoxCollider>();
-        BGMusicNormalVolume = BackgroundMusic.volume;
+        col = GetComponent<BoxCollider>();
+        if(BackgroundMusic != null)
+            BGMusicNormalVolume = BackgroundMusic.volume;
 
         tr.enabled = false;
 
@@ -111,7 +112,7 @@ public class FlightMode : MonoBehaviour {
             this.GetComponent<ThirdPersonUserControl>().enabled = false;
         rb.constraints = RigidbodyConstraints.None;
         this.transform.Rotate(new Vector3(-1f * takeoffAngle, 0f, 0f));
-        collider.material = flightMaterial;
+        col.material = flightMaterial;
 
         // set up trail and particle effect
         tr.enabled = true;
