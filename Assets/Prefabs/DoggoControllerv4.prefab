@@ -1230,6 +1230,7 @@ GameObject:
   - component: {fileID: 114532767797915932}
   - component: {fileID: 82059924588672866}
   - component: {fileID: 65479630872301480}
+  - component: {fileID: 114444910238418802}
   m_Layer: 0
   m_Name: DoggoControllerv4
   m_TagString: Player
@@ -5632,7 +5633,7 @@ MonoBehaviour:
   flightMaterial: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1, type: 2}
   fadeTime: 2
   fadeBGTime: 2
-  can_fly: 0
+  can_fly: 1
 --- !u!114 &114174209078664458
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5714,6 +5715,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114444910238418802
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1447941198375708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6675effcf1a6bc247aabdaad1d00a358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  InputAxis: Interact
 --- !u!114 &114462801280213784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6112,7 +6125,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 359859279
+  randomSeed: -496677377
   InitialModule:
     serializedVersion: 3
     enabled: 1
