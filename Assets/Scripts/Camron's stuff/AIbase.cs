@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIbase : MonoBehaviour {
+public class AIbase : InteractableObject {
 
     public GameObject[] Dialog;
     private GameObject Player;
@@ -27,10 +27,8 @@ public class AIbase : MonoBehaviour {
         //Display(Dialog[1]);
     }
 
-    //Trigger when the player barks while in rage
-    public virtual void OnBark() {
+    //Calling OnInteract will trigger if the player is in range and barks. This is defined in the parent class.
 
-    }
     //Displays the thought bubble
     public void Display(GameObject icon) {
         EndDisplay();
