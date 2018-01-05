@@ -54,6 +54,7 @@ GameObject:
   - component: {fileID: 124612975790593652}
   - component: {fileID: 92371210551117378}
   - component: {fileID: 81021556160581784}
+  - component: {fileID: 114705662543658766}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -82,7 +83,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1174753708155798}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 4.074341, y: -0.00000047683716, z: -2.7832031}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4098842494694446}
@@ -171,6 +172,22 @@ MonoBehaviour:
   tiltMax: 75
   tiltMin: 45
   lockCursor: 0
+  joypadXMultiplier: 2
+  joypadYMultiplier: 2
+--- !u!114 &114705662543658766
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1714560759926348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd263a82e9f60294fa51d08eb7c31310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxCamDis: 7
+  moveInPaddingDistance: 0.5
+  player: {fileID: 0}
 --- !u!124 &124612975790593652
 Behaviour:
   m_ObjectHideFlags: 1
