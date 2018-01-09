@@ -13,13 +13,14 @@ public class Character : MonoBehaviour {
     public int curHP;
 
     //background attributes
+    public string characterName;
     public bool isEnemy;
     public GameManager gameManager;
 
     //attributes
     public int speed;
 
-    public virtual void TurnAction() {
+    public virtual void OnTurnStart() {
         
     }
 

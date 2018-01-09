@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : Character {
 
-    public override void TurnAction() {
+    public override void OnTurnStart() {
         //generate list of usable abilities and randomly select one
         gameManager.NextTurn();
     }

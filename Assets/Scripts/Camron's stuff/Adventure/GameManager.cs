@@ -15,20 +15,36 @@ public class GameManager : MonoBehaviour {
     public void NextRound() {
         //generate turn order
         round++;
-        //do first turn
-        NextTurn();
+        //do first turn if there are still characters, otherwise end combat
+        if (turnOrder.Count > 0) {
+            NextTurn();
+        } else {
+            EndCombat();
+        }
     }
 
 
     //start each turn
     public void NextTurn() {
-        Character currentCharacter = turnOrder.Dequeue();
-        if (currentCharacter != null) {
-            currentCharacter.TurnAction();
-        } else {
-            //if no character left in the turn order, then start the next round
+        if (turnOrder.Count <= 0) {
             NextRound();
+        } else {
+            Character currentCharacter = turnOrder.Dequeue();
+            //set up UI for new character here
+            currentCharacter.OnTurnStart();
         }
+    }
+
+    //ABILITY USE
+    //takes an int to determine which button was clicked, then actiavtes taht ability
+    public void UseAbility(int number) {
+
+        NextRound();
+    }
+
+    //ends current combat or something
+    public void EndCombat() {
+
     }
 
 }
