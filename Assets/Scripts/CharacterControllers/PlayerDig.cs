@@ -63,7 +63,10 @@ public class PlayerDig : MonoBehaviour {
 
         float dist_to_move;
         // we will move our extra 
-        dist_to_move = (zone_to_go_to.transform.position - digZone.transform.position).magnitude + extra_movement_for_dig;
+        //dist_to_move = (zone_to_go_to.transform.position - digZone.transform.position).magnitude + extra_movement_for_dig; 
+        Vector3 plane = (digZone.transform.position - zone_to_go_to.transform.position).normalized;
+        Vector3 toPlayer = transform.position - zone_to_go_to.transform.position;
+        dist_to_move = Vector3.Dot(plane, toPlayer);
 
         transform.position += (zone_to_go_to.transform.position - digZone.transform.position).normalized * dist_to_move + new Vector3(0,extra_movement_for_dig_y,0);
     }

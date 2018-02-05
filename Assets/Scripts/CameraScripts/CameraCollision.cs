@@ -24,6 +24,12 @@ public class CameraCollision : MonoBehaviour {
         float newCamDis = maxCamDis;
         int layermask = 1<<2;
         layermask = ~layermask;
+        /*if (Physics.Raycast(player.transform.position, -transform.forward, out hitForward, maxCamDis, layermask)) {
+            if (hitForward.collider.gameObject != player) {
+                transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -maxCamDis + hitForward.distance);
+            }
+        }*/
+        
         //raycast forward to see if we collide with anything, if we do move the camera in front of it
         if (Physics.Raycast(transform.position, transform.forward, out hitForward, curCamDis, layermask)) {
             if (hitForward.collider.gameObject != player) {
