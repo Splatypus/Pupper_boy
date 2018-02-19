@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class SquirrelController : MonoBehaviour {
 
-    private enum SquirrelState { Idle, Wander, Escape, ClimbTree};
+    // Code for states
+    private enum SquirrelState { Idle, Wander, EscapeToTree, EscapeFromCorner, ClimbTree};
     SquirrelState state = SquirrelState.Idle;
 
+    // Issue with model causes there to be discrepency between positions of things
     public Transform actual_positon;
 
     [Header("Idle Stats")]
@@ -50,24 +52,26 @@ public class SquirrelController : MonoBehaviour {
         col = GetComponent<BoxCollider>();
     }
 
-
-    // grounded stuff
     private void OnCollisionEnter(Collision collision)
     {
-        if(state == SquirrelState.Escape)
+        // If we are in escape mode, act differently
+        if(state == SquirrelState.EscapeToTree || state == SquirrelState.EscapeFromCorner)
         {
+            // If we hit the tree, start climbing
             if (collision.gameObject.tag == "Tree")
             {
-                print("start climbing");
-                startClimb();
+                StartClimb();
             }
             else if(collision.gameObject.tag != "Ground")
             {
-                // need to get through this thing
+                // Right now the squirrel wants to just ignore things that are not the tree and the ground
+                // This lets us not have to worry about bushes and whatnot. This could potentially cause issues
+                // with certain lawn setups, if there is something big near a tree
                 Physics.IgnoreCollision(collision.collider, col);
             }
         }
 
+        // Set up grounded state
         if (collision.gameObject.tag == "Ground")
         {
             onGround = true;
@@ -84,33 +88,32 @@ public class SquirrelController : MonoBehaviour {
 
     private void OnTriggerEnter(Collider other)
     {
+        // Look to see if the player gets close enough to trigger fleeing
         if(other.tag == "Player" && (state == SquirrelState.Idle || state == SquirrelState.Wander))
         {
-            print("RUN AWAY DOGGO IS NEAR");
-            startEscape(other.gameObject);
+            StartEscape(other.gameObject);
         }
 
+        // Checks when the squirrel hits upper part of the tree, then destroy it after a short delay
         if(state == SquirrelState.ClimbTree && other.tag == "Tree")
         {
             float death_timer = 0.01f * other.gameObject.transform.localScale.y;
-            print("squirrel suicide in " + death_timer + " other scale is " + other.gameObject.transform.localScale.y);
             Destroy(this.gameObject, death_timer);
         }
     }
-    
 
-    void startEscape(GameObject player)
+    void StartEscape(GameObject player)
     {
-        // change state
-        state = SquirrelState.Escape;
-
+        // Locate the nearest tree in our yard
         float distToNearestTree = float.MaxValue;
         GameObject closest_tree = null;
         Vector3 DogToSquirrelVec = actual_positon.position - player.transform.position;
         foreach (GameObject tree in treesInMyYard)
         {
+            // Create a vector from the player to the tree
             Vector3 meToTreeVec = tree.transform.position - actual_positon.position;
-            //print("Dot for tree named " + tree.name + " is: " + Vector3.Dot(DogToSquirrelVec, meToTreeVec));
+
+            // Make sure that the player isn't blocking the tree
             if(Vector3.Dot(DogToSquirrelVec, meToTreeVec) > 0)
             {
                 if(meToTreeVec.magnitude < distToNearestTree)
@@ -120,46 +123,65 @@ public class SquirrelController : MonoBehaviour {
                 }
             }
         }
+
+        // Our target for escape will be the closest tree
         treeTarget = closest_tree;
+
+        // Check if we were able to find viable tree
         if (closest_tree == null)
         {
-            // dog has trapped the squirrel in a corner
-            // death is the only solution?
+            // change to escape state
+            state = SquirrelState.EscapeFromCorner;
 
-            // I think that they should run for the fence, but I really don't know the best thing to do at this point
+            // Player has trapped the squirrel in a corner. I don't know the best behavior to do here
+            // For now, run directly away from the player and just book it through the fence
             float angle_diff = Vector3.SignedAngle(actual_positon.forward, player.transform.position - actual_positon.position, transform.up) + 180f;
-            //print("angle diff: " + angle_diff);
             transform.RotateAround(actual_positon.position, transform.up, angle_diff);
-            anim.SetBool("isWander", true);
         }
         else
         {
-            // rotate towards the tree I want to go to
-            float angle_diff = Vector3.SignedAngle(actual_positon.forward, closest_tree.transform.position - actual_positon.position, transform.up);
-            print("angle diff: " + angle_diff);
-            transform.RotateAround(actual_positon.position, transform.up, angle_diff);
+            // change to escape state
+            state = SquirrelState.EscapeToTree;
 
-            // run that way real speedylike
-            anim.SetBool("isWander", true);
+            // rotate towards the tree I want to go to
+            // This doesn't really work, since the angle afterwards isn't zero
+            float max_rot = 2f;
+            float angle_diff = Vector3.SignedAngle(actual_positon.forward, treeTarget.transform.position - actual_positon.position, Vector3.up);
+            angle_diff = Mathf.Clamp(-max_rot * Time.deltaTime, max_rot * Time.deltaTime, angle_diff);
+            transform.RotateAround(actual_positon.position, Vector3.up, angle_diff);
         }
+
+        anim.SetBool("isWander", true);
     }
 
     private void FixedUpdate()
     {
+        // If our squirrel's movement uses constant moving rather than hopping, update movement
         if(constantMovement && onGround && state == SquirrelState.Wander)
         {
             if(rb.velocity.magnitude < wanderMovementSpeed)
                 rb.velocity = wanderMovementSpeed * transform.forward;
         }
 
-        if(state == SquirrelState.Escape && onGround)
+        // If we are running away not to a tree, just keep booking it
+        if(state == SquirrelState.EscapeFromCorner && onGround)
         {
             if(rb.velocity.magnitude < escapeMoveSpeed)
                 rb.velocity = transform.forward * escapeMoveSpeed;
         }
+
+        // If we are attempting to make it to a tree, keep trying to look at that tree
+        if (state == SquirrelState.EscapeToTree && onGround)
+        {
+            float angle_diff = Vector3.SignedAngle(actual_positon.forward, treeTarget.transform.position - actual_positon.position, Vector3.up);
+            transform.RotateAround(actual_positon.position, Vector3.up, angle_diff);
+            if (rb.velocity.magnitude < escapeMoveSpeed)
+                rb.velocity = transform.forward * escapeMoveSpeed;
+        }
     }
 
-    void startClimb()
+    // TODO: make this not shitty
+    void StartClimb()
     {
         state = SquirrelState.ClimbTree;
 
@@ -240,7 +262,7 @@ public class SquirrelController : MonoBehaviour {
         {
             rb.AddForce(transform.forward * wanderJumpForce1);
         }
-        if(state == SquirrelState.Escape)
+        if(state == SquirrelState.EscapeToTree || state == SquirrelState.EscapeFromCorner)
         {
             rb.AddForce(transform.forward * escapeJumpForce);
         }
