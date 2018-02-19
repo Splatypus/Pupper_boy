@@ -23,12 +23,6 @@ public class DogControllerV2 : MonoBehaviour {
     [SerializeField]
     float jumpPower = 1;
 
-    [SerializeField]
-    float max_x_rot = 3.0f;
-
-    [SerializeField]
-    float max_z_rot = 3.0f;
-
     Vector3 directionPos;
     Vector3 cam_right, cam_fwd;
 
