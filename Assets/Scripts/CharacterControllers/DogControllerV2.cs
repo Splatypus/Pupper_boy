@@ -50,64 +50,60 @@ public class DogControllerV2 : MonoBehaviour {
 	void Update () {
         HandleFriction();
 
+        // If it is on the screen, print to the debug text if we are grounded
         if(debug_text)
         {
-            //debug_text.text = "vel: " + rigidBody.velocity + "\nangular: " + rigidBody.angularVelocity;
             debug_text.text = "onGround: " + onGround;
         }
 
-
-        move();    
+        Move();    
     }
     
 
     //void FixedUpdate()
-    void move()
+    void Move()
     {
+        // Get input from Unity's default input control system
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
         jumpInput = Input.GetButtonDown("Jump");
 
-        //if (Input.GetKey(KeyCode.LeftShift))
+        // Check for sprint
         if (Input.GetAxis("Sprint") > float.Epsilon)
         {
             m_speed = speed * 1.75f;
-            
         }
         else
         {
             m_speed = speed;
         }
 
-
-        //if (onGround)
-        // need to do stuff in here otherwise it doesn't work??
-        //if (true)
+        // Code for grounded movement
         if (onGround)
         {
+            // Get information about the camera relative to us
             cam_right = Vector3.ProjectOnPlane(cam.right, transform.up);
             cam_fwd = Vector3.ProjectOnPlane(cam.forward, transform.up);
-
-            //rigidBody.AddForce(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
-            //Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
+            
+            // Compute new velocity relative to the camera and input
             Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed);
 
-            rigidBody.velocity =  new_velocity; //(((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed * Time.deltaTime);
+            rigidBody.velocity =  new_velocity;
 
-
-            // jump shit
             if(jumpInput)
             {
                 rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
                 onGround = false;
-            }
-            
+            }            
         }
         
+        // Update animation controller with the amount that we are moving
+        // There's a chance that we should be normalizing this, but I don't know well run animation blends
         float animValue = Mathf.Abs(vertical) + Mathf.Abs(horizontal);
-        anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime); // maybe should be FixedDeltaTime?
-        
-        if(horizontal != 0 || vertical != 0)
+        anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime);
+
+        // Update player rotation
+        if (horizontal != 0 || vertical != 0)
         {
             directionPos = transform.position + (cam_right * horizontal) + (cam_fwd * vertical);
 
@@ -119,54 +115,47 @@ public class DogControllerV2 : MonoBehaviour {
             if (angle != 0)
                 rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), turnspeed * Time.deltaTime);
         }
-        
     }
 
     
     private void OnCollisionEnter(Collision collision)
     {
-        // TODO: eventually make sure that you are actually on the ground and not just hitting anything. This only works on flatworld
-        // just need to mark the floor as the floor and I think that we are good!
+        // Check if the thing we hit is the ground
         if (collision.gameObject.tag == "Ground")
         {
             onGround = true;
             rigidBody.drag = 5;
+            // currently, onAir is not used, but could be if we had an animation for jumping
             anim.SetBool("onAir", false);
-            //debug_text.text = "grounded";
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if(collision.gameObject.tag == "Ground")
+        // Check if the thing we left is the ground
+        if (collision.gameObject.tag == "Ground")
         {
             onGround = false;
             rigidBody.drag = 0;
+            // currently, onAir is not used, but could be if we had an animation for jumping
             anim.SetBool("onAir", true);
-            //debug_text.text = "flying";
         }
-
     }
-    
-
     
     void HandleFriction()
     {
-        
-        // if there's no input
+        // If there is no input, we set our physics material to have max friction
         if(horizontal == 0 && vertical == 0)
         {
             capCol.material = mFriction;
-            
-            // trying this to stop spinning
         }
         else
         {
+            // If the player is moving, don't apply any friction
             capCol.material = zFriction;
         }
         
     }
-    
 
     void SetupAnimatior()
     {
