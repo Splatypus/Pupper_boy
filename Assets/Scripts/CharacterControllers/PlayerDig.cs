@@ -36,6 +36,10 @@ public class PlayerDig : MonoBehaviour {
                 rb.velocity = Vector3.zero;
                 if(curZone.isPathway)
                 {
+                    //this is to switch to a top camera when digging
+                    //wait until digging animation is implemented or when digging is no longer instantanious
+                    //GameObject.Find("Smart Cameras").GetComponent<cameracontrol>().isCam1 = false;
+
                     // for pathway
                     move_to_next_zone(curZone);
                     houseText.setText(curZone.other_side.enteringYardName);
@@ -49,6 +53,7 @@ public class PlayerDig : MonoBehaviour {
                     curZone.gameObject.SetActive(false);
                 }
             }
+
         }
     }
 
