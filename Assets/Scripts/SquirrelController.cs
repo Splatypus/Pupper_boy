@@ -32,6 +32,7 @@ public class SquirrelController : MonoBehaviour {
 
     [Header("Climb Stats")]
     [SerializeField] private float climbMoveSpeed;
+    public AnimationCurve treeShapeCurve;
 
     private int num_loops_remaining;
     private int num_jumps_until_swap;
@@ -39,6 +40,8 @@ public class SquirrelController : MonoBehaviour {
     private Animator anim;
     private bool onGround = false;
     private BoxCollider col;
+    private float start_climb_time = 0.0f;
+    private Vector3 start_tree_climb_pos = Vector3.zero;
 
     private void Start()
     {
@@ -61,6 +64,9 @@ public class SquirrelController : MonoBehaviour {
             if (collision.gameObject.tag == "Tree")
             {
                 StartClimb();
+
+                // Testing ignoring tree collision after hitting it
+                Physics.IgnoreCollision(collision.collider, col);
             }
             else if(collision.gameObject.tag != "Ground")
             {
@@ -99,6 +105,8 @@ public class SquirrelController : MonoBehaviour {
         {
             float death_timer = 0.01f * other.gameObject.transform.localScale.y;
             Destroy(this.gameObject, death_timer);
+
+            //print("hit it at dt = " + (Time.time - start_climb_time) + " named " + other.name + " I am " + this.name);
         }
     }
 
@@ -178,6 +186,24 @@ public class SquirrelController : MonoBehaviour {
             if (rb.velocity.magnitude < escapeMoveSpeed)
                 rb.velocity = transform.forward * escapeMoveSpeed;
         }
+
+        // If we are climbing, attempt to stick to the curve of the tree
+        if(state == SquirrelState.ClimbTree)
+        {
+            float time_to_climb_tree = 1.7f;
+            float tree_width_scale_const = 0.05f;
+            Vector3 me_to_tree = actual_positon.position - treeTarget.transform.position;
+            me_to_tree = Vector3.ProjectOnPlane(me_to_tree, Vector3.up);
+            Vector3 new_pos = transform.position;
+
+            float dist_from_start = treeShapeCurve.Evaluate((Time.time - start_climb_time) / time_to_climb_tree);
+
+            me_to_tree = me_to_tree.normalized * dist_from_start * tree_width_scale_const;
+            me_to_tree.y = 0;
+            print(me_to_tree);
+            new_pos -= me_to_tree;
+            transform.position = new_pos;
+        }
     }
 
     // TODO: make this not shitty
@@ -186,7 +212,6 @@ public class SquirrelController : MonoBehaviour {
         state = SquirrelState.ClimbTree;
 
         // turn off collider
-        //col.enabled = false;
 
         // turn off gravity
         rb.velocity = Vector3.zero;
@@ -197,7 +222,10 @@ public class SquirrelController : MonoBehaviour {
         transform.RotateAround(actual_positon.position, transform.right, -90);
 
         // set up velocity
-        rb.velocity = transform.forward * climbMoveSpeed;
+        rb.velocity = Vector3.up * climbMoveSpeed;
+
+        start_climb_time = Time.time;
+        start_tree_climb_pos = transform.position;
     }
 
     #region Animation Events
