@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
-public class FlightMode : MonoBehaviour {
+public class FlightMode : Controller {
 
     [SerializeField] private bool isFlying;
     [SerializeField] private float speedOfFlight;

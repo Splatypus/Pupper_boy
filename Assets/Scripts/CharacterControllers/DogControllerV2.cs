@@ -3,7 +3,7 @@ using UnityEngine;
 
 using UnityEngine.UI; // for debug text
 
-public class DogControllerV2 : MonoBehaviour {
+public class DogControllerV2 : Controller {
 
     #region Component Variables
     Rigidbody rigidBody;
