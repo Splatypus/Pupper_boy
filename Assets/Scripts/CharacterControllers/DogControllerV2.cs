@@ -1,4 +1,5 @@
-﻿ using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.UI; // for debug text
@@ -33,6 +34,10 @@ public class DogControllerV2 : Controller {
 
     float m_speed;
 
+    #region InteractionVariables
+    List<InteractableObject> inRangeOf = new List<InteractableObject>();
+    #endregion
+
     void Start () {
         rigidBody = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
@@ -50,7 +55,15 @@ public class DogControllerV2 : Controller {
             debug_text.text = "onGround: " + onGround;
         }
 
-        Move();    
+        Move();
+
+        //Handle interaction input
+        if (Input.GetButtonDown("Interact")) {
+            foreach (InteractableObject i in inRangeOf) {
+                i.OnInteract();
+            }
+        }
+
     }
     
 
@@ -154,5 +167,16 @@ public class DogControllerV2 : Controller {
     void SetupAnimatior()
     {
         anim = GetComponentInChildren<Animator>();
+    }
+
+    //add object to things we can interact with
+    public void addObject(InteractableObject i) {
+        inRangeOf.Add(i);
+    }
+
+
+    //remove object from list
+    public void removeObject(InteractableObject i) {
+        inRangeOf.Remove(i);
     }
 }

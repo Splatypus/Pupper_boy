@@ -2,8 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//############  NO LONGER IN USE. NOTHING WILL INTERACT WITH THIS SCRIPT. EVERYTHING HERE HAS BEEN MOVED INTO DOGCONTROLLERV2
+
+
 public class PlayerInteractions : MonoBehaviour {
 
+
+    
     List<InteractableObject> inRangeOf = new List<InteractableObject>();
     public string InputAxis = "Interact";
 
@@ -17,7 +23,7 @@ public class PlayerInteractions : MonoBehaviour {
         inRangeOf.Remove(i);
     }
 
-    //when interact button is pressed, interact with everything were in range of
+    //when interact button is pressed, interact with everything were in range of (maybe change this to only the closest object?)
     public void Update() {
         if (Input.GetButtonDown(InputAxis)) {
             foreach (InteractableObject i in inRangeOf) {

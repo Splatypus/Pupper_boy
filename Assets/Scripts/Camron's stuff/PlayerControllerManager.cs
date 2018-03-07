@@ -6,7 +6,7 @@ public class PlayerControllerManager : MonoBehaviour {
 
     public enum Modes { Walking, Dialog, Flight };
     public Modes mode = Modes.Walking;
-    public Controller[] scripts;
+    Controller[] scripts = new Controller[3];
 
     public void Start() {
         //initial setting of all modes to their correct places
@@ -15,10 +15,10 @@ public class PlayerControllerManager : MonoBehaviour {
         scripts[(int)Modes.Flight] = gameObject.GetComponent<FlightMode>();
 
         //then disable all controller scripts except the default one (walking)
-        foreach (MonoBehaviour m in scripts) {
-            m.enabled = false;
+        foreach (Controller c in scripts) {
+            c.enabled = false;
         }
-        scripts[(int)Modes.Walking].enabled = true;
+        scripts[(int)mode].enabled = true;
     }
 
     //disable the current mode, then change it to the new one and enable the new one
@@ -30,9 +30,7 @@ public class PlayerControllerManager : MonoBehaviour {
         //call activation function and enable next controller
         scripts[(int)mode].enabled = true;
         scripts[(int)mode].OnActivated();
-
     }
-	
 }
 
 
