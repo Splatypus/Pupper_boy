@@ -169,6 +169,11 @@ public class DogControllerV2 : Controller {
         anim = GetComponentInChildren<Animator>();
     }
 
+    public override void OnDeactivated() {
+        anim.SetFloat("Forward", 0.0f); //disable animations
+        rigidBody.velocity = Vector3.zero; //and stop it from moving
+    }
+
     //add object to things we can interact with
     public void addObject(InteractableObject i) {
         inRangeOf.Add(i);
