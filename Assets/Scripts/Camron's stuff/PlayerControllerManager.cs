@@ -16,9 +16,11 @@ public class PlayerControllerManager : MonoBehaviour {
 
         //then disable all controller scripts except the default one (walking)
         foreach (Controller c in scripts) {
+            c.OnDeactivated();
             c.enabled = false;
         }
         scripts[(int)mode].enabled = true;
+        scripts[(int)mode].OnActivated();
     }
 
     //disable the current mode, then change it to the new one and enable the new one
