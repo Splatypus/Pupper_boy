@@ -17,7 +17,7 @@ public class restartLevel : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            SceneManager.LoadScene("title_screen");
         }
 	}
 }
