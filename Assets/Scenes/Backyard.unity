@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 871061062}
-  m_IndirectSpecularColor: {r: 0.75560457, g: 0.6515625, b: 0.5085914, a: 1}
+  m_IndirectSpecularColor: {r: 0.75560623, g: 0.65156347, b: 0.50859123, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -77,17 +77,15 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
-    m_PVRFilterTypeDirect: 0
-    m_PVRFilterTypeIndirect: 0
-    m_PVRFilterTypeAO: 0
+    m_PVRFiltering: 0
     m_PVRFilteringMode: 1
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
     m_PVRFilteringGaussRadiusAO: 2
-    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
-    m_PVRFilteringAtrousPositionSigmaIndirect: 2
-    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_PVRFilteringAtrousColorSigma: 1
+    m_PVRFilteringAtrousNormalSigma: 1
+    m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -109,8 +107,6 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
-    debug:
-      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &1313985
 GameObject:
@@ -151,7 +147,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -167,7 +162,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -357,7 +351,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400124, guid: d8366f78598fb15478a571f6421fb14d, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 400008, guid: d8366f78598fb15478a571f6421fb14d, type: 3}
       propertyPath: m_LocalRotation.x
@@ -834,7 +828,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4142898804564634, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
       propertyPath: m_RootOrder
-      value: 14
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
@@ -948,7 +942,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -964,7 +957,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1071,6 +1063,120 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300002, guid: ac99d2154f9d4fc4cb5c1a2e2df6b88c, type: 3}
+--- !u!1 &41525541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100120, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 41525542}
+  - component: {fileID: 41525543}
+  m_Layer: 2
+  m_Name: jack_russell_0008:Jackie_Doggo_0025:polySurface3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &41525542
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400120, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 41525541}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: -0.036024902, z: 0.011980848}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1128436201}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &41525543
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 13700000, guid: e7162d8f84b6a3d4782e7ed36cb4eab2,
+    type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 41525541}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 36c6fdb69c8a0fb4089627f153091e29, type: 2}
+  - {fileID: 2100000, guid: dfa14bc857beaf542aacd3d3836fceac, type: 2}
+  - {fileID: 2100000, guid: dbc453c5a86dea44b981b76540b5b875, type: 2}
+  - {fileID: 2100000, guid: a1d0aa8b95d021041b84d0878a19a0b4, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4300000, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_Bones:
+  - {fileID: 150134117}
+  - {fileID: 1556628694}
+  - {fileID: 563782962}
+  - {fileID: 1573923392}
+  - {fileID: 1267972049}
+  - {fileID: 369078939}
+  - {fileID: 1891245024}
+  - {fileID: 685153149}
+  - {fileID: 1814782046}
+  - {fileID: 530064721}
+  - {fileID: 283033542}
+  - {fileID: 1777550969}
+  - {fileID: 906443216}
+  - {fileID: 1985168468}
+  - {fileID: 1647413702}
+  - {fileID: 885691836}
+  - {fileID: 1556715483}
+  - {fileID: 1092492501}
+  - {fileID: 71246366}
+  - {fileID: 1747096215}
+  - {fileID: 104029237}
+  - {fileID: 1714711045}
+  - {fileID: 857200312}
+  - {fileID: 993598793}
+  - {fileID: 130213865}
+  - {fileID: 1045872551}
+  - {fileID: 1533794245}
+  - {fileID: 1167838543}
+  - {fileID: 66153187}
+  - {fileID: 2028508646}
+  - {fileID: 1934143398}
+  - {fileID: 1981317974}
+  - {fileID: 2089623416}
+  - {fileID: 826360803}
+  - {fileID: 836523370}
+  - {fileID: 1828784933}
+  - {fileID: 1844625945}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 150134117}
+  m_AABB:
+    m_Center: {x: -0.016972274, y: -0.0050716773, z: -0.0007556258}
+    m_Extent: {x: 0.09910402, y: 0.07823124, z: 0.028762218}
+  m_DirtyAABB: 0
 --- !u!1001 &41636899
 Prefab:
   m_ObjectHideFlags: 0
@@ -1271,7 +1377,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &51789293 stripped
 GameObject:
@@ -1484,6 +1590,35 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 966d2644f7340eb4ea44e91b7715fe17, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &66153186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100058, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 66153187}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:left_back_leg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &66153187
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400058, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 66153186}
+  m_LocalRotation: {x: 0.7611839, y: 0.6474608, z: 0.01596834, w: 0.033744495}
+  m_LocalPosition: {x: -0.0010723087, y: -0.019369125, z: 0.017793309}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2028508646}
+  m_Father: {fileID: 993598793}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &67302459
 Prefab:
   m_ObjectHideFlags: 0
@@ -1628,6 +1763,35 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &71246365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100050, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 71246366}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:l_shoulder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &71246366
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400050, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 71246365}
+  m_LocalRotation: {x: 1.0595462e-17, y: 1.3493396e-16, z: -0.14365245, w: 0.9896282}
+  m_LocalPosition: {x: -0.022689752, y: -0.00237131, z: -9.144229e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1747096215}
+  m_Father: {fileID: 1092492501}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &79667600
 Prefab:
   m_ObjectHideFlags: 0
@@ -1924,7 +2088,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -1940,7 +2103,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2057,7 +2219,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -2073,7 +2234,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -2476,6 +2636,35 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &104029236
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100044, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 104029237}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:l_foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &104029237
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400044, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 104029236}
+  m_LocalRotation: {x: 0, y: -0, z: -0.5356094, w: 0.8444659}
+  m_LocalPosition: {x: -0.0087578455, y: -0.007904975, z: -2.4522898e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1714711045}
+  m_Father: {fileID: 1747096215}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &104827895
 GameObject:
   m_ObjectHideFlags: 0
@@ -2750,7 +2939,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4142898804564634, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
       propertyPath: m_RootOrder
-      value: 15
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
@@ -3037,7 +3226,6 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3053,7 +3241,6 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3105,7 +3292,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 129397410}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.399994, y: -159.4, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1005812615}
@@ -3155,6 +3342,35 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 129397410}
+--- !u!1 &130213864
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100008, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 130213865}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Butt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &130213865
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400008, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 130213864}
+  m_LocalRotation: {x: 0.58184826, y: 0.67112374, z: -0.3471082, w: -0.30093452}
+  m_LocalPosition: {x: -0.008676995, y: 0.008792299, z: -1.2448552e-15}
+  m_LocalScale: {x: -1, y: -1, z: -1}
+  m_Children:
+  - {fileID: 826360803}
+  m_Father: {fileID: 993598793}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &132963755
 Prefab:
   m_ObjectHideFlags: 0
@@ -3276,7 +3492,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3292,7 +3507,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3456,7 +3670,6 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -3472,7 +3685,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -3491,6 +3703,38 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1 &146111849
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100114, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 146111850}
+  m_Layer: 2
+  m_Name: jack_russell_0008:group1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &146111850
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400114, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 146111849}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0015265606, y: 0.009131513, z: 0.010999345}
+  m_LocalScale: {x: 0.52079844, y: 0.52079844, z: 0.52079844}
+  m_Children:
+  - {fileID: 949117485}
+  - {fileID: 404723254}
+  - {fileID: 150134117}
+  - {fileID: 1891172659}
+  m_Father: {fileID: 1732564002}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &146246452
 GameObject:
   m_ObjectHideFlags: 0
@@ -3541,6 +3785,36 @@ BoxCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_PrefabInternal: {fileID: 1096880894}
+--- !u!1 &150134116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100062, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 150134117}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:main
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &150134117
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400062, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 150134116}
+  m_LocalRotation: {x: 0.015180233, y: 0.70694387, z: 0.015180233, w: 0.70694387}
+  m_LocalPosition: {x: -2.4651903e-34, y: -0.0057615326, z: -0.077728294}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 857200312}
+  - {fileID: 1556628694}
+  m_Father: {fileID: 146111850}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &161490570
 GameObject:
   m_ObjectHideFlags: 0
@@ -4209,7 +4483,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400028, guid: 975c19c7ab6c08a43b5ae2e2aced96f5, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 400028, guid: 975c19c7ab6c08a43b5ae2e2aced96f5, type: 3}
       propertyPath: m_LocalScale.x
@@ -4292,6 +4566,34 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 966d2644f7340eb4ea44e91b7715fe17, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &209543212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100110, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 209543213}
+  m_Layer: 2
+  m_Name: jack_russell_0008:frontrightIK
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &209543213
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400110, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 209543212}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.007739816, y: -0.026034364, z: -0.0015182578}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1732564002}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &209972528
 GameObject:
   m_ObjectHideFlags: 0
@@ -4359,7 +4661,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -4375,7 +4676,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5081,7 +5381,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 5dc0b293bc4c4224cac2bedfc95029ec, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 5dc0b293bc4c4224cac2bedfc95029ec, type: 3}
       propertyPath: m_LocalScale.x
@@ -5102,6 +5402,35 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5dc0b293bc4c4224cac2bedfc95029ec, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &262691684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100066, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 262691685}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Neck_ctrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &262691685
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400066, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 262691684}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.013727814, z: 0.018916495}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 475901408}
+  m_Father: {fileID: 1594806745}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &263188216
 Prefab:
   m_ObjectHideFlags: 0
@@ -5284,6 +5613,34 @@ CapsuleCollider:
   m_Height: 0.2
   m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!1 &283033541
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100038, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 283033542}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:L_Ear_Tip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &283033542
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400038, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 283033541}
+  m_LocalRotation: {x: -0.1777601, y: 0.68439853, z: 0.50935256, w: 0.49046913}
+  m_LocalPosition: {x: 0.0026937313, y: -0.003260155, z: 0.0059629837}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 530064721}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &286452461
 Prefab:
   m_ObjectHideFlags: 0
@@ -5402,7 +5759,6 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5418,7 +5774,6 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -5595,6 +5950,35 @@ Transform:
   m_Father: {fileID: 322049288}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &305185318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100018, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 305185319}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Front_Ctrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &305185319
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400018, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 305185318}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: -0.012790463, z: 0.023152683}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1594806745}
+  m_Father: {fileID: 949117485}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &312239005
 GameObject:
   m_ObjectHideFlags: 0
@@ -5680,7 +6064,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -5696,7 +6079,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6002,7 +6384,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -6018,7 +6399,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6074,7 +6454,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6090,7 +6469,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6133,7 +6511,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6149,7 +6526,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6446,7 +6822,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6462,7 +6837,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6627,7 +7001,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -6643,7 +7016,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -6690,6 +7062,35 @@ Transform:
   m_Father: {fileID: 37445819}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &369078938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100064, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 369078939}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Neck1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &369078939
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400064, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 369078938}
+  m_LocalRotation: {x: -2.775558e-17, y: -6.938894e-17, z: -0.14860621, w: 0.9888965}
+  m_LocalPosition: {x: -0.015247251, y: 4.4408918e-17, z: -2.9731438e-19}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1891245024}
+  m_Father: {fileID: 1267972049}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &370323329 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100124, guid: d8366f78598fb15478a571f6421fb14d, type: 3}
@@ -6724,7 +7125,7 @@ MonoBehaviour:
   - Woof! Too slow! I'll let you try again though!
   - If you can catch at least 5 bubbles, I'll give you my red bandana as a prize!
   - Woof! Much bubbles! Here, take my bandana. We should play again!
-  - Woof! You're back to play? Let's see how many you can catch! Read.... go!
+  - Woof! You're back to play? Let's see how many you can catch! Ready.... go!
   dialogStarts: 0000000001000000020000000400000005000000
   conversationNumber: 0
   textBoxNumber: 0
@@ -6763,7 +7164,7 @@ Transform:
   - {fileID: 1448603733}
   - {fileID: 1921864702}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &377253415
 Prefab:
@@ -6862,7 +7263,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 378821183}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 211, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1771491334}
@@ -7148,7 +7549,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 400854502}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -375, y: 211, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1771491334}
@@ -7198,6 +7599,34 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 400854502}
+--- !u!1 &404723253
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100056, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 404723254}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:left_back_foot_IK
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &404723254
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400056, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 404723253}
+  m_LocalRotation: {x: 0, y: 0.034899496, z: -0, w: 0.99939084}
+  m_LocalPosition: {x: -0.01941743, y: -0.080060154, z: -0.13728419}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 146111850}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &406543888
 Prefab:
   m_ObjectHideFlags: 0
@@ -7427,6 +7856,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
 --- !u!4 &412794966
 Transform:
   m_ObjectHideFlags: 0
@@ -7440,6 +7870,34 @@ Transform:
   m_Father: {fileID: 2067976310}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 181.70099, z: 0}
+--- !u!1 &416507154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100010, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 416507155}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Butt_control
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &416507155
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400010, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 416507154}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.024879083, z: -0.027986594}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1859945298}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &416625596
 GameObject:
   m_ObjectHideFlags: 0
@@ -7507,7 +7965,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4891249989090854, guid: 3e6def3758f212340904480d52ff236b, type: 2}
       propertyPath: m_RootOrder
-      value: 26
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 1102615565580194, guid: 3e6def3758f212340904480d52ff236b, type: 2}
       propertyPath: m_Name
@@ -7865,6 +8323,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
 --- !u!4 &441628989
 Transform:
   m_ObjectHideFlags: 0
@@ -8211,7 +8670,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4142898804564634, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
       propertyPath: m_RootOrder
-      value: 18
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
@@ -8436,6 +8895,35 @@ Prefab:
     - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &475901407
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100106, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 475901408}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Upper_neck_ctrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &475901408
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400106, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 475901407}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.010372345, z: 0.010948587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2023174855}
+  m_Father: {fileID: 262691685}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &476528039
 Prefab:
   m_ObjectHideFlags: 0
@@ -8554,7 +9042,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -8570,7 +9057,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -8734,7 +9220,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 2
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -8750,7 +9235,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -8889,7 +9373,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 5dc0b293bc4c4224cac2bedfc95029ec, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 100004, guid: 5dc0b293bc4c4224cac2bedfc95029ec, type: 3}
       propertyPath: m_Name
@@ -9399,6 +9883,35 @@ Transform:
   m_Father: {fileID: 1438226367}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -73.45147, y: -173.73013, z: -17.317675}
+--- !u!1 &530064720
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100034, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 530064721}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:L_Ear_Base
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &530064721
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400034, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 530064720}
+  m_LocalRotation: {x: 0.21876022, y: -0.642061, z: -0.49313548, w: 0.5447193}
+  m_LocalPosition: {x: 0.006187637, y: 0.009597007, z: -0.01495872}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 283033542}
+  m_Father: {fileID: 1891245024}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &530391670
 GameObject:
   m_ObjectHideFlags: 0
@@ -9687,7 +10200,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400028, guid: 975c19c7ab6c08a43b5ae2e2aced96f5, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 100028, guid: 975c19c7ab6c08a43b5ae2e2aced96f5, type: 3}
       propertyPath: m_Name
@@ -10042,6 +10555,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.14, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &563782961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100098, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 563782962}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Spine_Base
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &563782962
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400098, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 563782961}
+  m_LocalRotation: {x: 0, y: -0, z: -0.25411093, w: 0.9671751}
+  m_LocalPosition: {x: -0.023688233, y: -0.000227605, z: -1.0361286e-16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1573923392}
+  m_Father: {fileID: 1556628694}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &564464583
 GameObject:
   m_ObjectHideFlags: 0
@@ -10081,7 +10623,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10097,7 +10638,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -10342,7 +10882,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10358,7 +10897,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -10411,7 +10949,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4326124230057858, guid: ccf89df8c0b45ad4b910eea5486bfbdb, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4776689511775488, guid: ccf89df8c0b45ad4b910eea5486bfbdb, type: 2}
       propertyPath: m_LocalPosition.y
@@ -10582,7 +11120,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10598,7 +11135,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -10754,7 +11290,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -10770,7 +11305,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -10912,7 +11446,6 @@ ParticleSystemRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -10929,7 +11462,6 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -10965,7 +11497,6 @@ ParticleSystem:
   serializedVersion: 5
   lengthInSec: 5
   simulationSpeed: 1
-  stopAction: 0
   looping: 1
   prewarm: 0
   playOnAwake: 1
@@ -12538,50 +13069,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxis: 0
     inWorldSpace: 0
-    multiplyDragByParticleSize: 1
-    multiplyDragByParticleVelocity: 1
     dampen: 1
-    drag:
-      serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
-      maxCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 2
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      minCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 2
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
   NoiseModule:
     enabled: 0
     strength:
@@ -13489,8 +13977,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 0
     subEmitters:
-    - serializedVersion: 2
-      emitter: {fileID: 0}
+    - emitter: {fileID: 0}
       type: 0
       properties: 0
   LightsModule:
@@ -13870,7 +14357,6 @@ ParticleSystem:
         m_Mode: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
-    colorLabel0: Color
     vector0_0:
       serializedVersion: 2
       minMaxState: 0
@@ -13912,7 +14398,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_0: X
     vector0_1:
       serializedVersion: 2
       minMaxState: 0
@@ -13954,7 +14439,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_1: Y
     vector0_2:
       serializedVersion: 2
       minMaxState: 0
@@ -13996,7 +14480,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_2: Z
     vector0_3:
       serializedVersion: 2
       minMaxState: 0
@@ -14038,7 +14521,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_3: W
     mode1: 0
     vectorComponentCount1: 4
     color1:
@@ -14104,7 +14586,6 @@ ParticleSystem:
         m_Mode: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
-    colorLabel1: Color
     vector1_0:
       serializedVersion: 2
       minMaxState: 0
@@ -14146,7 +14627,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_0: X
     vector1_1:
       serializedVersion: 2
       minMaxState: 0
@@ -14188,7 +14668,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_1: Y
     vector1_2:
       serializedVersion: 2
       minMaxState: 0
@@ -14230,7 +14709,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_2: Z
     vector1_3:
       serializedVersion: 2
       minMaxState: 0
@@ -14272,7 +14750,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_3: W
 --- !u!1001 &620042653
 Prefab:
   m_ObjectHideFlags: 0
@@ -14565,7 +15042,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 633099666}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -0.037184715, y: 0.09639931, z: -0.025400644}
+  m_LocalPosition: {x: 0, y: 0, z: -0.025400644}
   m_LocalScale: {x: 0.0071984576, y: 0.00719846, z: 0.00719846}
   m_Children:
   - {fileID: 2038203507}
@@ -14673,7 +15150,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -14689,7 +15165,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -14866,7 +15341,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -14882,7 +15356,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -15206,7 +15679,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -15222,7 +15694,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -15355,7 +15826,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -15371,7 +15841,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -15404,6 +15873,34 @@ Transform:
   m_PrefabParentObject: {fileID: 4512085110662048, guid: a54fd8736d9064ab09bfbbf5efa44fdd,
     type: 2}
   m_PrefabInternal: {fileID: 1559974881}
+--- !u!1 &685153148
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100068, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 685153149}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Nose
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &685153149
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400068, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 685153148}
+  m_LocalRotation: {x: -0.3054093, y: -0.6377501, z: -0.3054093, w: 0.6377501}
+  m_LocalPosition: {x: -0.018306164, y: 0.010249033, z: -2.4457529e-17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1891245024}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &690104251 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 4cd714ddf76f5fb459156afd69afab27, type: 3}
@@ -15843,7 +16340,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 713218630}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -375, y: -175.78, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 1771491334}
@@ -16118,7 +16615,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -16134,7 +16630,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -16524,7 +17019,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -16540,7 +17034,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -16580,6 +17073,34 @@ BoxCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400134, guid: ba71623cc08dad74cac57b4df85b0c52, type: 3}
   m_PrefabInternal: {fileID: 900637075}
+--- !u!114 &733389392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 733389389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fbab1b12e715041b8d78fb45fd1271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogTexts:
+  - Ruff! Hey you! Get out of my yard!
+  dialogStarts: 00000000
+  conversationNumber: 0
+  textBoxNumber: 0
+--- !u!135 &733389393
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 733389389}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.41449568
+  m_Center: {x: -0.08550434, y: 0, z: 2.2143665e-10}
 --- !u!1001 &733436169
 Prefab:
   m_ObjectHideFlags: 0
@@ -16830,7 +17351,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -16846,7 +17366,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -17098,6 +17617,34 @@ Transform:
   m_PrefabParentObject: {fileID: 4781535565290840, guid: 8b749fce098f640a2be9168cdb023d45,
     type: 2}
   m_PrefabInternal: {fileID: 1726152620}
+--- !u!1 &785166987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100020, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 785166988}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:front_left_leg_control
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &785166988
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400020, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 785166987}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.01770715, y: -0.06762587, z: 0.014632716}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1594806745}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &786030479
 GameObject:
   m_ObjectHideFlags: 0
@@ -17188,7 +17735,6 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -17204,7 +17750,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -17324,7 +17869,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -17340,7 +17884,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -17458,7 +18001,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -17474,7 +18016,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -17541,7 +18082,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -17557,7 +18097,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -17766,7 +18305,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4142898804564634, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
       propertyPath: m_RootOrder
-      value: 16
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
@@ -18102,7 +18641,6 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -18118,7 +18656,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -18197,7 +18734,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -18213,7 +18749,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -18268,7 +18803,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -18284,7 +18818,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -18330,6 +18863,34 @@ Transform:
   m_Father: {fileID: 528148540}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &826360802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100104, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 826360803}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Tail_Stub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &826360803
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400104, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 826360802}
+  m_LocalRotation: {x: 0.086218745, y: 0.73959434, z: -0.07729177, w: 0.66301775}
+  m_LocalPosition: {x: -0.026295554, y: 0.027866468, z: -2.8215315e-15}
+  m_LocalScale: {x: 1, y: 1.0506129, z: 1}
+  m_Children: []
+  m_Father: {fileID: 130213865}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &828366763
 GameObject:
   m_ObjectHideFlags: 0
@@ -18370,7 +18931,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -18386,7 +18946,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -18414,6 +18973,35 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 828366763}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &836523369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100078, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 836523370}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:R_foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &836523370
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400078, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 836523369}
+  m_LocalRotation: {x: 0, y: -0, z: -0.62600696, w: 0.77981746}
+  m_LocalPosition: {x: -0.015783357, y: -0.000000023446361, z: 6.661338e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1828784933}
+  m_Father: {fileID: 1167838543}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &841513108
 GameObject:
   m_ObjectHideFlags: 0
@@ -18565,7 +19153,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -18581,7 +19168,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -18597,6 +19183,35 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 853600221}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &857200311
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100000, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 857200312}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Back
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &857200312
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400000, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 857200311}
+  m_LocalRotation: {x: -0.03944117, y: 0.9992219, z: -5.876962e-17, w: 6.3599767e-17}
+  m_LocalPosition: {x: 0.021814303, y: 0.0002102777, z: -1.5498388e-16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 993598793}
+  m_Father: {fileID: 150134117}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &858865455
 Prefab:
   m_ObjectHideFlags: 0
@@ -18959,7 +19574,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -18975,7 +19589,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -19058,7 +19671,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -19074,7 +19686,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -19152,6 +19763,35 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &885691835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100076, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 885691836}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:r_elbow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &885691836
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400076, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 885691835}
+  m_LocalRotation: {x: 0.92173696, y: 0.3878157, z: 0.0000000011861327, w: -4.9905874e-10}
+  m_LocalPosition: {x: -0.01497537, y: -0.0015978342, z: 3.3897076e-11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1556715483}
+  m_Father: {fileID: 1647413702}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &891326356
 Prefab:
   m_ObjectHideFlags: 0
@@ -19260,7 +19900,7 @@ Transform:
   - {fileID: 797495400}
   - {fileID: 678522886}
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &900637075
 Prefab:
@@ -19357,6 +19997,34 @@ BoxCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_PrefabInternal: {fileID: 1423649023}
+--- !u!1 &906443215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100074, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 906443216}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:R_Ear_Tip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &906443216
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400074, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 906443215}
+  m_LocalRotation: {x: -0.1777601, y: 0.68439853, z: 0.50935256, w: 0.49046913}
+  m_LocalPosition: {x: 0.005013068, y: -0.0017555503, z: 0.0053208796}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1777550969}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &918504671
 Prefab:
   m_ObjectHideFlags: 0
@@ -19936,6 +20604,36 @@ Prefab:
     - {fileID: 33255527658520106, guid: 107deb627ee39084cb4e516d6df999fa, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 107deb627ee39084cb4e516d6df999fa, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &949117484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100014, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 949117485}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Corgi_Main_Ctrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &949117485
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400014, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 949117484}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: -0.0043631596, z: -0.07330638}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1839501422}
+  - {fileID: 305185319}
+  m_Father: {fileID: 146111850}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &958358650
 Prefab:
   m_ObjectHideFlags: 0
@@ -20218,7 +20916,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -20234,7 +20931,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -20892,6 +21588,37 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &993598792
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100028, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 993598793}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Hips
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &993598793
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400028, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 993598792}
+  m_LocalRotation: {x: -0.0014716245, y: 0.03486846, z: 0.07952973, w: 0.9962214}
+  m_LocalPosition: {x: -0.01547324, y: -0.00074173725, z: 0.000019761805}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 130213865}
+  - {fileID: 66153187}
+  - {fileID: 1045872551}
+  m_Father: {fileID: 857200312}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &997055422 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
@@ -21026,7 +21753,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -21042,7 +21768,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -21573,7 +22298,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -21589,7 +22313,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -21684,6 +22407,35 @@ Transform:
   m_PrefabParentObject: {fileID: 4555352169201182, guid: 107deb627ee39084cb4e516d6df999fa,
     type: 2}
   m_PrefabInternal: {fileID: 944782876}
+--- !u!1 &1045872550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100094, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1045872551}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:right_back_leg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1045872551
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400094, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1045872550}
+  m_LocalRotation: {x: 0.8053983, y: 0.59157526, z: 0.018864673, w: 0.031881854}
+  m_LocalPosition: {x: -0.001390742, y: -0.019357178, z: -0.0177933}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1533794245}
+  m_Father: {fileID: 993598793}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1049876849 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
@@ -21936,7 +22688,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4142898804564634, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
       propertyPath: m_RootOrder
-      value: 19
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
@@ -22231,7 +22983,7 @@ Transform:
   - {fileID: 1525300275}
   - {fileID: 2102780334}
   m_Father: {fileID: 0}
-  m_RootOrder: 22
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1069830779
 GameObject:
@@ -22401,7 +23153,7 @@ Transform:
   m_Children:
   - {fileID: 1099290745}
   m_Father: {fileID: 0}
-  m_RootOrder: 28
+  m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1085000212
 Prefab:
@@ -22445,7 +23197,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4142898804564634, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
       propertyPath: m_RootOrder
-      value: 21
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
@@ -22947,6 +23699,35 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!1 &1092492500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100060, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1092492501}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:left_front_leg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1092492501
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400060, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1092492500}
+  m_LocalRotation: {x: -0.49270424, y: -0.5071909, z: 0.49270424, w: 0.5071909}
+  m_LocalPosition: {x: -0.017793309, y: -0.028836403, z: 0.005059575}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 71246366}
+  m_Father: {fileID: 1573923392}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1093625518
 GameObject:
   m_ObjectHideFlags: 0
@@ -23223,7 +24004,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1104763992}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -0.037199974, y: 0.096399784, z: -0.025400644}
+  m_LocalPosition: {x: 0, y: 0, z: -0.025400644}
   m_LocalScale: {x: 0.0071984576, y: 0.00719846, z: 0.00719846}
   m_Children:
   - {fileID: 1888635132}
@@ -23529,6 +24310,37 @@ BoxCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_PrefabInternal: {fileID: 1127193439}
+--- !u!1 &1128436200
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100112, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1128436201}
+  m_Layer: 2
+  m_Name: jack_russell_0008:group
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1128436201
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400112, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1128436200}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0015265606, y: 0.0025606637, z: -0.019899197}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1614804660}
+  - {fileID: 1259826944}
+  - {fileID: 41525542}
+  m_Father: {fileID: 1732564002}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1137274193
 Prefab:
   m_ObjectHideFlags: 0
@@ -23790,6 +24602,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
 --- !u!4 &1142309255
 Transform:
   m_ObjectHideFlags: 0
@@ -23845,7 +24658,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -23861,7 +24673,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -24116,6 +24927,35 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1167838542
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100080, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1167838543}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:R_knee
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1167838543
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400080, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1167838542}
+  m_LocalRotation: {x: 0.9989974, y: 0.04476918, z: -1.366381e-13, w: 6.062021e-15}
+  m_LocalPosition: {x: -0.022470223, y: -0.000000053125955, z: -6.661338e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 836523370}
+  m_Father: {fileID: 1533794245}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1167958579
 GameObject:
   m_ObjectHideFlags: 0
@@ -24140,7 +24980,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1167958579}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.5999756, y: -157.39996, z: 1.23}
+  m_LocalPosition: {x: 0, y: 0, z: 1.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1005812615}
@@ -24257,7 +25097,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -24273,7 +25112,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -24337,7 +25175,7 @@ Transform:
   - {fileID: 1348588873}
   - {fileID: 593589421}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1174682550
 GameObject:
@@ -24366,7 +25204,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -24382,7 +25219,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -24823,7 +25659,6 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -24839,7 +25674,6 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -25338,7 +26172,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -25354,7 +26187,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -25589,6 +26421,34 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.14, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1259826943
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100118, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1259826944}
+  m_Layer: 2
+  m_Name: jack_russell_0008:Jackie_Doggo_0025:imagePlane2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1259826944
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400118, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1259826943}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0028473195, y: -0.029805157, z: 0.011980848}
+  m_LocalScale: {x: 1.307114, y: 1.307114, z: 1.307114}
+  m_Children: []
+  m_Father: {fileID: 1128436201}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1260302983 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4994778840641396, guid: 44ccd06623b2ec64abadcb4029f7aed0,
@@ -25811,11 +26671,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb33b2554b4e0b43a03ff722a10e26d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogTexts: []
-  dialogStarts: 
+  dialogTexts:
+  - Yip! Yip! Help, someone get these birds away from me!
+  - "Yip! Yip! These birds want my shiny collar, and they won\u2019t leave me alone.
+    Can you help me? "
+  - "There\u2019s gotta be something I can use to cover this collar somewhere in the
+    neighborhood. Maybe a bandana?"
+  - Yip! Thank you so much! I can finally leave my doghouse! Here, take this dog-kibble
+    as a thank you, you really helped me out!
+  dialogStarts: 000000000100000003000000
   conversationNumber: 0
   textBoxNumber: 0
-  Icons: []
+  Icons:
+  - {fileID: 1448603729}
+  - {fileID: 1104763992}
+  - {fileID: 633099666}
   ToyTag: 2
   questNumber: 0
   moveDistance: 5
@@ -25857,6 +26727,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.06, y: 0.14, z: 0.15}
   m_Center: {x: 0, y: 0, z: -0.045}
+--- !u!1 &1267972048
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100102, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1267972049}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Spine_Top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1267972049
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400102, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1267972048}
+  m_LocalRotation: {x: -0.2929246, y: 0.64358, z: -0.2929246, w: 0.64358}
+  m_LocalPosition: {x: -4.730055e-16, y: 0.009691974, z: 0.013786989}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 369078939}
+  m_Father: {fileID: 1573923392}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1271495327
 GameObject:
   m_ObjectHideFlags: 0
@@ -26094,7 +26993,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4142898804564634, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
       propertyPath: m_RootOrder
-      value: 20
+      value: 22
       objectReference: {fileID: 0}
     - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
@@ -26638,7 +27537,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -26654,7 +27552,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -26760,7 +27657,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -26776,7 +27672,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -26987,7 +27882,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -27003,7 +27897,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -27058,7 +27951,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -27074,7 +27966,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -27465,7 +28356,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -27481,7 +28371,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -27784,6 +28673,34 @@ CapsuleCollider:
   m_Height: 0.2
   m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!1 &1405146217
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100006, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1405146218}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:back_right_leg_control
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1405146218
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400006, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1405146217}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.01603215, y: -0.064037085, z: -0.023445781}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1859945298}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1405606911
 Prefab:
   m_ObjectHideFlags: 0
@@ -29008,7 +29925,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1448603729}
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
-  m_LocalPosition: {x: -0.019499779, y: 0.3217001, z: -0.0254}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0254}
   m_LocalScale: {x: 0.0071982825, y: 0.0071982853, z: 0.0071982853}
   m_Children:
   - {fileID: 792146038}
@@ -29154,7 +30071,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -29170,7 +30086,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -29639,7 +30554,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -29655,7 +30569,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -29701,7 +30614,6 @@ ParticleSystemRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -29718,7 +30630,6 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -29755,7 +30666,6 @@ ParticleSystem:
   serializedVersion: 5
   lengthInSec: 5
   simulationSpeed: 1
-  stopAction: 0
   looping: 1
   prewarm: 1
   playOnAwake: 1
@@ -31328,50 +32238,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxis: 0
     inWorldSpace: 0
-    multiplyDragByParticleSize: 1
-    multiplyDragByParticleVelocity: 1
     dampen: 1
-    drag:
-      serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
-      maxCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 2
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      minCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 2
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
   NoiseModule:
     enabled: 0
     strength:
@@ -32279,8 +33146,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 0
     subEmitters:
-    - serializedVersion: 2
-      emitter: {fileID: 0}
+    - emitter: {fileID: 0}
       type: 0
       properties: 0
   LightsModule:
@@ -32660,7 +33526,6 @@ ParticleSystem:
         m_Mode: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
-    colorLabel0: Color
     vector0_0:
       serializedVersion: 2
       minMaxState: 0
@@ -32702,7 +33567,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_0: X
     vector0_1:
       serializedVersion: 2
       minMaxState: 0
@@ -32744,7 +33608,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_1: Y
     vector0_2:
       serializedVersion: 2
       minMaxState: 0
@@ -32786,7 +33649,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_2: Z
     vector0_3:
       serializedVersion: 2
       minMaxState: 0
@@ -32828,7 +33690,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_3: W
     mode1: 0
     vectorComponentCount1: 4
     color1:
@@ -32894,7 +33755,6 @@ ParticleSystem:
         m_Mode: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
-    colorLabel1: Color
     vector1_0:
       serializedVersion: 2
       minMaxState: 0
@@ -32936,7 +33796,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_0: X
     vector1_1:
       serializedVersion: 2
       minMaxState: 0
@@ -32978,7 +33837,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_1: Y
     vector1_2:
       serializedVersion: 2
       minMaxState: 0
@@ -33020,7 +33878,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_2: Z
     vector1_3:
       serializedVersion: 2
       minMaxState: 0
@@ -33062,7 +33919,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_3: W
 --- !u!4 &1482463527
 Transform:
   m_ObjectHideFlags: 0
@@ -33190,6 +34046,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
 --- !u!4 &1489685336
 Transform:
   m_ObjectHideFlags: 0
@@ -33488,7 +34345,6 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -33504,7 +34360,6 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -33637,6 +34492,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+  m_StereoMirrorMode: 0
 --- !u!4 &1525300275
 Transform:
   m_ObjectHideFlags: 0
@@ -33679,6 +34535,35 @@ Transform:
   m_Children:
   - {fileID: 2039763186}
   m_Father: {fileID: 742815028}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1533794244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100082, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1533794245}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:R_leg_top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1533794245
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400082, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1533794244}
+  m_LocalRotation: {x: 0.9969758, y: 0.077713, z: 3.218099e-13, w: -2.5023256e-14}
+  m_LocalPosition: {x: -0.025964959, y: -0.0018390821, z: -1.3776623e-16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1167838543}
+  m_Father: {fileID: 1045872551}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1537231482
@@ -34030,7 +34915,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -34046,7 +34930,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -34168,6 +35051,64 @@ Transform:
   m_PrefabParentObject: {fileID: 4062191301394216, guid: f83cec41371534089a730e5487fd0d35,
     type: 2}
   m_PrefabInternal: {fileID: 2034512534}
+--- !u!1 &1556628693
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100016, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1556628694}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1556628694
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400016, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1556628693}
+  m_LocalRotation: {x: -2.0816682e-17, y: -1.0842022e-17, z: -0.07459683, w: 0.9972138}
+  m_LocalPosition: {x: -0.0046587316, y: 8.881784e-18, z: -4.1061745e-19}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 563782962}
+  m_Father: {fileID: 150134117}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1556715482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100084, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1556715483}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:r_paw
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1556715483
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400084, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1556715482}
+  m_LocalRotation: {x: 0.000000009525819, y: -0.0000000060418284, z: -0.5356094, w: 0.8444659}
+  m_LocalPosition: {x: -0.009367544, y: -0.006605864, z: -1.0116832e-10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2089623416}
+  m_Father: {fileID: 885691836}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1559367960 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4230950801576306, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3,
@@ -34323,7 +35264,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -34339,7 +35279,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -34519,6 +35458,37 @@ Transform:
   m_Father: {fileID: 201702290}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1573923391
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100100, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1573923392}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Spine_Middle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1573923392
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400100, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1573923391}
+  m_LocalRotation: {x: 0.21579304, y: -0.67337465, z: 0.21579304, w: 0.67337465}
+  m_LocalPosition: {x: -0.015263652, y: -0.008615732, z: 4.27413e-16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1092492501}
+  - {fileID: 1985168468}
+  - {fileID: 1267972049}
+  m_Father: {fileID: 563782962}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1576342315
 GameObject:
   m_ObjectHideFlags: 0
@@ -34631,6 +35601,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.14, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1594806744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100012, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1594806745}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Chest_Control
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1594806745
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400012, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1594806744}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.004037103, z: 0.016230382}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 785166988}
+  - {fileID: 1863101615}
+  - {fileID: 262691685}
+  m_Father: {fileID: 305185319}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1595820982
 Prefab:
   m_ObjectHideFlags: 0
@@ -34808,7 +35809,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4891249989090854, guid: 3e6def3758f212340904480d52ff236b, type: 2}
       propertyPath: m_RootOrder
-      value: 25
+      value: 27
       objectReference: {fileID: 0}
     - target: {fileID: 1102615565580194, guid: 3e6def3758f212340904480d52ff236b, type: 2}
       propertyPath: m_Name
@@ -34964,7 +35965,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1609236439}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -375, y: -211, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1771491334}
@@ -35078,6 +36079,34 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!1 &1614804659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100116, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1614804660}
+  m_Layer: 2
+  m_Name: jack_russell_0008:Jackie_Doggo_0025:imagePlane1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1614804660
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400116, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1614804659}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0, y: -0.036024902, z: 0.011980848}
+  m_LocalScale: {x: -2.2543244, y: 2.2543244, z: 2.2543244}
+  m_Children: []
+  m_Father: {fileID: 1128436201}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1617893294
 GameObject:
   m_ObjectHideFlags: 0
@@ -35152,7 +36181,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -35168,7 +36196,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -35510,6 +36537,36 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4cd714ddf76f5fb459156afd69afab27, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &1647413701
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100086, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1647413702}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:r_shoulder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1647413702
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400086, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1647413701}
+  m_LocalRotation: {x: 0.000000010198087, y: -0.0000000017766065, z: -0.17105533,
+    w: 0.98526144}
+  m_LocalPosition: {x: -0.022347772, y: -0.004379635, z: 2.9119297e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 885691836}
+  m_Father: {fileID: 1985168468}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1649042084
 Prefab:
   m_ObjectHideFlags: 0
@@ -35840,7 +36897,7 @@ Transform:
   - {fileID: 93424013}
   - {fileID: 1844378623}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1665565830
 GameObject:
@@ -35903,7 +36960,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!199 &1670614109
 ParticleSystemRenderer:
@@ -35916,7 +36973,6 @@ ParticleSystemRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -35933,7 +36989,6 @@ ParticleSystemRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -35970,7 +37025,6 @@ ParticleSystem:
   serializedVersion: 5
   lengthInSec: 5
   simulationSpeed: 1
-  stopAction: 0
   looping: 1
   prewarm: 1
   playOnAwake: 1
@@ -37543,50 +38597,7 @@ ParticleSystem:
         m_RotationOrder: 4
     separateAxis: 0
     inWorldSpace: 0
-    multiplyDragByParticleSize: 1
-    multiplyDragByParticleVelocity: 1
     dampen: 1
-    drag:
-      serializedVersion: 2
-      minMaxState: 0
-      scalar: 0
-      minScalar: 0
-      maxCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 2
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      minCurve:
-        serializedVersion: 2
-        m_Curve:
-        - serializedVersion: 2
-          time: 0
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        - serializedVersion: 2
-          time: 1
-          value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
   NoiseModule:
     enabled: 0
     strength:
@@ -38494,8 +39505,7 @@ ParticleSystem:
     serializedVersion: 2
     enabled: 0
     subEmitters:
-    - serializedVersion: 2
-      emitter: {fileID: 0}
+    - emitter: {fileID: 0}
       type: 0
       properties: 0
   LightsModule:
@@ -38875,7 +39885,6 @@ ParticleSystem:
         m_Mode: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
-    colorLabel0: Color
     vector0_0:
       serializedVersion: 2
       minMaxState: 0
@@ -38917,7 +39926,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_0: X
     vector0_1:
       serializedVersion: 2
       minMaxState: 0
@@ -38959,7 +39967,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_1: Y
     vector0_2:
       serializedVersion: 2
       minMaxState: 0
@@ -39001,7 +40008,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_2: Z
     vector0_3:
       serializedVersion: 2
       minMaxState: 0
@@ -39043,7 +40049,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel0_3: W
     mode1: 0
     vectorComponentCount1: 4
     color1:
@@ -39109,7 +40114,6 @@ ParticleSystem:
         m_Mode: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
-    colorLabel1: Color
     vector1_0:
       serializedVersion: 2
       minMaxState: 0
@@ -39151,7 +40155,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_0: X
     vector1_1:
       serializedVersion: 2
       minMaxState: 0
@@ -39193,7 +40196,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_1: Y
     vector1_2:
       serializedVersion: 2
       minMaxState: 0
@@ -39235,7 +40237,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_2: Z
     vector1_3:
       serializedVersion: 2
       minMaxState: 0
@@ -39277,7 +40278,6 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    vectorLabel1_3: W
 --- !u!1001 &1672905413
 Prefab:
   m_ObjectHideFlags: 0
@@ -39478,7 +40478,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -39494,7 +40493,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -40017,6 +41015,62 @@ BoxCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_PrefabInternal: {fileID: 1714140864}
+--- !u!1 &1714711044
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100054, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1714711045}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:l_toes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1714711045
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400054, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1714711044}
+  m_LocalRotation: {x: 0.04582464, y: -0.7056204, z: 0.04582464, w: 0.7056204}
+  m_LocalPosition: {x: -0.006922225, y: -3.7470024e-18, z: 1.5289291e-20}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 104029237}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1720769165
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100036, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1720769166}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:L_ear_ctrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1720769166
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400036, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1720769165}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.013709768, y: 0.034760375, z: -0.028547954}
+  m_LocalScale: {x: 1.9201286, y: 1.9201286, z: 1.9201286}
+  m_Children: []
+  m_Father: {fileID: 2023174855}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1721137790 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
@@ -40078,7 +41132,6 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -40094,7 +41147,6 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -40200,6 +41252,89 @@ Transform:
   m_Father: {fileID: 322049288}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1732563998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100124, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1732564002}
+  - component: {fileID: 1732564001}
+  - component: {fileID: 1732564000}
+  - component: {fileID: 1732563999}
+  m_Layer: 2
+  m_Name: Sea Biscuit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1732563999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1732563998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fbab1b12e715041b8d78fb45fd1271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogTexts:
+  - Hi there! I'm Sea Biscuit!
+  - 'I wonder what all those birds are so interested in.... Something over in Tiffany''s
+    yard by the look of it. '
+  dialogStarts: 00000000
+  conversationNumber: 0
+  textBoxNumber: 0
+--- !u!135 &1732564000
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1732563998}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.11
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &1732564001
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 9500000, guid: e7162d8f84b6a3d4782e7ed36cb4eab2,
+    type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1732563998}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 1
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!4 &1732564002
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400124, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1732563998}
+  m_LocalRotation: {x: -0, y: 0.9761689, z: -0, w: 0.21701258}
+  m_LocalPosition: {x: 159.16, y: 2.08, z: 387.43}
+  m_LocalScale: {x: 42.27941, y: 42.2794, z: 42.2794}
+  m_Children:
+  - {fileID: 2087557067}
+  - {fileID: 209543213}
+  - {fileID: 1128436201}
+  - {fileID: 146111850}
+  m_Father: {fileID: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 154.93301, z: 0}
 --- !u!1 &1736839771
 GameObject:
   m_ObjectHideFlags: 0
@@ -40386,7 +41521,6 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -40402,7 +41536,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -40461,6 +41594,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.14, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1747096214
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100040, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1747096215}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:l_elbow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1747096215
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400040, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1747096214}
+  m_LocalRotation: {x: 0.91952026, y: 0.39304262, z: 2.406692e-17, w: 5.630438e-17}
+  m_LocalPosition: {x: -0.015088756, y: -0.0012012187, z: -4.2649427e-19}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 104029237}
+  m_Father: {fileID: 71246366}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1752426588
 GameObject:
   m_ObjectHideFlags: 0
@@ -40906,8 +42068,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1771491330}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 375, y: 211, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1609236440}
   - {fileID: 400854503}
@@ -40916,7 +42078,7 @@ RectTransform:
   - {fileID: 713218631}
   - {fileID: 1005812615}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -41036,6 +42198,35 @@ Transform:
   m_PrefabParentObject: {fileID: 4512085110662048, guid: a54fd8736d9064ab09bfbbf5efa44fdd,
     type: 2}
   m_PrefabInternal: {fileID: 1597879722}
+--- !u!1 &1777550968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100070, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1777550969}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:R_Ear_Base1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1777550969
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400070, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1777550968}
+  m_LocalRotation: {x: -0.1777601, y: 0.68439853, z: 0.50935256, w: -0.49046913}
+  m_LocalPosition: {x: 0.010849166, y: 0.0070866486, z: 0.014833583}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 906443216}
+  m_Father: {fileID: 1891245024}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1782190408 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
@@ -41288,6 +42479,34 @@ Transform:
   - {fileID: 82549219}
   m_Father: {fileID: 1067680210}
   m_RootOrder: 21
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1807682339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100072, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1807682340}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:R_ear_ctrl1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1807682340
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400072, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1807682339}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.013818181, y: 0.031084046, z: -0.033834152}
+  m_LocalScale: {x: 1.9201286, y: 1.9201286, z: 1.9201286}
+  m_Children: []
+  m_Father: {fileID: 2023174855}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1809991579
 Prefab:
@@ -41552,6 +42771,34 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 7.481476, y: 5.0850773, z: 7.422455}
   m_Center: {x: 1.4577026, y: -23.042538, z: 13.83226}
+--- !u!1 &1814782045
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100032, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1814782046}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Jaw
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1814782046
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400032, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1814782045}
+  m_LocalRotation: {x: 0, y: 0, z: 0.21691673, w: 0.97619015}
+  m_LocalPosition: {x: -0.022493754, y: 0.00051468884, z: -1.4441538e-17}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1891245024}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1818489103
 Prefab:
   m_ObjectHideFlags: 0
@@ -41697,6 +42944,34 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &1828784932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100088, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1828784933}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:R_toes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1828784933
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400088, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1828784932}
+  m_LocalRotation: {x: 0.017661126, y: -0.70688623, z: 0.017661126, w: 0.70688623}
+  m_LocalPosition: {x: -0.005976256, y: 4.440892e-18, z: -2.220446e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 836523370}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1829200413
 Prefab:
   m_ObjectHideFlags: 0
@@ -42062,6 +43337,35 @@ CapsuleCollider:
   m_Height: 0.13
   m_Direction: 0
   m_Center: {x: -0.000049904, y: 0.002612777, z: -0.00048306223}
+--- !u!1 &1839501421
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100002, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1839501422}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Back_Ctrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1839501422
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400002, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1839501421}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: -0.0056284643, z: -0.026293203}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1859945298}
+  m_Father: {fileID: 949117485}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1842280331
 Prefab:
   m_ObjectHideFlags: 0
@@ -42215,6 +43519,34 @@ Transform:
   m_PrefabParentObject: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d,
     type: 2}
   m_PrefabInternal: {fileID: 1844378622}
+--- !u!1 &1844625944
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100052, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1844625945}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:L_toes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1844625945
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400052, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1844625944}
+  m_LocalRotation: {x: 0.017661126, y: -0.70688623, z: 0.017661126, w: 0.70688623}
+  m_LocalPosition: {x: -0.0059762225, y: -3.1571966e-18, z: 1.9705295e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1981317974}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1847205620
 Prefab:
   m_ObjectHideFlags: 0
@@ -42301,7 +43633,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1848917654}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -375, y: 186, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1771491334}
@@ -42572,6 +43904,65 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.14, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1859945297
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100030, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1859945298}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Hips_Ctrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1859945298
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400030, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1859945297}
+  m_LocalRotation: {x: 0, y: 0.034899496, z: -0, w: 0.99939084}
+  m_LocalPosition: {x: -0, y: -0.00679998, z: -0.015079948}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2062110681}
+  - {fileID: 1405146218}
+  - {fileID: 416507155}
+  m_Father: {fileID: 1839501422}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1863101614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100022, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1863101615}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:front_right_leg_control
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1863101615
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400022, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1863101614}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.016271437, y: -0.066736594, z: 0.014632716}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1594806745}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1865162889 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d,
@@ -42726,7 +44117,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -42742,7 +44132,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -42800,7 +44189,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -42816,7 +44204,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -42871,7 +44258,6 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -42887,7 +44273,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -42906,6 +44291,66 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+--- !u!1 &1891172658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100092, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1891172659}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:right_back_foot_IK
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1891172659
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400092, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1891172658}
+  m_LocalRotation: {x: 0, y: 0.034899496, z: -0, w: 0.99939084}
+  m_LocalPosition: {x: 0.016082492, y: -0.082852446, z: -0.13976659}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 146111850}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1891245023
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100024, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1891245024}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Head
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1891245024
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400024, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1891245023}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7521832, w: 0.65895414}
+  m_LocalPosition: {x: -0.02191721, y: -1.11022296e-17, z: 1.5305181e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1814782046}
+  - {fileID: 530064721}
+  - {fileID: 685153149}
+  - {fileID: 1777550969}
+  m_Father: {fileID: 369078939}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1892261632
 Prefab:
   m_ObjectHideFlags: 0
@@ -43027,7 +44472,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -43043,7 +44487,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -43709,6 +45152,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.14, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1934143397
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100046, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1934143398}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:L_knee
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1934143398
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400046, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1934143397}
+  m_LocalRotation: {x: 0.9536785, y: 0.3008277, z: -1.14321e-14, w: 3.6703403e-15}
+  m_LocalPosition: {x: -0.022470245, y: 2.4424906e-17, z: 1.8339558e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1981317974}
+  m_Father: {fileID: 2028508646}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1941646981
 GameObject:
   m_ObjectHideFlags: 0
@@ -43748,7 +45220,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -43764,7 +45235,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -44271,7 +45741,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4891249989090854, guid: 3e6def3758f212340904480d52ff236b, type: 2}
       propertyPath: m_RootOrder
-      value: 24
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 23201605881950916, guid: 3e6def3758f212340904480d52ff236b,
         type: 2}
@@ -44333,7 +45803,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4571191276323112, guid: 7c5cbe28d9747894f997bc050f5504af, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 114106085908731474, guid: 7c5cbe28d9747894f997bc050f5504af,
         type: 2}
@@ -45066,7 +46536,6 @@ SkinnedMeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -45084,7 +46553,6 @@ SkinnedMeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -45408,6 +46876,35 @@ CapsuleCollider:
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
   m_PrefabInternal: {fileID: 104011229}
+--- !u!1 &1981317973
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100042, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1981317974}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:L_foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1981317974
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400042, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1981317973}
+  m_LocalRotation: {x: 0, y: -0, z: -0.62600696, w: 0.77981746}
+  m_LocalPosition: {x: -0.01578341, y: -7.771561e-18, z: 1.3317641e-18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1844625945}
+  m_Father: {fileID: 1934143398}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1981330116
 Prefab:
   m_ObjectHideFlags: 0
@@ -45528,7 +47025,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -45544,7 +47040,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -45561,6 +47056,35 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1982410268}
   m_Mesh: {fileID: 4300000, guid: 87ea0e80cd5911d43b30844add1d9426, type: 3}
+--- !u!1 &1985168467
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100096, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1985168468}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:right_front_leg
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1985168468
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400096, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1985168467}
+  m_LocalRotation: {x: 0.5142438, y: 0.48533836, z: -0.5142438, w: -0.48533836}
+  m_LocalPosition: {x: 0.0177933, y: -0.028836355, z: 0.0050595473}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1647413702}
+  m_Father: {fileID: 1573923392}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1990867779
 GameObject:
   m_ObjectHideFlags: 0
@@ -45943,7 +47467,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -45959,7 +47482,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -46190,6 +47712,36 @@ CapsuleCollider:
   m_Height: 0.2
   m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!1 &2023174854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100026, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2023174855}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:Head_Ctrl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2023174855
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400026, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2023174854}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.000116784206, y: 0.011280197, z: 0.032476842}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1720769166}
+  - {fileID: 1807682340}
+  m_Father: {fileID: 475901408}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2026906434
 Prefab:
   m_ObjectHideFlags: 0
@@ -46314,6 +47866,35 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d73ed8f2a094a0f46b7e3f1cd30e3a71, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &2028508645
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100048, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2028508646}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:L_leg_top
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2028508646
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400048, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2028508645}
+  m_LocalRotation: {x: 0.94768333, y: 0.31921214, z: 2.7243412e-14, w: -9.111899e-15}
+  m_LocalPosition: {x: -0.025964918, y: -0.0018390731, z: -1.4639818e-16}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1934143398}
+  m_Father: {fileID: 66153187}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2034512534
 Prefab:
   m_ObjectHideFlags: 0
@@ -46394,7 +47975,6 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -46410,7 +47990,6 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -46767,6 +48346,34 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 173beeb731c163c48ae06428267f1e98, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &2062110680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100004, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2062110681}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:back_left_leg_control
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2062110681
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400004, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2062110680}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.017550604, y: -0.061244797, z: -0.023445781}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1859945298}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2064241004
 GameObject:
   m_ObjectHideFlags: 0
@@ -47044,7 +48651,6 @@ MeshRenderer:
   m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -47060,7 +48666,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -47076,6 +48681,62 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2084860853}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2087557066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100108, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2087557067}
+  m_Layer: 2
+  m_Name: jack_russell_0008:frontleft_IK
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2087557067
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400108, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2087557066}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.0108, y: -0.026338587, z: -0.0040312237}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1732564002}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2089623415
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100090, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2089623416}
+  m_Layer: 2
+  m_Name: jack_russell_0008:CorgiRig_0013:r_toes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2089623416
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400090, guid: e7162d8f84b6a3d4782e7ed36cb4eab2, type: 3}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2089623415}
+  m_LocalRotation: {x: 0.04582464, y: -0.7056204, z: 0.04582464, w: 0.7056204}
+  m_LocalPosition: {x: -0.0069221435, y: 0.000000005604698, z: -8.359312e-11}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1556715483}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2096504602
 Prefab:
   m_ObjectHideFlags: 0
@@ -47396,7 +49057,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
@@ -47412,7 +49072,6 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -47461,7 +49120,7 @@ Transform:
   - {fileID: 61452449}
   - {fileID: 1482463527}
   m_Father: {fileID: 0}
-  m_RootOrder: 23
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2113131616
 Prefab:
@@ -47808,7 +49467,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4142898804564634, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
       propertyPath: m_RootOrder
-      value: 17
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 114686705143625484, guid: 3e2c8004a0bbc7944a5c35fddb610e0f,
         type: 2}
@@ -48033,6 +49692,372 @@ Prefab:
     - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 3e2c8004a0bbc7944a5c35fddb610e0f, type: 2}
   m_IsPrefabParent: 0
+--- !u!1001 &2121154845
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 325.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.124
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 394.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.989902
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.14175345
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 15.831453
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 15.831453
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 15.831453
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Name
+      value: Blackie
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -163.701
+      objectReference: {fileID: 0}
+    - target: {fileID: 100102, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100082, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100042, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100118, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100048, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100124, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100092, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100100, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100050, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100036, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100084, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100056, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100066, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100028, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100106, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100004, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100052, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100044, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100098, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100114, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100072, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100030, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100068, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100116, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100110, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100108, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100026, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100016, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100088, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100062, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100040, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100090, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100094, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100078, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100022, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100046, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100010, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100076, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100002, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100058, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100064, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100122, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100020, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100126, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100074, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100034, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100080, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100018, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100104, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100024, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100008, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100012, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100054, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100014, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100038, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100096, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100070, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100120, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100060, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100032, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100112, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 100086, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+  m_IsPrefabParent: 0
+--- !u!1 &2121154846 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 1d9b686d6ab4c724f866a402f4d5c2b4, type: 3}
+  m_PrefabInternal: {fileID: 2121154845}
+--- !u!114 &2121154847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2121154846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3fbab1b12e715041b8d78fb45fd1271, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogTexts:
+  - '...'
+  - '...............'
+  - Bork! Don't sneak up on me like that!
+  - 'Oh I''m just working on a new invention. Don''t worry... Ill let you know when
+    I''m finished. '
+  dialogStarts: 00000000
+  conversationNumber: 0
+  textBoxNumber: 0
+--- !u!135 &2121154848
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2121154846}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &2121154849
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2121154846}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.078978345, y: 0.13883778, z: 0.16406964}
+  m_Center: {x: 0.0069505274, y: -0.0017385753, z: -0.039286222}
 --- !u!4 &2121279108 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400080, guid: 33bbb91020e2ed142abfd9d55983b918, type: 3}
@@ -48145,7 +50170,6 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -48161,7 +50185,6 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
