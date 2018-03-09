@@ -8,7 +8,7 @@ public class TiffyAI : AIbase {
     public float moveDistance;
     public float speed;
 
-    public enum States { Hiding, Rescued, Happy };
+    public enum States { Hiding, Rescued, Happy }; //this is used instead of the standard quest number variable because why not
     public States state = States.Hiding;
 
     public GameObject rewardSpawn;
@@ -22,11 +22,11 @@ public class TiffyAI : AIbase {
 
     public override void OnInRange() {
         if (state == States.Hiding) {
-            Display(Dialog[0]);
+            Display(Icons[0]);
         } else if (state == States.Rescued) {
-            Display(Dialog[1]);
+            Display(Icons[1]);
         } else if (state == States.Happy) {
-            Display(Dialog[2]);
+            Display(Icons[2]);
         }
     }
 
@@ -35,7 +35,8 @@ public class TiffyAI : AIbase {
             print("TOYTHING");
             base.ToyInRange();
             state = States.Happy;
-            Display(Dialog[2]);
+            SetConversationNumber();
+            Display(Icons[2]);
             Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
             if (bandanaObject != null && noBandanaObject != null) {
                 bandanaObject.SetActive(true);
@@ -54,16 +55,16 @@ public class TiffyAI : AIbase {
             a.SetTrigger("isSaved");
         }
         state = States.Rescued;
-        Display(Dialog[1]);
+        SetConversationNumber(); //go to the next dialog set
+        Display(Icons[1]);
     }
 
-    public override void Start() {
+    new public void Start() {
         base.Start();
         anim = GetComponentsInChildren<Animator>();
     }
 
-    public override void Update() {
-        base.Update();
+    public void Update() {
         //check if tiffy is safe now and if so run saved
         if (state == States.Hiding) {
             bool isSafe = true;
@@ -72,6 +73,7 @@ public class TiffyAI : AIbase {
                     isSafe = false;
                 }
             }
+            //if there are no more birds, she saved
             if (isSafe) {
                 Saved();
             }

@@ -2,20 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIbase : InteractableObject {
+public class AIbase : Dialog {
 
-    public GameObject[] Dialog;
+    public GameObject[] Icons;
     private GameObject Player;
     public Interactable.Tag ToyTag;
-    
+
+    public int questNumber = 0;
 
     private bool inRange = false;
     private GameObject activeIcon;
     
 
+    //easy way to incriment quest numebr and conversation number at once
+    public void NextQuest() {
+        questNumber++;
+        SetConversationNumber();
+    }
+
     //Triggers when the player enters the range
     public virtual void OnInRange() {
-        //Display(Dialog[0]);
+        
     }
     //Trigger when the player leaves range
     public virtual void OnExitRange() {
@@ -24,7 +31,6 @@ public class AIbase : InteractableObject {
 
     public virtual void ToyInRange() {
         EndDisplay();
-        //Display(Dialog[1]);
     }
 
     //Calling OnInteract will trigger if the player is in range and barks. This is defined in the parent class.
@@ -42,11 +48,9 @@ public class AIbase : InteractableObject {
         }
     }
 
-    // Update is called once per frame
-    public virtual void Update () {
-    }
 
-    void OnTriggerEnter(Collider col) {
+    new void OnTriggerEnter(Collider col) {
+        base.OnTriggerEnter(col);
         if (col.gameObject.CompareTag("Player")) {
             inRange = true;
             OnInRange();
@@ -56,7 +60,8 @@ public class AIbase : InteractableObject {
         }
     }
 
-    void OnTriggerExit(Collider col) {
+    new void OnTriggerExit(Collider col) {
+        base.OnTriggerExit(col);
         if (col.gameObject.CompareTag("Player")) {
             inRange = false;
             OnExitRange();
@@ -64,8 +69,9 @@ public class AIbase : InteractableObject {
     }
 
     // Use this for initialization
-    public virtual void Start() {
-        foreach (GameObject i in Dialog) {
+    new public void Start() {
+        base.Start();
+        foreach (GameObject i in Icons) {
             i.SetActive(false);
         }
         Player = GameObject.FindGameObjectWithTag("Player");

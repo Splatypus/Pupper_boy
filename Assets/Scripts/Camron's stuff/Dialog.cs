@@ -13,7 +13,7 @@ public class Dialog : InteractableObject {
     public int textBoxNumber; //this indicates which text box you're on within the full array of dialog. 
 
     // Use this for initialization
-    void Start () {
+    public void Start () {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         controlman = player.GetComponent<PlayerControllerManager>();
         pdialog = player.GetComponent<PlayerDialog>(); //find player dialog script on the player and set this to refrence it
@@ -31,12 +31,17 @@ public class Dialog : InteractableObject {
     public void Next() {
         //either display the next dialog or close window
         textBoxNumber += 1;
-        if (conversationNumber < dialogStarts.Length && textBoxNumber < dialogStarts[conversationNumber + 1] && textBoxNumber <= dialogTexts.Length) {//check to see if the end of this dialog section has been reached
+        if (conversationNumber + 1 < dialogStarts.Length ? textBoxNumber < dialogStarts[conversationNumber + 1] : textBoxNumber < dialogTexts.Length) {//check to see if the end of this dialog section has been reached
             pdialog.SetDialog(ref dialogTexts[textBoxNumber]); //show the next box
         } else {
             controlman.ChangeMode(PlayerControllerManager.Modes.Walking); //return to walking
+            OnEndOfDialog(conversationNumber);
         }
         
+    }
+
+    public virtual void OnEndOfDialog(int dialogNum) {
+
     }
 
     public bool SetConversationNumber(int c) { //sets the current conversation number to whatever you pass in. False return if failed or reached the end 

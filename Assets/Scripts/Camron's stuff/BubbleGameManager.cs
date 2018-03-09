@@ -20,17 +20,21 @@ public class BubbleGameManager : MiniGameManager {
     public int rewardScore;
     private bool rewardGiven = false;
 
+    public GameObject bubblesRef;
+
     //called when the minigame is started
     public override void GameStart() {
-        base.GameStart();
-        scoreText.gameObject.SetActive(true);
-        scoreText.text = "Score: 0";
-        bubble_particle_system.SetActive(true);
-        score = 0;
-        //activate objectives
-        for (int i = 0; i < numberOfActiveObjectives; i++) {
-            activeObjectives[i] = SelectObjective();
-            objectives[activeObjectives[i]].SetActive(true);
+        if (!isPlaying) {
+            base.GameStart();
+            scoreText.gameObject.SetActive(true);
+            scoreText.text = "Score: 0";
+            bubble_particle_system.SetActive(true);
+            score = 0;
+            //activate objectives
+            for (int i = 0; i < numberOfActiveObjectives; i++) {
+                activeObjectives[i] = SelectObjective();
+                objectives[activeObjectives[i]].SetActive(true);
+            }
         }
     }
 
@@ -54,6 +58,7 @@ public class BubbleGameManager : MiniGameManager {
             highscores.Sort();
         }
         if (reward != null && score >= rewardScore && !rewardGiven) {
+            bubblesRef.GetComponent<BubblesAI>().FinishedGame(score >= rewardScore);
             Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
             rewardGiven = true;
         }
@@ -117,9 +122,9 @@ public class BubbleGameManager : MiniGameManager {
     }
 
     void OnTriggerEnter(Collider col) {
-        if (col.gameObject.CompareTag("Player") && !isPlaying) {
+        /*if (col.gameObject.CompareTag("Player") && !isPlaying) {
             GameStart();
-        }
+        }*/
     }
 
     // Update is called once per frame
