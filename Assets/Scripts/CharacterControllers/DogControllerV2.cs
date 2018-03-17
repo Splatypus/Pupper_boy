@@ -17,12 +17,14 @@ public class DogControllerV2 : Controller {
 
     public Text debug_text;
 
+    #region movement variables
     [SerializeField]
     float speed = 0.8f;
     [SerializeField]
     float turnspeed = 5;
     [SerializeField]
     float jumpPower = 1;
+    #endregion
 
     Vector3 directionPos;
     Vector3 cam_right, cam_fwd;
@@ -38,22 +40,33 @@ public class DogControllerV2 : Controller {
     List<InteractableObject> inRangeOf = new List<InteractableObject>();
     #endregion
 
+    #region Digging
+    [SerializeField]
+    private SphereCollider dig_look_zone;
+    [SerializeField]
+    private AudioSource dig_sound;
+    public float rotateSpeed = 10.0f;
+    public float maxRoationTime = 0.4f; 
+
+    DigZone curZone;
+    IconManager my_icon;
+    TextFadeOut houseText;
+    #endregion
+
     void Start () {
         rigidBody = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
         capCol = GetComponent<BoxCollider>();
-        SetupAnimatior();
+        anim = GetComponentInChildren<Animator>();
+        my_icon = GetComponentInChildren<IconManager>();
+        houseText = FindObjectOfType<TextFadeOut>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        HandleFriction();
 
-        // If it is on the screen, print to the debug text if we are grounded
-        if(debug_text)
-        {
-            debug_text.text = "onGround: " + onGround;
-        }
+
+        HandleFriction();
 
         Move();
 
@@ -61,6 +74,27 @@ public class DogControllerV2 : Controller {
         if (Input.GetButtonDown("Interact")) {
             foreach (InteractableObject i in inRangeOf) {
                 i.OnInteract();
+            }
+        }
+
+        //handle digging input
+        if (Input.GetButtonDown("Dig")) {
+            if (curZone != null) {
+                rigidBody.velocity = Vector3.zero;
+                if (curZone.isPathway) {
+                    //this is to switch to a top camera when digging
+                    //wait until digging animation is implemented or when digging is no longer instantanious
+                    //GameObject.Find("Smart Cameras").GetComponent<cameracontrol>().isCam1 = false;
+
+                    // for pathway
+                    StartCoroutine(StartZoneDig(curZone));
+                    dig_sound.Play(); // re-enable this once the sound effect is real
+                } else {
+                    // for digging up object in yard
+                    Instantiate(curZone.objectToDigUp, curZone.transform.position, Quaternion.identity);
+                    // can give it some velocity and spin or whatever
+                    curZone.gameObject.SetActive(false);
+                }
             }
         }
 
@@ -148,7 +182,29 @@ public class DogControllerV2 : Controller {
             anim.SetBool("onAir", true);
         }
     }
-    
+
+    private void OnTriggerEnter(Collider other) {
+        //if we enter a dig zone, set that up
+        DigZone digZone = other.GetComponent<DigZone>();
+        if (digZone != null) {
+            print("digger entered into a trigger named " + other.name);
+            curZone = digZone;
+            my_icon.set_single_icon(Icons.Dig); // make this dig when dig is ready
+            my_icon.set_single_bubble_active(true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other) {
+        //exiting dig zone
+        DigZone digZone = other.GetComponent<DigZone>();
+        if (digZone != null) {
+            print("digger LEFT trigger " + other.name);
+            curZone = null;
+            my_icon.set_single_bubble_active(false);
+        }
+
+    }
+
     void HandleFriction()
     {
         // If there is no input, we set our physics material to have max friction
@@ -162,11 +218,6 @@ public class DogControllerV2 : Controller {
             capCol.material = zFriction;
         }
         
-    }
-
-    void SetupAnimatior()
-    {
-        anim = GetComponentInChildren<Animator>();
     }
 
     public override void OnDeactivated() {
@@ -184,4 +235,44 @@ public class DogControllerV2 : Controller {
     public void removeObject(InteractableObject i) {
         inRangeOf.Remove(i);
     }
+
+    //starts dig animation
+    IEnumerator StartZoneDig(DigZone digZone) {
+        //rotate towards the fence
+        float timeTaken = 0.0f;
+        while ( transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRoationTime){
+            transform.rotation = Quaternion.RotateTowards(  transform.rotation, 
+                                                            Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position), 
+                                                            rotateSpeed * Time.fixedDeltaTime);
+            timeTaken += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        //dig under it
+        anim.SetTrigger("Dig");
+        yield return new WaitForSeconds(0.8f);
+        move_to_next_zone(digZone);
+        houseText.setText(curZone.other_side.enteringYardName);
+    }
+
+    //moves the character to the next dig zone when digging
+    private void move_to_next_zone(DigZone digZone) {
+        DigZone zone_to_go_to = digZone.other_side;
+
+        //find out how far to move. This is done by assuming that one dig zone is a plane with a normal pointing towards the other zone
+        //this makes it easy to find the distance from the character to that plane and move the player that far
+        float dist_to_move;
+        Vector3 plane = (digZone.transform.position - zone_to_go_to.transform.position).normalized;
+        Vector3 toPlayer = transform.position - zone_to_go_to.transform.position;
+        dist_to_move = Vector3.Dot(plane, toPlayer);
+        //check terrain to that we dont teleport a dog into the ground. 
+        Vector3 targetLocation = transform.position + ((zone_to_go_to.transform.position - digZone.transform.position).normalized * dist_to_move);
+        int groundMask = 1 << 8;
+        RaycastHit hit;
+        if (Physics.Raycast(targetLocation + new Vector3(0, 5.0f, 0), Vector3.down, out hit, 10.0f, groundMask)) {
+            targetLocation += new Vector3(0, 5.0f - hit.distance, 0);
+        }
+
+        transform.position = targetLocation;
+    }
+
 }

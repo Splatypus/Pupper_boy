@@ -43,7 +43,7 @@ public class TextFadeOut : MonoBehaviour
         while (lerpAmount < 1.0f)
         {
             lerpAmount = (Time.time - startTime) / lerp_time;
-            print("lerping in t = " + lerpAmount);
+            //print("lerping in t = " + lerpAmount);
             float alpha = Mathf.Lerp(start, end, lerpAmount);
             Color c = text.color;
             c.a = alpha;

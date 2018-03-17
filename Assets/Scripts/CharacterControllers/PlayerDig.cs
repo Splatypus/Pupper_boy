@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+//THIS SCRIPT IS NO LONGER USED. EVERYTHING HERE HAS BEEN MOVED INTO DOGCONTROLLERV2. 
+
 public class PlayerDig : MonoBehaviour {
 
     [SerializeField]
@@ -41,8 +45,7 @@ public class PlayerDig : MonoBehaviour {
                     //GameObject.Find("Smart Cameras").GetComponent<cameracontrol>().isCam1 = false;
 
                     // for pathway
-                    move_to_next_zone(curZone);
-                    houseText.setText(curZone.other_side.enteringYardName);
+                    StartCoroutine(StartZoneDig(curZone));
                     dig_sound.Play(); // re-enable this once the sound effect is real
                 }
                 else
@@ -55,6 +58,13 @@ public class PlayerDig : MonoBehaviour {
             }
 
         }
+    }
+
+    IEnumerator StartZoneDig(DigZone digZone) {
+        anim.SetTrigger("Dig");
+        yield return new WaitForSeconds(1.0f);
+        move_to_next_zone(digZone);
+        houseText.setText(curZone.other_side.enteringYardName);
     }
 
     private void move_to_next_zone(DigZone digZone)
