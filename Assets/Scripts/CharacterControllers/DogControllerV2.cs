@@ -51,6 +51,7 @@ public class DogControllerV2 : Controller {
     DigZone curZone;
     IconManager my_icon;
     TextFadeOut houseText;
+    bool isDigging = false;
     #endregion
 
     void Start () {
@@ -64,41 +65,44 @@ public class DogControllerV2 : Controller {
 	
 	// Update is called once per frame
 	void Update () {
-
-
+        
         HandleFriction();
 
-        Move();
+        //dont do anything if digging
+        if (!isDigging) {
 
-        //Handle interaction input
-        if (Input.GetButtonDown("Interact")) {
-            foreach (InteractableObject i in inRangeOf) {
-                i.OnInteract();
-            }
-        }
-
-        //handle digging input
-        if (Input.GetButtonDown("Dig")) {
-            if (curZone != null) {
-                rigidBody.velocity = Vector3.zero;
-                if (curZone.isPathway) {
-                    //this is to switch to a top camera when digging
-                    //wait until digging animation is implemented or when digging is no longer instantanious
-                    //GameObject.Find("Smart Cameras").GetComponent<cameracontrol>().isCam1 = false;
-
-                    // for pathway
-                    StartCoroutine(StartZoneDig(curZone));
-                    dig_sound.Play(); // re-enable this once the sound effect is real
-                } else {
-                    // for digging up object in yard
-                    Instantiate(curZone.objectToDigUp, curZone.transform.position, Quaternion.identity);
-                    // can give it some velocity and spin or whatever
-                    curZone.gameObject.SetActive(false);
+            Move();
+   
+            //Handle interaction input
+            if (Input.GetButtonDown("Interact")) {
+                foreach (InteractableObject i in inRangeOf) {
+                    i.OnInteract();
                 }
             }
-        }
 
-    }
+            //handle digging input
+            if (Input.GetButtonDown("Dig")) {
+                if (curZone != null) {
+                    rigidBody.velocity = Vector3.zero;
+                    if (curZone.isPathway) {
+                        //this is to switch to a top camera when digging
+                        //wait until digging animation is implemented or when digging is no longer instantanious
+                        //GameObject.Find("Smart Cameras").GetComponent<cameracontrol>().isCam1 = false;
+
+                        // for pathway
+                        StartCoroutine(StartZoneDig(curZone));
+                        dig_sound.Play(); // re-enable this once the sound effect is real
+                    } else {
+                        // for digging up object in yard
+                        Instantiate(curZone.objectToDigUp, curZone.transform.position, Quaternion.identity);
+                        // can give it some velocity and spin or whatever
+                        curZone.gameObject.SetActive(false);
+                    }
+                }
+            }//end dig input
+
+        }//end isdigging check
+    }//end update
     
 
     //void FixedUpdate()
@@ -238,6 +242,7 @@ public class DogControllerV2 : Controller {
 
     //starts dig animation
     IEnumerator StartZoneDig(DigZone digZone) {
+        isDigging = true;
         //rotate towards the fence
         float timeTaken = 0.0f;
         while ( transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRoationTime){
@@ -252,6 +257,9 @@ public class DogControllerV2 : Controller {
         yield return new WaitForSeconds(0.8f);
         move_to_next_zone(digZone);
         houseText.setText(curZone.other_side.enteringYardName);
+        //after the animation, restore movement
+        yield return new WaitForSeconds(0.2f);
+        isDigging = false;
     }
 
     //moves the character to the next dig zone when digging
