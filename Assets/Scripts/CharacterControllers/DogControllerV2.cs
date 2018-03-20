@@ -6,8 +6,6 @@ using UnityEngine.UI; // for debug text
 
 public class DogControllerV2 : Controller {
 
-    public GameObject smartCams;
-
     #region Component Variables
     Rigidbody rigidBody;
     Animator anim;
@@ -245,9 +243,6 @@ public class DogControllerV2 : Controller {
     //starts dig animation
     IEnumerator StartZoneDig(DigZone digZone) {
         isDigging = true;
-        //change camera to overhead
-        smartCams.GetComponent<cameracontrol>().Digging();
-
         //rotate towards the fence
         float timeTaken = 0.0f;
         while ( transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRoationTime){
@@ -259,15 +254,13 @@ public class DogControllerV2 : Controller {
         }
         //dig under it
         anim.SetTrigger("Dig");
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.6f);
         dig_sound.Play();
         move_to_next_zone(digZone);
         anim.SetTrigger("Dig2");
         houseText.setText(curZone.other_side.enteringYardName);
         //after the animation, restore movement
-        yield return new WaitForSeconds(1.0f);
-        //reset camera back to mainCam
-        smartCams.GetComponent<cameracontrol>().MainCam();
+        yield return new WaitForSeconds(0.6f);
         isDigging = false;
     }
 
