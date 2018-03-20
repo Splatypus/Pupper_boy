@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraCollision : MonoBehaviour {
 
     public float maxCamDis = 7.0f;
+    public float minCamDis = 0.2f;
     private float curCamDis;
     public float moveInPaddingDistance = 0.5f;
 
@@ -56,6 +57,9 @@ public class CameraCollision : MonoBehaviour {
         //then set camera distance
         if (newCamDis > maxCamDis) {
             newCamDis = maxCamDis;
+        }
+        if (newCamDis < minCamDis) {
+            newCamDis = minCamDis;
         }
         transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, -newCamDis);
         curCamDis = newCamDis;

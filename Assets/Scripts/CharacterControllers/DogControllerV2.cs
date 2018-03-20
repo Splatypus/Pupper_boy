@@ -258,7 +258,7 @@ public class DogControllerV2 : Controller {
         dig_sound.Play();
         move_to_next_zone(digZone);
         anim.SetTrigger("Dig2");
-        houseText.setText(curZone.other_side.enteringYardName);
+        houseText.setText(digZone.other_side.enteringYardName);
         //after the animation, restore movement
         yield return new WaitForSeconds(0.6f);
         isDigging = false;
