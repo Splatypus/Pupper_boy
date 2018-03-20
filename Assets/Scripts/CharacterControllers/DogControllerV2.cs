@@ -91,7 +91,7 @@ public class DogControllerV2 : Controller {
 
                         // for pathway
                         StartCoroutine(StartZoneDig(curZone));
-                        dig_sound.Play(); // re-enable this once the sound effect is real
+                        
                     } else {
                         // for digging up object in yard
                         Instantiate(curZone.objectToDigUp, curZone.transform.position, Quaternion.identity);
@@ -254,8 +254,10 @@ public class DogControllerV2 : Controller {
         }
         //dig under it
         anim.SetTrigger("Dig");
+        dig_sound.Play();
         yield return new WaitForSeconds(0.8f);
         move_to_next_zone(digZone);
+        anim.SetTrigger("Dig2");
         houseText.setText(curZone.other_side.enteringYardName);
         //after the animation, restore movement
         yield return new WaitForSeconds(0.2f);
