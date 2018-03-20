@@ -79,7 +79,7 @@ public class TiffyAI : AIbase {
             }
         }
         if (state == States.Rescued && moveDistance > 0) {
-            transform.position += Vector3.back * Time.deltaTime * speed;
+            transform.position += gameObject.transform.forward * Time.deltaTime * speed;
             moveDistance -= Time.deltaTime * speed;
             if (moveDistance < 0) {
                 //anim.SetFloat("Forward", 0.0f); //, 0.1f, Time.deltaTime);
