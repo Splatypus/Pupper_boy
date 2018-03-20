@@ -30,10 +30,10 @@ public class TiffyAI : AIbase {
         }
     }
 
-    public override void ToyInRange() {
+    public override void ToyInRange(GameObject toy) {
         if (state == States.Rescued) {
             print("TOYTHING");
-            base.ToyInRange();
+            base.ToyInRange(toy);
             state = States.Happy;
             SetConversationNumber();
             Display(Icons[2]);

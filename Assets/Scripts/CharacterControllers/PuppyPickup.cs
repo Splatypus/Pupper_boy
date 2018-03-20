@@ -11,7 +11,7 @@ public class PuppyPickup : MonoBehaviour {
     public int num_food_for_memes = 10;
     int m_num_food = 0;
 
-    private GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
+    public GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
     private Vector3 prevPosition = new Vector3(0f, 0f, 0f);                     //when ball is let go, this is used to calculate it's momentum
     [SerializeField] private Transform mouth;                                   //location of the mouth to move items to
     [SerializeField] private Transform butt;                                    //ass
@@ -20,7 +20,7 @@ public class PuppyPickup : MonoBehaviour {
     private AudioSource m_audio_source;
     private int bork_index = 0;
 
-    private List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
+    public List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
     private BallLaunchV2 launcherInRange = null;                                //ball launcher that is in range (if one exists)
     private ToyBox boxInRange = null;                                           //toy box that is in range (if one exists)
     private FoodDispenser foodInRange = null;
@@ -68,17 +68,7 @@ public class PuppyPickup : MonoBehaviour {
                 //Otherwise, drop it
                 else
                 {
-                    itemInMouth.transform.parent = null;
-                    itemInMouth.GetComponent<Rigidbody>().useGravity = true;
-                    //calculate the momentum of the ball due to the dog's turning.
-                    //If you don't it will always fall straight to the ground
-                    itemInMouth.GetComponent<Rigidbody>().velocity = (itemInMouth.transform.position - prevPosition) / Time.deltaTime;
-
-                    Interactable interactable = itemInMouth.GetComponent<Interactable>();
-                    if (interactable)
-                    {
-                        interactable.onDrop();
-                    }
+                    DropItem();
                 }
                 itemInMouth = null;
             }
@@ -148,6 +138,19 @@ public class PuppyPickup : MonoBehaviour {
     private void dissable_bubble_icon()
     {
         iconManager.set_single_bubble_active(false);
+    }
+
+    public void DropItem() {
+        itemInMouth.transform.parent = null;
+        itemInMouth.GetComponent<Rigidbody>().useGravity = true;
+        //calculate the momentum of the ball due to the dog's turning.
+        //If you don't it will always fall straight to the ground
+        itemInMouth.GetComponent<Rigidbody>().velocity = (itemInMouth.transform.position - prevPosition) / Time.deltaTime;
+
+        Interactable interactable = itemInMouth.GetComponent<Interactable>();
+        if (interactable) {
+            interactable.onDrop();
+        }
     }
 
     public void poop()

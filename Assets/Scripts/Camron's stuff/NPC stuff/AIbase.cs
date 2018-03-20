@@ -29,8 +29,15 @@ public class AIbase : Dialog {
         EndDisplay();
     }
 
-    public virtual void ToyInRange() {
+    public virtual void ToyInRange(GameObject toy) {
         EndDisplay();
+        PuppyPickup inMouth = Player.GetComponent<DogControllerV2>().ppickup;
+        //if the player is holding the object drop it first so everything doesnt break. 
+        if (inMouth.itemInMouth != null && inMouth.itemInMouth == toy) {
+            inMouth.DropItem();
+            inMouth.objectsInRange.Remove(toy);
+        }
+        Destroy(toy);
     }
 
     //Calling OnInteract will trigger if the player is in range and barks. This is defined in the parent class.
@@ -55,8 +62,8 @@ public class AIbase : Dialog {
             inRange = true;
             OnInRange();
         } else if (col.gameObject.GetComponent<Interactable>() != null && col.gameObject.GetComponent<Interactable>().hasTag(ToyTag)) {
-            ToyInRange();
-            Destroy(col.gameObject);
+            ToyInRange(col.gameObject);
+            
         }
     }
 

@@ -21,9 +21,10 @@ public class BubblesAI : AIbase {
     }
 
     //when bringing soap to bubbles
-    public override void ToyInRange() {
-        base.ToyInRange();
+    public override void ToyInRange(GameObject toy) {
+        
         if (questNumber == 0) {
+            base.ToyInRange(toy);
             NextQuest();
         }
     }

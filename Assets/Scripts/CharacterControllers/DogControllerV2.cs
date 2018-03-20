@@ -38,6 +38,7 @@ public class DogControllerV2 : Controller {
 
     #region InteractionVariables
     List<InteractableObject> inRangeOf = new List<InteractableObject>();
+    public PuppyPickup ppickup; //reference to the mouth script cuz sometimes u need that in ur life
     #endregion
 
     #region Digging
@@ -61,6 +62,7 @@ public class DogControllerV2 : Controller {
         anim = GetComponentInChildren<Animator>();
         my_icon = GetComponentInChildren<IconManager>();
         houseText = FindObjectOfType<TextFadeOut>();
+        ppickup = GetComponentInChildren<PuppyPickup>();
     }
 	
 	// Update is called once per frame
@@ -243,6 +245,9 @@ public class DogControllerV2 : Controller {
     //starts dig animation
     IEnumerator StartZoneDig(DigZone digZone) {
         isDigging = true;
+        if (ppickup.itemInMouth != null) {
+            ppickup.itemInMouth.SetActive(false);
+        }
         //rotate towards the fence
         float timeTaken = 0.0f;
         while ( transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRoationTime){
@@ -262,6 +267,9 @@ public class DogControllerV2 : Controller {
         //after the animation, restore movement
         yield return new WaitForSeconds(0.6f);
         isDigging = false;
+        if (ppickup.itemInMouth != null) {
+            ppickup.itemInMouth.SetActive(true);
+        }
     }
 
     //moves the character to the next dig zone when digging
