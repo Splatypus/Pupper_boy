@@ -254,13 +254,13 @@ public class DogControllerV2 : Controller {
         }
         //dig under it
         anim.SetTrigger("Dig");
+        yield return new WaitForSeconds(0.6f);
         dig_sound.Play();
-        yield return new WaitForSeconds(0.8f);
         move_to_next_zone(digZone);
         anim.SetTrigger("Dig2");
         houseText.setText(curZone.other_side.enteringYardName);
         //after the animation, restore movement
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.6f);
         isDigging = false;
     }
 
