@@ -139,6 +139,7 @@ public class FlightMode : Controller {
         euler_rotation.y = transform.eulerAngles.y;
         transform.eulerAngles = euler_rotation;
         this.GetComponent<Rigidbody>().useGravity = true;
+        this.GetComponent<Rigidbody>().velocity *= 0.5f;
         //this.GetComponent<DogControllerV2>().enabled = true;
         if (this.GetComponent<DogControllerV2>())
             this.GetComponent<DogControllerV2>().enabled = true;
