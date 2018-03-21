@@ -200,7 +200,7 @@ public class SquirrelController : MonoBehaviour {
 
             me_to_tree = me_to_tree.normalized * dist_from_start * tree_width_scale_const;
             me_to_tree.y = 0;
-            print(me_to_tree);
+            //print(me_to_tree);
             new_pos -= me_to_tree;
             transform.position = new_pos;
         }

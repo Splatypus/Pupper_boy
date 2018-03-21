@@ -199,7 +199,7 @@ public class DogControllerV2 : Controller {
         //if we enter a dig zone, set that up
         DigZone digZone = other.GetComponent<DigZone>();
         if (digZone != null) {
-            print("digger entered into a trigger named " + other.name);
+            //print("digger entered into a trigger named " + other.name);
             curZone = digZone;
             my_icon.set_single_icon(Icons.Dig); // make this dig when dig is ready
             my_icon.set_single_bubble_active(true);
@@ -210,7 +210,7 @@ public class DogControllerV2 : Controller {
         //exiting dig zone
         DigZone digZone = other.GetComponent<DigZone>();
         if (digZone != null) {
-            print("digger LEFT trigger " + other.name);
+            //print("digger LEFT trigger " + other.name);
             curZone = null;
             my_icon.set_single_bubble_active(false);
         }

@@ -26,7 +26,7 @@ public class TextFadeOut : MonoBehaviour
         Color c = text.color;
         c.a = 1.0f;
         text.color = c;
-        print("setting text to " + words);
+        //print("setting text to " + words);
         StartCoroutine(fadeLerp(0, 1, timeToFadeIn));
         Invoke("startFade", timeUntilFadeStarts);
     }
