@@ -7576,16 +7576,22 @@ MonoBehaviour:
     count!"
   - Woof! Too slow! I'll let you try again though!
   - If you can catch at least 5 bubbles, I'll give you my red bandana as a prize!
-  - Woof! Much bubbles! Here, take my bandana. We should play again!
-  - Woof! You're back to play? Let's see how many you can catch! Ready.... go!
-  dialogStarts: 0000000001000000020000000400000005000000
+  - Woof! Much bubbles! Here, take my bandana. We should play again sometime!
+  - Woof! You're back to play? I've been practicing! I caught 8 bubbles last time!
+    If you can beat that I have another treat for you! Ready.... go!
+  - Wow! I'll have to keep training to be a better bubble catcher than you! You're
+    welcome to come back anytime to play!
+  - Oh, and take this! I promised to give you something good!
+  - Back to catch some more bubbles? Ready.... go!!
+  dialogStarts: 00000000010000000200000004000000050000000600000008000000
   conversationNumber: 0
   textBoxNumber: 0
   Icons: []
   ToyTag: 3
   questNumber: 0
-  rewardSpawn: {fileID: 0}
-  reward: {fileID: 0}
+  rewardSpawn: {fileID: 593589420}
+  reward: {fileID: 1167057413576644, guid: 6aabb0307c910b746bd5a0e8b0bd6b3a, type: 2}
+  reward2: {fileID: 1453747075105068, guid: 4fddd90104c5ab841b0f30dd83d1ce6d, type: 2}
   bubbleGameRef: {fileID: 1123519550}
 --- !u!135 &370323332
 SphereCollider:

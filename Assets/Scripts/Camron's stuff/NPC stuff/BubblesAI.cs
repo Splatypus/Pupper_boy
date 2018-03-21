@@ -7,6 +7,7 @@ public class BubblesAI : AIbase {
 
     public GameObject rewardSpawn; //location at which the reward is spawned
     public GameObject reward;
+    public GameObject reward2;
 
     public BubbleGameManager bubbleGameRef;
 
@@ -32,9 +33,15 @@ public class BubblesAI : AIbase {
     //when dialog ends
     public override void OnEndOfDialog(int c) {
         base.OnEndOfDialog(c);
-        if (c == 1 || c == 2 || c == 4) {
-            bubbleGameRef.GameStart();
-        } else if (c == 3) {
+        if (c == 1 || c == 2 || c == 6) {
+            bubbleGameRef.GameStartForReward(5);
+        } else if (c == 4) {
+            bubbleGameRef.GameStartForReward(8);
+        } else if (c == 3 || c == 5) {
+            if (c==3)
+                Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
+            else
+                Instantiate(reward2, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
             NextQuest();
         }
 
@@ -50,6 +57,9 @@ public class BubblesAI : AIbase {
                 questNumber = 2;
                 SetConversationNumber(2);
             }
+        } else if (questNumber == 4 && didWin) {
+            //beat the new high score
+            NextQuest();
         }
     }    
 }

@@ -15,10 +15,7 @@ public class BubbleGameManager : MiniGameManager {
     [SerializeField] List<int> highscores = new List<int>(); //Sorted where highest score is at position [9] and lowest is at [0]
     public int maxHighScores = 10;
 
-    public GameObject rewardSpawn;
-    public GameObject reward;
     public int rewardScore;
-    private bool rewardGiven = false;
 
     public GameObject bubblesRef;
 
@@ -36,6 +33,12 @@ public class BubbleGameManager : MiniGameManager {
                 objectives[activeObjectives[i]].SetActive(true);
             }
         }
+    }
+
+    public void GameStartForReward(int scoreGoal) {
+
+        rewardScore = scoreGoal;
+        GameStart();
     }
 
     //deactivate all when game is over #TODO: add highscore setting and all that
@@ -57,10 +60,8 @@ public class BubbleGameManager : MiniGameManager {
             highscores[0] = score;
             highscores.Sort();
         }
-        if (reward != null && score >= rewardScore && !rewardGiven) {
+        if (score >= rewardScore) {
             bubblesRef.GetComponent<BubblesAI>().FinishedGame(score >= rewardScore);
-            Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
-            rewardGiven = true;
         }
     }
 
