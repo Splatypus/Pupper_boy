@@ -33,6 +33,7 @@ public class DogControllerV2 : Controller {
     float vertical;
     bool jumpInput;
     bool onGround;
+    public bool hasFlight = false;
 
     float m_speed;
 
@@ -102,6 +103,11 @@ public class DogControllerV2 : Controller {
                     }
                 }
             }//end dig input
+
+            //flight mode
+            if (hasFlight && Input.GetButtonDown("Fly")) {
+                gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Flight);
+            }
 
         }//end isdigging check
     }//end update

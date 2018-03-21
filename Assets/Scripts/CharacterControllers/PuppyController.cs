@@ -34,8 +34,8 @@ public class PuppyController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!flightMode.IsFlying())
-        {
+        //if (!flightMode.IsFlying())
+        //{
             // move the dog
             float vertical = Input.GetAxis("Vertical");
             float horiztonal = Input.GetAxis("Horizontal");
@@ -45,6 +45,6 @@ public class PuppyController : MonoBehaviour {
 
 
             rb.velocity = transform.forward * vertical * moveSpeed;
-        }
+        //}
     }
 }

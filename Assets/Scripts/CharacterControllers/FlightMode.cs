@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class FlightMode : Controller {
-
-    [SerializeField] private bool isFlying;
+    
     [SerializeField] private float speedOfFlight;
     [SerializeField] private float takeoffAngle;
     [SerializeField] private float tiltSensitivity;
@@ -31,8 +30,7 @@ public class FlightMode : Controller {
     private Coroutine BGFadeOutRoutine = null;
     private Coroutine BGFadeInRoutine = null;
     private float musicStartVolume;
-
-    public bool can_fly = false;
+    
     private PuppyPickup pickup;
     private Vector3 euler_rotation;
     RigidbodyConstraints initial_rb_constratins;
@@ -63,19 +61,12 @@ public class FlightMode : Controller {
         //if (Input.GetKeyDown(KeyCode.F))
         if (Input.GetButtonDown("Fly"))
         {
-            if (isFlying)
-                DeactivateFlightMode();
-            else if(can_fly)
-                ActivateFlightMode();
+            gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Walking);
         }
     }
 
     // Update is called once per frame
     void FixedUpdate () {
-        if (!can_fly)
-            return;
-		if(isFlying)
-        {
             float vertical = Input.GetAxis("Vertical") * tiltSensitivity;
             float horiztonal = Input.GetAxis("Horizontal") * tiltSensitivity;
 
@@ -96,14 +87,13 @@ public class FlightMode : Controller {
 
             if(anim)
             {
-                anim.SetFloat("Forward", 1.0f, 0.0f, Time.deltaTime); // maybe should be FixedDeltaTime?
+                anim.SetFloat("Forward", 1.0f, 0.0f, Time.fixedDeltaTime); // maybe should be FixedDeltaTime? yes it should. Fixed
             }
-        }
 
         
 	}
 
-    public void ActivateFlightMode()
+    public override void OnActivated()
     {
         // set up rigid body and controller to be good for flight
         euler_rotation = transform.eulerAngles;
@@ -119,8 +109,6 @@ public class FlightMode : Controller {
         // set up trail and particle effect
         tr.enabled = true;
         ps.Play();
-        
-        isFlying = true;
 
         // set up sounds for flight
         launchSound.Play();
@@ -145,7 +133,7 @@ public class FlightMode : Controller {
         anim.SetBool("isFlying", true);
     }
 
-    public void DeactivateFlightMode()
+    public override void OnDeactivated()
     {
         //float cur_y = transform.eulerAngles.y;
         euler_rotation.y = transform.eulerAngles.y;
@@ -159,7 +147,6 @@ public class FlightMode : Controller {
         rb.constraints = initial_rb_constratins;
         tr.enabled = false;
         ps.Stop();
-        isFlying = false;
 
         if(launchSound.isPlaying)
             launchSound.Stop();
@@ -178,10 +165,6 @@ public class FlightMode : Controller {
         anim.SetBool("isFlying", false);
     }
 
-    public bool IsFlying()
-    {
-        return isFlying;
-    }
 
     private IEnumerator FadeBGOut()
     {

@@ -81,8 +81,8 @@ public class PuppyPickup : MonoBehaviour {
                 if (m_num_food >= num_food_for_memes)
                 {
                     //Debug.Log("ENTER MEME ZONE!!!!");
-                    FlightMode flight = FindObjectOfType<FlightMode>();
-                    flight.can_fly = true;
+                    DogControllerV2 flight = GetComponentInParent<DogControllerV2>();
+                    flight.hasFlight = true;
                     iconManager.set_single_icon(Icons.Flight);
                     iconManager.set_single_bubble_active(true);
                     Invoke("dissable_bubble_icon", 2.0f);
