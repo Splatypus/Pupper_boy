@@ -17,8 +17,8 @@ Shader "Custom/ToonShader" {
 		Tags { "RenderType"="Opaque" }
 		LOD 200
 		
-		//Outline shader?
-		Pass{
+		//Outline Effect
+		/*Pass{
 			Cull Front
 
 			CGPROGRAM
@@ -43,7 +43,6 @@ Shader "Custom/ToonShader" {
 			v2f vert(appdata_cel v) {
 				v2f o;
 				//move vertex position away from object origin. This should be replaced by moving them along their normal vectors, but hard edges are dumb
-				//use vertex color channel to store smoothed normals. Only used for effects like this
 				v.vertex.xyz += normalize(v.vertex.xyz) * _OutlineSize;
 				//reverse normals
 				v.normal *= -1;
@@ -58,21 +57,22 @@ Shader "Custom/ToonShader" {
 			ENDCG
 		}
 		
-		Cull Back
+		Cull Back*/
 
-		//surface shader
+		//surface shader (cel shading)
 
 		CGPROGRAM
-		// CelShading something idk
 		#pragma surface surf CelShadingForward
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
 
-		half4 LightingCelShadingForward(SurfaceOutput s, half3 lightDir, half atten) {
-			half NdotL = dot(s.Normal, lightDir);
-			NdotL = 1 + clamp(floor(NdotL), -1, 0);
+		half4 LightingCelShadingForward(SurfaceOutput s, half3 lightDir, half atten) { //atten is a range 0-1 where 0 is in darkness and 1 is in bright light
+			half lightStr = dot(s.Normal, lightDir);
+			lightStr -= (atten < 0.3); //if in shade, subtract 1 from light strength
+			half NdotL = 1 + clamp(floor(lightStr), -1, 0);
 			half4 c;
-			c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * atten * 2);
+			half sunglow = (lightStr > 0.95)*6 + 1; //6 if light hits this at a direct angle, otherwise 1 
+			c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * 2 * sunglow );
 			c.a = s.Alpha;
 			return c;
 		}
