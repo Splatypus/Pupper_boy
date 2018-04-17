@@ -10,6 +10,11 @@ Shader "Custom/ToonShader" {
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_Outline("Outline Color", Color) = (0, 0, 0, 1)
 		_OutlineSize("Outline Thickness", Float) = 0.1
+		_MinDark("Minimum Darkness", Float) = 0.15
+		_SunspotCutoff("Sunglow Cutoff", Float) = 0.95
+		_Sunspot("Sunglow Intensity", Float) = 6
+
+
 		//_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		//_Metallic ("Metallic", Range(0,1)) = 0.0
 	}
@@ -66,12 +71,15 @@ Shader "Custom/ToonShader" {
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
 
+		float _MinDark;
+		float _SunspotCutoff;
+		float _Sunspot;
 		half4 LightingCelShadingForward(SurfaceOutput s, half3 lightDir, half atten) { //atten is a range 0-1 where 0 is in darkness and 1 is in bright light
 			half lightStr = dot(s.Normal, lightDir);
 			lightStr -= (atten < 0.3); //if in shade, subtract 1 from light strength
-			half NdotL = 1 + clamp(floor(lightStr), -1, 0);
+			half NdotL = 1 + clamp(floor(lightStr), -1 + _MinDark, 0);
 			half4 c;
-			half sunglow = (lightStr > 0.95)*6 + 1; //6 if light hits this at a direct angle, otherwise 1 
+			half sunglow = (lightStr > _SunspotCutoff)*_Sunspot + 1; //Apply the sunspot light strength multiplier if this spot is above the cutoff bringhtness 
 			c.rgb = s.Albedo * _LightColor0.rgb * (NdotL * 2 * sunglow );
 			c.a = s.Alpha;
 			return c;
