@@ -15,6 +15,9 @@ public class Dialog : InteractableObject {
     public int textBoxNumber; //this indicates which text box you're on within the full array of dialog. 
     public string fileName;
 
+    public GameObject playercam;
+    public GameObject npccam;
+
     // Use this for initialization
     public void Start () {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -24,6 +27,8 @@ public class Dialog : InteractableObject {
 
 
     public override void OnInteract() {
+        npccam.SetActive(true);
+        playercam.SetActive(false);
         //change player mode to dialog mode when they interact with this npc
         controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);
         pdialog.npcDialog = this;
@@ -45,7 +50,8 @@ public class Dialog : InteractableObject {
     }
 
     public virtual void OnEndOfDialog(int dialogNum) {
-
+        playercam.SetActive(true);
+        npccam.SetActive(false);
     }
 
     public bool SetConversationNumber(int c) { //sets the current conversation number to whatever you pass in. False return if failed or reached the end 

@@ -20,6 +20,7 @@ public class TiffyAI : AIbase {
     public GameObject noBandanaObject;
 
 
+
     public override void OnInRange() {
         if (state == States.Hiding) {
             Display(Icons[0]);
