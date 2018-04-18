@@ -6951,7 +6951,7 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e68f77e240a7f8643b5cc4253dc37516, type: 2}
+  - {fileID: 2100000, guid: 89ee4d61fcee8be4b94e03ddd0886850, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7625,6 +7625,7 @@ MonoBehaviour:
   dialogStarts: 00000000010000000200000004000000050000000600000008000000
   conversationNumber: 0
   textBoxNumber: 0
+  fileName: 
   Icons: []
   ToyTag: 3
   questNumber: 0
@@ -9192,6 +9193,7 @@ MonoBehaviour:
   dialogStarts: 0000000003000000
   conversationNumber: 0
   textBoxNumber: 0
+  fileName: 
 --- !u!114 &442945322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10307,7 +10309,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: c4fa1e6a254f1934b970350f5bc245f9, type: 2}
+  - {fileID: 2100000, guid: bfab295bf931ee14cbb8371c38ec22f9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10358,7 +10360,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 499778186}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -97.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2109572739}
@@ -18642,6 +18644,7 @@ MonoBehaviour:
   dialogStarts: 00000000
   conversationNumber: 0
   textBoxNumber: 0
+  fileName: 
 --- !u!135 &733389393
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -20971,13 +20974,13 @@ Light:
   m_Enabled: 1
   serializedVersion: 8
   m_Type: 1
-  m_Color: {r: 0.8602941, g: 0.84153515, b: 0.5882893, a: 1}
+  m_Color: {r: 0.63235295, g: 0.58906114, b: 0.44171715, a: 1}
   m_Intensity: 1.6
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 1
   m_Shadows:
-    m_Type: 1
+    m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 0.84
@@ -27168,6 +27171,82 @@ Prefab:
       propertyPath: m_RootOrder
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 1232609956698934, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1273127392262602, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1313160490992298, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1858000647341796, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1345813574948438, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1723995965625900, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1780429943910868, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1331414711259548, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1325130507257824, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1553368769836620, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1440916261350142, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1713966884977812, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1030362135728362, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1539369209167324, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650751497389836, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1729755479719160, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1926386280099550, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1823329157127222, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1422987422197172, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 92ccc2ea22aa84102bc6fbb70cb6faf3, type: 2}
   m_IsPrefabParent: 0
@@ -27602,6 +27681,7 @@ MonoBehaviour:
   dialogStarts: 
   conversationNumber: 0
   textBoxNumber: 0
+  fileName: 
   Icons: []
   ToyTag: 2
   questNumber: 0
@@ -29335,6 +29415,7 @@ MonoBehaviour:
   dialogStarts: 000000000100000003000000
   conversationNumber: 0
   textBoxNumber: 0
+  fileName: 
   Icons:
   - {fileID: 1448603729}
   - {fileID: 1104763992}
@@ -38247,7 +38328,7 @@ MeshRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e68f77e240a7f8643b5cc4253dc37516, type: 2}
+  - {fileID: 2100000, guid: 89ee4d61fcee8be4b94e03ddd0886850, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -44921,6 +45002,7 @@ MonoBehaviour:
   dialogStarts: 00000000
   conversationNumber: 0
   textBoxNumber: 0
+  fileName: 
 --- !u!135 &1732564000
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -56819,7 +56901,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2109572738}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 245.81, y: 6.27, z: 243.32}
+  m_LocalPosition: {x: 245.81, y: 6.27, z: 320.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1550145046}
@@ -57438,6 +57520,7 @@ MonoBehaviour:
   dialogStarts: 00000000
   conversationNumber: 0
   textBoxNumber: 0
+  fileName: 
 --- !u!135 &2121154848
 SphereCollider:
   m_ObjectHideFlags: 0

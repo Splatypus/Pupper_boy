@@ -85,7 +85,7 @@ public class PlayerDig2 : MonoBehaviour {
                 //if(Physics.BoxCast(col.center, col.extents, )
                 int layermask = 1 << LayerMask.NameToLayer("Ground");
 
-                Collider[] cols = Physics.OverlapBox(col.center, col.size, transform.rotation, layermask, QueryTriggerInteraction.Ignore);
+                //Collider[] cols = Physics.OverlapBox(col.center, col.size, transform.rotation, layermask, QueryTriggerInteraction.Ignore);
 
                 if(!Physics.CheckBox(col.center + transform.position, col.size, transform.rotation, layermask, QueryTriggerInteraction.Ignore))
                 {

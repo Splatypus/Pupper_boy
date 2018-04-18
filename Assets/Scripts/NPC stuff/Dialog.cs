@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using System.IO;
 
 public class Dialog : InteractableObject {
 
@@ -11,6 +13,7 @@ public class Dialog : InteractableObject {
     public int[] dialogStarts; //the indecies in the dialogTexts array in which each conversation starts
     public int conversationNumber; //this indicates which conversation you're on. 
     public int textBoxNumber; //this indicates which text box you're on within the full array of dialog. 
+    public string fileName;
 
     // Use this for initialization
     public void Start () {
@@ -18,6 +21,7 @@ public class Dialog : InteractableObject {
         controlman = player.GetComponent<PlayerControllerManager>();
         pdialog = player.GetComponent<PlayerDialog>(); //find player dialog script on the player and set this to refrence it
 	}
+
 
     public override void OnInteract() {
         //change player mode to dialog mode when they interact with this npc
