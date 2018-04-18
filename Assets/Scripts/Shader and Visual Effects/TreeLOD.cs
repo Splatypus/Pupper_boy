@@ -8,11 +8,24 @@ public class TreeLOD : MonoBehaviour {
     public int imageHeight = 128;
     public float distanceFromTree = 10.0f;
 
+    public float LODdistance;
+    BillboardScript billboard;
+    MeshFilter meshfilter;
+    Mesh mesh;
+
 
     // Use this for initialization
     void Start () {
         StartCoroutine(ConvertToImage());
-        
+        billboard = gameObject.GetComponent < BillboardScript >();
+        meshfilter = gameObject.GetComponent<MeshFilter>();
+        mesh = meshfilter.mesh;
+        if (Vector3.Distance(Camera.main.transform.position, transform.position) > LODdistance){
+            SwapToTexture();
+        }
+        else {
+            SwapToMesh();
+        }
 	}
 	
 	// Update is called once per frame
@@ -20,6 +33,14 @@ public class TreeLOD : MonoBehaviour {
 		
 	}
 
+    //renders the object as a mesh
+    void SwapToMesh() {
+        billboard.enabled = false;
+    }
+    //renders the object as a bilboarded texture
+    void SwapToTexture() {
+        billboard.enabled = true;
+    }
 
     //renders the tree out to an image
     IEnumerator ConvertToImage() {

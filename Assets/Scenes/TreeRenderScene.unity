@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 98063434}
   - component: {fileID: 98063433}
   - component: {fileID: 98063435}
+  - component: {fileID: 98063436}
   m_Layer: 0
   m_Name: treetrunk
   m_TagString: Untagged
@@ -201,6 +202,18 @@ MonoBehaviour:
   imageWidth: 128
   imageHeight: 128
   distanceFromTree: 15
+  LODdistance: 0
+--- !u!114 &98063436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 98063431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e14666743b5d284a8b1fe366f254f21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &317935058
 GameObject:
   m_ObjectHideFlags: 0
