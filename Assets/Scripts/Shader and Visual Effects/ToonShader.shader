@@ -48,7 +48,7 @@ Shader "Custom/ToonShader" {
 			v2f vert(appdata_cel v) {
 				v2f o;
 				//move vertex position away from object origin. This should be replaced by moving them along their normal vectors, but hard edges are dumb
-				v.vertex.xyz += normalize(v.vertex.xyz) * _OutlineSize;
+				v.vertex.xyz += normalize(v.normal.xyz) * _OutlineSize;
 				//reverse normals
 				v.normal *= -1;
 				o.pos = UnityObjectToClipPos(v.vertex);
