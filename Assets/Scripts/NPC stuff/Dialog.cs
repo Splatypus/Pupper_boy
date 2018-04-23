@@ -14,6 +14,8 @@ public class Dialog : InteractableObject {
     public int conversationNumber; //this indicates which conversation you're on. 
     public int textBoxNumber; //this indicates which text box you're on within the full array of dialog. 
     public string fileName;
+    public string nameText;
+    public Sprite image;
 
     public GameObject playercam;
     public GameObject npccam;
@@ -32,6 +34,10 @@ public class Dialog : InteractableObject {
         //change player mode to dialog mode when they interact with this npc
         controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);
         pdialog.npcDialog = this;
+        //Assign image and name
+        pdialog.imageObject.sprite = image;
+        pdialog.nameTextObject.text = nameText;
+        //set the dialog
         textBoxNumber = dialogStarts[conversationNumber];
         pdialog.SetDialog(ref dialogTexts[textBoxNumber]);
     }
@@ -46,7 +52,6 @@ public class Dialog : InteractableObject {
             controlman.ChangeMode(PlayerControllerManager.Modes.Walking); //return to walking
             OnEndOfDialog(conversationNumber);
         }
-        
     }
 
     public virtual void OnEndOfDialog(int dialogNum) {

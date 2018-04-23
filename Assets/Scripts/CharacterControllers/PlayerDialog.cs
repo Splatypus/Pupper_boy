@@ -7,6 +7,8 @@ public class PlayerDialog : Controller {
 
     //UI elements
     public Text textObject;
+    public Text nameTextObject;
+    public Image imageObject;
     public GameObject canvasGA;
 
     //displaying text
@@ -67,6 +69,5 @@ public class PlayerDialog : Controller {
         }
         isAllShown = true;
     }
-
 
 }
