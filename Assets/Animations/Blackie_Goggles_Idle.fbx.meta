@@ -3,7 +3,7 @@ guid: 81d9f7f5334e4a84c81050eb45ab0f0a
 timeCreated: 1521569482
 licenseType: Free
 ModelImporter:
-  serializedVersion: 21
+  serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     100002: group1
@@ -144,10 +144,52 @@ ModelImporter:
     7400000: Goggles_Idle
     9500000: //RootNode
     13700000: Pom_Rig_1_0010:Pompom_Doggo_0026:pCylinder3
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pompom_Doggo_0028_blackie_base
+    second: {fileID: 2100000, guid: ea7452cd0ccc59444b92e4bf7ced2523, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pompom_Doggo_0028_blackie_eyesnose
+    second: {fileID: 2100000, guid: edde96cfd0ad767498ef26231d36747e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pompom_Doggo_0028_blackie_mouth
+    second: {fileID: 2100000, guid: 84f7155a4803fdd4780bfc8ef4a1aafa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pompom_Doggo_0028_blackie_points
+    second: {fileID: 2100000, guid: 226e2ed432c095448a4ac8e24cc85ec5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pompom_Doggo_0028_blackie_under
+    second: {fileID: 2100000, guid: ce0a0ab80ab938e4dbcee37b62704f66, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pompom_Doggo_goggles_0002_brass
+    second: {fileID: 2100000, guid: e9cb0de22b996d94ea87806869f33573, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pompom_Doggo_goggles_0002_eyeglass
+    second: {fileID: 2100000, guid: 488cba718ea6a614598fc5c5b978e6e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Pompom_Doggo_goggles_0002_leather_straps
+    second: {fileID: 2100000, guid: 7642a26613d0f0e418c6542593b7e865, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -160,6 +202,7 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -184,14 +227,16 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
-    normalImportMode: 0
+    normalSmoothAngle: 158
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
   importAnimation: 1
