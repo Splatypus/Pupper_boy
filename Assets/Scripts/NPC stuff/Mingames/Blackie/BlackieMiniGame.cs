@@ -5,14 +5,86 @@ using System.IO;
 
 public class BlackieMiniGame : Dialog {
 
-    public List<List<Gamepiece>> grid = new List<List<Gamepiece>>(); //grid of game pieces. First list is x values, second is y values
-    Gamepiece emptyPiece = new EmptyNode(); //same object reference is used for every empty space
-    public string[] puzzleFileNames;
+    public List<List<Gamepiece>> grid; //grid of game pieces. First list is x values, second is y values
+    Gamepiece emptyPiece; //same object reference is used for every empty space
+    public TextAsset[] puzzleFiles;
+    public GameObject[] prefabs;
+    public GameObject[] gridTiles;
+    public float tileDis;
+
+    new public void Start()
+    {
+        base.Start();
+        emptyPiece = new EmptyNode();
+        LoadPuzzle(0);
+    }
 
     //reads in a puzzle set-up from a file and starts that puzzle
-    public void ReadFromFile(string fileName) {
-        StreamReader reader = new StreamReader("Assets/Resources/BlackieGames/" + fileName + ".txt");
-        reader.Close();
+    public void LoadPuzzle(int index) {
+        string[] data = puzzleFiles[index].ToString().Split('\n');
+        string[] line = data[0].Split(',');
+        //-----first line is the width and the height-----
+        int width = int.Parse(line[0]);
+        int height = int.Parse(line[1]);
+        //Make a grid of the given dimensions and fill with empty pieces - also instantiate the base grid
+        grid = new List<List<Gamepiece>>(width);
+        for (int i = 0; i < width; i++) {
+            grid.Add(new List<Gamepiece>(height));
+            for (int j = 0; j < height; j++) {
+                grid[i].Add(emptyPiece);
+                Instantiate(gridTiles[0], new Vector3(transform.position.x + (i - ((width-1)/2.0f)) * tileDis, transform.position.y - 0.5f, transform.position.z + j * tileDis + tileDis), transform.rotation);
+            }
+        }
+        //-----second line is number of each available piece you are given-----
+
+        
+        //-----the remaining lines are which pieces are defaulted to which locations-----
+        for (int i = 1; i < data.Length; i++) {
+            line = data[i].Split(',');
+            if (line.Length == 4) {
+                //parse string
+                int x = int.Parse(line[0]);
+                int y = int.Parse(line[1]);
+                int d = int.Parse(line[2]);
+                int type = int.Parse(line[3]);
+                //make a new object of the given type
+                GameObject inWorld = Instantiate(prefabs[type], new Vector3(transform.position.x + x - (width / 2.0f), transform.position.y, transform.position.z + y), transform.rotation);
+                inWorld.transform.Rotate(Vector3.up * d * 90.0f); //rotate it to match the input direction
+                Gamepiece temp;
+                //place a different piece depending on which type it is
+                switch (type) {
+                    case 0:         //Standard node
+                        temp = new BlackieNode(inWorld, true);
+                        break;
+                    case 1:         //Red prefered gate
+                        temp = new ColorGate(inWorld, true, Gamepiece.PowerStates.Red);
+                        break;
+                    case 2:         //Blue prefered gate
+                        temp = new ColorGate(inWorld, true, Gamepiece.PowerStates.Blue);
+                        break;
+                    case 3:         //Inverter
+                        temp = new Inverter(inWorld, true);
+                        break;
+                    case 4:         //red source
+                        temp = new SourceNode(inWorld, Gamepiece.PowerStates.Red);
+                        break;
+                    case 5:         //blue source
+                        temp = new SourceNode(inWorld, Gamepiece.PowerStates.Blue);
+                        break;
+                    case 6:         //red goal
+                        temp = new GoalNode(inWorld, Gamepiece.PowerStates.Red);
+                        break;
+                    case 7:         //blue goal
+                        temp = new GoalNode(inWorld, Gamepiece.PowerStates.Blue);
+                        break;
+                    default:
+                        temp = emptyPiece;
+                        break;
+                }
+                PlacePiece(temp, x, y, d);
+            }
+        }
+
     }
 
     //if the location x, y is within the bounds of the grid
