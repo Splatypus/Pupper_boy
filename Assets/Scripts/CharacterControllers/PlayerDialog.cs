@@ -9,6 +9,7 @@ public class PlayerDialog : Controller {
     public Text textObject;
     public Text nameTextObject;
     public Image imageObject;
+    public GameObject[] buttons;
     public GameObject canvasGA;
 
     //displaying text
@@ -53,10 +54,26 @@ public class PlayerDialog : Controller {
     }
 
     //sets the text in the active dialog box
-    public void SetDialog(ref string text) {
+    public void SetDialog(string text) {
         isAllShown = false;
         textToShow = text;
         StartCoroutine(AnimateText(text));
+    }
+
+    //sets the option UI up
+    public void AddOptions(List<string> opts) {
+        for (int i = 0; i < opts.Count; i++) {
+            buttons[i].SetActive(true);
+            buttons[i].GetComponentInChildren<Text>().text = opts[i];
+        }
+    }
+
+    //when a button is clicked
+    public void OnPress(int num) {
+        foreach (GameObject b in buttons) {
+            b.SetActive(false);
+        }
+        npcDialog.OnChoiceMade(num);
     }
 
     //animates the text so that it appears one letter at a time

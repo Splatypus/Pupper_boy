@@ -77,7 +77,7 @@ public class DogControllerV2 : Controller {
             Move();
    
             //Handle interaction input
-            if (Input.GetButtonDown("Interact")) {
+            if (Input.GetButtonDown("Dig")) {
                 foreach (InteractableObject i in inRangeOf) {
                     i.OnInteract();
                 }
