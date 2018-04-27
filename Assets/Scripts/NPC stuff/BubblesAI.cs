@@ -33,16 +33,30 @@ public class BubblesAI : AIbase {
     //when dialog ends
     public override void OnEndOfDialog(int c) {
         base.OnEndOfDialog(c);
-        if (c == 1 || c == 2 || c == 6) {
-            bubbleGameRef.GameStartForReward(5);
-        } else if (c == 4) {
-            bubbleGameRef.GameStartForReward(8);
-        } else if (c == 3 || c == 5) {
+        if (c == 3 || c == 5) {
             if (c==3)
                 Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
             else
                 Instantiate(reward2, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
             NextQuest();
+        }
+    }
+
+    public override void OnChoiceMade(int choice){
+        base.OnChoiceMade(choice);
+        switch (conversationNumber) {
+            case 1:
+            case 2:
+            case 6:
+                if (choice == 0) 
+                    bubbleGameRef.GameStartForReward(5);
+                break;
+            case 4:
+                if (choice == 0)
+                    bubbleGameRef.GameStartForReward(8);
+                break;
+            default:
+                break;
         }
 
     }

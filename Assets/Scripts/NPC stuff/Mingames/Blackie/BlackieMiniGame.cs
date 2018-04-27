@@ -10,6 +10,7 @@ public class BlackieMiniGame : Dialog {
     public TextAsset[] puzzleFiles;
     public GameObject[] prefabs;
     public GameObject[] gridTiles;
+    public int[] pieceCount;
     public float tileDis;
 
     new public void Start()
@@ -31,15 +32,30 @@ public class BlackieMiniGame : Dialog {
         for (int i = 0; i < width; i++) {
             grid.Add(new List<Gamepiece>(height));
             for (int j = 0; j < height; j++) {
+                //place corners or sides if along the corners or sides. Otherwise place centers
+                Vector3 placeLocation = new Vector3(transform.position.x + (i - ((width - 1) / 2.0f)) * tileDis, transform.position.y - 0.5f, transform.position.z + j * tileDis + tileDis);
                 grid[i].Add(emptyPiece);
-                Instantiate(gridTiles[0], new Vector3(transform.position.x + (i - ((width-1)/2.0f)) * tileDis, transform.position.y - 0.5f, transform.position.z + j * tileDis + tileDis), transform.rotation);
+                if (i == 0) {
+                    if (j == 0) {
+                        //top left corner
+                    } else if (j == height - 1) {
+                        //top right corner
+                    }
+                } else if (i == width - 1) {
+
+                }
+                Instantiate(gridTiles[0], placeLocation, transform.rotation);
             }
         }
         //-----second line is number of each available piece you are given-----
-
+        line = data[1].Split(',');
+        pieceCount = new int[line.Length];
+        for (int i = 0; i < pieceCount.Length; i++) {
+            pieceCount[i] = int.Parse(line[i]);
+        }
         
         //-----the remaining lines are which pieces are defaulted to which locations-----
-        for (int i = 1; i < data.Length; i++) {
+        for (int i = 2; i < data.Length; i++) {
             line = data[i].Split(',');
             if (line.Length == 4) {
                 //parse string
@@ -48,7 +64,12 @@ public class BlackieMiniGame : Dialog {
                 int d = int.Parse(line[2]);
                 int type = int.Parse(line[3]);
                 //make a new object of the given type
-                GameObject inWorld = Instantiate(prefabs[type], new Vector3(transform.position.x + x - (width / 2.0f), transform.position.y, transform.position.z + y), transform.rotation);
+                GameObject inWorld = Instantiate(prefabs[type], 
+                                        new Vector3(transform.position.x + (x - ((width-1) / 2.0f)) * tileDis, 
+                                                                            transform.position.y, 
+                                                                            transform.position.z + y * tileDis + tileDis), 
+                                                                                transform.rotation);
+                inWorld.transform.Rotate(0, 90.0f * d, 0);
                 inWorld.transform.Rotate(Vector3.up * d * 90.0f); //rotate it to match the input direction
                 Gamepiece temp;
                 //place a different piece depending on which type it is

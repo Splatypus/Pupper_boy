@@ -57,6 +57,18 @@ public class Dialog : InteractableObject {
         }
     }
 
+    //sends the current dialog stuff over to the player. Sends options stuff too if needed
+    public void SendDialog() {
+        pdialog.SetDialog(dialogTexts[conversationNumber][textBoxNumber]);
+        //after sending over the text, check to see if we also need to send an options thingy
+        if (textBoxNumber + 1 == dialogTexts[conversationNumber].Count && options.ContainsKey(conversationNumber))
+        {
+            List<string> s;
+            options.TryGetValue(conversationNumber, out s);
+            pdialog.AddOptions(s);
+        }
+    }
+
     public override void OnInteract() {
         npccam.SetActive(true);
         playercam.SetActive(false);
@@ -68,7 +80,7 @@ public class Dialog : InteractableObject {
         pdialog.nameTextObject.text = nameText;
         //set the dialog
         textBoxNumber = 0;
-        pdialog.SetDialog(dialogTexts[conversationNumber][textBoxNumber]);
+        SendDialog();
     }
 
     //goes on to the next dialog window. Called from the player dialog when more text is needed.
@@ -76,13 +88,7 @@ public class Dialog : InteractableObject {
         //either display the next dialog or close window
         textBoxNumber += 1;
         if (textBoxNumber < dialogTexts[conversationNumber].Count) {
-            pdialog.SetDialog(dialogTexts[conversationNumber][textBoxNumber]);
-            //after sending over the text, check to see if we also need to send an options thingy
-            if (textBoxNumber + 1 == dialogTexts[conversationNumber].Count && options.ContainsKey(conversationNumber)) {
-                List<string> s;
-                options.TryGetValue(conversationNumber, out s);
-                pdialog.AddOptions(s);
-            }
+            SendDialog();
         } else { 
             controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
             OnEndOfDialog(conversationNumber);
@@ -100,6 +106,8 @@ public class Dialog : InteractableObject {
     public virtual void OnChoiceMade(int choice) {
         playercam.SetActive(true);
         npccam.SetActive(false);
+        controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
+        OnEndOfDialog(conversationNumber);
     }
 
     //sets the current conversation number to whatever you pass in. False return if failed or reached the end 
