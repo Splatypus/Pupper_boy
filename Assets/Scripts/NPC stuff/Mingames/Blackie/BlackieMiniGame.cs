@@ -12,11 +12,13 @@ public class BlackieMiniGame : Dialog {
     Gamepiece emptyPiece; //same object reference is used for every empty space
     List<GameObject> tiles; //list of tiles so they can be cleaned up when puzzle is finished
     public BoxCollider gameBounds;
-    
+
     public TextAsset[] puzzleFiles;
     public GameObject[] prefabs;
     public GameObject[] gridTiles;
     public float tileDis;
+
+    int puzzleNumber = 0;
 
 
 
@@ -25,7 +27,7 @@ public class BlackieMiniGame : Dialog {
         base.Start();
         gameBounds.enabled = false;
         emptyPiece = new EmptyNode();
-        LoadPuzzle(0);
+        LoadPuzzle(puzzleNumber);
     }
 
     //reads in a puzzle set-up from a file and starts that puzzle
@@ -39,8 +41,8 @@ public class BlackieMiniGame : Dialog {
 
         //set bounding box to contain puzzle
         gameBounds.enabled = true;
-        gameBounds.center = new Vector3(transform.position.x, 2.0f, transform.position.z + ((height + 1)/2.0f) * tileDis);
-        gameBounds.size = new Vector3((width-1) * tileDis, 4.0f, (height-1) * tileDis);
+        gameBounds.center = new Vector3(transform.position.x, 2.0f, transform.position.z + ((height + 1) / 2.0f) * tileDis);
+        gameBounds.size = new Vector3((width - 1) * tileDis, 4.0f, (height - 1) * tileDis);
 
         //Make a grid of the given dimensions and fill with empty pieces - also instantiate the base grid
         grid = new List<List<Gamepiece>>(width);
@@ -74,7 +76,7 @@ public class BlackieMiniGame : Dialog {
                         //close right
                         tile = Instantiate(gridTiles[2], placeLocation, transform.rotation);
                         tile.transform.Rotate(new Vector3(0, 180.0f, 0));
-                    } else if(j == height - 1) {
+                    } else if (j == height - 1) {
                         //far right
                         tile = Instantiate(gridTiles[2], placeLocation, transform.rotation);
                         tile.transform.Rotate(new Vector3(0, 90.0f, 0));
@@ -101,10 +103,10 @@ public class BlackieMiniGame : Dialog {
 
         //-----second line is number of each available piece you are given-----
         line = data[1].Split(',');
-        for (int i = 0; i < line.Length; i++){
+        for (int i = 0; i < line.Length; i++) {
             int count = int.Parse(line[i]);
             //instantiate that many of i
-            for (int j = 0; j < count; j++){
+            for (int j = 0; j < count; j++) {
                 GameObject inWorld = Instantiate(prefabs[i], new Vector3(transform.position.x - (placeables.Count + 1) * tileDis, transform.position.y, transform.position.z), transform.rotation);
                 Gamepiece temp;
                 switch (i)
@@ -141,14 +143,14 @@ public class BlackieMiniGame : Dialog {
                 int d = int.Parse(line[2]);
                 int type = int.Parse(line[3]);
                 //make a new object of the given type
-                GameObject inWorld = Instantiate(prefabs[type], 
-                                        new Vector3(transform.position.x + (x - ((width-1) / 2.0f)) * tileDis, 
-                                                                            transform.position.y, 
-                                                                            transform.position.z + y * tileDis + tileDis), 
+                GameObject inWorld = Instantiate(prefabs[type],
+                                        new Vector3(transform.position.x + (x - ((width - 1) / 2.0f)) * tileDis,
+                                                                            transform.position.y,
+                                                                            transform.position.z + y * tileDis + tileDis),
                                                                                 transform.rotation);
                 inWorld.transform.Rotate(0, 90.0f * d, 0);
                 inWorld.transform.Rotate(Vector3.up * d * 90.0f); //rotate it to match the input direction
-                
+
                 Gamepiece temp;
                 //place a different piece depending on which type it is
                 switch (type) {
@@ -197,7 +199,7 @@ public class BlackieMiniGame : Dialog {
         pos -= transform.position;
         pos.x /= tileDis;
         pos.z /= tileDis;
-        pos.x += (grid.Count-1)/2.0f;
+        pos.x += (grid.Count - 1) / 2.0f;
         pos.z -= 1;
         pos.x += 0.5f;
         pos.z += 0.5f;
@@ -294,7 +296,7 @@ public class BlackieMiniGame : Dialog {
                 UpdatePowerState(x, y + 1);
                 UpdatePowerState(x - 1, y);
             }
-            else { 
+            else {
                 RemovePower(x, y - 1);
                 RemovePower(x + 1, y);
                 RemovePower(x, y + 1);
@@ -316,7 +318,7 @@ public class BlackieMiniGame : Dialog {
                 UpdatePowerState(x + 1, y);
                 UpdatePowerState(x, y + 1);
                 UpdatePowerState(x - 1, y);
-            } 
+            }
         }
     }
 
@@ -343,6 +345,14 @@ public class BlackieMiniGame : Dialog {
                 //Destory(t.gameObject);
                 t.worldObject.GetComponent<WorldGamepiece>().FancyDestroy();
             }
+            StartCoroutine(DelayedNextLevel());
         }
+    }
+
+    IEnumerator DelayedNextLevel() {
+        yield return new WaitForSeconds(5.0f);
+        puzzleNumber++;
+        if (puzzleNumber < puzzleFiles.Length)
+            LoadPuzzle(puzzleNumber);
     }
 }

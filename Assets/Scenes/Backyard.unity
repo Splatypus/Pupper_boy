@@ -1335,14 +1335,14 @@ MonoBehaviour:
   m_CollideAgainst:
     serializedVersion: 2
     m_Bits: 257
-  m_PreserveLineOfSight: 1
-  m_LineOfSightFeelerDistance: 10
-  m_MinimumDistanceFromTarget: 0
-  m_MinimumDistanceFromCamera: 0
-  m_UseCurbFeelers: 1
-  m_CurbFeelerDistance: 3
-  m_CurbResistance: 1
-  m_PositionSmoothing: 0
+  m_IgnoreTag: 
+  m_MinimumDistanceFromTarget: 0.01
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 10
+  m_CameraRadius: 0.1
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_Damping: 0
   m_OptimalTargetDistance: 0
 --- !u!1 &48595366
 GameObject:
@@ -2056,8 +2056,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowGuides: 1
   m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
+  m_LookaheadTime: 0
+  m_LookaheadSmoothing: 10
   m_HorizontalDamping: 0
   m_VerticalDamping: 0
   m_ScreenX: 0.5
@@ -2079,26 +2080,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Radius: 1.75
-  m_HeightOffset: 4.5
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 4.5, z: -1.75}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
-  m_DampingStyle: 1
-  m_HeadingBias: 0
-  m_XAxis:
-    Value: 0
-    m_MaxSpeed: 3000
-    m_AccelTime: 2
-    m_DecelTime: 1
-    m_InputAxisName: Mouse X
-    m_InputAxisValue: 0
+  m_PitchDamping: 0
+  m_YawDamping: 0
+  m_RollDamping: 0
+  m_Heading:
+    m_HeadingDefinition: 2
+    m_VelocityFilterStrength: 4
+    m_HeadingBias: 0
   m_RecenterToTargetHeading:
     m_enabled: 1
     m_RecenterWaitTime: 1
     m_RecenteringTime: 2
-    m_HeadingDefinition: 2
-    m_VelocityFilterStrength: 4
+    m_LegacyHeadingDefinition: -1
+    m_LegacyVelocityFilterStrength: -1
+  m_XAxis:
+    Value: 0
+    m_MaxSpeed: 300
+    m_AccelTime: 0.2
+    m_DecelTime: 0.1
+    m_InputAxisName: Mouse X
+    m_InputAxisValue: 0
+    m_InvertAxis: 1
+  m_LegacyRadius: 3.4028235e+38
+  m_LegacyHeightOffset: 3.4028235e+38
+  m_LegacyHeadingBias: 3.4028235e+38
   m_HeadingIsSlave: 0
 --- !u!114 &71110302
 MonoBehaviour:
@@ -4464,8 +4474,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowGuides: 1
   m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
+  m_LookaheadTime: 0
+  m_LookaheadSmoothing: 10
   m_HorizontalDamping: 0
   m_VerticalDamping: 0
   m_ScreenX: 0.5
@@ -4487,26 +4498,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Radius: 3
-  m_HeightOffset: 2.5
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 2.5, z: -3}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
-  m_DampingStyle: 1
-  m_HeadingBias: 0
-  m_XAxis:
-    Value: 0
-    m_MaxSpeed: 3000
-    m_AccelTime: 2
-    m_DecelTime: 1
-    m_InputAxisName: Mouse X
-    m_InputAxisValue: 0
+  m_PitchDamping: 0
+  m_YawDamping: 0
+  m_RollDamping: 0
+  m_Heading:
+    m_HeadingDefinition: 2
+    m_VelocityFilterStrength: 4
+    m_HeadingBias: 0
   m_RecenterToTargetHeading:
     m_enabled: 1
     m_RecenterWaitTime: 1
     m_RecenteringTime: 2
-    m_HeadingDefinition: 2
-    m_VelocityFilterStrength: 4
+    m_LegacyHeadingDefinition: -1
+    m_LegacyVelocityFilterStrength: -1
+  m_XAxis:
+    Value: 0
+    m_MaxSpeed: 300
+    m_AccelTime: 0.2
+    m_DecelTime: 0.1
+    m_InputAxisName: Mouse X
+    m_InputAxisValue: 0
+    m_InvertAxis: 1
+  m_LegacyRadius: 3.4028235e+38
+  m_LegacyHeightOffset: 3.4028235e+38
+  m_LegacyHeadingBias: 3.4028235e+38
   m_HeadingIsSlave: 0
 --- !u!114 &151477610
 MonoBehaviour:
@@ -19806,14 +19826,14 @@ MonoBehaviour:
   m_CollideAgainst:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_PreserveLineOfSight: 1
-  m_LineOfSightFeelerDistance: 10
-  m_MinimumDistanceFromTarget: 0
-  m_MinimumDistanceFromCamera: 0
-  m_UseCurbFeelers: 1
-  m_CurbFeelerDistance: 3
-  m_CurbResistance: 1
-  m_PositionSmoothing: 0
+  m_IgnoreTag: 
+  m_MinimumDistanceFromTarget: 0.01
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 10
+  m_CameraRadius: 0.1
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_Damping: 0
   m_OptimalTargetDistance: 0
 --- !u!1 &748181642
 GameObject:
@@ -20050,7 +20070,8 @@ GameObject:
   - component: {fileID: 775074401}
   - component: {fileID: 775074400}
   - component: {fileID: 775074399}
-  m_Layer: 0
+  - component: {fileID: 775074404}
+  m_Layer: 2
   m_Name: BlackieMiniGameMachine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20161,6 +20182,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 49
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &775074404
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 775074398}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.06
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &776730686 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4781535565290840, guid: 8b749fce098f640a2be9168cdb023d45,
@@ -32247,17 +32280,32 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 2000279129}
     m_Modifications:
+    - target: {fileID: 114979131452421014, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114754659431934566, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637355314044242, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4953623950822098, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalPosition.x
       value: 70.16945
       objectReference: {fileID: 0}
     - target: {fileID: 4953623950822098, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 4.2342653
+      value: 5.8842654
       objectReference: {fileID: 0}
     - target: {fileID: 4953623950822098, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 6.013733
+      value: 9.013733
       objectReference: {fileID: 0}
     - target: {fileID: 4953623950822098, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.x
@@ -32286,51 +32334,51 @@ Prefab:
       objectReference: {fileID: 1767002073}
     - target: {fileID: 4194397131560750, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.04722149
+      value: 0.30735826
       objectReference: {fileID: 0}
     - target: {fileID: 4194397131560750, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.00017244091
+      value: 2.7745336e-12
       objectReference: {fileID: 0}
     - target: {fileID: 4194397131560750, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0.000008152011
+      value: -1.4597607e-12
       objectReference: {fileID: 0}
     - target: {fileID: 4194397131560750, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.99888444
+      value: 0.9515939
       objectReference: {fileID: 0}
     - target: {fileID: 4146835432793880, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.07047926
+      value: 0.34042525
       objectReference: {fileID: 0}
     - target: {fileID: 4146835432793880, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.00017220419
+      value: 2.6473507e-12
       objectReference: {fileID: 0}
     - target: {fileID: 4146835432793880, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0.000012167081
+      value: -1.4117479e-12
       objectReference: {fileID: 0}
     - target: {fileID: 4146835432793880, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.99751323
+      value: 0.9402717
       objectReference: {fileID: 0}
     - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.024039522
+      value: 0.27424148
       objectReference: {fileID: 0}
     - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.0001725836
+      value: 6.199124e-13
       objectReference: {fileID: 0}
     - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0.000004150027
+      value: -7.176552e-13
       objectReference: {fileID: 0}
     - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.99971104
+      value: 0.96166086
       objectReference: {fileID: 0}
     - target: {fileID: 114130515591325902, guid: f6303eb410cbbe849beb233c80bebb64,
         type: 2}
@@ -32340,17 +32388,17 @@ Prefab:
     - target: {fileID: 114130515591325902, guid: f6303eb410cbbe849beb233c80bebb64,
         type: 2}
       propertyPath: m_YAxis.m_AccelTime
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 114130515591325902, guid: f6303eb410cbbe849beb233c80bebb64,
         type: 2}
       propertyPath: m_YAxis.m_DecelTime
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 114130515591325902, guid: f6303eb410cbbe849beb233c80bebb64,
         type: 2}
       propertyPath: m_XAxis.m_DecelTime
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 114130515591325902, guid: f6303eb410cbbe849beb233c80bebb64,
         type: 2}
@@ -32409,17 +32457,118 @@ Prefab:
     - target: {fileID: 114754659431934566, guid: f6303eb410cbbe849beb233c80bebb64,
         type: 2}
       propertyPath: m_Lens.FieldOfView
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 114979131452421014, guid: f6303eb410cbbe849beb233c80bebb64,
         type: 2}
       propertyPath: m_Lens.FieldOfView
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 114637355314044242, guid: f6303eb410cbbe849beb233c80bebb64,
         type: 2}
       propertyPath: m_Lens.FieldOfView
-      value: 50
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4146835432793880, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4146835432793880, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130515591325902, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_XAxis.m_MaxSpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 114130515591325902, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_XAxis.m_AccelTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114979131452421014, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[1]
+      value: Header
+      objectReference: {fileID: 0}
+    - target: {fileID: 114979131452421014, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[2]
+      value: Extensions
+      objectReference: {fileID: 0}
+    - target: {fileID: 114979131452421014, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[3]
+      value: m_Priority
+      objectReference: {fileID: 0}
+    - target: {fileID: 114979131452421014, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[4]
+      value: m_Follow
+      objectReference: {fileID: 0}
+    - target: {fileID: 114979131452421014, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_LockStageInInspector.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114754659431934566, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[1]
+      value: Header
+      objectReference: {fileID: 0}
+    - target: {fileID: 114754659431934566, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[2]
+      value: Extensions
+      objectReference: {fileID: 0}
+    - target: {fileID: 114754659431934566, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[3]
+      value: m_Priority
+      objectReference: {fileID: 0}
+    - target: {fileID: 114754659431934566, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[4]
+      value: m_Follow
+      objectReference: {fileID: 0}
+    - target: {fileID: 114754659431934566, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_LockStageInInspector.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637355314044242, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[1]
+      value: Header
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637355314044242, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[2]
+      value: Extensions
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637355314044242, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[3]
+      value: m_Priority
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637355314044242, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_ExcludedPropertiesInInspector.Array.data[4]
+      value: m_Follow
+      objectReference: {fileID: 0}
+    - target: {fileID: 114637355314044242, guid: f6303eb410cbbe849beb233c80bebb64,
+        type: 2}
+      propertyPath: m_LockStageInInspector.Array.data[0]
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
@@ -35221,27 +35370,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4016479363269222, guid: 351ef237fe842104786ffa73bae298a4, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 4.2342653
+      value: 5.8842654
       objectReference: {fileID: 0}
     - target: {fileID: 4016479363269222, guid: 351ef237fe842104786ffa73bae298a4, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 6.013733
+      value: 9.013733
       objectReference: {fileID: 0}
     - target: {fileID: 4016479363269222, guid: 351ef237fe842104786ffa73bae298a4, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.047220975
+      value: 0.3073584
       objectReference: {fileID: 0}
     - target: {fileID: 4016479363269222, guid: 351ef237fe842104786ffa73bae298a4, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0.00017244091
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4016479363269222, guid: 351ef237fe842104786ffa73bae298a4, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0.000008151921
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4016479363269222, guid: 351ef237fe842104786ffa73bae298a4, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.9988845
+      value: 0.9515939
       objectReference: {fileID: 0}
     - target: {fileID: 4016479363269222, guid: 351ef237fe842104786ffa73bae298a4, type: 2}
       propertyPath: m_RootOrder
@@ -35266,7 +35415,7 @@ Prefab:
     - target: {fileID: 20942845228977368, guid: 351ef237fe842104786ffa73bae298a4,
         type: 2}
       propertyPath: field of view
-      value: 50
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 20942845228977368, guid: 351ef237fe842104786ffa73bae298a4,
         type: 2}
@@ -41538,8 +41687,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ShowGuides: 1
   m_TrackedObjectOffset: {x: 0, y: 0, z: 0}
+  m_LookaheadTime: 0
+  m_LookaheadSmoothing: 10
   m_HorizontalDamping: 0
   m_VerticalDamping: 0
   m_ScreenX: 0.5
@@ -41561,26 +41711,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Radius: 1.75
-  m_HeightOffset: 4.5
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 4.5, z: -1.75}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
-  m_DampingStyle: 1
-  m_HeadingBias: 0
-  m_XAxis:
-    Value: 0
-    m_MaxSpeed: 3000
-    m_AccelTime: 2
-    m_DecelTime: 1
-    m_InputAxisName: Mouse X
-    m_InputAxisValue: 0
+  m_PitchDamping: 0
+  m_YawDamping: 0
+  m_RollDamping: 0
+  m_Heading:
+    m_HeadingDefinition: 2
+    m_VelocityFilterStrength: 4
+    m_HeadingBias: 0
   m_RecenterToTargetHeading:
     m_enabled: 1
     m_RecenterWaitTime: 1
     m_RecenteringTime: 2
-    m_HeadingDefinition: 2
-    m_VelocityFilterStrength: 4
+    m_LegacyHeadingDefinition: -1
+    m_LegacyVelocityFilterStrength: -1
+  m_XAxis:
+    Value: 0
+    m_MaxSpeed: 300
+    m_AccelTime: 0.2
+    m_DecelTime: 0.1
+    m_InputAxisName: Mouse X
+    m_InputAxisValue: 0
+    m_InvertAxis: 1
+  m_LegacyRadius: 3.4028235e+38
+  m_LegacyHeightOffset: 3.4028235e+38
+  m_LegacyHeadingBias: 3.4028235e+38
   m_HeadingIsSlave: 0
 --- !u!114 &1615650026
 MonoBehaviour:
@@ -48782,14 +48941,14 @@ MonoBehaviour:
   m_CollideAgainst:
     serializedVersion: 2
     m_Bits: 4294967291
-  m_PreserveLineOfSight: 1
-  m_LineOfSightFeelerDistance: 0
+  m_IgnoreTag: 
   m_MinimumDistanceFromTarget: 0.5
-  m_MinimumDistanceFromCamera: 0
-  m_UseCurbFeelers: 1
-  m_CurbFeelerDistance: 2
-  m_CurbResistance: 1
-  m_PositionSmoothing: 0
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_CameraRadius: 0.1
+  m_Strategy: 1
+  m_MaximumEffort: 4
+  m_Damping: 0
   m_OptimalTargetDistance: 0
 --- !u!1001 &1837034763
 Prefab:
