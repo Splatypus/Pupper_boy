@@ -237,11 +237,19 @@ public class PuppyPickup : MonoBehaviour {
         float minDist = Mathf.Infinity;
         foreach(GameObject go in objectsInRange)
         {
-            float dist = (mouth.position - go.transform.position).magnitude;
-            if (dist < minDist)
+            //check if the object has been destroyed
+            if (go == null)
             {
-                closest = go;
-                minDist = dist;
+                objectsInRange.Remove(go); //######FIX THIS SHIT PLS
+            }
+            else
+            {
+                float dist = (mouth.position - go.transform.position).magnitude;
+                if (dist < minDist)
+                {
+                    closest = go;
+                    minDist = dist;
+                }
             }
         }
 

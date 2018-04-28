@@ -7,43 +7,19 @@ public class TreeLOD : MonoBehaviour {
     public int imageWidth = 128;
     public int imageHeight = 128;
     public float distanceFromTree = 10.0f;
-
-    public float LODdistance;
-    BillboardScript billboard;
-    MeshFilter meshfilter;
-    Mesh mesh;
+    public string folder;
+    public string name;
+    
 
 
     // Use this for initialization
     void Start () {
-        StartCoroutine(ConvertToImage());
-        billboard = gameObject.GetComponent < BillboardScript >();
-        meshfilter = gameObject.GetComponent<MeshFilter>();
-        mesh = meshfilter.mesh;
-        if (Vector3.Distance(Camera.main.transform.position, transform.position) > LODdistance){
-            SwapToTexture();
-        }
-        else {
-            SwapToMesh();
-        }
+        StartCoroutine(ConvertToImage(0));
+        
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    //renders the object as a mesh
-    void SwapToMesh() {
-        billboard.enabled = false;
-    }
-    //renders the object as a bilboarded texture
-    void SwapToTexture() {
-        billboard.enabled = true;
-    }
 
     //renders the tree out to an image
-    IEnumerator ConvertToImage() {
+    IEnumerator ConvertToImage(int itr) {
         //grab the main camera and mess with it for rendering the object - make sure orthographic
         Camera cam = Camera.main;
         cam.orthographic = true;
@@ -59,7 +35,7 @@ public class TreeLOD : MonoBehaviour {
         Bounds bb = gameObject.GetComponent<Renderer>().bounds;
 
         //place camera looking at centre of object - and backwards down the z-axis from it
-        cam.transform.position = new Vector3((bb.max.x + bb.min.x)/2, (bb.max.y + bb.min.y)/2, gameObject.transform.position.z-distanceFromTree);// + (bb.min.z * 2.0f));
+        cam.transform.position = new Vector3((bb.max.x + bb.min.x) / 2, (bb.max.y + bb.min.y) / 2, gameObject.transform.position.z - distanceFromTree);// + (bb.min.z * 2.0f));
         //make clip planes fairly optimal and enclose whole mesh
         cam.nearClipPlane = 0.5f;
         cam.farClipPlane = -cam.transform.position.z + 10.0f + bb.max.z;
@@ -94,6 +70,13 @@ public class TreeLOD : MonoBehaviour {
         // Encode texture into PNG
         byte[] bytes = tex.EncodeToPNG();
         Destroy(tex);
-        System.IO.File.WriteAllBytes(Application.dataPath + "/Resources/billboard.png", bytes);
+        System.IO.File.WriteAllBytes(Application.dataPath + "/Resources/" + folder + "/" + name + itr + ".png", bytes);
+
+        //do this again for the next angle
+        if (itr < 15)
+        {
+            gameObject.transform.Rotate(new Vector3(0.0f, 360.0f / 16.0f, 0.0f), Space.World);
+            StartCoroutine(ConvertToImage(itr + 1));
+        }
     }
 }
