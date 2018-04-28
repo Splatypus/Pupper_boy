@@ -6,6 +6,9 @@ using System.IO;
 public class BlackieMiniGame : Dialog {
 
     public List<List<Gamepiece>> grid; //grid of game pieces. First list is x values, second is y values
+    public List<Gamepiece> goals;
+    public List<Gamepiece> placeables;
+    public List<Gamepiece> statics;
     Gamepiece emptyPiece; //same object reference is used for every empty space
     List<GameObject> tiles; //list of tiles so they can be cleaned up when puzzle is finished
     public BoxCollider gameBounds;
@@ -13,7 +16,6 @@ public class BlackieMiniGame : Dialog {
     public TextAsset[] puzzleFiles;
     public GameObject[] prefabs;
     public GameObject[] gridTiles;
-    public int[] pieceCount;
     public float tileDis;
 
 
@@ -43,6 +45,9 @@ public class BlackieMiniGame : Dialog {
         //Make a grid of the given dimensions and fill with empty pieces - also instantiate the base grid
         grid = new List<List<Gamepiece>>(width);
         tiles = new List<GameObject>(width * height);
+        goals = new List<Gamepiece>();
+        statics = new List<Gamepiece>();
+        placeables = new List<Gamepiece>();
         for (int i = 0; i < width; i++) {
             grid.Add(new List<Gamepiece>(height));
             for (int j = 0; j < height; j++) {
@@ -96,11 +101,36 @@ public class BlackieMiniGame : Dialog {
 
         //-----second line is number of each available piece you are given-----
         line = data[1].Split(',');
-        pieceCount = new int[line.Length];
-        for (int i = 0; i < pieceCount.Length; i++) {
-            pieceCount[i] = int.Parse(line[i]);
+        for (int i = 0; i < line.Length; i++){
+            int count = int.Parse(line[i]);
+            //instantiate that many of i
+            for (int j = 0; j < count; j++){
+                GameObject inWorld = Instantiate(prefabs[i], new Vector3(transform.position.x - (placeables.Count + 1) * tileDis, transform.position.y, transform.position.z), transform.rotation);
+                Gamepiece temp;
+                switch (i)
+                {
+                    case 0:         //Standard node
+                        temp = new BlackieNode(inWorld, false);
+                        break;
+                    case 1:         //Red prefered gate
+                        temp = new ColorGate(inWorld, false, Gamepiece.PowerStates.Red);
+                        break;
+                    case 2:         //Blue prefered gate
+                        temp = new ColorGate(inWorld, false, Gamepiece.PowerStates.Blue);
+                        break;
+                    case 3:         //Inverter
+                        temp = new Inverter(inWorld, false);
+                        break;
+                    default:
+                        temp = emptyPiece;
+                        break;
+                }
+                WorldGamepiece inWorldScript = inWorld.GetComponent<WorldGamepiece>();
+                inWorldScript.Start();
+                inWorldScript.boardPiece = temp;
+                placeables.Add(temp);
+            }
         }
-        
         //-----the remaining lines are which pieces are defaulted to which locations-----
         for (int i = 2; i < data.Length; i++) {
             line = data[i].Split(',');
@@ -118,6 +148,7 @@ public class BlackieMiniGame : Dialog {
                                                                                 transform.rotation);
                 inWorld.transform.Rotate(0, 90.0f * d, 0);
                 inWorld.transform.Rotate(Vector3.up * d * 90.0f); //rotate it to match the input direction
+                
                 Gamepiece temp;
                 //place a different piece depending on which type it is
                 switch (type) {
@@ -141,18 +172,37 @@ public class BlackieMiniGame : Dialog {
                         break;
                     case 6:         //red goal
                         temp = new GoalNode(inWorld, Gamepiece.PowerStates.Red);
+                        goals.Add(temp);
                         break;
                     case 7:         //blue goal
                         temp = new GoalNode(inWorld, Gamepiece.PowerStates.Blue);
+                        goals.Add(temp);
                         break;
                     default:
                         temp = emptyPiece;
                         break;
                 }
-                PlacePiece(temp, x, y, d);
+                statics.Add(temp);
+                WorldGamepiece inWorldScript = inWorld.GetComponent<WorldGamepiece>();
+                inWorldScript.Start();
+                inWorldScript.boardPiece = temp;
+                inWorldScript.OnPlace();
             }
         }
 
+    }
+
+    //takes in a world space location and transforms it into grid coordinates
+    public Vector2Int WorldToGridSpace(Vector3 pos) {
+        pos -= transform.position;
+        pos.x /= tileDis;
+        pos.z /= tileDis;
+        pos.x += (grid.Count-1)/2.0f;
+        pos.z -= 1;
+        pos.x += 0.5f;
+        pos.z += 0.5f;
+        Vector2Int gridSpace = new Vector2Int((int)pos.x, (int)pos.z);
+        return gridSpace;
     }
 
     //if the location x, y is within the bounds of the grid
@@ -196,7 +246,6 @@ public class BlackieMiniGame : Dialog {
             //add to grid and give the piece the information it needs. Then update its in world gameobject
             grid[x][y] = p;
             p.direction = direction;
-            //set p.worldobject position here
 
             //set its power
             Gamepiece[] adjacents = GenerateAdjacents(x, y, direction);
@@ -207,6 +256,49 @@ public class BlackieMiniGame : Dialog {
                 UpdatePowerState(x + 1, y);
                 UpdatePowerState(x, y + 1);
                 UpdatePowerState(x - 1, y);
+            }
+            CheckVictory();
+        }
+    }
+
+    //removes the piece at location x, y and returns it if it exists. If no piece is there, reuturn null
+    public Gamepiece RemovePiece(int x, int y) {
+        Gamepiece removed = GetAtLocation(x, y);
+        if (removed != emptyPiece && !removed.isLocked) {
+            removed.SetState(Gamepiece.PowerStates.Off);
+            grid[x][y] = emptyPiece;
+            //remove power from anything this was powering.
+            //check along anything this was connected to and is powered. If we find a power source, repower everything connected to it. If no souce, then leave dead. 
+            RemovePower(x, y - 1);
+            RemovePower(x + 1, y);
+            RemovePower(x, y + 1);
+            RemovePower(x - 1, y);
+            CheckVictory(); //can removing a piece ever make you win? Probably not but whatever lets be safe here
+            return removed;
+        }
+        Debug.Log("This error should never show. Fucking just kill me now if youre seeing this.");
+        return null;
+    }
+
+    //recursively remove power
+    public void RemovePower(int x, int y) {
+        Gamepiece p = GetAtLocation(x, y);
+        if (p != emptyPiece && p.IsPowered()) {
+            //if the node can be turned off, turn it off
+            p.SetState(Gamepiece.PowerStates.Off);
+            //if p is still powered after being shut off, then it is supplying power. Update the power states of all the shit we just turned off
+            //Note that because of color gates, we can't just return a bool here to see if things are powered way back at whichever node was removed. It all needs to be recalculated
+            if (p.IsPowered()) {
+                UpdatePowerState(x, y - 1);
+                UpdatePowerState(x + 1, y);
+                UpdatePowerState(x, y + 1);
+                UpdatePowerState(x - 1, y);
+            }
+            else { 
+                RemovePower(x, y - 1);
+                RemovePower(x + 1, y);
+                RemovePower(x, y + 1);
+                RemovePower(x - 1, y);
             }
         }
     }
@@ -219,11 +311,37 @@ public class BlackieMiniGame : Dialog {
             Gamepiece[] adjacents = GenerateAdjacents(x, y, p.direction);
             p.SetInitialPowerState(adjacents);
             //if this causes p to become powered, keep iterating
-            if (p.IsPowered()){
+            if (p.IsPowered()) {
                 UpdatePowerState(x, y - 1);
                 UpdatePowerState(x + 1, y);
                 UpdatePowerState(x, y + 1);
                 UpdatePowerState(x - 1, y);
+            } 
+        }
+    }
+
+    //checks to see if all goal nodes have been powered
+    public void CheckVictory() {
+        bool allOn = true;
+        foreach (Gamepiece g in goals) {
+            if (g.state == Gamepiece.PowerStates.Off) {
+                allOn = false;
+            }
+        }
+        //if we turned on all the goal nodes, win the game!
+        if (allOn && goals.Count > 0) {
+            gameBounds.enabled = false;
+            Debug.Log("Glorious Victory");
+            foreach (GameObject t in tiles) {
+                Destroy(t);
+            }
+            foreach (Gamepiece t in placeables) {
+                //Destory(t.gameObject);
+                t.worldObject.GetComponent<WorldGamepiece>().FancyDestroy();
+            }
+            foreach (Gamepiece t in statics) {
+                //Destory(t.gameObject);
+                t.worldObject.GetComponent<WorldGamepiece>().FancyDestroy();
             }
         }
     }

@@ -30,6 +30,22 @@ public class Gamepiece {
     //sets the power state of the node. Changes its color or whatever it needs to do too
     public virtual void SetState(PowerStates newstate) {
         state = newstate;
+        //if turned off, do no particles
+        ParticleSystem ps = worldObject.GetComponentInChildren<ParticleSystem>();
+        if (state == PowerStates.Off)
+        {
+            ps.Stop();
+        }
+        //if turned on change particles to the right color
+        else
+        {
+            ps.Play();
+            ParticleSystem.MainModule module = ps.main;
+            if (state == PowerStates.Blue)
+                module.startColor = new Color(0.0f, 0.0f, 1.0f);
+            else if (state == PowerStates.Red)
+                module.startColor = new Color(1.0f, 0.0f, 0.0f);
+        }   
     }
 }
 
@@ -69,7 +85,8 @@ public class BlackieNode : Gamepiece{
     public override void SetInitialPowerState(Gamepiece[] adjacents)
     {
         //if theres an adjacent powered node, we want to match that
-        state = PowerStates.Off;
+        //state = PowerStates.Off;
+        SetState(PowerStates.Off);
         foreach (Gamepiece g in adjacents)
         {
             if (g.IsPowered())
@@ -79,7 +96,7 @@ public class BlackieNode : Gamepiece{
 }
 
 
-//takes two input and one output. If either input is the prefered state, so is the output.
+//takes two input. If either input is the prefered state, it supplies that power. If both are another power, it supplies that instead
 public class ColorGate : Gamepiece {
     public PowerStates preferedState;
 
@@ -89,15 +106,57 @@ public class ColorGate : Gamepiece {
         isLocked = _locked;
     }
 
+    //you can always place a color gate unless the output slot is already powered
+    public override bool CanPlace(Gamepiece[] adjacents){
+        return !(adjacents[0].IsPowered() || adjacents[2].IsPowered());
+    }
+
+    //only powered with 2 power inputs. State is prefered state unless both inputs are the other color
+    public override void SetInitialPowerState(Gamepiece[] adjacents){
+        if (adjacents[1].state == preferedState || adjacents[3].state == preferedState) {
+            SetState(preferedState);
+        } else if (adjacents[1].state == adjacents[3].state && adjacents[1].state != PowerStates.Off) {
+            SetState(adjacents[1].state);
+        } else {
+            SetState(PowerStates.Off);
+        }
+    }
 }
 
 
-//takes one input and one output. Output is opposite of input
+//takes one input and supplies inverted power
 public class Inverter : Gamepiece {
     public Inverter(GameObject _inWorld, bool _locked) {
         worldObject = _inWorld;
         isLocked = _locked;
         direction = 0;
+    }
+
+    //requires only one powered
+    public override bool CanPlace(Gamepiece[] adjacents){
+        int numPowered = 0;
+        foreach (Gamepiece g in adjacents){
+            if (g.IsPowered())
+                numPowered++;
+        }
+        return numPowered <= 1;
+    }
+
+    //there should at most be one powered thing adjacent to this. Set it to the opposite state
+    public override void SetInitialPowerState(Gamepiece[] adjacents)
+    {
+        //if theres an adjacent powered node, we want to match that
+        //state = PowerStates.Off;
+        SetState(PowerStates.Off);
+        foreach (Gamepiece g in adjacents){
+            if (g.IsPowered()){
+                if (g.state == PowerStates.Red) {
+                    SetState(PowerStates.Blue);
+                } else if(g.state == PowerStates.Blue) {
+                    SetState(PowerStates.Red);
+                }
+            }
+        }
     }
 
 }
@@ -111,6 +170,11 @@ public class SourceNode : Gamepiece {
         direction = 0;
         state = _color;
     }
+
+    //Cannot change the state of a source node
+    public override void SetState(PowerStates newstate){        
+    }
+
 }
 
 
