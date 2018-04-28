@@ -7,15 +7,21 @@ public class BlackieMiniGame : Dialog {
 
     public List<List<Gamepiece>> grid; //grid of game pieces. First list is x values, second is y values
     Gamepiece emptyPiece; //same object reference is used for every empty space
+    List<GameObject> tiles; //list of tiles so they can be cleaned up when puzzle is finished
+    public BoxCollider gameBounds;
+    
     public TextAsset[] puzzleFiles;
     public GameObject[] prefabs;
     public GameObject[] gridTiles;
     public int[] pieceCount;
     public float tileDis;
 
+
+
     new public void Start()
     {
         base.Start();
+        gameBounds.enabled = false;
         emptyPiece = new EmptyNode();
         LoadPuzzle(0);
     }
@@ -24,29 +30,70 @@ public class BlackieMiniGame : Dialog {
     public void LoadPuzzle(int index) {
         string[] data = puzzleFiles[index].ToString().Split('\n');
         string[] line = data[0].Split(',');
+
         //-----first line is the width and the height-----
         int width = int.Parse(line[0]);
         int height = int.Parse(line[1]);
+
+        //set bounding box to contain puzzle
+        gameBounds.enabled = true;
+        gameBounds.center = new Vector3(transform.position.x, 2.0f, transform.position.z + ((height + 1)/2.0f) * tileDis);
+        gameBounds.size = new Vector3((width-1) * tileDis, 4.0f, (height-1) * tileDis);
+
         //Make a grid of the given dimensions and fill with empty pieces - also instantiate the base grid
         grid = new List<List<Gamepiece>>(width);
+        tiles = new List<GameObject>(width * height);
         for (int i = 0; i < width; i++) {
             grid.Add(new List<Gamepiece>(height));
             for (int j = 0; j < height; j++) {
                 //place corners or sides if along the corners or sides. Otherwise place centers
                 Vector3 placeLocation = new Vector3(transform.position.x + (i - ((width - 1) / 2.0f)) * tileDis, transform.position.y - 0.5f, transform.position.z + j * tileDis + tileDis);
                 grid[i].Add(emptyPiece);
+
+                //place grid parts with edges along the edge and corners in the corner
+                GameObject tile = null;
                 if (i == 0) {
                     if (j == 0) {
-                        //top left corner
+                        //close left
+                        tile = Instantiate(gridTiles[2], placeLocation, transform.rotation);
+                        tile.transform.Rotate(new Vector3(0, -90.0f, 0));
                     } else if (j == height - 1) {
-                        //top right corner
+                        //far left
+                        tile = Instantiate(gridTiles[2], placeLocation, transform.rotation);
+                    } else {
+                        //left edge
+                        tile = Instantiate(gridTiles[1], placeLocation, transform.rotation);
                     }
                 } else if (i == width - 1) {
-
+                    if (j == 0) {
+                        //close right
+                        tile = Instantiate(gridTiles[2], placeLocation, transform.rotation);
+                        tile.transform.Rotate(new Vector3(0, 180.0f, 0));
+                    } else if(j == height - 1) {
+                        //far right
+                        tile = Instantiate(gridTiles[2], placeLocation, transform.rotation);
+                        tile.transform.Rotate(new Vector3(0, 90.0f, 0));
+                    } else {
+                        //right edge
+                        tile = Instantiate(gridTiles[1], placeLocation, transform.rotation);
+                        tile.transform.Rotate(new Vector3(0, 180.0f, 0));
+                    }
+                } else if (j == 0) {
+                    //close edge
+                    tile = Instantiate(gridTiles[1], placeLocation, transform.rotation);
+                    tile.transform.Rotate(new Vector3(0, -90.0f, 0));
+                } else if (j == height - 1) {
+                    //far edge
+                    tile = Instantiate(gridTiles[1], placeLocation, transform.rotation);
+                    tile.transform.Rotate(new Vector3(0, 90.0f, 0));
+                } else {
+                    //middle section
+                    tile = Instantiate(gridTiles[0], placeLocation, transform.rotation);
                 }
-                Instantiate(gridTiles[0], placeLocation, transform.rotation);
+                tiles.Add(tile);
             }
         }
+
         //-----second line is number of each available piece you are given-----
         line = data[1].Split(',');
         pieceCount = new int[line.Length];

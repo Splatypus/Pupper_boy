@@ -97,17 +97,17 @@ public class PuppyPickup : MonoBehaviour {
             else if(objectsInRange.Count > 0)
             {
 
-                itemInMouth = ClosestObject();
-                itemInMouth.transform.parent = mouth;
-                itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
-                itemInMouth.GetComponent<Rigidbody>().useGravity = false;
 
+                itemInMouth = ClosestObject();
                 // do stuff with interactable object
                 Interactable interactable = itemInMouth.GetComponent<Interactable>();
                 if(interactable)
                 {
                     interactable.onPickup();
                 }
+                itemInMouth.transform.parent = mouth;
+                itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
+                itemInMouth.GetComponent<Rigidbody>().useGravity = false;
             }
             else
             {

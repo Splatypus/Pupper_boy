@@ -33,7 +33,7 @@ public class Interactable : MonoBehaviour {
 
 
 
-    public void onPickup()
+    public virtual void onPickup()
     {
         if(play_sound)
         {
@@ -50,7 +50,7 @@ public class Interactable : MonoBehaviour {
         }
     }
 
-    public void onDrop()
+    public virtual void onDrop()
     {
         if (play_sound)
         {
