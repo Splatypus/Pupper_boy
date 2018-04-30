@@ -9,6 +9,7 @@ public class TreeSnapshot : MonoBehaviour {
     public float distanceFromTree = 10.0f;
     public string folder;
     public string fileName;
+    public int snapshotCount;
     
 
     Vector3[] vecs;
@@ -19,23 +20,37 @@ public class TreeSnapshot : MonoBehaviour {
     // Use this for initialization
     void Start () {
         vecs = GenerateVectors();
-        tex = new Texture2D(128 * 4, 128 * 4, TextureFormat.ARGB32, false);
+        tex = new Texture2D(1024, 1024, TextureFormat.ARGB32, false);
         StartCoroutine(ConvertToImage(0));
 
     }
 
     //generates a half-dome of vectors. 8 vectors in a circle pointing outward, then 7 at a 45 degree upward angle, and then one stright up
     public static Vector3[] GenerateVectors() {
-        Vector3[] vecs = new Vector3[16];
-        for (int i = 0; i < 16; i++) {
-            if (i < 8){
-                float turnAmount = i * 45;
+        Vector3[] vecs = new Vector3[36];
+        for (int i = 0; i < 36; i++) {
+            if (i < 12) {
+                float turnAmount = i * 360 / 12;
                 vecs[i] = new Vector3(Mathf.Cos(Mathf.Deg2Rad * turnAmount), 0.0f, Mathf.Sin(Mathf.Deg2Rad * turnAmount)).normalized;
-            } else if (i < 15) {
-                float turnAmount = i * 360/7;
-                vecs[i] = new Vector3(Mathf.Cos(Mathf.Deg2Rad * turnAmount), Mathf.Sin(Mathf.Deg2Rad * 60.0f), Mathf.Sin(Mathf.Deg2Rad * turnAmount)).normalized;
-            } else if (i == 15) {
-                vecs[i] = Vector3.up;
+            } else if (i < 22) {
+                float turnAmount = i * 360 / 10;
+                vecs[i] = new Vector3(Mathf.Cos(Mathf.Deg2Rad * turnAmount) * Mathf.Cos(Mathf.Deg2Rad * 25.0f),
+                                        Mathf.Sin(Mathf.Deg2Rad * 25.0f),
+                                        Mathf.Sin(Mathf.Deg2Rad * turnAmount) * Mathf.Cos(Mathf.Deg2Rad * 25.0f)
+                                        ).normalized;
+            } else if (i < 32) {
+                float turnAmount = i * 360 / 10;
+                vecs[i] = new Vector3(  Mathf.Cos(Mathf.Deg2Rad * turnAmount) * Mathf.Cos(Mathf.Deg2Rad * 50.0f),
+                                        Mathf.Sin(Mathf.Deg2Rad * 50.0f), 
+                                        Mathf.Sin(Mathf.Deg2Rad * turnAmount) * Mathf.Cos(Mathf.Deg2Rad * 50.0f)
+                                        ).normalized;
+            }
+            else if (i < 36){
+                float turnAmount = i * 360 / 4;
+                vecs[i] = new Vector3(Mathf.Cos(Mathf.Deg2Rad * turnAmount) * Mathf.Cos(Mathf.Deg2Rad * 75.0f),
+                                        Mathf.Sin(Mathf.Deg2Rad * 75.0f),
+                                        Mathf.Sin(Mathf.Deg2Rad * turnAmount) * Mathf.Cos(Mathf.Deg2Rad * 75.0f)
+                                        ).normalized;
             }
         }
 
@@ -77,7 +92,8 @@ public class TreeSnapshot : MonoBehaviour {
 
         //Texture2D tex = new Texture2D(imageWidth, imageHeight, TextureFormat.ARGB32, false);
         // Read screen contents into the texture
-        tex.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), (itr % 4) * imageWidth, (itr / 4) * imageHeight);
+        int countRT = (int)(Mathf.Sqrt((float)snapshotCount)+ 0.5f);
+        tex.ReadPixels(new Rect(0, 0, imageWidth, imageHeight), (itr % countRT) * imageWidth, (itr / countRT) * imageHeight);
         tex.Apply();
 
         //turn all pixels == background-color to transparent
@@ -89,9 +105,9 @@ public class TreeSnapshot : MonoBehaviour {
         {
             for (int x = 0; x < imageWidth; x++)
             {
-                Color c = tex.GetPixel(x + ((itr%4) * imageWidth), y + ((itr / 4) * imageWidth));
+                Color c = tex.GetPixel(x + ((itr%countRT) * imageWidth), y + ((itr / countRT) * imageWidth));
                 if (c.r == bCol.r)
-                    tex.SetPixel(x + ((itr % 4) * imageWidth), y + ((itr / 4) * imageWidth), alpha);
+                    tex.SetPixel(x + ((itr % countRT) * imageWidth), y + ((itr / countRT) * imageWidth), alpha);
             }
         }
         tex.Apply();
@@ -103,9 +119,8 @@ public class TreeSnapshot : MonoBehaviour {
 
         //do this again for the next angle
         itr += 1;
-        if (itr < 16)
+        if (itr < snapshotCount)
         {
-            //gameObject.transform.Rotate(new Vector3(0.0f, 360.0f / 16.0f, 0.0f), Space.World);
             StartCoroutine(ConvertToImage(itr));
         }
         else {
