@@ -75,7 +75,7 @@ public class DogControllerV2 : Controller {
 	// Update is called once per frame
 	void Update () {
 
-        if (mainCam.activeInHierarchy)
+        /*if (mainCam.activeInHierarchy)
         {
             if (Input.GetKey(KeyCode.A))
             {
@@ -125,7 +125,7 @@ public class DogControllerV2 : Controller {
                 rightCam.SetActive(false);
             }
         }
-
+        */
         HandleFriction();
 
         //dont do anything if digging
