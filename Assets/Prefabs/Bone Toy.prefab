@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4280386489958828}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pSphere2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4748657971323800}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: transform3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4112032721682064}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pSphere3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4976784826090136}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pSphere4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4280737951328752}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: transform5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4326645690067254}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: transform2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 54069598564394666}
   - component: {fileID: 114904858507822718}
   - component: {fileID: 82789961470304638}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Bone Toy
   m_TagString: Pickup
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4347440609346506}
   - component: {fileID: 136649543250364514}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: collider1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4344168855606638}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pCylinder1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4799977572149002}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pSphere1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175,7 +175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4506249573873582}
   - component: {fileID: 136510020710773938}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: collider2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4703224528376894}
   - component: {fileID: 95235282071857886}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: dogtoy2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 4764421750411974}
   - component: {fileID: 33077276006259142}
   - component: {fileID: 23320643270228060}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: pCylinder2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4871893480971936}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: transform1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4749844298241084}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: transform4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -403,8 +403,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1573242260750698}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6539812, y: 1.03, z: 5.7667193}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 212.98999, y: 0.38, z: 321.997}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4347440609346506}
@@ -463,6 +463,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -478,6 +479,7 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

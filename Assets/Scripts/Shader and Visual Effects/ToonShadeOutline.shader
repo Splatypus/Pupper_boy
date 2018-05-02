@@ -1,10 +1,6 @@
 ﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
 
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-Shader "Custom/ToonShader" {
+Shader "Custom/ToonShadeOutline" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
@@ -23,7 +19,7 @@ Shader "Custom/ToonShader" {
 		LOD 200
 		
 		//Outline Effect
-		/*Pass{
+		Pass{
 			Cull Front
 
 			CGPROGRAM
@@ -62,9 +58,9 @@ Shader "Custom/ToonShader" {
 			ENDCG
 		}
 		
-		Cull Back*/
+		Cull Back
 
-		//surface shader (cel shading)
+		//surface shader (flat lighting)
 
 		CGPROGRAM
 		#pragma surface surf CelShadingForward addshadow

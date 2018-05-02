@@ -19,7 +19,7 @@ public class MeshDeformerContact : MonoBehaviour {
 
     //constant collision detection
     private void OnCollisionStay(Collision collision) {
-        //for each point of contact
+        //for each point of contact move the mesh down
         foreach (ContactPoint contact in collision.contacts) {
             //MeshDeformer deformer =  contact.otherCollider.GetComponent<MeshDeformer>();
             if (deformer) {
@@ -35,5 +35,4 @@ public class MeshDeformerContact : MonoBehaviour {
             deformer.FlattenPoint(point);
         }
     }
-
 }

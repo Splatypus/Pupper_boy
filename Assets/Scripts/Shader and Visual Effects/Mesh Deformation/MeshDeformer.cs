@@ -27,6 +27,8 @@ public class MeshDeformer : MonoBehaviour {
     void Start() {
         //set mesh data
         deformingMesh = GetComponent<MeshFilter>().mesh;
+        //makes changing mesh often more efficient
+        deformingMesh.MarkDynamic();
         //start the mesh a set distance above terrain
         RaycastHit hit;
         int layermask = 1 << 8;
@@ -78,17 +80,18 @@ public class MeshDeformer : MonoBehaviour {
     public void FlattenPoint(Vector3 point) {
         point -= transform.position;
         for (int i = 0; i < displacedVertices.Length; i++) {
-            Vector3 pointToVertex = displacedVertices[i] - point;
+            Vector2 pointToVertex = new Vector2(displacedVertices[i].x - point.x, displacedVertices[i].z - point.z);
             float dis = pointToVertex.sqrMagnitude;
             if (dis < cutoffEffectDistance) {
-                if (enableDoubleSquareDeformDistance)
+                /*if (enableDoubleSquareDeformDistance)
                     dis *= dis;
                 float scaledDistance = downSpeed * Time.deltaTime / (1f + dis * dis);
-                displacedVertices[i] = new Vector3(displacedVertices[i].x, Mathf.Max(displacedVertices[i].y - scaledDistance, originalVertices[i].y - startHeight + minHeight), displacedVertices[i].z);
-                deformingMesh.vertices = displacedVertices;
-                deformingMesh.RecalculateNormals();
+                displacedVertices[i] = new Vector3(displacedVertices[i].x, Mathf.Max(displacedVertices[i].y - scaledDistance, originalVertices[i].y - startHeight + minHeight), displacedVertices[i].z);*/
+                displacedVertices[i].y = Mathf.Max(Mathf.Min(displacedVertices[i].y, point.y), originalVertices[i].y - startHeight + minHeight);
             }
         }
+        deformingMesh.vertices = displacedVertices;
+        deformingMesh.RecalculateNormals();
     }
 
 
