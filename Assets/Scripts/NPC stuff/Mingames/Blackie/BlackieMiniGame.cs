@@ -18,7 +18,8 @@ public class BlackieMiniGame : Dialog {
     public GameObject[] gridTiles;
     public float tileDis;
 
-    int puzzleNumber = 0;
+    public int puzzleNumber = 0;
+    public BlackieAI blackieRef;
 
 
 
@@ -27,7 +28,6 @@ public class BlackieMiniGame : Dialog {
         base.Start();
         gameBounds.enabled = false;
         emptyPiece = new EmptyNode();
-        LoadPuzzle(puzzleNumber);
     }
 
     //reads in a puzzle set-up from a file and starts that puzzle
@@ -332,30 +332,55 @@ public class BlackieMiniGame : Dialog {
         }
         //if we turned on all the goal nodes, win the game!
         if (allOn && goals.Count > 0) {
-            goals.Clear(); //remove all goals so the puzzle cannot be finished again before the next starts
-            gameBounds.enabled = false;
-            Debug.Log("Glorious Victory");
-            foreach (GameObject t in tiles) {
-                Destroy(t);
-            }
-            foreach (Gamepiece t in placeables) {
-                //Destory(t.gameObject);
-                t.isLocked = true;
-                t.worldObject.GetComponent<WorldGamepiece>().FancyDestroy();
-            }
-            foreach (Gamepiece t in statics) {
-                //Destory(t.gameObject);
-                t.isLocked = true;
-                t.worldObject.GetComponent<WorldGamepiece>().FancyDestroy();
-            }
-            StartCoroutine(DelayedNextLevel());
+            RemovePuzzle();
+            blackieRef.FinishedGame();
+            conversationNumber = 1;
+        }
+    }
+
+    //removes the current puzzle
+    public void RemovePuzzle() {
+        goals.Clear(); //remove all goals so the puzzle cannot be finished again before the next starts
+        gameBounds.enabled = false;
+        foreach (GameObject t in tiles)
+        {
+            Destroy(t);
+        }
+        foreach (Gamepiece t in placeables)
+        {
+            //Destory(t.gameObject);
+            t.isLocked = true;
+            t.worldObject.GetComponent<WorldGamepiece>().FancyDestroy();
+        }
+        foreach (Gamepiece t in statics)
+        {
+            //Destory(t.gameObject);
+            t.isLocked = true;
+            t.worldObject.GetComponent<WorldGamepiece>().FancyDestroy();
         }
     }
 
     IEnumerator DelayedNextLevel() {
         yield return new WaitForSeconds(5.0f);
-        puzzleNumber++;
         if (puzzleNumber < puzzleFiles.Length)
             LoadPuzzle(puzzleNumber);
+    }
+
+    //############## DIALOG NEATNESS #############
+    public override void OnChoiceMade(int choice){
+        base.OnChoiceMade(choice);
+        if (conversationNumber == 2 && choice == 0) {
+            LoadPuzzle(puzzleNumber);
+            conversationNumber = 3;
+        } else if (conversationNumber == 3) {
+            if(choice == 1) { //reset puzzle
+                RemovePuzzle();
+                StartCoroutine(DelayedNextLevel());
+            } else if (choice == 2) { //turn off
+                RemovePuzzle();
+                conversationNumber = 2;
+            }
+        }
+
     }
 }

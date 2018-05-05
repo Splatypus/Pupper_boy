@@ -70,6 +70,7 @@ public class DogControllerV2 : Controller {
         my_icon = GetComponentInChildren<IconManager>();
         houseText = FindObjectOfType<TextFadeOut>();
         ppickup = GetComponentInChildren<PuppyPickup>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 	
 	// Update is called once per frame

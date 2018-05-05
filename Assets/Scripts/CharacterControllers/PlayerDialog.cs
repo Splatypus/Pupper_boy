@@ -30,8 +30,8 @@ public class PlayerDialog : Controller {
             if (!isAllShown) {
                 textObject.text = textToShow;
                 isAllShown = true;
-            //if it is allready all in the textbox, go on to the next stuff
-            } else {
+            //if it is allready all in the textbox, go on to the next stuff, but only if dialog options are not available
+            } else if(!buttons[0].activeInHierarchy){
                 isAllShown = false;
                 npcDialog.Next();
             }
@@ -43,14 +43,19 @@ public class PlayerDialog : Controller {
     public override void OnActivated() {
         //Open dialog window
         canvasGA.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
     }
 
     //ends dialog, closes window, and reverts controls to normal
     public override void OnDeactivated() {
+        Cursor.lockState = CursorLockMode.Locked;
         textToShow = "";
         isAllShown = false;
         npcDialog = null;
         canvasGA.SetActive(false);
+        for (int i = 0; i < buttons.Length; i++) {
+            buttons[i].SetActive(false);
+        }
     }
 
     //sets the text in the active dialog box

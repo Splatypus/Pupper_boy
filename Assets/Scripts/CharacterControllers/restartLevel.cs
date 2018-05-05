@@ -12,10 +12,11 @@ public class restartLevel : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.P)){
+		if (Input.GetKeyDown(KeyCode.P) && Input.GetKeyDown(KeyCode.LeftControl))
+        {
             SceneManager.LoadScene("Backyard");
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && Input.GetKeyDown(KeyCode.LeftControl))
         {
             SceneManager.LoadScene("title_screen");
         }

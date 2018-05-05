@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//WHY TF DOES THIS EVEN EXIST
+
+
 public class BlackieGameManager : MiniGameManager {
     /*
     public GameObject bubble_particle_system;
@@ -68,7 +71,7 @@ public class BlackieGameManager : MiniGameManager {
             bubblesRef.GetComponent<BubblesAI>().FinishedGame(score >= rewardScore);
         }*/
 
-        blackieRef.GetComponent<BlackieAI>().FinishedGame(true);
+        blackieRef.GetComponent<BlackieAI>().FinishedGame();
     }
 
     /*
