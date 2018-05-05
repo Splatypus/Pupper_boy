@@ -76,7 +76,7 @@ public class DogControllerV2 : Controller {
 	// Update is called once per frame
 	void Update () {
 
-        /*if (mainCam.activeInHierarchy)
+        if (mainCam.activeInHierarchy)
         {
             if (Input.GetKey(KeyCode.A))
             {
@@ -84,17 +84,17 @@ public class DogControllerV2 : Controller {
                 {
                     turnTimer += Time.deltaTime;
                 }
-                
+
                 if (turnTimer > turnTime)
                 {
-                    
+
                     leftCam.SetActive(true);
                     mainCam.SetActive(false);
-                    
+
                 }
-                
+
             }
-          
+
             if (Input.GetKey(KeyCode.D))
             {
                 turnTimer += Time.deltaTime;
@@ -103,9 +103,9 @@ public class DogControllerV2 : Controller {
                     rightCam.SetActive(true);
                     mainCam.SetActive(false);
                 }
-               
+
             }
-            
+
         }
         if (leftCam.activeInHierarchy)
         {
@@ -126,7 +126,7 @@ public class DogControllerV2 : Controller {
                 rightCam.SetActive(false);
             }
         }
-        */
+
         HandleFriction();
 
         //dont do anything if digging
