@@ -332,6 +332,7 @@ public class BlackieMiniGame : Dialog {
         }
         //if we turned on all the goal nodes, win the game!
         if (allOn && goals.Count > 0) {
+            goals.Clear(); //remove all goals so the puzzle cannot be finished again before the next starts
             gameBounds.enabled = false;
             Debug.Log("Glorious Victory");
             foreach (GameObject t in tiles) {
@@ -339,10 +340,12 @@ public class BlackieMiniGame : Dialog {
             }
             foreach (Gamepiece t in placeables) {
                 //Destory(t.gameObject);
+                t.isLocked = true;
                 t.worldObject.GetComponent<WorldGamepiece>().FancyDestroy();
             }
             foreach (Gamepiece t in statics) {
                 //Destory(t.gameObject);
+                t.isLocked = true;
                 t.worldObject.GetComponent<WorldGamepiece>().FancyDestroy();
             }
             StartCoroutine(DelayedNextLevel());
