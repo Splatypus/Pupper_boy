@@ -24,6 +24,8 @@ public class DogControllerV2 : Controller {
     float turnspeed = 5;
     [SerializeField]
     float jumpPower = 1;
+    public float groundDrag;
+    public float airDrag;
     #endregion
 
     Vector3 directionPos;
@@ -35,11 +37,7 @@ public class DogControllerV2 : Controller {
     bool onGround;
     public bool hasFlight = false;
 
-    public float turnTime = 2;
-    public float turnTimer = 0;
     public GameObject mainCam;
-    public GameObject leftCam;
-    public GameObject rightCam;
 
     float m_speed;
 
@@ -77,57 +75,6 @@ public class DogControllerV2 : Controller {
 	// Update is called once per frame
 	void Update () {
 
-        if (mainCam.activeInHierarchy)
-        {
-            if (Input.GetKey(KeyCode.A))
-            {
-                if (turnTimer <= turnTime)
-                {
-                    turnTimer += Time.deltaTime;
-                }
-
-                if (turnTimer > turnTime)
-                {
-
-                    leftCam.SetActive(true);
-                    mainCam.SetActive(false);
-
-                }
-
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                turnTimer += Time.deltaTime;
-                if (turnTimer > turnTime)
-                {
-                    rightCam.SetActive(true);
-                    mainCam.SetActive(false);
-                }
-
-            }
-
-        }
-        if (leftCam.activeInHierarchy)
-        {
-            if (Input.GetKeyUp(KeyCode.A))
-            {
-                turnTimer = 0;
-                mainCam.SetActive(true);
-                leftCam.SetActive(false);
-            }
-
-        }
-        if (rightCam.activeInHierarchy)
-        {
-            if (Input.GetKeyUp(KeyCode.D))
-            {
-                turnTimer = 0;
-                mainCam.SetActive(true);
-                rightCam.SetActive(false);
-            }
-        }
-
         HandleFriction();
 
         //dont do anything if digging
@@ -147,11 +94,8 @@ public class DogControllerV2 : Controller {
                 if (curZone != null) {
                     rigidBody.velocity = Vector3.zero;
                     if (curZone.isPathway) {
-                        //this is to switch to a top camera when digging
-                        //wait until digging animation is implemented or when digging is no longer instantanious
-                        //GameObject.Find("Smart Cameras").GetComponent<cameracontrol>().isCam1 = false;
 
-                        // for pathway
+                        //Run digging coroutine. This does the animation and movement and eveything
                         StartCoroutine(StartZoneDig(curZone));
                         
                     } else {
@@ -210,8 +154,7 @@ public class DogControllerV2 : Controller {
         }
         
         // Update animation controller with the amount that we are moving
-        // There's a chance that we should be normalizing this, but I don't know well run animation blends
-        float animValue = Mathf.Abs(vertical) + Mathf.Abs(horizontal);
+        float animValue = Mathf.Sqrt(vertical*vertical + horizontal*horizontal);
         anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime);
 
         // Update player rotation
@@ -236,7 +179,7 @@ public class DogControllerV2 : Controller {
         if (collision.gameObject.tag == "Ground")
         {
             onGround = true;
-            rigidBody.drag = 5;
+            rigidBody.drag = groundDrag;
             // currently, onAir is not used, but could be if we had an animation for jumping
             anim.SetBool("onAir", false);
         }
@@ -248,7 +191,7 @@ public class DogControllerV2 : Controller {
         if (collision.gameObject.tag == "Ground")
         {
             onGround = false;
-            rigidBody.drag = 0;
+            rigidBody.drag = airDrag;
             // currently, onAir is not used, but could be if we had an animation for jumping
             anim.SetBool("onAir", true);
         }
@@ -268,7 +211,7 @@ public class DogControllerV2 : Controller {
     private void OnTriggerExit(Collider other) {
         //exiting dig zone
         DigZone digZone = other.GetComponent<DigZone>();
-        if (digZone != null) {
+        if (digZone != null && digZone == curZone) {
             //print("digger LEFT trigger " + other.name);
             curZone = null;
             my_icon.set_single_bubble_active(false);
