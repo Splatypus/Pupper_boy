@@ -9,7 +9,7 @@ public class DogControllerV2 : Controller {
     #region Component Variables
     Rigidbody rigidBody;
     Animator anim;
-    BoxCollider capCol;
+    Collider capCol;
     [SerializeField] PhysicMaterial zFriction;
     [SerializeField] PhysicMaterial mFriction;
     Transform cam;
@@ -34,7 +34,7 @@ public class DogControllerV2 : Controller {
     float horizontal;
     float vertical;
     bool jumpInput;
-    bool onGround;
+    int onGround;
     public bool hasFlight = false;
 
     public GameObject mainCam;
@@ -63,7 +63,7 @@ public class DogControllerV2 : Controller {
     void Start () {
         rigidBody = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
-        capCol = GetComponent<BoxCollider>();
+        capCol = GetComponent<Collider>();
         anim = GetComponentInChildren<Animator>();
         my_icon = GetComponentInChildren<IconManager>();
         houseText = FindObjectOfType<TextFadeOut>();
@@ -135,7 +135,7 @@ public class DogControllerV2 : Controller {
         }
 
         // Code for grounded movement
-        if (onGround)
+        if (onGround != 0)
         {
             // Get information about the camera relative to us
             cam_right = Vector3.ProjectOnPlane(cam.right, transform.up);
@@ -149,7 +149,7 @@ public class DogControllerV2 : Controller {
             if(jumpInput)
             {
                 rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-                onGround = false;
+                //onGround = false;
             }            
         }
         
@@ -178,7 +178,7 @@ public class DogControllerV2 : Controller {
         // Check if the thing we hit is the ground
         if (collision.gameObject.tag == "Ground")
         {
-            onGround = true;
+            onGround += 1;
             rigidBody.drag = groundDrag;
             // currently, onAir is not used, but could be if we had an animation for jumping
             anim.SetBool("onAir", false);
@@ -190,7 +190,7 @@ public class DogControllerV2 : Controller {
         // Check if the thing we left is the ground
         if (collision.gameObject.tag == "Ground")
         {
-            onGround = false;
+            onGround -= 1;
             rigidBody.drag = airDrag;
             // currently, onAir is not used, but could be if we had an animation for jumping
             anim.SetBool("onAir", true);

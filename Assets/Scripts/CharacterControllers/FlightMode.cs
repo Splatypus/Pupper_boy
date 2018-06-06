@@ -41,7 +41,7 @@ public class FlightMode : Controller {
     void Start () {
         anim = GetComponentInChildren<Animator>();
         rb = this.GetComponent<Rigidbody>();
-        tr = this.GetComponent<TrailRenderer>();
+        tr = this.GetComponentInChildren<TrailRenderer>();
         ps = this.GetComponent<ParticleSystem>();
         col = GetComponent<BoxCollider>();
         if(BackgroundMusic != null)
