@@ -7,6 +7,7 @@ public class BlackieAI : AIbase {
 
     public GameObject rewardSpawn; //location at which the reward is spawned
     public GameObject reward;
+    public bool hasDoneReward = false;
 
     public BlackieMiniGame blackieGameRef;
 
@@ -34,6 +35,12 @@ public class BlackieAI : AIbase {
             case 3:
                 blackieGameRef.puzzleNumber = c;
                 blackieGameRef.conversationNumber = 2;
+                break;
+            case 4:
+                if (!hasDoneReward){
+                    hasDoneReward = true;
+                    Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
+                }
                 break;
             default:
                 break;

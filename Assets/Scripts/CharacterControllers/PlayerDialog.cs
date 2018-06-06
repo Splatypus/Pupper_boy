@@ -44,11 +44,13 @@ public class PlayerDialog : Controller {
         //Open dialog window
         canvasGA.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     //ends dialog, closes window, and reverts controls to normal
     public override void OnDeactivated() {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         textToShow = "";
         isAllShown = false;
         npcDialog = null;
