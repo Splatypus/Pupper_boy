@@ -3503,7 +3503,7 @@ MonoBehaviour:
   moveMat: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
   waitMat: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
   randomStartupTimeMax: 1
-  DogDistanceUntilFlight: 8
+  DogDistanceUntilFlight: 0
   borkDistanceUntilFlight: 20
   flightStartVelocity: {x: -4.5, y: 6, z: 0}
   heightToStartFlightWander: 30
@@ -3988,7 +3988,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: New Text''s
 --- !u!222 &129397413
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26265,7 +26265,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1005812615
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28273,7 +28273,7 @@ MonoBehaviour:
   moveMat: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
   waitMat: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
   randomStartupTimeMax: 1
-  DogDistanceUntilFlight: 8
+  DogDistanceUntilFlight: 0
   borkDistanceUntilFlight: 20
   flightStartVelocity: {x: -4.5, y: 6, z: 0}
   heightToStartFlightWander: 30
@@ -31555,7 +31555,7 @@ MonoBehaviour:
   moveMat: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
   waitMat: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
   randomStartupTimeMax: 1
-  DogDistanceUntilFlight: 8
+  DogDistanceUntilFlight: 0
   borkDistanceUntilFlight: 20
   flightStartVelocity: {x: -4.5, y: 6, z: 0}
   heightToStartFlightWander: 30
@@ -32260,7 +32260,7 @@ MonoBehaviour:
   moveMat: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
   waitMat: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
   randomStartupTimeMax: 1
-  DogDistanceUntilFlight: 8
+  DogDistanceUntilFlight: 0
   borkDistanceUntilFlight: 20
   flightStartVelocity: {x: -4.5, y: 6, z: 0}
   heightToStartFlightWander: 30
@@ -33883,15 +33883,15 @@ Prefab:
       objectReference: {fileID: 1767002073}
     - target: {fileID: 4194397131560750, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.035404336
+      value: 0.035404347
       objectReference: {fileID: 0}
     - target: {fileID: 4194397131560750, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.y
-      value: -0.0000017361647
+      value: -0.00000173616
       objectReference: {fileID: 0}
     - target: {fileID: 4194397131560750, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.00000014808795
+      value: 0.00000014807404
       objectReference: {fileID: 0}
     - target: {fileID: 4194397131560750, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.w
@@ -33915,7 +33915,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.000796881
+      value: 0.000796789
       objectReference: {fileID: 0}
     - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.y
@@ -33923,7 +33923,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.000000064884766
+      value: 0.00000006488238
       objectReference: {fileID: 0}
     - target: {fileID: 4309606505538650, guid: f6303eb410cbbe849beb233c80bebb64, type: 2}
       propertyPath: m_LocalRotation.w
@@ -57135,7 +57135,7 @@ MonoBehaviour:
   moveMat: {fileID: 13400000, guid: 3aeb7dadc0c69d54d9e5777e9d5631f1, type: 2}
   waitMat: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
   randomStartupTimeMax: 1
-  DogDistanceUntilFlight: 8
+  DogDistanceUntilFlight: 0
   borkDistanceUntilFlight: 20
   flightStartVelocity: {x: -4.5, y: 6, z: 0}
   heightToStartFlightWander: 30
@@ -58417,6 +58417,26 @@ Prefab:
     - {fileID: 114938348412177154, guid: 7c5cbe28d9747894f997bc050f5504af, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 7c5cbe28d9747894f997bc050f5504af, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1960520267 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1505800239821532, guid: 7c5cbe28d9747894f997bc050f5504af,
+    type: 2}
+  m_PrefabInternal: {fileID: 1960520266}
+--- !u!54 &1960520268
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1960520267}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 14
+  m_CollisionDetection: 0
 --- !u!1 &1962969267
 GameObject:
   m_ObjectHideFlags: 0

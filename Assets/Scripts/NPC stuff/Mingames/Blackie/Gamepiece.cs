@@ -32,6 +32,10 @@ public class Gamepiece {
         state = newstate;
         //if turned off, do no particles
         ParticleSystem ps = worldObject.GetComponentInChildren<ParticleSystem>();
+        //check is system is null
+        if (ps == null) {
+            return;
+        }
         if (state == PowerStates.Off)
         {
             ps.Stop();

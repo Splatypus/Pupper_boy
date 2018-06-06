@@ -205,27 +205,30 @@ public class PuppyPickup : MonoBehaviour {
     }
 
 
-
+    //OnCollisionExit is not called when a gameobject is destroyed while colliding. This means theyll never be removed from the list. This function simply cleans up all the destroyed list objects.
+    void RemoveDestroyed() {
+        //loop over list and add remove all instances of null
+        int numRemoved = 0;
+        for (int i = 0; i < objectsInRange.Count - numRemoved; i++) {
+            if (objectsInRange[i] == null) {
+                objectsInRange.RemoveAt(i);
+                numRemoved++;
+                i--;
+            }
+        }
+    }
 
     GameObject ClosestObject()
     {
+        RemoveDestroyed();
         GameObject closest = null;
         float minDist = Mathf.Infinity;
-        foreach(GameObject go in objectsInRange)
-        {
-            //check if the object has been destroyed
-            if (go == null)
+        foreach(GameObject go in objectsInRange){
+            float dist = (mouth.position - go.transform.position).magnitude;
+            if (dist < minDist)
             {
-                objectsInRange.Remove(go); //######FIX THIS SHIT PLS
-            }
-            else
-            {
-                float dist = (mouth.position - go.transform.position).magnitude;
-                if (dist < minDist)
-                {
-                    closest = go;
-                    minDist = dist;
-                }
+                closest = go;
+                minDist = dist;
             }
         }
 
