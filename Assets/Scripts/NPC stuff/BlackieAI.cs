@@ -34,7 +34,8 @@ public class BlackieAI : AIbase {
             case 2:
             case 3:
                 blackieGameRef.puzzleNumber = c;
-                blackieGameRef.conversationNumber = 2;
+                if (blackieGameRef.conversationNumber == 0 || blackieGameRef.conversationNumber == 1)
+                    blackieGameRef.conversationNumber = 2;
                 break;
             case 4:
                 if (!hasDoneReward){
@@ -51,7 +52,8 @@ public class BlackieAI : AIbase {
         base.OnChoiceMade(choice);
         if (conversationNumber == 0 && choice == 0){
             blackieGameRef.puzzleNumber = 0;
-            blackieGameRef.conversationNumber = 2;
+            if(blackieGameRef.conversationNumber == 0 || blackieGameRef.conversationNumber == 1)
+                blackieGameRef.conversationNumber = 2;
         }
 
     }
