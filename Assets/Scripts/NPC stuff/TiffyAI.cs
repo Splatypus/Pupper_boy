@@ -11,38 +11,49 @@ public class TiffyAI : AIbase {
     public enum States { Hiding, Rescued, Happy }; //this is used instead of the standard quest number variable because why not
     public States state = States.Hiding;
 
-    public GameObject rewardSpawn;
-    public GameObject reward;
+    public GameObject rewardSpawn; //location to spawn reward
+    public GameObject reward; //what to spawn
 
-    public GameObject[] birds;
+    public GameObject[] birds; //array of birds attacking her
 
-    public GameObject bandanaObject;
-    public GameObject noBandanaObject;
+    public GameObject bandanaCollar;
+    public GameObject defaultCollar;
 
 
 
     public override void OnInRange() {
         if (state == States.Hiding) {
-            Display(Icons[0]);
+            Display(0);
         } else if (state == States.Rescued) {
-            Display(Icons[1]);
+            Display(1);
         } else if (state == States.Happy) {
-            Display(Icons[2]);
+            Display(2);
         }
     }
 
-    public override void ToyInRange(GameObject toy) {
-        if (state == States.Rescued) {
-            print("TOYTHING");
-            base.ToyInRange(toy);
-            state = States.Happy;
-            SetConversationNumber();
-            Display(Icons[2]);
-            Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
-            if (bandanaObject != null && noBandanaObject != null) {
-                bandanaObject.SetActive(true);
-                noBandanaObject.SetActive(false);
+    public override void OnTriggerEnter(Collider col){
+        base.OnTriggerEnter(col);
+
+        //if an item is brought to tiffany, and is her quest item, delete it, cand call toyInRange.
+        if (col.gameObject.GetComponent<Interactable>().hasTag(Interactable.Tag.TiffyQuestItem) && state == States.Rescued){
+            PuppyPickup inMouth = Player.GetComponent<DogControllerV2>().ppickup;
+            if (inMouth.itemInMouth != null && inMouth.itemInMouth == col.gameObject) {
+                inMouth.DropItem();
+                inMouth.objectsInRange.Remove(col.gameObject);
             }
+            ToyInRange(col.gameObject);
+            Destroy(col.gameObject);
+        }
+    }
+
+    public void ToyInRange(GameObject toy) {
+        state = States.Happy;
+        progressionNum = 1;
+        Display(2);
+        Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
+        if (bandanaCollar != null && defaultCollar != null) {
+            bandanaCollar.SetActive(true);
+            defaultCollar.SetActive(false);
         }
     }
 
@@ -56,8 +67,8 @@ public class TiffyAI : AIbase {
             a.SetTrigger("isSaved");
         }
         state = States.Rescued;
-        SetConversationNumber(); //go to the next dialog set
-        Display(Icons[1]);
+        progressionNum = 1; //go to the next dialog set
+        Display(1);
     }
 
     new public void Start() {

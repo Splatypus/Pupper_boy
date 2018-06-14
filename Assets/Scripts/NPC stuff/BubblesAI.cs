@@ -9,6 +9,9 @@ public class BubblesAI : AIbase {
     public GameObject reward;
     public GameObject reward2;
 
+    public enum States {NOBUBBLES, BUBBLES, END};
+    public States state = States.NOBUBBLES;
+
     public BubbleGameManager bubbleGameRef;
 
     // Use this for initialization
@@ -16,64 +19,49 @@ public class BubblesAI : AIbase {
         base.Start();	
 	}
 
-    //icons to display if in range of player
-    public override void OnInRange() {
-        //Display(Icons[0]);
-    }
+    public override void OnTriggerEnter(Collider col)
+    {
+        base.OnTriggerEnter(col);
 
-    //when bringing soap to bubbles
-    public override void ToyInRange(GameObject toy) {
-        
-        if (questNumber == 0) {
-            base.ToyInRange(toy);
-            NextQuest();
+        //if an item is brought to tiffany, and is her quest item, delete it, cand call toyInRange.
+        if (col.gameObject.GetComponent<Interactable>().hasTag(Interactable.Tag.TiffyQuestItem)) {
+            PuppyPickup inMouth = Player.GetComponent<DogControllerV2>().ppickup;
+            if (inMouth.itemInMouth != null && inMouth.itemInMouth == col.gameObject) {
+                inMouth.DropItem();
+                inMouth.objectsInRange.Remove(col.gameObject);
+            }
+            ToyInRange(col.gameObject);
+            Destroy(col.gameObject);
         }
     }
 
-    //when dialog ends
-    public override void OnEndOfDialog(int c) {
-        base.OnEndOfDialog(c);
-        if (c == 3 || c == 5) {
-            if (c==3)
-                Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
-            else
-                Instantiate(reward2, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
-            NextQuest();
+    public void ToyInRange(GameObject toy){
+        if (state == States.NOBUBBLES) {
+            state = States.BUBBLES;
+            progressionNum = 1;
         }
     }
 
-    public override void OnChoiceMade(int choice){
-        base.OnChoiceMade(choice);
-        switch (conversationNumber) {
-            case 1:
-            case 2:
-            case 6:
-                if (choice == 0) 
-                    bubbleGameRef.GameStartForReward(5);
-                break;
-            case 4:
-                if (choice == 0)
-                    bubbleGameRef.GameStartForReward(8);
-                break;
-            default:
-                break;
-        }
-
+    //methods to spawn rewards. Called from dialog editor graph thing
+    public void FirstReward() {
+        Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
     }
+
+    public void SecondReward() {
+        Instantiate(reward2, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
+    }
+    //function to start the game.
+    public void StartGame(int scoreToWin) {
+        bubbleGameRef.GameStartForReward(scoreToWin);
+    }
+
 
     //called by bubble machine when the game is finished
     public void FinishedGame(bool didWin) {
-        if (questNumber == 1 || questNumber == 2) {
-            if (didWin) {//change to winning conversation
-                questNumber = 3;
-                SetConversationNumber(3);
-            } else {//change to losing conversation
-                questNumber = 2;
-                SetConversationNumber(2);
-            }
-        } else if (questNumber == 4 && didWin) {
-            //beat the new high score
-            NextQuest();
+        if (didWin) {
+            progressionNum = 1;
+        } else {
+            progressionNum = 0;
         }
     }    
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(Dialog2))]
+[CustomEditor(typeof(Dialog2), true)]
 public class Dialog2Editor : Editor {
 
     DialogEditorWindow window = null;

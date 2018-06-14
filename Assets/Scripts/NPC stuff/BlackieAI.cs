@@ -21,47 +21,23 @@ public class BlackieAI : AIbase {
         //Display(Icons[0]);
     }
 
-    //when bringing items do nothing because fuck you no items why was I dumb enough to put this in the parent class
-    public override void ToyInRange(GameObject toy) {
-        
+    //loads the puzzle indicated into the puzzle machine
+    public void SetUpPuzzleMachine(int puzzleNum) {
+        blackieGameRef.puzzleNumber = puzzleNum;
+        if (blackieGameRef.progressionNum == 0)
+            blackieGameRef.progressionNum = 1;
     }
 
-    //when dialog ends
-    public override void OnEndOfDialog(int c) {
-        base.OnEndOfDialog(c);
-        switch (c) {
-            case 1:
-            case 2:
-            case 3:
-                blackieGameRef.puzzleNumber = c;
-                if (blackieGameRef.conversationNumber == 0 || blackieGameRef.conversationNumber == 1)
-                    blackieGameRef.conversationNumber = 2;
-                break;
-            case 4:
-                if (!hasDoneReward){
-                    hasDoneReward = true;
-                    Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
-                }
-                break;
-            default:
-                break;
+    //spawns reward
+    public void SpawnReward() {
+        if (!hasDoneReward) {
+            hasDoneReward = true;
+            Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
         }
-    }
-
-    public override void OnChoiceMade(int choice){
-        base.OnChoiceMade(choice);
-        if (conversationNumber == 0 && choice == 0){
-            blackieGameRef.puzzleNumber = 0;
-            if(blackieGameRef.conversationNumber == 0 || blackieGameRef.conversationNumber == 1)
-                blackieGameRef.conversationNumber = 2;
-        }
-
     }
 
     //called by game machine when a game ends
     public void FinishedGame() {
-        if (conversationNumber < 4) {
-            conversationNumber++;
-        }
+        progressionNum = 1;
     }    
 }

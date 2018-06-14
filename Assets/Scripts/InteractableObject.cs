@@ -6,14 +6,14 @@ public class InteractableObject : MonoBehaviour {
 
 
     //when a player enters, they can now interact with the object
-    public void OnTriggerEnter(Collider other) {
+    public virtual void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
             other.GetComponent<DogControllerV2>().addObject(this);
         }
     }
 
     //when the player leaves, theyre no longer able to interact
-    public void OnTriggerExit(Collider other) {
+    public virtual void OnTriggerExit(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
             other.GetComponent<DogControllerV2>().removeObject(this);
         }

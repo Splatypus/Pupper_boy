@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class BlackieMiniGame : Dialog {
+public class BlackieMiniGame : Dialog2 {
 
     public List<List<Gamepiece>> grid; //grid of game pieces. First list is x values, second is y values
     public List<Gamepiece> goals;
@@ -334,7 +334,7 @@ public class BlackieMiniGame : Dialog {
         if (allOn && goals.Count > 0) {
             RemovePuzzle();
             blackieRef.FinishedGame();
-            conversationNumber = 1;
+            progressionNum = 1;
         }
     }
 
@@ -367,7 +367,7 @@ public class BlackieMiniGame : Dialog {
     }
 
     //############## DIALOG NEATNESS #############
-    public override void OnChoiceMade(int choice){
+    /*public override void OnChoiceMade(int choice){
         base.OnChoiceMade(choice);
         if (conversationNumber == 2 && choice == 0) {
             LoadPuzzle(puzzleNumber);
@@ -382,5 +382,5 @@ public class BlackieMiniGame : Dialog {
             }
         }
 
-    }
+    }*/
 }

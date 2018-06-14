@@ -29,7 +29,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
     public List<UnityEvent> functions;
 
     // Use this for initialization
-    void Start () {
+    public virtual void Start () {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         controlman = player.GetComponent<PlayerControllerManager>();
         pdialog = player.GetComponent<PlayerDialog>(); //find player dialog script on the player and set this to refrence it
@@ -63,6 +63,8 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                 ChangeNode(currentNode.connections[0]);
             } else if (!canContinue) {
                 return;
+            } else {
+                progressionNum = 0; //reset progression num if its been used
             }
         } else if (currentNode is DialogNodeStart) {
             //procede to the next node
