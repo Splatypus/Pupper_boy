@@ -1,32 +1,56 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEditor;
 
-public class DialogEditor : EditorWindow {
+public class DialogEditorWindow : EditorWindow {
 
-    List<DialogNode> nodes;
-    List<Connection> connections;
+    public Dialog2 connectedDialog;
+    
+    //moved to dialog
+    //List<DialogNode> nodes;
+    //List<Connection> connections;
     GUIStyle nodeStyle;
     GUIStyle selectedNodeStyle;
     GUIStyle inPointStyle;
     GUIStyle outPointStyle;
 
-    ConnectionPoint selectedInPoint;
-    ConnectionPoint selectedOutPoint;
+    Dialog2.ConnectionPoint selectedInPoint;
+    Dialog2.ConnectionPoint selectedOutPoint;
 
     Vector2 offset;
 
-    [MenuItem("Window/Dialog Editor")]
-    static void OpenWindow() {
-        DialogEditor window = GetWindow<DialogEditor>();
-        window.titleContent = new GUIContent("Dialog Writer");
+    //TextAsset textFile;
+
+    DialogEditorWindow window;
+
+    //[MenuItem("Window/Dialog Editor")]
+    public void SetupWindow(Dialog2 dialogRef) {
+        connectedDialog = dialogRef;
+        //update the window reference for each node
+        if (connectedDialog.nodes != null) {
+            foreach (Dialog2.DialogNode n in connectedDialog.nodes) {
+                n.window = this;
+                n.style = nodeStyle;
+                n.inPoint.style = inPointStyle;
+                n.outPoint.style = outPointStyle;
+                n.selectedStyle = selectedNodeStyle;
+                n.defaultStyle = nodeStyle;
+            }
+        }
+        if (connectedDialog.connections != null) {
+            foreach (Dialog2.Connection c in connectedDialog.connections) {
+                c.window = this;
+            }
+        }
     }
 
     private void OnEnable()
     {
+        window = GetWindow<DialogEditorWindow>();
         //Standard node style
         nodeStyle = new GUIStyle();
         nodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
@@ -45,6 +69,12 @@ public class DialogEditor : EditorWindow {
         outPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right.png") as Texture2D;
         outPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn right on.png") as Texture2D;
         outPointStyle.border = new RectOffset(4, 4, 12, 12);
+
+        EditorStyles.textField.wordWrap = true;
+    }
+
+    private void OnDisable(){
+        UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty();
     }
 
     void OnGUI(){
@@ -54,8 +84,16 @@ public class DialogEditor : EditorWindow {
         DrawConnections();
         DrawConnectionLine(Event.current);
         ProcessEvents(Event.current);
-        if (GUI.changed)
+        /*textFile = (TextAsset)EditorGUI.ObjectField(new Rect(10, 10, 200, 20), "Text File:", textFile, typeof(TextAsset), false);
+        if (GUI.Button(new Rect(220, 10, 50, 20), "Load")) {
+            //well lol fuck me
+        }
+        if (GUI.Button(new Rect(280, 10, 50, 20), "Save")){
+            SaveToFile(textFile);
+        }*/
+        if (GUI.changed) {
             Repaint();
+        }
     }
 
     void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor){
@@ -81,9 +119,9 @@ public class DialogEditor : EditorWindow {
     }
 
     void DrawConnections(){
-        if (connections != null){
-            for (int i = 0; i < connections.Count; i++){
-                connections[i].Draw();
+        if (connectedDialog.connections != null){
+            for (int i = 0; i < connectedDialog.connections.Count; i++){
+                connectedDialog.connections[i].Draw();
             }
         }
     }
@@ -119,17 +157,17 @@ public class DialogEditor : EditorWindow {
     }
 
     void DrawNodes() {
-        if (nodes != null) {
-            for (int i = 0; i < nodes.Count; i++) {
-                nodes[i].Draw();
+        if (connectedDialog.nodes != null) {
+            for (int i = connectedDialog.nodes.Count-1; i >= 0; i--) {
+                connectedDialog.nodes[i].Draw();
             }
         }
     }
 
     void ProcessEvents(Event e) {
         //first do node events
-        if (nodes != null) {
-            foreach (DialogNode n in nodes) {
+        if (connectedDialog.nodes != null) {
+            foreach (Dialog2.DialogNode n in connectedDialog.nodes) {
                 bool guiChanged = n.ProcessEvents(e);
                 if (guiChanged) {
                     GUI.changed = true;
@@ -139,6 +177,8 @@ public class DialogEditor : EditorWindow {
         //the other events
         switch (e.type){
             case EventType.MouseDown:
+
+                GUI.FocusControl(null);
                 if (e.button == 0){
                     ClearConnectionSelection();
                 }
@@ -158,16 +198,59 @@ public class DialogEditor : EditorWindow {
 
     void ProcessContextMenu(Vector2 mousePosition){
         GenericMenu genericMenu = new GenericMenu();
-        genericMenu.AddItem(new GUIContent("Add node"), false, () => OnClickAddNode(mousePosition));
+        genericMenu.AddItem(new GUIContent("Add Text"), false, () => OnClickAddNode(mousePosition));
+        genericMenu.AddItem(new GUIContent("Add Choice"), false, () => OnClickChoiceNode(mousePosition));
+        genericMenu.AddItem(new GUIContent("Add Function Call"), false, () => OnClickFunctionNode(mousePosition));
+        genericMenu.AddItem(new GUIContent("Add Break"), false, () => OnClickBreakNode(mousePosition));
+        genericMenu.AddItem(new GUIContent("Add Start"), false, () => OnClickStartNode(mousePosition));
         genericMenu.ShowAsContext();
     }
     void OnClickAddNode(Vector2 mousePosition){
-        if (nodes == null){
-            nodes = new List<DialogNode>();
+        if (connectedDialog.nodes == null){
+            connectedDialog.nodes = new List<Dialog2.DialogNode>();
         }
-        nodes.Add(new DialogNode(mousePosition, 200, 50, nodeStyle, selectedNodeStyle,inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode));
+        connectedDialog.nodes.Add(new Dialog2.DialogNodeDialog(mousePosition, 200, 150, nodeStyle, selectedNodeStyle,inPointStyle, outPointStyle, this));
     }
-    void OnClickInPoint(ConnectionPoint inPoint){
+    void OnClickChoiceNode(Vector2 mousePosition) {
+        if (connectedDialog.nodes == null){
+            connectedDialog.nodes = new List<Dialog2.DialogNode>();
+        }
+        connectedDialog.nodes.Add(new Dialog2.DialogNodeChoice(mousePosition, 180, 70, nodeStyle, selectedNodeStyle, inPointStyle, outPointStyle, this));
+    }
+    void OnClickFunctionNode(Vector2 mousePosition) {
+         if (connectedDialog.nodes == null){
+            connectedDialog.nodes = new List<Dialog2.DialogNode>();
+        }
+        connectedDialog.nodes.Add(new Dialog2.DialogNodeFunction(mousePosition, 80, 70, nodeStyle, selectedNodeStyle, inPointStyle, outPointStyle, this));
+    }
+    void OnClickBreakNode(Vector2 mousePosition)
+    {
+        if (connectedDialog.nodes == null)
+        {
+            connectedDialog.nodes = new List<Dialog2.DialogNode>();
+        }
+        connectedDialog.nodes.Add(new Dialog2.DialogNodeBreak(mousePosition, 70, 40, nodeStyle, selectedNodeStyle, inPointStyle, outPointStyle, this));
+    }
+    void OnClickStartNode(Vector2 mousePosition) {
+        if (connectedDialog.nodes == null)
+        {
+            connectedDialog.nodes = new List<Dialog2.DialogNode>();
+        }
+        bool hasStartNode = false;
+        foreach (Dialog2.DialogNode n in connectedDialog.nodes) {
+            if (n.GetType() == typeof(Dialog2.DialogNodeStart)) {
+                hasStartNode = true;
+            }
+        }
+        if (hasStartNode) { 
+            Debug.LogError("Only 1 start node may exist at a time in a dialog set");
+        } else {
+            Dialog2.DialogNodeStart temp = new Dialog2.DialogNodeStart(mousePosition, 70, 70, nodeStyle, selectedNodeStyle, inPointStyle, outPointStyle, this);
+            connectedDialog.nodes.Add(temp);
+            connectedDialog.startNode = temp;
+        }
+    }
+    public void OnClickInPoint(Dialog2.ConnectionPoint inPoint){
         selectedInPoint = inPoint;
 
         if (selectedOutPoint != null){
@@ -179,7 +262,7 @@ public class DialogEditor : EditorWindow {
             }
         }
     }
-    void OnClickOutPoint(ConnectionPoint outPoint){
+    public void OnClickOutPoint(Dialog2.ConnectionPoint outPoint){
         selectedOutPoint = outPoint;
 
         if (selectedInPoint != null){
@@ -191,46 +274,49 @@ public class DialogEditor : EditorWindow {
             }
         }
     }
-    void OnClickRemoveConnection(Connection connection)
+    public void OnClickRemoveConnection(Dialog2.Connection connection)
     {
-        connections.Remove(connection);
+        //remove it from general connections list
+        connectedDialog.connections.Remove(connection);
+        //remove it from each node's list of things it connects to
+        connection.outPoint.node.connections.Remove(connection.inPoint.node);
     }
     void CreateConnection()
     {
-        if (connections == null)
-        {
-            connections = new List<Connection>();
-        }
+        if (connectedDialog.connections == null)
+            connectedDialog.connections = new List<Dialog2.Connection>();
 
-        connections.Add(new Connection(selectedInPoint, selectedOutPoint, OnClickRemoveConnection));
+        connectedDialog.connections.Add(new Dialog2.Connection(selectedInPoint, selectedOutPoint, this));
+        //Link the two nodes in the dialog script
+        selectedOutPoint.node.LinkNode(selectedInPoint.node);
     }
     void ClearConnectionSelection()
     {
         selectedInPoint = null;
         selectedOutPoint = null;
     }
-    void OnClickRemoveNode(DialogNode node){
-        if (connections != null){
+    public void OnClickRemoveNode(Dialog2.DialogNode node){
+        if (connectedDialog.connections != null){
             //removes connections when a node is deleted.
-            List<Connection> connectionsToRemove = new List<Connection>();
+            List<Dialog2.Connection> connectionsToRemove = new List<Dialog2.Connection>();
 
-            for (int i = 0; i < connections.Count; i++){
-                if (connections[i].inPoint == node.inPoint || connections[i].outPoint == node.outPoint){
-                    connectionsToRemove.Add(connections[i]);
+            for (int i = 0; i < connectedDialog.connections.Count; i++){
+                if (connectedDialog.connections[i].inPoint == node.inPoint || connectedDialog.connections[i].outPoint == node.outPoint){
+                    connectionsToRemove.Add(connectedDialog.connections[i]);
                 }
             }
 
             for (int i = 0; i < connectionsToRemove.Count; i++){
-                connections.Remove(connectionsToRemove[i]);
+                OnClickRemoveConnection(connectionsToRemove[i]);
             }
             connectionsToRemove = null;
         }
 
-        nodes.Remove(node);
+        connectedDialog.nodes.Remove(node);
     }
     void OnDrag(Vector2 delta) {
-        if (nodes != null) {
-            foreach (DialogNode n in nodes) {
+        if (connectedDialog.nodes != null) {
+            foreach (Dialog2.DialogNode n in connectedDialog.nodes) {
                 n.Drag(delta);
             }
         }
@@ -238,21 +324,27 @@ public class DialogEditor : EditorWindow {
         GUI.changed = true;
     }
 }
-
+/*
 public class DialogNode {
+    //DrawingStuff
     public Rect rect;
     public string title;
     public bool isDragged;
     public bool isSelected;
-
+    //connections
     public ConnectionPoint inPoint;
     public ConnectionPoint outPoint;
-
+    //style
     public GUIStyle style;
     public GUIStyle defaultStyle;
     public GUIStyle selectedStyle;
 
     public UnityAction<DialogNode> OnRemoveNode;
+
+    public List<DialogNode> connections;
+
+
+    //public DialogLinkedNode linkedNode;
 
     //constructer
     public DialogNode(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, UnityAction<ConnectionPoint> OnClickInPoint, UnityAction<ConnectionPoint> OnClickOutPoint, UnityAction<DialogNode> OnClickRemoveNode){
@@ -263,6 +355,7 @@ public class DialogNode {
         defaultStyle = nodeStyle;
         selectedStyle = _selectedStyle;
         OnRemoveNode = OnClickRemoveNode;
+        connections = new List<DialogNode>();
     }
 
     //Drags the node
@@ -271,10 +364,11 @@ public class DialogNode {
     }
 
     //draw function
-    public void Draw() {
+    public virtual void Draw() {
         inPoint.Draw();
         outPoint.Draw();
-        GUI.Box(rect, title, style);
+        GUI.Box(rect, "", style);
+        EditorGUI.LabelField(new Rect(rect.x + 20, rect.y + 10, rect.width, 15), title);
     }
 
     public bool ProcessEvents(Event e) {
@@ -292,6 +386,7 @@ public class DialogNode {
                         GUI.changed = true;
                         style = defaultStyle;
                         isSelected = false;
+                        //GUI.FocusControl("");
                     }
                 }
                 //on right click in bounds, open menu
@@ -323,7 +418,6 @@ public class DialogNode {
         genericMenu.ShowAsContext();
     }
 
-
     //removes node
     private void OnClickRemoveNode(){
         if (OnRemoveNode != null){
@@ -331,6 +425,96 @@ public class DialogNode {
         }
     }
 
+    //Connects this node to a new one in the linked dialog representation
+    public virtual void LinkNode(DialogNode d) {
+        connections.Add(d);
+    }
+
+}
+
+public class DialogNodeDialog : DialogNode {
+
+    string text;
+
+    public DialogNodeDialog(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, UnityAction<ConnectionPoint> OnClickInPoint, UnityAction<ConnectionPoint> OnClickOutPoint, UnityAction<DialogNode> OnClickRemoveNode) 
+        : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle,OnClickInPoint, OnClickOutPoint, OnClickRemoveNode) {
+        text = "";
+        title = "Dialog2";
+    }
+
+    public override void Draw(){
+        base.Draw();
+        Rect textAreaRect = new Rect(rect.x + 20, rect.y + 35, rect.width - 40, rect.height - 55);
+        text = EditorGUI.TextArea(textAreaRect, text);
+    }
+}
+
+public class DialogNodeChoice : DialogNode
+{
+
+    public string text;
+    public int num;
+
+    public DialogNodeChoice(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, UnityAction<ConnectionPoint> OnClickInPoint, UnityAction<ConnectionPoint> OnClickOutPoint, UnityAction<DialogNode> OnClickRemoveNode)
+        : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode)
+    {
+        text = "";
+        title = "Choice";
+        num = 0;
+    }
+
+    public override void Draw()
+    {
+        base.Draw();
+        Rect textAreaRect = new Rect(rect.x + 60, rect.y + 30, rect.width - 75, rect.height - 45);
+        text = EditorGUI.TextField(textAreaRect, text);
+        num = EditorGUI.IntField(new Rect(rect.x + 15, rect.y + 30, 30, 25), num);
+    }
+
+}
+
+public class DialogNodeFunction : DialogNode
+{
+    public int functionNum;
+
+    public DialogNodeFunction(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, UnityAction<ConnectionPoint> OnClickInPoint, UnityAction<ConnectionPoint> OnClickOutPoint, UnityAction<DialogNode> OnClickRemoveNode)
+        : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode)
+    {
+        functionNum = 0;
+        title = "Function";
+    }
+
+    public override void Draw()
+    {
+        base.Draw();
+        Rect textAreaRect = new Rect(rect.x + 15, rect.y + 30, rect.width - 30, rect.height - 45);
+        functionNum = EditorGUI.IntField(textAreaRect, functionNum);
+    }
+
+}
+
+public class DialogNodeBreak : DialogNode
+{
+    public DialogNodeBreak(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, UnityAction<ConnectionPoint> OnClickInPoint, UnityAction<ConnectionPoint> OnClickOutPoint, UnityAction<DialogNode> OnClickRemoveNode)
+        : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode)
+    {
+        title = "Break";
+    }
+
+    public override void Draw()
+    {
+        base.Draw();
+    }
+
+}
+
+public class DialogNodeStart : DialogNode {
+
+    public DialogNodeStart(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, UnityAction<ConnectionPoint> OnClickInPoint, UnityAction<ConnectionPoint> OnClickOutPoint, UnityAction<DialogNode> OnClickRemoveNode)
+        : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode)
+    {
+        title = "Start";
+    }
 }
 
 public enum ConnectionPointType { In, Out }
@@ -396,10 +580,12 @@ public class Connection
             2f
         );
 
-        if (Handles.Button((inPoint.rect.center + outPoint.rect.center) * 0.5f, Quaternion.identity, 4, 8, Handles.RectangleCap)){
+        if (Handles.Button((inPoint.rect.center + outPoint.rect.center) * 0.5f, Quaternion.identity, 4, 8, Handles.RectangleHandleCap)){
             if (OnClickRemoveConnection != null){
                 OnClickRemoveConnection(this);
             }
         }
     }
 }
+*/
+#endif

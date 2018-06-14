@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#if UNITY_EDITOR
+using System.Collections;
 using UnityEngine;
 using UnityEditor;
 
@@ -17,3 +18,4 @@ public class FenceGenerationEditor : Editor {
         }
     }
 }
+#endif
