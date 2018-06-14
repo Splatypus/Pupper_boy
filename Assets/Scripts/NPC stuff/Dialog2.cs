@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEditor;
 
-public class Dialog2 : MonoBehaviour, ISerializationCallbackReceiver {
+public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
     //player references
     PlayerDialog pdialog;
@@ -20,6 +20,7 @@ public class Dialog2 : MonoBehaviour, ISerializationCallbackReceiver {
 
     //Progression info
     public DialogNodeStart startNode = null;
+    DialogNode currentNode;
     public int progressionNum;
 
     //EditorInfo
@@ -32,8 +33,128 @@ public class Dialog2 : MonoBehaviour, ISerializationCallbackReceiver {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         controlman = player.GetComponent<PlayerControllerManager>();
         pdialog = player.GetComponent<PlayerDialog>(); //find player dialog script on the player and set this to refrence it
+        //serialize this later
+        foreach (DialogNode n in nodes) {
+            if (n is DialogNodeStart)
+                startNode = (DialogNodeStart)n;
+        }
+        currentNode = startNode;
     }
 
+    public override void OnInteract() {
+        //if this NPC has no more dialog, do nothing
+        if (currentNode.connections == null || currentNode.connections.Count == 0) {
+            return;
+        }
+        //set up dialog nodes
+        if (currentNode is DialogNodeBreak) {
+            bool canContinue = false;
+            int numChoices = 0; //number of choice nodes attached. If 0, then continue to the next node no matter what
+            foreach (DialogNode c in currentNode.connections) {
+                if (c is DialogNodeChoice) {
+                    numChoices++;
+                    if (((DialogNodeChoice)c).num == progressionNum) {
+                        ChangeNode(c);
+                        canContinue = true;
+                    }
+                }
+            }
+            if (numChoices == 0) {
+                ChangeNode(currentNode.connections[0]);
+            } else if (!canContinue) {
+                return;
+            }
+        } else if (currentNode is DialogNodeStart) {
+            //procede to the next node
+            if (currentNode.connections != null) {
+                ChangeNode(currentNode.connections[0]);
+            } else {
+                Debug.LogError("Start node placed with no out connection. Dialog bugging out.");
+            }
+        }
+        //finally, set up cameras and players and everything for dialog
+        npccam.SetActive(true);
+        playercam.SetActive(false);
+        //change player mode to dialog mode when they interact with this npc
+        controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);
+        pdialog.npcDialog = this;
+        //Assign image and name
+        pdialog.imageObject.sprite = image;
+        pdialog.nameTextObject.text = characterName;
+    }
+
+    //should be called to swap the current node. 
+    void ChangeNode(DialogNode node) {
+        //progress current node
+        currentNode = node;
+        //different effects depending on which node we've reached
+        if (node is DialogNodeDialog) { //dialog
+            //Diaplay up new dialog
+            SendDialog();
+        } else if (node is DialogNodeChoice) { //choice
+            //procede to whatever comes after this choice. If nothing is after it, display error.
+            if (node.connections != null) {
+                ChangeNode(node.connections[0]);
+            } else {
+                Debug.LogError("Choice node placed with no out connection. Dialog bugging out.");
+            }
+        } else if (node is DialogNodeFunction) {  //function
+            //Run the function specified by the given number. If the number is out of bounds of the function array, dont run anything. Then procede to the next node if it exists.
+            int num = ((DialogNodeFunction)node).functionNum;
+            if ( num < functions.Count && num >= 0) {
+                functions[num].Invoke();
+            }
+            if(node.connections != null) {
+                ChangeNode(node.connections[0]);
+            } else {
+                Debug.LogError("Function node placed with no out connection. Dialog bugging out.");
+            }
+        } else if (node is DialogNodeBreak) {  //break
+            //if dialog is going, end it.
+            controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
+            playercam.SetActive(true);
+            npccam.SetActive(false);
+        } else if (node is DialogNodeStart) { //start
+            //procede to the next node
+            if(node.connections != null) {
+                ChangeNode(node.connections[0]);
+            } else {
+                Debug.LogError("Start node placed with no out connection. Dialog bugging out.");
+            }
+        }
+    }
+
+    public void SendDialog() {
+        //if this node is a dialog node, then send over the text contents
+        if (currentNode is DialogNodeDialog) {
+            pdialog.SetDialog(((DialogNodeDialog)currentNode).text);
+            //if the connected nodes are all choices, set up those as well
+            foreach (DialogNode n in currentNode.connections) {
+                if (n is DialogNodeChoice) {
+                    pdialog.AddOption(((DialogNodeChoice)n).num, ((DialogNodeChoice)n).text);
+                }
+            }
+        }
+    }
+
+    //procede to the next dialog. PlayerDialogScript prevents this from being called while buttons are active, so it shouldnt skip over choices
+    public void Next() {
+        if (currentNode is DialogNodeDialog && currentNode.connections != null) {
+            ChangeNode(currentNode.connections[0]);
+        }
+    }
+
+    public void OnChoiceMade(int choice) {
+        foreach (DialogNode n in currentNode.connections) {
+            if (n is DialogNodeChoice) {
+                if (((DialogNodeChoice)n).num == choice && n.connections != null) {
+                    ChangeNode(n);
+                }
+            }
+        }
+    }
+
+    #region serialization
     //Serialization
     [HideInInspector, SerializeField]
     List<SerializedNode> serializedNodes;
@@ -163,7 +284,7 @@ public class Dialog2 : MonoBehaviour, ISerializationCallbackReceiver {
         }
 
     }
-
+    #endregion
 
     #region Nodes
     public class DialogNode

@@ -18,7 +18,7 @@ public class PlayerDialog : Controller {
     bool isAllShown;
 
     //reference to the current Dialog object this is interacting with. Set to null if there is none
-    public Dialog npcDialog = null;
+    public Dialog2 npcDialog = null;
 
     
 	
@@ -73,6 +73,12 @@ public class PlayerDialog : Controller {
             buttons[i].SetActive(true);
             buttons[i].GetComponentInChildren<Text>().text = opts[i];
         }
+    }
+
+    //adds a single UI option, at the button specified by "index"
+    public void AddOption(int index, string opt){
+        buttons[index].SetActive(true);
+        buttons[index].GetComponentInChildren<Text>().text = opt;
     }
 
     //when a button is clicked

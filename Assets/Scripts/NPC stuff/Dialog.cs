@@ -73,7 +73,7 @@ public class Dialog : InteractableObject {
         playercam.SetActive(false);
         //change player mode to dialog mode when they interact with this npc
         controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);
-        pdialog.npcDialog = this;
+                //pdialog.npcDialog = this;
         //Assign image and name
         pdialog.imageObject.sprite = image;
         pdialog.nameTextObject.text = nameText;
@@ -89,13 +89,13 @@ public class Dialog : InteractableObject {
         if (textBoxNumber < dialogTexts[conversationNumber].Count) {
             SendDialog();
         } else { 
-            controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
             OnEndOfDialog(conversationNumber);
         }
     }
 
     //called when the end of a dialog section is reached
     public virtual void OnEndOfDialog(int dialogNum) {
+        controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
         playercam.SetActive(true);
         npccam.SetActive(false);
     }
@@ -105,7 +105,6 @@ public class Dialog : InteractableObject {
     public virtual void OnChoiceMade(int choice) {
         playercam.SetActive(true);
         npccam.SetActive(false);
-        controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
         OnEndOfDialog(conversationNumber);
     }
 
