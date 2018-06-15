@@ -19,6 +19,8 @@ public class BlackieMiniGame : Dialog2 {
     public float tileDis;
 
     public int puzzleNumber = 0;
+    public enum States { READY, RESETTING, NEUTRAL}
+    public States state;
     public BlackieAI blackieRef;
 
 
@@ -28,6 +30,7 @@ public class BlackieMiniGame : Dialog2 {
         base.Start();
         gameBounds.enabled = false;
         emptyPiece = new EmptyNode();
+        state = States.READY;
     }
 
     //reads in a puzzle set-up from a file and starts that puzzle
@@ -338,6 +341,14 @@ public class BlackieMiniGame : Dialog2 {
         }
     }
 
+    //starts machine so it can make puzzles
+    public void SetUpMachine() {
+        if (state == States.READY) {
+            progressionNum = 1;
+            state = States.NEUTRAL;
+        }
+    }
+
     //removes the current puzzle
     public void RemovePuzzle() {
         goals.Clear(); //remove all goals so the puzzle cannot be finished again before the next starts
@@ -362,8 +373,22 @@ public class BlackieMiniGame : Dialog2 {
 
     IEnumerator DelayedNextLevel() {
         yield return new WaitForSeconds(5.0f);
+        state = States.NEUTRAL;
         if (puzzleNumber < puzzleFiles.Length)
             LoadPuzzle(puzzleNumber);
+    }
+
+    //for callling from node editor. Reloads the current puzzle
+    public void Reload() {
+        if (state != States.RESETTING) {
+            state = States.RESETTING;
+            RemovePuzzle();
+            StartCoroutine(DelayedNextLevel());
+        }
+    }
+    //called from node editor. Loads puzzle of current number
+    public void LoadNext() {
+        LoadPuzzle(puzzleNumber);
     }
 
     //############## DIALOG NEATNESS #############

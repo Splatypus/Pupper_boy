@@ -24,8 +24,7 @@ public class BlackieAI : AIbase {
     //loads the puzzle indicated into the puzzle machine
     public void SetUpPuzzleMachine(int puzzleNum) {
         blackieGameRef.puzzleNumber = puzzleNum;
-        if (blackieGameRef.progressionNum == 0)
-            blackieGameRef.progressionNum = 1;
+        blackieGameRef.SetUpMachine();
     }
 
     //spawns reward
