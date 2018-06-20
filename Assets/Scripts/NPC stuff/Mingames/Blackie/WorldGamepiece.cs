@@ -39,7 +39,7 @@ public class WorldGamepiece : Interactable {
             Vector2Int gridLocation = gameSource.WorldToGridSpace(preSnap);
             if (targeter.activeInHierarchy && !gameSource.CanPlace(boardPiece, gridLocation.x, gridLocation.y, 0)) {
                 targeter.SetActive(false);
-                Debug.Log("Disabling due to bad placement position");
+                Debug.Log("Disabling due to bad placement position: " + gridLocation.x + ", " + gridLocation.y);
             }
             else if (!targeter.activeInHierarchy && gameSource.CanPlace(boardPiece, gridLocation.x, gridLocation.y, 0)) {
                 targeter.SetActive(true);
@@ -47,9 +47,10 @@ public class WorldGamepiece : Interactable {
 
             if (targeter.activeInHierarchy) {
                 //target snapping
-                preSnap.x += distance / 2.0f - offsets.x;
-                preSnap.z += distance / 2.0f - offsets.z;
-                targeter.transform.position = new Vector3(preSnap.x - (preSnap.x % distance) + offsets.x, 0.5f, preSnap.z - (preSnap.z % distance) + offsets.z);
+               // preSnap.x += distance / 2.0f - offsets.x;
+               // preSnap.z += distance / 2.0f - offsets.z;
+               // targeter.transform.position = new Vector3(preSnap.x - (preSnap.x % distance) + offsets.x, 0.5f, preSnap.z - (preSnap.z % distance) + offsets.z);
+                targeter.transform.position = gameSource.GridToWorldSpace(gridLocation);
             }
 
         }
@@ -62,10 +63,7 @@ public class WorldGamepiece : Interactable {
     public void OnPlace() {
         Vector2Int gridLocation = gameSource.WorldToGridSpace(transform.position);
         gameSource.PlacePiece(boardPiece, gridLocation.x, gridLocation.y, 0);
-        Vector3 pos = transform.position;
-        pos.x += distance / 2.0f - offsets.x;
-        pos.z += distance / 2.0f - offsets.z;
-        transform.position = new Vector3(pos.x - (pos.x % distance) + offsets.x, 0.5f, pos.z - (pos.z % distance) + offsets.z);
+        transform.position = gameSource.GridToWorldSpace(gridLocation);
         transform.rotation = new Quaternion();
         rb.isKinematic = true;
         //if this piece is locked, stop you from ever picking it up by canging its tag and disabling this script

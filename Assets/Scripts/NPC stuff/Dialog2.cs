@@ -69,7 +69,20 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         } else if (currentNode is DialogNodeStart) {
             //procede to the next node
             if (currentNode.connections != null) {
-                ChangeNode(currentNode.connections[0]);
+                int numChoices = 0; //number of choice nodes attached. If 0, then continue to the next node no matter what
+                foreach (DialogNode c in currentNode.connections) {
+                    if (c is DialogNodeChoice) {
+                        numChoices++;
+                        if (((DialogNodeChoice)c).num == progressionNum) {
+                            ChangeNode(c);
+                        }
+                    }
+                }
+                if (numChoices == 0) {
+                    ChangeNode(currentNode.connections[0]);
+                } else {
+                    progressionNum = 0; //reset progression num if its been used
+                }
             } else {
                 Debug.LogError("Start node placed with no out connection. Dialog bugging out.");
             }

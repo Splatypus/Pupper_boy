@@ -24,7 +24,8 @@ public class BubblesAI : AIbase {
         base.OnTriggerEnter(col);
 
         //if an item is brought to tiffany, and is her quest item, delete it, cand call toyInRange.
-        if (col.gameObject.GetComponent<Interactable>().hasTag(Interactable.Tag.TiffyQuestItem)) {
+        Interactable intObject = col.gameObject.GetComponent<Interactable>();
+        if (intObject != null && intObject.hasTag(Interactable.Tag.Soap)) {
             PuppyPickup inMouth = Player.GetComponent<DogControllerV2>().ppickup;
             if (inMouth.itemInMouth != null && inMouth.itemInMouth == col.gameObject) {
                 inMouth.DropItem();

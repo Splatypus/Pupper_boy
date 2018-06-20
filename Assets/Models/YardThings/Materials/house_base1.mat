@@ -68,6 +68,8 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineSize: 0.005
     - _Parallax: 0.02
+    - _ShadowCutoff: 0.83
+    - _ShadowMult: 2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -77,5 +79,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.3344, g: 0.2175, b: 0.1508, a: 1}
+    - _DarknessColor: {r: 0.52205884, g: 0.52205884, b: 0.52205884, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Outline: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadowTint: {r: 0.66176474, g: 0.66176474, b: 0.66176474, a: 1}

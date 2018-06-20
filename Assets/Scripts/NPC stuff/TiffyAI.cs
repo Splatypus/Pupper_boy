@@ -35,7 +35,8 @@ public class TiffyAI : AIbase {
         base.OnTriggerEnter(col);
 
         //if an item is brought to tiffany, and is her quest item, delete it, cand call toyInRange.
-        if (col.gameObject.GetComponent<Interactable>().hasTag(Interactable.Tag.TiffyQuestItem) && state == States.Rescued){
+        Interactable intObject = col.gameObject.GetComponent<Interactable>();
+        if ( intObject != null && intObject.hasTag(Interactable.Tag.TiffyQuestItem) && state == States.Rescued){
             PuppyPickup inMouth = Player.GetComponent<DogControllerV2>().ppickup;
             if (inMouth.itemInMouth != null && inMouth.itemInMouth == col.gameObject) {
                 inMouth.DropItem();
