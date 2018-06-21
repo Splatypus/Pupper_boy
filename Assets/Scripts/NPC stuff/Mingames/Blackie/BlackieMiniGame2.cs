@@ -277,6 +277,11 @@ public class BlackieMiniGame2 : Dialog2 {
         if (removed != emptyPiece && !removed.isLocked) {
             removed.SetState(Gamepiece.PowerStates.OFF);
             grid[x][y] = emptyPiece;
+            //again a special removal function for blackienodes, since they take up more than one spot
+            if (removed is BlackieNode) {
+                BlackieNode n = (BlackieNode)removed;
+                n.RemoveSelf();
+            }
             //remove power from anything this was powering. This *should* never be able to cause a short or make you win...
             CheckPower();
             return removed;
@@ -506,6 +511,15 @@ public class BlackieMiniGame2 : Dialog2 {
                 subnodes[i - 1] = temp;
                 newLoc += offset;
             }
+        }
+
+        public void RemoveSelf() {
+            Vector2Int offset = LocalDirectionVector(1); //since when we place it, it extends to our right
+            for (int i = 0; i < length; i++) { //clear them all from the grid
+                gameRef.grid[location.x][location.y] = gameRef.emptyPiece;
+                location += offset;
+            }
+            //subnodes still technically holds references to these pieces until theyre overwritten the next time this is placed
         }
 
         //there should only be at most one powered node next to this one when this is called. Set it to the same power state as that one, or to off if there isnt another powered one
