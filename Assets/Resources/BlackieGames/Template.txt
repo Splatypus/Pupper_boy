@@ -1,0 +1,11 @@
+x, y						Grid width and height
+a,b,c,d,e,f					Number of each available piece. 0: gate, 1-4:standard node, 5: bridge
+x,y,d,type, extra			Preset board pieces
+x,y,d,type, extra
+
+presets are:
+0 - Gate - extra is ignored
+1 - blackie node - extra is length (1-4)
+2 - Bridge node - extra is ignored
+3 - Source node - extra is color (1-R, 2-G, 3-B)
+4 - Goal node - extra is color

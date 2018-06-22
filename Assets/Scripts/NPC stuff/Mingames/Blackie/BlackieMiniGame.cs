@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO;
 
 public class BlackieMiniGame : Dialog2 {
-
+/*
     public List<List<Gamepiece>> grid; //grid of game pieces. First list is x values, second is y values
     public List<Gamepiece> goals;
     public List<Gamepiece> placeables;
@@ -197,7 +197,7 @@ public class BlackieMiniGame : Dialog2 {
     }
 
     //takes in a world space location and transforms it into grid coordinates
-    public Vector2Int WorldToGridSpace(Vector3 pos) {/*
+    public Vector2Int WorldToGridSpace(Vector3 pos) {
         pos -= transform.position;
         pos.x /= tileDis;
         pos.z /= tileDis;
@@ -206,7 +206,7 @@ public class BlackieMiniGame : Dialog2 {
         pos.x += 0.5f;
         pos.z += 0.5f;
         Vector2Int gridSpace = new Vector2Int((int)pos.x, (int)pos.z);
-        return gridSpace;*/
+        return gridSpace;
 
         Vector3 inLocalSpace = gameObject.transform.InverseTransformPoint(pos);
         inLocalSpace /= tileDis;
@@ -218,6 +218,7 @@ public class BlackieMiniGame : Dialog2 {
         inLocalSpace.z += 0.5f;
         Vector2Int gridSpace = new Vector2Int((int)inLocalSpace.x, (int)inLocalSpace.z);
         return gridSpace;
+        
     }
 
     //takes a position in the grid and finds the worldspace position of that point
@@ -410,5 +411,5 @@ public class BlackieMiniGame : Dialog2 {
     public void LoadNext() {
         LoadPuzzle(puzzleNumber);
     }
-
+    */
 }

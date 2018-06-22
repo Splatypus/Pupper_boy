@@ -35,7 +35,6 @@ public class BlackieMiniGame2 : Dialog2 {
 
     //reads in a puzzle set-up from a file and starts that puzzle
     public void LoadPuzzle(int index) {
-        /*
         string[] data = puzzleFiles[index].ToString().Split('\n');
         string[] line = data[0].Split(',');
 
@@ -52,6 +51,7 @@ public class BlackieMiniGame2 : Dialog2 {
         grid = new List<List<Gamepiece>>(width);
         tiles = new List<GameObject>(width * height);
         goals = new List<Gamepiece>();
+        startNodes = new List<Gamepiece>();
         statics = new List<Gamepiece>();
         placeables = new List<Gamepiece>();
         for (int i = 0; i < width; i++) {
@@ -114,14 +114,18 @@ public class BlackieMiniGame2 : Dialog2 {
                 GameObject inWorld = Instantiate(prefabs[i], new Vector3(transform.position.x - (placeables.Count + 1) * tileDis, transform.position.y, transform.position.z), transform.rotation);
                 Gamepiece temp;
                 switch (i) {
-                    case 0:         //Standard node
-                        temp = new BlackieNode(inWorld, false);
-                        break;
-                    case 1:         //Red prefered gate
+                    case 0:         //Color Gate
                         temp = new ColorGate(inWorld, false);
                         break;
-                    case 2:         //Blue prefered gate
-                        temp = new ColorGate(inWorld, false);
+                    case 1:         //Case 1-4 are nodes of that length
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                        temp = new BlackieNode(inWorld, false, i);
+                        break;
+                    case 6:         //Bridge Node
+                        temp = new BridgeNode(inWorld, false);
                         break;
                     default:
                         temp = emptyPiece;
@@ -142,42 +146,51 @@ public class BlackieMiniGame2 : Dialog2 {
                 int y = int.Parse(line[1]);
                 int d = int.Parse(line[2]);
                 int type = int.Parse(line[3]);
+                int extra = int.Parse(line[4]);
                 //make a new object of the given type
-                GameObject inWorld = Instantiate(prefabs[type],
-                                        new Vector3(transform.position.x + (x - ((width - 1) / 2.0f)) * tileDis,
-                                                                            transform.position.y,
-                                                                            transform.position.z + y * tileDis + tileDis),
-                                                                                transform.rotation);
+                int prefabToSpawn = i; //adjust which object to spawn based on the type indication and the "extra" field
+                if (i == 1)
+                    prefabToSpawn = extra;
+                else if (i > 1)
+                    prefabToSpawn += 3;
+                GameObject inWorld = Instantiate(prefabs[prefabToSpawn], GridToWorldSpace(new Vector2Int(x, y)),transform.rotation);
                 inWorld.transform.Rotate(0, 90.0f * d, 0);
                 inWorld.transform.Rotate(Vector3.up * d * 90.0f); //rotate it to match the input direction
 
                 Gamepiece temp;
+                //for anything that spawns with a color, this determins that color
+                Gamepiece.PowerStates spawnstate;
+                switch (extra) {
+                    case 1:
+                        spawnstate = Gamepiece.PowerStates.RED;
+                        break;
+                    case 2:
+                        spawnstate = Gamepiece.PowerStates.GREEN;
+                        break;
+                    case 3:
+                        spawnstate = Gamepiece.PowerStates.BLUE;
+                        break;
+                    default:
+                        spawnstate = Gamepiece.PowerStates.OFF;
+                        break;
+                }
                 //place a different piece depending on which type it is
                 switch (type) {
-                    case 0:         //Standard node
-                        temp = new BlackieNode(inWorld, true);
+                    case 0:         //Gate node
+                        temp = new ColorGate(inWorld, true, x, y, d);
                         break;
-                    case 1:         //Red prefered gate
-                        temp = new ColorGate(inWorld, true);
+                    case 1:        //Standard
+                        temp = new BlackieNode(inWorld, true, x, y, d, extra);
                         break;
-                    case 2:         //Blue prefered gate
-                        temp = new ColorGate(inWorld, true);
+                    case 2:         //Bridge node
+                        temp = new BridgeNode(inWorld, true, x, y, d);
                         break;
-                    case 3:         //Inverter
-                        temp = new Inverter(inWorld, true);
+                    case 3:         //Source
+                        temp = new SourceNode(inWorld, spawnstate, x, y);
+                        startNodes.Add(temp);
                         break;
-                    case 4:         //red source
-                        temp = new SourceNode(inWorld, Gamepiece.PowerStates.Red);
-                        break;
-                    case 5:         //blue source
-                        temp = new SourceNode(inWorld, Gamepiece.PowerStates.Blue);
-                        break;
-                    case 6:         //red goal
-                        temp = new GoalNode(inWorld, Gamepiece.PowerStates.Red);
-                        goals.Add(temp);
-                        break;
-                    case 7:         //blue goal
-                        temp = new GoalNode(inWorld, Gamepiece.PowerStates.Blue);
+                    case 4:         //Goal
+                        temp = new GoalNode(inWorld, spawnstate, x, y);
                         goals.Add(temp);
                         break;
                     default:
@@ -191,9 +204,11 @@ public class BlackieMiniGame2 : Dialog2 {
                 inWorldScript.OnPlace();
             }
         }
-        */
+
+        //make sure to power things that are supposed to be powered
+        CheckPower();
     }
- 
+
 
     //takes in a world space location and transforms it into grid coordinates
     public Vector2Int WorldToGridSpace(Vector3 pos) {
@@ -234,6 +249,10 @@ public class BlackieMiniGame2 : Dialog2 {
             return emptyPiece;
     }
 
+    public Gamepiece GetAtLocation(Vector2Int loc) {
+        return GetAtLocation(loc.x, loc.y);
+    }
+
     //True if the piece can be placed at x,y on the grid. False if it cannot be. Direction must be between 0 and 3. 0 is north then it goes clockwise
     public bool CanPlace(Gamepiece p, int x, int y, int direction) {
         if (IsInBounds(x, y) && grid[x][y] == emptyPiece) {
@@ -265,8 +284,8 @@ public class BlackieMiniGame2 : Dialog2 {
                 //valid placement, check to see if we won
                 CheckVictory();
             } else {
-                //caused a short. Remove that piece
-                //##TODO
+                //remove piece
+                StartCoroutine(ShortAnim(x, y));
             }
         }
     }
@@ -292,14 +311,39 @@ public class BlackieMiniGame2 : Dialog2 {
 
     //When a piece is placed or removed, check the power of the whole thing. Returns true if this is an ok setup. False if a short has been made
     public bool CheckPower() {
+        for (int i = 0; i < grid.Count; i++) {
+            for (int j = 0; j < grid[0].Count; j++) {
+                grid[i][j].PrepareForCheck();
+            }
+        }
         //For each start node, run check power on it. 
         //Check power function on a node tells it which nodes next to it are powered, and which power. 
         //then those nodes repeat
-        bool foundShort = false;
         foreach (Gamepiece g in startNodes) {
-
+            //for each start node, generate a queue of what they're powering
+            Queue<PowerTransfer> outputs = new Queue<PowerTransfer>();
+            List<PowerTransfer> toQ = g.TransferPower(new PowerTransfer {
+                sourceLocation = g.location,
+                effectLocation = g.location,
+                powerType = g.state
+            });
+            foreach (PowerTransfer pt in toQ) {
+                outputs.Enqueue(pt);
+            }
+            //then loop through and apply the same function to each node that they power, until nothing more receives power, or a short is found.
+            while (outputs.Count > 0) {
+                PowerTransfer transfer = outputs.Dequeue();
+                toQ = GetAtLocation(transfer.effectLocation.x, transfer.effectLocation.y).TransferPower(transfer);
+                foreach (PowerTransfer pt in toQ) {
+                    outputs.Enqueue(pt);
+                }
+                //check for short, and return false if it did
+                if (GetAtLocation(transfer.effectLocation.x, transfer.effectLocation.y).DidShort())
+                    return false;
+            }
         }
-        return foundShort;
+        //if nothing shorted, return true
+        return true;
     }
 
     //checks to see if all goal nodes have been powered
@@ -328,10 +372,15 @@ public class BlackieMiniGame2 : Dialog2 {
 
     //Called when a short happens. Removes a piece, launches it in the air and spawns a particle effect
     IEnumerator ShortAnim(int x, int y) {
-        //Spawn particle systems
-        yield return new WaitForSeconds(0.5f);
-        //remove peice
-        gameBounds.enabled = true;
+        Gamepiece p = RemovePiece(x, y);
+        if (p != emptyPiece) {
+            gameBounds.enabled = false;
+            //Spawn particle systems
+            yield return new WaitForSeconds(0.5f);
+            //remove peice
+            p.worldObject.GetComponent<WorldGamepiece>().DoForcedRemove();
+            gameBounds.enabled = true;
+        }
     }
 
     //removes the current puzzle
@@ -374,6 +423,12 @@ public class BlackieMiniGame2 : Dialog2 {
         LoadPuzzle(puzzleNumber);
     }
 
+    //used for powercheck. Pass this to a node and it will return a list of them, telling how its powering things. Empty nodes should be skipped.
+    public struct PowerTransfer{
+        public Vector2Int sourceLocation;
+        public Vector2Int effectLocation;
+        public Gamepiece.PowerStates powerType;
+    }
 
     //############# GAMEPIECE OBJECTS ############
 
@@ -387,6 +442,8 @@ public class BlackieMiniGame2 : Dialog2 {
         public int direction = 0; //the direction this piece is facing. 0 is north, going clockwise to 3 being west
         public GameObject worldObject;
         public BlackieMiniGame2 gameRef;
+
+        public List<PowerTransfer> sources; //list of sources of power, used to tell if it should short
 
         //initial contructor with x,y,dir
         public Gamepiece(GameObject _worldObject, bool _isLocked, int x, int y, int dir) {
@@ -403,10 +460,35 @@ public class BlackieMiniGame2 : Dialog2 {
             direction = 0;
         }
 
+        //takes a souce of power targeting this square. Returns a list of all the squares this tries to power.
+        public virtual List<PowerTransfer> TransferPower(PowerTransfer source) {
+            SetState(source.powerType); //take on the power type of the souce
+            List<PowerTransfer> output = new List<PowerTransfer>();
+            for (int i = 0; i < 4; i++) {
+                //default method will pass power on to anything adjacent to this, as long as that thing wasnt the source and isnt empty.
+                Vector2Int target = location + LocalDirectionVector(i);
+                if (target != source.sourceLocation && gameRef.GetAtLocation(target.x, target.y) != gameRef.emptyPiece) {
+                    output.Add(new PowerTransfer() {
+                        sourceLocation = location,
+                        effectLocation = target,
+                        powerType = state
+                    });
+                }
+            }
+            return output;
+        }
 
-        //sets the power state of this node based on adjacent ones. Usually called right after it's placed, or when the power state of adjacent nodes change
-        public virtual void SetInitialPowerState(Gamepiece[] adjacents) {
+        //called on each piece when powercheck happens.
+        public void PrepareForCheck() {
+            if (sources == null)
+                sources = new List<PowerTransfer>();
+            else
+                sources.Clear();
+        }
 
+        //checks against sources list to see if there are any issues. Bad power sources results in a short
+        public virtual bool DidShort() {
+            return false;
         }
 
         //if there is anything connected to this piece
@@ -472,17 +554,65 @@ public class BlackieMiniGame2 : Dialog2 {
         public EmptyNode() : base(null, true) {
             state = PowerStates.OFF;
         }
+
+        //never power itself or anything else
+        public override List<PowerTransfer> TransferPower(PowerTransfer source) {
+            return new List<PowerTransfer>();
+        }
     }
 
     //the standard node
     public class BlackieNode : Gamepiece {
 
         public int length;
-        public BlackieSubnode[] subnodes;
 
         public BlackieNode(GameObject _inWorld, bool _locked, int x, int y, int dir, int len) : base(_inWorld, _locked, x, y, dir) {
             length = len;
-            subnodes = new BlackieSubnode[length-1];
+        }
+        public BlackieNode(GameObject _inWorld, bool _locked, int len) : base(_inWorld, _locked) {
+            length = len;
+        }
+
+        public override List<PowerTransfer> TransferPower(PowerTransfer source) {
+            List<PowerTransfer> output = new List<PowerTransfer>();
+            //if the power is not affecting this node or the other end node, then its ignored
+            if (source.effectLocation != location || source.effectLocation != location + (LocalDirectionVector(1) * (length - 1))) {
+                return output;
+            }
+            SetState(source.powerType); //take on the power type of the souce
+            sources.Add(source); //add this as a source of power
+            //for the spots around this node
+            for (int i = 0; i < 4; i++) {
+                //default method will pass power on to anything adjacent to this, as long as that thing wasnt the source and isnt empty.
+                Vector2Int target = location + LocalDirectionVector(i);
+                if (target != source.sourceLocation && gameRef.GetAtLocation(target.x, target.y) != gameRef.emptyPiece && gameRef.GetAtLocation(target.x, target.y) != this) {
+                    output.Add(new PowerTransfer() {
+                        sourceLocation = location,
+                        effectLocation = target,
+                        powerType = state
+                    });
+                }
+            }
+            if (length > 1) {
+                //for the spots around the other end node
+                for (int i = 0; i < 4; i++) {
+                    //default method will pass power on to anything adjacent to this, as long as that thing wasnt the source and isnt empty.
+                    Vector2Int target = location + (LocalDirectionVector(1) * (length - 1)) + LocalDirectionVector(i);
+                    if (target != source.sourceLocation && gameRef.GetAtLocation(target.x, target.y) != gameRef.emptyPiece && gameRef.GetAtLocation(target.x, target.y) != this) {
+                        output.Add(new PowerTransfer() {
+                            sourceLocation = location,
+                            effectLocation = target,
+                            powerType = state
+                        });
+                    }
+                }
+            }
+            return output;
+        }
+
+        //for blackie nodes, it simply shorts if there is more than one source of power to it at all
+        public override bool DidShort() {
+            return sources.Count > 1;
         }
 
         //if a piece can be placed in the specified location without hitting other pieces.
@@ -506,9 +636,7 @@ public class BlackieMiniGame2 : Dialog2 {
             Vector2Int newLoc = new Vector2Int(x, y);
             Vector2Int offset = LocalDirectionVector(1); //since when we place it, it extends to our right
             for (int i = 1; i < length; i++) { //start at 1 since this piece has already been asssigned to this location
-                BlackieSubnode temp = new BlackieSubnode(newLoc, this);
-                gameRef.grid[newLoc.x][newLoc.y] = temp;
-                subnodes[i - 1] = temp;
+                gameRef.grid[newLoc.x][newLoc.y] = this;
                 newLoc += offset;
             }
         }
@@ -519,28 +647,8 @@ public class BlackieMiniGame2 : Dialog2 {
                 gameRef.grid[location.x][location.y] = gameRef.emptyPiece;
                 location += offset;
             }
-            //subnodes still technically holds references to these pieces until theyre overwritten the next time this is placed
         }
 
-        //there should only be at most one powered node next to this one when this is called. Set it to the same power state as that one, or to off if there isnt another powered one
-        public override void SetInitialPowerState(Gamepiece[] adjacents) {
-            //if theres an adjacent powered node, we want to match that
-            //state = PowerStates.Off;
-            SetState(PowerStates.OFF);
-            foreach (Gamepiece g in adjacents) {
-                if (g.IsPowered())
-                    SetState(g.state);
-            }
-        }
-
-        //a connection piece for blackienodes. Spans between the start and the end.
-        public class BlackieSubnode : Gamepiece {
-            public BlackieNode parentNode;
-            public BlackieSubnode(Vector2Int loc, BlackieNode parent) : base(null, true) {
-                location = loc;
-                parentNode = parent;
-            }
-        }
     }
 
     //takes two input. If they're the same, it outputs that color. If they're different then it outputs the third color
@@ -549,6 +657,63 @@ public class BlackieMiniGame2 : Dialog2 {
         public ColorGate(GameObject _inWorld, bool _locked, int x, int y, int dir) : base(_inWorld, _locked, x, y, dir) {
             
         }
+        public ColorGate(GameObject _inWorld, bool _locked) : base(_inWorld, _locked) {
+
+        }
+
+        //Color gates will power above and below them with power based on their left and right
+        public override List<PowerTransfer> TransferPower(PowerTransfer source) {
+            List<PowerTransfer> output = new List<PowerTransfer>();
+            sources.Add(source);
+
+            PowerTransfer left = source;
+            PowerTransfer right = source; //these usally dont remain as source. Just need an initial value :(
+            bool leftFound = false;
+            bool rightFound = false; //Wow I cant have nullable structs what is this
+            //find out if there are power souces to the left and right of this node
+            foreach (PowerTransfer p in sources) {
+                if (p.sourceLocation == location + LocalDirectionVector(3)) {
+                    left = p;
+                    leftFound = true;
+                }
+                if (p.sourceLocation == location + LocalDirectionVector(1)) {
+                    right = p;
+                    rightFound = true;
+                }
+            }
+            //if there are both left and right nodes, change color accordingly
+            if (leftFound && rightFound) {
+                //if left and right both have the same power type, this adapts that too
+                if (left.powerType == right.powerType) {
+                    SetState(left.powerType);
+                } else if (left.powerType != PowerStates.RED && right.powerType != PowerStates.RED) { //if neither side is a color, do that color
+                    SetState(PowerStates.RED);
+                } else if (left.powerType != PowerStates.GREEN && right.powerType != PowerStates.GREEN) {
+                    SetState(PowerStates.GREEN);
+                } else if (left.powerType != PowerStates.BLUE && right.powerType != PowerStates.BLUE) {
+                    SetState(PowerStates.BLUE);
+                }
+                //then supply power above and below equal to whatever this just got powered by
+                Vector2Int target = location + LocalDirectionVector(0);
+                if (gameRef.GetAtLocation(target.x, target.y) != gameRef.emptyPiece)
+                    output.Add(new PowerTransfer() { sourceLocation = location, effectLocation = target, powerType = state });
+
+                target = location + LocalDirectionVector(2);
+                if (gameRef.GetAtLocation(target.x, target.y) != gameRef.emptyPiece)
+                    output.Add(new PowerTransfer() { sourceLocation = location, effectLocation = target, powerType = state });
+            }
+            return output;
+        }
+
+        //if anything is providing power from above or below this node, it shorts
+        public override bool DidShort() {
+            bool hasBadSource = false;
+            foreach (PowerTransfer p in sources) {
+                if (p.sourceLocation == location + LocalDirectionVector(0) || p.sourceLocation == location + LocalDirectionVector(2))
+                    hasBadSource = true;
+            }
+            return hasBadSource;
+        }
 
     }
 
@@ -556,6 +721,37 @@ public class BlackieMiniGame2 : Dialog2 {
     public class BridgeNode : Gamepiece{
         public BridgeNode(GameObject _inWorld, bool _locked, int x, int y, int dir) : base (_inWorld, _locked, x, y, dir) {
 
+        }
+        public BridgeNode(GameObject _inWorld, bool _locked) : base(_inWorld, _locked) {
+
+        }
+
+        public override List<PowerTransfer> TransferPower(PowerTransfer source) {
+            sources.Add(source);
+            List<PowerTransfer> output = new List<PowerTransfer>();
+            for (int i = 0; i < 4; i++) {
+                if (location + LocalDirectionVector(i) == source.sourceLocation && gameRef.GetAtLocation(location + LocalDirectionVector(i + 2)) != gameRef.emptyPiece) {
+                    output.Add(new PowerTransfer() {    sourceLocation = location,
+                                                        effectLocation = location + LocalDirectionVector(i + 2),
+                                                        powerType = source.powerType});
+
+                }
+            }
+            return output;
+        }
+
+        public override bool DidShort() {
+            bool hasShort = false;
+            for (int i = 0; i < sources.Count; i++) {
+                Vector2Int direction = location - sources[i].sourceLocation;
+                for (int j = i + 1; j < sources.Count; j++) {
+                    //if the two nodes are on opposite sides of this node and both powering it
+                    if (sources[j].sourceLocation + direction == location) {
+                        hasShort = true;
+                    }
+                }
+            }
+            return hasShort;
         }
     }
 
@@ -566,6 +762,26 @@ public class BlackieMiniGame2 : Dialog2 {
             state = _color;
         }
 
+        //powers everything next to it.
+        public override List<PowerTransfer> TransferPower(PowerTransfer source) {
+            if (source.sourceLocation != location)
+                sources.Add(source);
+            List<PowerTransfer> output = new List<PowerTransfer>();
+            for (int i = 0; i < 4; i++) {
+                if (gameRef.GetAtLocation(location + LocalDirectionVector(i)) != gameRef.emptyPiece) {
+                    output.Add(new PowerTransfer() {    sourceLocation = location,
+                                                        effectLocation = location + LocalDirectionVector(i),
+                                                        powerType = state});
+                }
+            }
+            return output;
+        }
+
+        //source node will recognize a short if anything is trying to power it.
+        public override bool DidShort() {
+            return sources.Count > 0;
+        }
+
         //Cannot change the state of a source node
         public override void SetState(PowerStates newstate) {
         }
@@ -574,27 +790,21 @@ public class BlackieMiniGame2 : Dialog2 {
 
     //goal node. Supply these with power of the right color to win
     public class GoalNode : Gamepiece {
+
+        //the desired color for it to be
+        public PowerStates powerColor;
+
         //goal nodes have no direction
         public GoalNode(GameObject _inWorld, PowerStates _color, int x, int y) : base (_inWorld, true, x, y, 0) {
             powerColor = _color;
             state = PowerStates.OFF;
         }
-        //the desired color for it to be
-        public PowerStates powerColor;
 
-        //Goals will never supply power. Always return false here
-        public override bool IsPowered() {
-            return false;
-        }
-
-        //If there is an adjacent thing powered with the right color, then this powers
-        public override void SetInitialPowerState(Gamepiece[] adjacents) {
-            //if theres an adjacent powered node, we want to match that
-            state = PowerStates.OFF;
-            foreach (Gamepiece g in adjacents) {
-                if (g.IsPowered() && g.state == powerColor)
-                    SetState(g.state);
-            }
+        //powers nothing, but will be powered if by its own color
+        public override List<PowerTransfer> TransferPower(PowerTransfer source) {
+            if (source.powerType == powerColor)
+                SetState(powerColor);
+            return new List<PowerTransfer>();
         }
     }
 }

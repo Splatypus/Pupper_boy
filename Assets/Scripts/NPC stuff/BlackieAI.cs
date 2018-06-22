@@ -9,7 +9,7 @@ public class BlackieAI : AIbase {
     public GameObject reward;
     public bool hasDoneReward = false;
 
-    public BlackieMiniGame blackieGameRef;
+    public BlackieMiniGame2 blackieGameRef;
 
     // Use this for initialization
     new public void Start () {

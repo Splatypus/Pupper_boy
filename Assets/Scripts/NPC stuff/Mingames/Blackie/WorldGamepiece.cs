@@ -7,19 +7,19 @@ public class WorldGamepiece : Interactable {
     Rigidbody rb;
     bool inZone;
     bool isHeld;
-    public BlackieMiniGame gameSource;
+    public BlackieMiniGame2 gameSource;
     public GameObject targeter;
     float distance;
     Vector3 offsets;
     GameObject player;
-    public Gamepiece boardPiece;
+    public BlackieMiniGame2.Gamepiece boardPiece;
 
     // Use this for initialization
     public void Start() {
         rb = gameObject.GetComponent<Rigidbody>();
         //set up the targeter gameobject
         targeter = Instantiate(targeter);
-        gameSource = FindObjectOfType<BlackieMiniGame>();
+        gameSource = FindObjectOfType<BlackieMiniGame2>();
         distance = gameSource.tileDis;
         offsets = gameSource.gameObject.transform.position;
         offsets.x %= distance;
@@ -27,7 +27,7 @@ public class WorldGamepiece : Interactable {
         targeter.SetActive(false);
 
         if (boardPiece == null)
-            boardPiece = new BlackieNode(gameObject, false);
+            boardPiece = new BlackieMiniGame2.Gamepiece(gameObject, false);
     }
 
     // Update is called once per frame
@@ -86,6 +86,12 @@ public class WorldGamepiece : Interactable {
         isHeld = true;
         targeter.SetActive(checkShowTarget());
         
+    }
+
+    //for when a short is caused and this piece needs to be yote into the air
+    public void DoForcedRemove() {
+        rb.isKinematic = false;
+        rb.AddForce(new Vector3(0.0f, 7.0f, 0.0f));
     }
 
     public override void onDrop()
