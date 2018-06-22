@@ -6,6 +6,7 @@ using System.IO;
 public class BlackieMiniGame2 : Dialog2 {
 
     public List<List<Gamepiece>> grid; //grid of game pieces. First list is x values, second is y values
+    int width, height;
     public List<Gamepiece> goals;
     public List<Gamepiece> startNodes;
     public List<Gamepiece> placeables;
@@ -39,8 +40,8 @@ public class BlackieMiniGame2 : Dialog2 {
         string[] line = data[0].Split(',');
 
         //-----first line is the width and the height-----
-        int width = int.Parse(line[0]);
-        int height = int.Parse(line[1]);
+        width = int.Parse(line[0]);
+        height = int.Parse(line[1]);
 
         //set bounding box to contain puzzle
         gameBounds.enabled = true;
@@ -58,7 +59,8 @@ public class BlackieMiniGame2 : Dialog2 {
             grid.Add(new List<Gamepiece>(height));
             for (int j = 0; j < height; j++) {
                 //place corners or sides if along the corners or sides. Otherwise place centers
-                Vector3 placeLocation = new Vector3(transform.position.x + (i - ((width - 1) / 2.0f)) * tileDis, transform.position.y - 0.5f, transform.position.z + j * tileDis + tileDis);
+                Vector3 placeLocation = GridToWorldSpace(new Vector2Int(i, j));
+                placeLocation.y -= 0.5f; // = new Vector3(transform.position.x + (i - ((width - 1) / 2.0f)) * tileDis, transform.position.y - 0.5f, transform.position.z + j * tileDis + tileDis);
                 grid[i].Add(emptyPiece);
 
                 //place grid parts with edges along the edge and corners in the corner
@@ -115,17 +117,16 @@ public class BlackieMiniGame2 : Dialog2 {
                 Gamepiece temp;
                 switch (i) {
                     case 0:         //Color Gate
-                        temp = new ColorGate(inWorld, false);
+                        temp = new ColorGate(inWorld, false, this);
                         break;
                     case 1:         //Case 1-4 are nodes of that length
                     case 2:
                     case 3:
                     case 4:
-                    case 5:
-                        temp = new BlackieNode(inWorld, false, i);
+                        temp = new BlackieNode(inWorld, false, this, i);
                         break;
-                    case 6:         //Bridge Node
-                        temp = new BridgeNode(inWorld, false);
+                    case 5:         //Bridge Node
+                        temp = new BridgeNode(inWorld, false, this);
                         break;
                     default:
                         temp = emptyPiece;
@@ -140,7 +141,7 @@ public class BlackieMiniGame2 : Dialog2 {
         //-----the remaining lines are which pieces are defaulted to which locations-----
         for (int i = 2; i < data.Length; i++) {
             line = data[i].Split(',');
-            if (line.Length == 4) {
+            if (line.Length == 5) {
                 //parse string
                 int x = int.Parse(line[0]);
                 int y = int.Parse(line[1]);
@@ -152,7 +153,7 @@ public class BlackieMiniGame2 : Dialog2 {
                 if (i == 1)
                     prefabToSpawn = extra;
                 else if (i > 1)
-                    prefabToSpawn += 3;
+                    prefabToSpawn += 4;
                 GameObject inWorld = Instantiate(prefabs[prefabToSpawn], GridToWorldSpace(new Vector2Int(x, y)),transform.rotation);
                 inWorld.transform.Rotate(0, 90.0f * d, 0);
                 inWorld.transform.Rotate(Vector3.up * d * 90.0f); //rotate it to match the input direction
@@ -177,20 +178,20 @@ public class BlackieMiniGame2 : Dialog2 {
                 //place a different piece depending on which type it is
                 switch (type) {
                     case 0:         //Gate node
-                        temp = new ColorGate(inWorld, true, x, y, d);
+                        temp = new ColorGate(inWorld, true, this, x, y, d);
                         break;
                     case 1:        //Standard
-                        temp = new BlackieNode(inWorld, true, x, y, d, extra);
+                        temp = new BlackieNode(inWorld, true, this, x, y, d, extra);
                         break;
                     case 2:         //Bridge node
-                        temp = new BridgeNode(inWorld, true, x, y, d);
+                        temp = new BridgeNode(inWorld, true, this, x, y, d);
                         break;
                     case 3:         //Source
-                        temp = new SourceNode(inWorld, spawnstate, x, y);
+                        temp = new SourceNode(inWorld, this, spawnstate, x, y);
                         startNodes.Add(temp);
                         break;
                     case 4:         //Goal
-                        temp = new GoalNode(inWorld, spawnstate, x, y);
+                        temp = new GoalNode(inWorld, this, spawnstate, x, y);
                         goals.Add(temp);
                         break;
                     default:
@@ -213,10 +214,10 @@ public class BlackieMiniGame2 : Dialog2 {
     //takes in a world space location and transforms it into grid coordinates
     public Vector2Int WorldToGridSpace(Vector3 pos) {
         Vector3 inLocalSpace = gameObject.transform.InverseTransformPoint(pos);
+        //allign so that grid space 0,0 is however far left of the box
         inLocalSpace /= tileDis;
-        //adjust to the shift in the 0,0 point away from the box
-        inLocalSpace.x += (grid.Count - 1) / tileDis;
-        inLocalSpace.z -= 1;
+        inLocalSpace.x += (width - 1)/2.0f;
+        inLocalSpace.z -= 1.0f;
         //add 0.5f for rounding
         inLocalSpace.x += 0.5f;
         inLocalSpace.z += 0.5f;
@@ -227,11 +228,12 @@ public class BlackieMiniGame2 : Dialog2 {
 
     //takes a position in the grid and finds the worldspace position of that point
     public Vector3 GridToWorldSpace(Vector2Int pos) {
-        Vector3 worldSpace = new Vector3(pos.x, transform.position.y, pos.y);
-        worldSpace *= tileDis;
+        Vector3 worldSpace = new Vector3(pos.x, 0.0f , pos.y);
         worldSpace.z += 1.0f;
-        worldSpace.x -= (grid.Count - 1) * tileDis;
+        worldSpace.x -= (width - 1) / 2.0f;
+        worldSpace *= tileDis;
         worldSpace = gameObject.transform.TransformPoint(worldSpace);
+        worldSpace.y = transform.position.y;
         return worldSpace;
     }
 
@@ -285,7 +287,7 @@ public class BlackieMiniGame2 : Dialog2 {
                 CheckVictory();
             } else {
                 //remove piece
-                StartCoroutine(ShortAnim(x, y));
+                ShortAnim(x, y);
             }
         }
     }
@@ -371,15 +373,16 @@ public class BlackieMiniGame2 : Dialog2 {
     }
 
     //Called when a short happens. Removes a piece, launches it in the air and spawns a particle effect
-    IEnumerator ShortAnim(int x, int y) {
+    public void ShortAnim(int x, int y) {
         Gamepiece p = RemovePiece(x, y);
         if (p != emptyPiece) {
             gameBounds.enabled = false;
             //Spawn particle systems
-            yield return new WaitForSeconds(0.5f);
             //remove peice
             p.worldObject.GetComponent<WorldGamepiece>().DoForcedRemove();
             gameBounds.enabled = true;
+        } else {
+            print("Oh shit sorted the circuit but attempted to remove an empty node");
         }
     }
 
@@ -446,18 +449,20 @@ public class BlackieMiniGame2 : Dialog2 {
         public List<PowerTransfer> sources; //list of sources of power, used to tell if it should short
 
         //initial contructor with x,y,dir
-        public Gamepiece(GameObject _worldObject, bool _isLocked, int x, int y, int dir) {
+        public Gamepiece(GameObject _worldObject, bool _isLocked, BlackieMiniGame2 gameManager, int x, int y, int dir) {
             worldObject = _worldObject;
             isLocked = _isLocked;
             location = new Vector2Int(x, y);
             direction = dir;
+            gameRef = gameManager;
         }
         //extra piece constructor where x,y,dir are set later on placement
-        public Gamepiece(GameObject _worldObject, bool _isLocked) {
+        public Gamepiece(GameObject _worldObject, bool _isLocked, BlackieMiniGame2 gameManager) {
             worldObject = _worldObject;
             isLocked = _isLocked;
             location = new Vector2Int(-1, -1);
             direction = 0;
+            gameRef = gameManager;
         }
 
         //takes a souce of power targeting this square. Returns a list of all the squares this tries to power.
@@ -551,7 +556,7 @@ public class BlackieMiniGame2 : Dialog2 {
     //node that has nothing that is sent with a bounds issue or an empty space. Is always unpowered. Stops me from having to check for null every time I look at adjacent nodes
     public class EmptyNode : Gamepiece {
         //Note that since each empty spot always points to the same emptynode instance, it's location/direction can't be used for anything. Just dont try it.
-        public EmptyNode() : base(null, true) {
+        public EmptyNode() : base(null, true, null) {
             state = PowerStates.OFF;
         }
 
@@ -566,10 +571,10 @@ public class BlackieMiniGame2 : Dialog2 {
 
         public int length;
 
-        public BlackieNode(GameObject _inWorld, bool _locked, int x, int y, int dir, int len) : base(_inWorld, _locked, x, y, dir) {
+        public BlackieNode(GameObject _inWorld, bool _locked, BlackieMiniGame2 gameManager, int x, int y, int dir, int len) : base(_inWorld, _locked, gameManager, x, y, dir) {
             length = len;
         }
-        public BlackieNode(GameObject _inWorld, bool _locked, int len) : base(_inWorld, _locked) {
+        public BlackieNode(GameObject _inWorld, bool _locked, BlackieMiniGame2 gameManager, int len) : base(_inWorld, _locked, gameManager) {
             length = len;
         }
 
@@ -654,10 +659,10 @@ public class BlackieMiniGame2 : Dialog2 {
     //takes two input. If they're the same, it outputs that color. If they're different then it outputs the third color
     public class ColorGate : Gamepiece {
 
-        public ColorGate(GameObject _inWorld, bool _locked, int x, int y, int dir) : base(_inWorld, _locked, x, y, dir) {
+        public ColorGate(GameObject _inWorld, bool _locked, BlackieMiniGame2 gameManager, int x, int y, int dir) : base(_inWorld, _locked, gameManager, x, y, dir) {
             
         }
-        public ColorGate(GameObject _inWorld, bool _locked) : base(_inWorld, _locked) {
+        public ColorGate(GameObject _inWorld, bool _locked, BlackieMiniGame2 gameManager) : base(_inWorld, _locked, gameManager) {
 
         }
 
@@ -719,10 +724,10 @@ public class BlackieMiniGame2 : Dialog2 {
 
     //Connects power from the left/right side and power from the forward/back sides
     public class BridgeNode : Gamepiece{
-        public BridgeNode(GameObject _inWorld, bool _locked, int x, int y, int dir) : base (_inWorld, _locked, x, y, dir) {
+        public BridgeNode(GameObject _inWorld, bool _locked, BlackieMiniGame2 gameManager, int x, int y, int dir) : base (_inWorld, _locked, gameManager, x, y, dir) {
 
         }
-        public BridgeNode(GameObject _inWorld, bool _locked) : base(_inWorld, _locked) {
+        public BridgeNode(GameObject _inWorld, bool _locked, BlackieMiniGame2 gameManager) : base(_inWorld, _locked, gameManager) {
 
         }
 
@@ -758,7 +763,7 @@ public class BlackieMiniGame2 : Dialog2 {
     //source of power
     public class SourceNode : Gamepiece {
         //Source nodes have no direction
-        public SourceNode(GameObject _inWorld, PowerStates _color, int x, int y) : base (_inWorld, true, x, y, 0) {
+        public SourceNode(GameObject _inWorld, BlackieMiniGame2 gameManager, PowerStates _color, int x, int y) : base (_inWorld, true, gameManager, x, y, 0) {
             state = _color;
         }
 
@@ -795,7 +800,7 @@ public class BlackieMiniGame2 : Dialog2 {
         public PowerStates powerColor;
 
         //goal nodes have no direction
-        public GoalNode(GameObject _inWorld, PowerStates _color, int x, int y) : base (_inWorld, true, x, y, 0) {
+        public GoalNode(GameObject _inWorld, BlackieMiniGame2 gameManager, PowerStates _color, int x, int y) : base (_inWorld, true, gameManager, x, y, 0) {
             powerColor = _color;
             state = PowerStates.OFF;
         }

@@ -26,8 +26,6 @@ public class WorldGamepiece : Interactable {
         offsets.z %= distance;
         targeter.SetActive(false);
 
-        if (boardPiece == null)
-            boardPiece = new BlackieMiniGame2.Gamepiece(gameObject, false);
     }
 
     // Update is called once per frame
@@ -82,6 +80,7 @@ public class WorldGamepiece : Interactable {
             gameSource.RemovePiece(gridLocation.x, gridLocation.y);
         }
         rb.isKinematic = false;
+        //rb.detectCollisions = false;
         base.onPickup();
         isHeld = true;
         targeter.SetActive(checkShowTarget());
@@ -90,8 +89,9 @@ public class WorldGamepiece : Interactable {
 
     //for when a short is caused and this piece needs to be yote into the air
     public void DoForcedRemove() {
+        print("Shorted");
         rb.isKinematic = false;
-        rb.AddForce(new Vector3(0.0f, 7.0f, 0.0f));
+        rb.AddForce(new Vector3(0.0f, 70.0f, 0.0f));
     }
 
     public override void onDrop()
