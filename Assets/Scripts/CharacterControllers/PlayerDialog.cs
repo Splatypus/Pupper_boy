@@ -17,6 +17,11 @@ public class PlayerDialog : Controller {
     string textToShow;
     bool isAllShown;
 
+    //camera stuff
+    public Cinemachine.CinemachineFreeLook cameraRef;
+    private float xSens;
+    private float ySens;
+
     //reference to the current Dialog object this is interacting with. Set to null if there is none
     public Dialog2 npcDialog = null;
 
@@ -45,6 +50,10 @@ public class PlayerDialog : Controller {
         canvasGA.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        xSens = cameraRef.m_XAxis.m_MaxSpeed;
+        cameraRef.m_XAxis.m_MaxSpeed = 0.0f;
+        ySens = cameraRef.m_YAxis.m_MaxSpeed;
+        cameraRef.m_YAxis.m_MaxSpeed = 0.0f;
     }
 
     //ends dialog, closes window, and reverts controls to normal
@@ -58,6 +67,8 @@ public class PlayerDialog : Controller {
         for (int i = 0; i < buttons.Length; i++) {
             buttons[i].SetActive(false);
         }
+        cameraRef.m_XAxis.m_MaxSpeed = xSens;
+        cameraRef.m_YAxis.m_MaxSpeed = ySens;
     }
 
     //sets the text in the active dialog box

@@ -37,7 +37,7 @@ public class WorldGamepiece : Interactable {
             Vector2Int gridLocation = gameSource.WorldToGridSpace(preSnap);
             if (targeter.activeInHierarchy && !gameSource.CanPlace(boardPiece, gridLocation.x, gridLocation.y, 0)) {
                 targeter.SetActive(false);
-                Debug.Log("Disabling due to bad placement position: " + gridLocation.x + ", " + gridLocation.y);
+                //Debug.Log("Disabling due to bad placement position: " + gridLocation.x + ", " + gridLocation.y);
             }
             else if (!targeter.activeInHierarchy && gameSource.CanPlace(boardPiece, gridLocation.x, gridLocation.y, 0)) {
                 targeter.SetActive(true);

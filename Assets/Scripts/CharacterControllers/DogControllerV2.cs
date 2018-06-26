@@ -17,15 +17,19 @@ public class DogControllerV2 : Controller {
 
     public Text debug_text;
 
-    #region movement variables
-    [SerializeField]
-    float speed = 0.8f;
-    [SerializeField]
-    float turnspeed = 5;
-    [SerializeField]
-    float jumpPower = 1;
-    public float groundDrag;
-    public float airDrag;
+
+    #region new world order movement variables
+    Vector3 v; //velocity
+    private float lastJumpTime = 0.0f;
+    public float maxSpeed;
+    public float sprintMultiplier;
+    public float acceleration;
+    public float decceleration;
+    public float inAirMult;
+    public float gravity;
+    public float maxFallSpeed;
+    public float jumpForce;
+    public float turnspeed = 5;
     #endregion
 
     Vector3 directionPos;
@@ -34,12 +38,12 @@ public class DogControllerV2 : Controller {
     float horizontal;
     float vertical;
     bool jumpInput;
-    int onGround;
+    public int onGround = 0;
     public bool hasFlight = false;
 
     public GameObject mainCam;
 
-    float m_speed;
+    //float m_speed;
 
     #region InteractionVariables
     List<InteractableObject> inRangeOf = new List<InteractableObject>();
@@ -70,18 +74,20 @@ public class DogControllerV2 : Controller {
         ppickup = GetComponentInChildren<PuppyPickup>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-    }
-	
-	// Update is called once per frame
-	void Update () {
 
-        HandleFriction();
+        v = Vector3.zero;
+    }
+
+    // Update is called once per frame
+    void Update() {
+
+        //HandleFriction();
 
         //dont do anything if digging
         if (!isDigging) {
 
             Move();
-   
+
             //Handle interaction input
             if (Input.GetButtonDown("Dig")) {
                 foreach (InteractableObject i in inRangeOf) {
@@ -97,7 +103,7 @@ public class DogControllerV2 : Controller {
 
                         //Run digging coroutine. This does the animation and movement and eveything
                         StartCoroutine(StartZoneDig(curZone));
-                        
+
                     } else {
                         // for digging up object in yard
                         Instantiate(curZone.objectToDigUp, curZone.transform.position, Quaternion.identity);
@@ -113,7 +119,7 @@ public class DogControllerV2 : Controller {
             }
 
         }//end isdigging check
-    }//end update
+    }
     
 
     //void FixedUpdate()
@@ -123,6 +129,62 @@ public class DogControllerV2 : Controller {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
         jumpInput = Input.GetButtonDown("Jump");
+
+
+        // Get information about the camera relative to us
+        cam_right = Vector3.ProjectOnPlane(cam.right, transform.up) * horizontal;
+        cam_fwd = Vector3.ProjectOnPlane(cam.forward, transform.up) * vertical;
+        Vector3 moveDirection = (cam_right + cam_fwd).normalized; //new move direction. 
+        //^On PC builds this should be normalized, since axies cannot be between 0 and 1, but can both be 1. Meaning you need to prevent faster diagonal movement
+        //on console, this should be non-normalized, since the stick gives values between 0 and 1, but cannot put both at 1
+
+        float a = acceleration; //acceleration for this frame
+        if (onGround == 0) {
+            a *= inAirMult;
+        }
+        float newMaxSpeed = maxSpeed;
+        if (Input.GetAxis("Sprint") > float.Epsilon) {
+            newMaxSpeed = maxSpeed * sprintMultiplier;
+        }
+
+        //store vertical movement speed before messing with horizontal, since the entire vector is changed
+        float verticalSpeed = v.y;
+        //if doggo would accelerate past max speed, then go just to max speed instead. Amout you accelerate is multiplied by the inair mult if youre in the air
+        if ((v + moveDirection * a * Time.deltaTime).sqrMagnitude > newMaxSpeed * newMaxSpeed) {
+            v = moveDirection * newMaxSpeed;
+        } else if ((cam_right + cam_fwd).sqrMagnitude < 0.0001f) {//deceleration if no movement input in either direction
+            //if decelerating would put speed lower than zero, set v to zero vector
+            /*float curSpeed = v.magnitude;
+            if (curSpeed - (decceleration * Time.deltaTime) < 0) {
+                v = Vector3.zero;
+            } else {
+                v = v.normalized * (curSpeed - (decceleration * Time.deltaTime));
+            }*/
+            v = Vector3.zero; //testing no decel
+        } else {
+            v += moveDirection * a * Time.deltaTime;
+        }
+
+        v.y = verticalSpeed;//reset v.y after changes from horizontal movement
+
+        //then do the same thing for verticle speed, as long as doggo is in the air. Otherwise, set it to 0
+        if (onGround == 0) {
+            if (v.y - (gravity * Time.deltaTime) < -maxFallSpeed) {
+                v.y = -maxFallSpeed;
+            } else {
+                v.y -= gravity * Time.deltaTime;
+            }
+        } else if (jumpInput) { //jump if jump input
+            v.y = jumpForce;
+            lastJumpTime = Time.time;
+        } else if (Time.time > lastJumpTime + 0.2f) {
+            //if nothing is affecting velocity and have not jumped recently, then set it to 0. The time check is to make sure jumping allows you to leave the ground
+            v.y = 0;
+        }
+
+        rigidBody.velocity = v;
+
+        /*
 
         // Check for sprint
         if (Input.GetAxis("Sprint") > float.Epsilon)
@@ -134,25 +196,20 @@ public class DogControllerV2 : Controller {
             m_speed = speed;
         }
 
-        // Code for grounded movement
-        if (onGround != 0)
-        {
-            // Get information about the camera relative to us
-            cam_right = Vector3.ProjectOnPlane(cam.right, transform.up);
-            cam_fwd = Vector3.ProjectOnPlane(cam.forward, transform.up);
-            
-            // Compute new velocity relative to the camera and input
-            Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed);
+        if (onGround != 0) {
+        // Compute new velocity relative to the camera and input
+        Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed);
 
-            rigidBody.velocity =  new_velocity;
-
-            if(jumpInput)
-            {
-                rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-                //onGround = false;
-            }            
-        }
+        rigidBody.velocity = new_velocity;
         
+        if (jumpInput) {
+            rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+            //onGround = false;
+            rigidBody.drag = airDrag;
+            anim.SetBool("onAir", true);
+        }
+        */
+
         // Update animation controller with the amount that we are moving
         float animValue = Mathf.Sqrt(vertical*vertical + horizontal*horizontal);
         anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime);
@@ -160,7 +217,7 @@ public class DogControllerV2 : Controller {
         // Update player rotation
         if (horizontal != 0 || vertical != 0)
         {
-            directionPos = transform.position + (cam_right * horizontal) + (cam_fwd * vertical);
+            directionPos = transform.position + (cam_right) + (cam_fwd);
 
             Vector3 dir = directionPos - transform.position;
             dir.y = 0;
@@ -168,7 +225,7 @@ public class DogControllerV2 : Controller {
             float angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
 
             if (angle != 0)
-                rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), turnspeed * Time.deltaTime);
+                rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle/180.0f + 1.0f) * turnspeed/angle * Time.deltaTime);
         }
     }
 
@@ -179,9 +236,11 @@ public class DogControllerV2 : Controller {
         if (collision.gameObject.tag == "Ground")
         {
             onGround += 1;
-            rigidBody.drag = groundDrag;
-            // currently, onAir is not used, but could be if we had an animation for jumping
-            anim.SetBool("onAir", false);
+            if (onGround > 0) {
+                //rigidBody.drag = groundDrag;
+                // currently, onAir is not used, but could be if we had an animation for jumping
+                anim.SetBool("onAir", false);
+            }
         }
     }
 
@@ -191,9 +250,11 @@ public class DogControllerV2 : Controller {
         if (collision.gameObject.tag == "Ground")
         {
             onGround -= 1;
-            rigidBody.drag = airDrag;
-            // currently, onAir is not used, but could be if we had an animation for jumping
-            anim.SetBool("onAir", true);
+            if (onGround == 0) {
+                //rigidBody.drag = airDrag;
+                // currently, onAir is not used, but could be if we had an animation for jumping
+                anim.SetBool("onAir", true);
+            }
         }
     }
 

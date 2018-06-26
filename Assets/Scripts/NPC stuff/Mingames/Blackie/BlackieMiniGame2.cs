@@ -22,7 +22,7 @@ public class BlackieMiniGame2 : Dialog2 {
     public float tileDis;
 
     public int puzzleNumber = 0;
-    public enum States { READY, RESETTING, NEUTRAL }
+    public enum States { READY, RESETTING, GAMEGOING }
     public States state;
     public BlackieAI blackieRef;
 
@@ -36,6 +36,7 @@ public class BlackieMiniGame2 : Dialog2 {
 
     //reads in a puzzle set-up from a file and starts that puzzle
     public void LoadPuzzle(int index) {
+        state = States.GAMEGOING;
         string[] data = puzzleFiles[index].ToString().Split('\n');
         string[] line = data[0].Split(',');
 
@@ -360,7 +361,8 @@ public class BlackieMiniGame2 : Dialog2 {
         if (allOn && goals.Count > 0) {
             RemovePuzzle();
             blackieRef.FinishedGame();
-            progressionNum = 1;
+            progressionNum = 2;
+            state = States.READY;
         }
     }
 
@@ -368,7 +370,7 @@ public class BlackieMiniGame2 : Dialog2 {
     public void SetUpMachine() {
         if (state == States.READY) {
             progressionNum = 1;
-            state = States.NEUTRAL;
+            state = States.GAMEGOING;
         }
     }
 
@@ -408,7 +410,7 @@ public class BlackieMiniGame2 : Dialog2 {
     //waits 5 seconds then spawns the puzzle of the current number
     IEnumerator DelayedNextLevel() {
         yield return new WaitForSeconds(5.0f);
-        state = States.NEUTRAL;
+        state = States.GAMEGOING;
         if (puzzleNumber < puzzleFiles.Length)
             LoadPuzzle(puzzleNumber);
     }
