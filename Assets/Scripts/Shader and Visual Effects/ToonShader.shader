@@ -84,7 +84,7 @@ Shader "Custom/ToonShader" {
 		float _ShadowMult;
 		half4 LightingCelShadingForward(SurfaceOutput s, half3 lightDir, half atten) { //atten is a range 0-1 where 0 is in darkness and 1 is in bright light
 			half lightStr = dot(s.Normal, lightDir);
-			lightStr -= (atten < 0.3); //if in shade, subtract 1 from light strength
+			lightStr -= step(atten, 0.5); //if in shade, subtract 1 from light strength
 			//half clampedShade = 1 + clamp(floor(lightStr), -1 + _MinDark, 0); //clamps lightStr rounded down between minDark-1 and 0. Basically, sets it to either 1 or mindark
 			half4 c;
 			half sunglow = (lightStr > _SunspotCutoff)*_Sunspot + 1; //Apply the sunspot light strength multiplier if this spot is above the cutoff bringhtness 

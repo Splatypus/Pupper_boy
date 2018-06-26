@@ -7,14 +7,13 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: glass
-  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_Shader: {fileID: 4800000, guid: 465fc6a8d0a517640adbd902da44671e, type: 3}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -66,12 +65,20 @@ Material:
     - _Metallic: 0
     - _Mode: 3
     - _OcclusionStrength: 1
+    - _OutlineSize: 0.1
     - _Parallax: 0.02
+    - _ShadowCutoff: 0.95
+    - _ShadowMult: 2
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Sunspot: 6
+    - _SunspotCutoff: 0.95
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 0.640356, g: 0.86693555, b: 0.876, a: 0.34265733}
+    - _DarknessColor: {r: 0.39999998, g: 0.39999998, b: 0.39999998, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Outline: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadowTint: {r: 1, g: 1, b: 1, a: 1}
