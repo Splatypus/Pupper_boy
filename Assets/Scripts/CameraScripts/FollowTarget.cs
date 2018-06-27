@@ -2,49 +2,20 @@
 
 public abstract class FollowTarget : MonoBehaviour
 {
-
-    [SerializeField]
     public Transform target;
-    [SerializeField]
-    private bool autoTargetPlayer = true;
+    public float moveSpeed = 5.0f;
 
-    virtual protected void Start()
-    {
-        if (autoTargetPlayer)
-        {
-            FindTargetPlayer();
+    virtual protected void Start() {
+        if (target == null) {
+            target = GameObject.FindGameObjectWithTag("Player").transform;
         }
     }
 
-    void FixedUpdate()
-    {
-        if (autoTargetPlayer && (target == null || !target.gameObject.activeSelf))
-        {
-            FindTargetPlayer();
-        }
-        if (target != null && (target.GetComponent<Rigidbody>() != null && !target.GetComponent<Rigidbody>().isKinematic))
-        {
-            Follow(Time.deltaTime);
+    void FixedUpdate() {
+        if (target != null && (target.GetComponent<Rigidbody>() != null && !target.GetComponent<Rigidbody>().isKinematic)) {
+            transform.position = Vector3.Lerp(transform.position, target.position, Time.deltaTime * moveSpeed);
         }
     }
 
-    protected abstract void Follow(float deltaTime);
-
-
-    public void FindTargetPlayer()
-    {
-        if (target == null)
-        {
-            GameObject targetObj = GameObject.FindGameObjectWithTag("Player");
-            if (targetObj)
-            {
-                SetTarget(targetObj.transform);
-            }
-        }
-    }
-    public virtual void SetTarget(Transform newTransform)
-    {
-        target = newTransform;
-    }
     public Transform Target { get { return this.target; } }
 }

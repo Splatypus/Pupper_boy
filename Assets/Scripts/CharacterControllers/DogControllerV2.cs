@@ -78,6 +78,7 @@ public class DogControllerV2 : Controller {
         v = Vector3.zero;
     }
 
+
     // Update is called once per frame
     void Update() {
 
@@ -129,7 +130,6 @@ public class DogControllerV2 : Controller {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
         jumpInput = Input.GetButtonDown("Jump");
-
 
         // Get information about the camera relative to us
         cam_right = Vector3.ProjectOnPlane(cam.right, transform.up) * horizontal;
@@ -183,32 +183,6 @@ public class DogControllerV2 : Controller {
         }
 
         rigidBody.velocity = v;
-
-        /*
-
-        // Check for sprint
-        if (Input.GetAxis("Sprint") > float.Epsilon)
-        {
-            m_speed = speed * 1.75f;
-        }
-        else
-        {
-            m_speed = speed;
-        }
-
-        if (onGround != 0) {
-        // Compute new velocity relative to the camera and input
-        Vector3 new_velocity = (((cam_right * horizontal) + (cam_fwd * vertical)) * m_speed);
-
-        rigidBody.velocity = new_velocity;
-        
-        if (jumpInput) {
-            rigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
-            //onGround = false;
-            rigidBody.drag = airDrag;
-            anim.SetBool("onAir", true);
-        }
-        */
 
         // Update animation controller with the amount that we are moving
         float animValue = Mathf.Sqrt(vertical*vertical + horizontal*horizontal);

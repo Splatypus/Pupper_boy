@@ -88,8 +88,12 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             }
         }
         //finally, set up cameras and players and everything for dialog
-        npccam.SetActive(true);
-        playercam.SetActive(false);
+        //npccam.SetActive(true);
+        //playercam.SetActive(false);
+
+        //New camera system test
+
+
         //change player mode to dialog mode when they interact with this npc
         controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);
         pdialog.npcDialog = this;
