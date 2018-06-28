@@ -18,7 +18,10 @@ public class BlackieAI : AIbase {
 
     //icons to display if in range of player
     public override void OnInRange() {
-        //Display(Icons[0]);
+        if (!hasDoneReward)
+            Display(0);
+        else
+            Display(1);
     }
 
     //loads the puzzle indicated into the puzzle machine

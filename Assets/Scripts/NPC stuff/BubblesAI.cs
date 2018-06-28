@@ -23,6 +23,18 @@ public class BubblesAI : AIbase {
     {
         base.OnTriggerEnter(col);
 
+        switch (state) {
+            case States.NOBUBBLES:
+                Display(0);
+                break;
+            case States.BUBBLES:
+                Display(1);
+                break;
+            default:
+                break;
+        }
+
+
         //if an item is brought to tiffany, and is her quest item, delete it, cand call toyInRange.
         Interactable intObject = col.gameObject.GetComponent<Interactable>();
         if (intObject != null && intObject.hasTag(Interactable.Tag.Soap)) {
@@ -39,6 +51,7 @@ public class BubblesAI : AIbase {
     public void ToyInRange(GameObject toy){
         if (state == States.NOBUBBLES) {
             state = States.BUBBLES;
+            Display(1);
             progressionNum = 1;
         }
     }

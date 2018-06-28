@@ -1516,11 +1516,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4811260726356412, guid: 67402c3fb20aade44b6f7a9bddb16af9,
     type: 2}
   m_PrefabInternal: {fileID: 49141323}
---- !u!1 &49141325 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1957426567375366, guid: 67402c3fb20aade44b6f7a9bddb16af9,
-    type: 2}
-  m_PrefabInternal: {fileID: 49141323}
 --- !u!1 &50682993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2256,11 +2251,6 @@ Transform:
   m_Father: {fileID: 1092492501}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &78215633 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1957426567375366, guid: 67402c3fb20aade44b6f7a9bddb16af9,
-    type: 2}
-  m_PrefabInternal: {fileID: 570660924}
 --- !u!4 &78215634 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4811260726356412, guid: 67402c3fb20aade44b6f7a9bddb16af9,
@@ -6546,11 +6536,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 975c19c7ab6c08a43b5ae2e2aced96f5, type: 3}
   m_IsPrefabParent: 0
---- !u!1 &238446743 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1957426567375366, guid: 67402c3fb20aade44b6f7a9bddb16af9,
-    type: 2}
-  m_PrefabInternal: {fileID: 251565583}
 --- !u!4 &238446744 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4811260726356412, guid: 67402c3fb20aade44b6f7a9bddb16af9,
@@ -11330,11 +11315,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 461741290}
   m_Mesh: {fileID: 4300000, guid: 5df7daeab707230409664c66ca47c5ad, type: 3}
---- !u!1 &469754602 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1957426567375366, guid: 67402c3fb20aade44b6f7a9bddb16af9,
-    type: 2}
-  m_PrefabInternal: {fileID: 377253415}
 --- !u!4 &472294617 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400000, guid: 63585587f8291f44a899ffea0f0580a9, type: 3}
@@ -20914,10 +20894,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Seabiscuit
   image: {fileID: 21300000, guid: b670a3896b2dc564aade73490bc4e3d1, type: 3}
-  playercam: {fileID: 1834985097}
-  npccam: {fileID: 917199687}
   dynamicCameraDistance: 4
   dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
   progressionNum: 0
   functions: []
   serializedNodes:
@@ -21664,7 +21643,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e0195a8980e33c648b9d13b13f620f45, type: 2}
+  - {fileID: 2100000, guid: 944463113244f4bf8b05c1757cd838a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21740,12 +21719,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 387b8dac8fe0f314c8a71d66d7284ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: 
+  characterName: Strange Box
   image: {fileID: 21300000, guid: 489a6801277c9994dba551a1d8516dd0, type: 3}
-  playercam: {fileID: 1834985097}
-  npccam: {fileID: 49141325}
   dynamicCameraDistance: 4
   dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
   progressionNum: 0
   functions:
   - m_PersistentCalls:
@@ -23707,10 +23685,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Bubbles
   image: {fileID: 21300000, guid: a05a8c11115cba740b19c51d9fbac9ce, type: 3}
-  playercam: {fileID: 1834985097}
-  npccam: {fileID: 238446743}
   dynamicCameraDistance: 4
   dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
   progressionNum: 0
   functions:
   - m_PersistentCalls:
@@ -26993,8 +26970,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6c69b47123b2bb44bb4bba7b4fb019c5, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: a35c4af3a2ceb044dab4383984f1bb39, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -31557,10 +31534,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: 
   image: {fileID: 0}
-  playercam: {fileID: 0}
-  npccam: {fileID: 0}
   dynamicCameraDistance: 4
   dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
   progressionNum: 0
   functions: []
   serializedNodes: []
@@ -33463,10 +33439,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: 
   image: {fileID: 21300000, guid: a10d1034235d89941befde232922b0a4, type: 3}
-  playercam: {fileID: 1834985097}
-  npccam: {fileID: 469754602}
   dynamicCameraDistance: 4
   dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
   progressionNum: 0
   functions:
   - m_PersistentCalls:
@@ -47880,10 +47855,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Rex
   image: {fileID: 21300000, guid: 444ed615244a40540adecf478143053a, type: 3}
-  playercam: {fileID: 1834985097}
-  npccam: {fileID: 78215633}
   dynamicCameraDistance: 4
   dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
   progressionNum: 0
   functions: []
   serializedNodes:
@@ -60572,11 +60546,6 @@ Transform:
   m_PrefabParentObject: {fileID: 4578610889360788, guid: d310319e7075ffa4db9109d7bb289e3d,
     type: 2}
   m_PrefabInternal: {fileID: 2102984541}
---- !u!1 &2103398060 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1957426567375366, guid: 67402c3fb20aade44b6f7a9bddb16af9,
-    type: 2}
-  m_PrefabInternal: {fileID: 139910320}
 --- !u!4 &2103398061 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4811260726356412, guid: 67402c3fb20aade44b6f7a9bddb16af9,
@@ -61321,10 +61290,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterName: Blackie
   image: {fileID: 21300000, guid: a10d1034235d89941befde232922b0a4, type: 3}
-  playercam: {fileID: 1834985097}
-  npccam: {fileID: 2103398060}
   dynamicCameraDistance: 4
   dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
   progressionNum: 0
   functions:
   - m_PersistentCalls:
