@@ -20916,6 +20916,8 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: b670a3896b2dc564aade73490bc4e3d1, type: 3}
   playercam: {fileID: 1834985097}
   npccam: {fileID: 917199687}
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
   progressionNum: 0
   functions: []
   serializedNodes:
@@ -21742,6 +21744,8 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 489a6801277c9994dba551a1d8516dd0, type: 3}
   playercam: {fileID: 1834985097}
   npccam: {fileID: 49141325}
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
   progressionNum: 0
   functions:
   - m_PersistentCalls:
@@ -23701,10 +23705,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad17b2794c631d84b90a31833c154f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: 
+  characterName: Bubbles
   image: {fileID: 21300000, guid: a05a8c11115cba740b19c51d9fbac9ce, type: 3}
   playercam: {fileID: 1834985097}
   npccam: {fileID: 238446743}
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
   progressionNum: 0
   functions:
   - m_PersistentCalls:
@@ -31553,6 +31559,8 @@ MonoBehaviour:
   image: {fileID: 0}
   playercam: {fileID: 0}
   npccam: {fileID: 0}
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
   progressionNum: 0
   functions: []
   serializedNodes: []
@@ -33457,6 +33465,8 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: a10d1034235d89941befde232922b0a4, type: 3}
   playercam: {fileID: 1834985097}
   npccam: {fileID: 469754602}
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
   progressionNum: 0
   functions:
   - m_PersistentCalls:
@@ -36940,7 +36950,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   maxDistance: 7
-  minDistance: 4
+  minDistance: 0.2
+  collisionPadding: 0.5
   turnSpeed: 360
   tiltMax: 75
   tiltMin: 45
@@ -36948,6 +36959,7 @@ MonoBehaviour:
   joypadXMultiplier: 2
   joypadYMultiplier: 2
   anchor: {fileID: 2057602178}
+  previousFrameLocation: {x: 0, y: 0, z: 0}
 --- !u!1001 &1397167430
 Prefab:
   m_ObjectHideFlags: 0
@@ -47870,6 +47882,8 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: 444ed615244a40540adecf478143053a, type: 3}
   playercam: {fileID: 1834985097}
   npccam: {fileID: 78215633}
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
   progressionNum: 0
   functions: []
   serializedNodes:
@@ -61309,6 +61323,8 @@ MonoBehaviour:
   image: {fileID: 21300000, guid: a10d1034235d89941befde232922b0a4, type: 3}
   playercam: {fileID: 1834985097}
   npccam: {fileID: 2103398060}
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
   progressionNum: 0
   functions:
   - m_PersistentCalls:

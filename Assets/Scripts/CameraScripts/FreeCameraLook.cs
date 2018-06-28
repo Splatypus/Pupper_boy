@@ -7,7 +7,8 @@ public class FreeCameraLook : MonoBehaviour {
     public GameObject player;
 
     public float maxDistance = 7.0f;
-    public float minDistance = 4.0f;
+    public float minDistance = 0.2f;
+    public float collisionPadding = 0.5f;
     public float turnSpeed = 1.5f;
     public float tiltMax = 75f;
     public float tiltMin = 45f;
@@ -20,11 +21,13 @@ public class FreeCameraLook : MonoBehaviour {
     private float tiltAngle;
 
     public Transform anchor;
+    public Vector3 previousFrameLocation;
 
     private void Start() {
         if (player == null) {
             player = GameObject.FindGameObjectWithTag("Player");
         }
+        previousFrameLocation = anchor.position;
     }
 
     // Update is called once per frame
@@ -36,44 +39,60 @@ public class FreeCameraLook : MonoBehaviour {
 
     void HandleRotationMovement() {
 
+        //the amount the player has moved awayfrom/towards the camer, or up and down since the last frame
+        Vector3 movementDelta = Vector3.ProjectOnPlane(anchor.position - previousFrameLocation, transform.right);
+        transform.position += movementDelta;
+
+        //apply mouse movement
         float x = Input.GetAxis("Mouse X") + Input.GetAxis("RightJoystickX") * joypadXMultiplier;
         float y = Input.GetAxis("Mouse Y") + Input.GetAxis("RightJoystickY") * joypadYMultiplier;
-        //apply mouse movement
         transform.RotateAround(anchor.position, anchor.up, x);
         transform.RotateAround(anchor.position, transform.right, -y);
 
 
         //find out how many units back the camera can be
-        RaycastHit hitForward, hitBackward;
-        float camDis = 0.0f; //how far back the camera is allowed to be
+        RaycastHit hit;
         int layermask = 1 << 2; //ignore raycast layer is skipped
         layermask = ~layermask;
-        //if (Physics.Raycast(transform.position, transform.forward, out hitForward, curCamDis, layermask)) {
-        //  if (hitForward.collider.gameObject != player) {
-        //}
-        //}
-
-
-        //if it moves to far from the player, follow them, if it moves too close, push it back (as long as it has space)
-        if (Vector3.Distance(transform.position, player.transform.position) > maxDistance) {
-            Vector3 newPosition = player.transform.position + (transform.position - player.transform.position).normalized * maxDistance;
-            newPosition.y = transform.position.y;
-            transform.position = newPosition;
-        } else if (Vector3.Distance(transform.position, player.transform.position) < minDistance) {
-            Vector3 newPosition = player.transform.position + (transform.position - player.transform.position).normalized * minDistance;
-            newPosition.y = transform.position.y;
-            transform.position = newPosition;
+        if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, maxDistance, layermask)) {
+            transform.position = anchor.position + (transform.position - anchor.position).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
+        } else {
+            transform.position = anchor.position + (transform.position - anchor.position).normalized * maxDistance;
         }
 
+
+        previousFrameLocation = anchor.position;
         //always look at the player
         transform.LookAt(anchor);
 
     }
 
-
+    //moves the camera to the given position, facing lookat, over the duration given. Smooths movement and disables input.
     public void MoveToPosition(Vector3 location, Vector3 lookAt, float duration) {
         controlLocked = true;
         StartCoroutine(Pan(location, lookAt, duration));
+    }
+
+    //smoothly moves the camera to it's closest valid location, then reenables input
+    public void RestoreCamera(float duration) {
+        Vector3 targetPosition = anchor.position + (transform.position - anchor.position).normalized * maxDistance;
+        //raycast towards targetPosition and move it in if needed to avoid camera collision
+        RaycastHit hit;
+        int layermask = 1 << 2; //ignore raycast layer is skipped
+        layermask = ~layermask;
+        if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, maxDistance, layermask)) {
+            targetPosition = anchor.position + (transform.position - anchor.position).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
+        }
+
+        //start a pan coroutine to move camera, and an unlock control one to return control to the player as that ends
+        StartCoroutine(Pan(targetPosition, anchor.position, duration));
+        StartCoroutine(UnlockControl(duration));
+    }
+
+    //unlocks control after the given amount of time
+    IEnumerator UnlockControl(float time) {
+        yield return new WaitForSeconds(time);
+        controlLocked = false;
     }
 
     //takes in a location and a spot to look at, and a duration. Pans to location, looking towards lookAt over the given duration
@@ -89,12 +108,13 @@ public class FreeCameraLook : MonoBehaviour {
         while (Time.time < startTime + duration) {
             float scaledTime = (Time.time - startTime) / duration;
             //keeps the camera distance away from lookat point, at an angle slerping between target and start.
-            transform.position = lookAt - ((Quaternion.Slerp(startAngle, targetAngle, scaledTime) * Vector3.forward).normalized * Mathf.Lerp(startDistance, targetDistance, scaledTime));
+            transform.position = lookAt + ((Quaternion.Slerp(startAngle, targetAngle, scaledTime) * Vector3.forward).normalized * Mathf.Lerp(startDistance, targetDistance, scaledTime));
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, scaledTime);
             yield return new WaitForFixedUpdate();
         }
-        transform.position = lookAt - targetAngle.eulerAngles.normalized * targetDistance;
+        transform.position = lookAt + (targetAngle * Vector3.forward).normalized * targetDistance;
         transform.rotation = targetRotation;
     }
+
 
 }

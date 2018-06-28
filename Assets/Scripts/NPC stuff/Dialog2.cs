@@ -15,8 +15,9 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
     public Sprite image;
 
     //camera references
-    public GameObject playercam;
-    public GameObject npccam;
+    public float dynamicCameraDistance = 4.0f;
+    public float dynamicCameraHeight = 2.5f;
+    public float dynamicCameraTime = 1.0f;
 
     //Progression info
     public DialogNodeStart startNode = null;
@@ -87,12 +88,19 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                 Debug.LogError("Start node placed with no out connection. Dialog bugging out.");
             }
         }
-        //finally, set up cameras and players and everything for dialog
-        //npccam.SetActive(true);
-        //playercam.SetActive(false);
 
-        //New camera system test
-
+        //make two vectors pointing away from the plane created by the two dogs talking. Then move the camera to the closer of the two.
+        Vector3 midpoint = Vector3.Lerp(pdialog.transform.position, transform.position, 0.5f);
+        Vector3 position1 = midpoint + Vector3.Cross(transform.position - pdialog.transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+        Vector3 position2 = midpoint + Vector3.Cross(pdialog.transform.position - transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+        
+        Vector3 cameraPosition = Vector3.zero;
+        if (Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position))
+            cameraPosition = position1;
+        else
+            cameraPosition = position2;
+        //Vector3 cameraPosition = Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position) ? position1 : position2;
+        Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(cameraPosition, midpoint, dynamicCameraTime);
 
         //change player mode to dialog mode when they interact with this npc
         controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);
@@ -100,6 +108,11 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         //Assign image and name
         pdialog.imageObject.sprite = image;
         pdialog.nameTextObject.text = characterName;
+    }
+
+    public void OnEnd() {
+        controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
+        Camera.main.GetComponent<FreeCameraLook>().RestoreCamera(dynamicCameraTime);
     }
 
     //should be called to swap the current node. 
@@ -130,9 +143,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             }
         } else if (node is DialogNodeBreak) {  //break
             //if dialog is going, end it.
-            controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
-            playercam.SetActive(true);
-            npccam.SetActive(false);
+            OnEnd();
         } else if (node is DialogNodeStart) { //start
             //procede to the next node
             if(node.connections != null) {
