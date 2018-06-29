@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
@@ -372,6 +374,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             rect.position += delta;
         }
 
+#if UNITY_EDITOR
         //draw function
         public virtual void Draw()
         {
@@ -429,6 +432,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             genericMenu.ShowAsContext();
         }
 
+#endif
         //removes node
         private void OnClickRemoveNode()
         {
@@ -462,12 +466,14 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             title = "Dialog";
         }
 
+#if UNITY_EDITOR
         public override void Draw()
         {
             base.Draw();
             Rect textAreaRect = new Rect(rect.x + 20, rect.y + 35, rect.width - 40, rect.height - 55);
             text = EditorGUI.TextArea(textAreaRect, text);
         }
+#endif
 
     }
 
@@ -485,6 +491,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             num = 0;
         }
 
+#if UNITY_EDITOR
         public override void Draw()
         {
             base.Draw();
@@ -492,6 +499,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             text = EditorGUI.TextField(textAreaRect, text);
             num = EditorGUI.IntField(new Rect(rect.x + 15, rect.y + 30, 30, 25), num);
         }
+#endif
     }
 
     public class DialogNodeFunction : DialogNode
@@ -505,13 +513,14 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             title = "Function";
         }
 
+#if UNITY_EDITOR
         public override void Draw()
         {
             base.Draw();
             Rect textAreaRect = new Rect(rect.x + 15, rect.y + 30, rect.width - 30, rect.height - 45);
             functionNum = EditorGUI.IntField(textAreaRect, functionNum);
         }
-
+#endif
     }
 
     public class DialogNodeBreak : DialogNode
@@ -521,11 +530,12 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         {
             title = "Break";
         }
-
+#if UNITY_EDITOR
         public override void Draw()
         {
             base.Draw();
         }
+#endif
 
     }
 
@@ -561,7 +571,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             this.type = type;
             rect = new Rect(0, 0, 10f, 20f);
         }
-
+#if UNITY_EDITOR
         public void Draw()
         {
             rect.y = node.rect.y + (node.rect.height * 0.5f) - rect.height * 0.5f;
@@ -591,6 +601,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                 }
             }
         }
+#endif
     }
 
     public class Connection
@@ -606,6 +617,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             window = windowRef;
         }
 
+#if UNITY_EDITOR
         public void Draw()
         {
             Handles.DrawBezier(
@@ -623,6 +635,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                 window.OnClickRemoveConnection(this);
             }
         }
+#endif
     }
     #endregion
 }
