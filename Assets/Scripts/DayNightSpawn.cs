@@ -13,11 +13,11 @@ public class DayNightSpawn : MonoBehaviour {
         DayNightManager dayNight = DayNightManager.Instance;
         //if its active at night, add activate to the night triggers and deactivate to day triggers. Otherwise do the reverse.
         if (isActiveAtNight) {
-            dayNight.nightTrigger.AddEvent(new UnityAction(Activate));
-            dayNight.dayTrigger.AddEvent(new UnityAction(Deactivate));
+            dayNight.AddTrigger(DayNightManager.Times.NIGHT, new UnityAction(Activate));
+            dayNight.AddTrigger(DayNightManager.Times.DAY, new UnityAction(Deactivate));
         } else {
-            dayNight.dayTrigger.AddEvent(new UnityAction(Activate));
-            dayNight.nightTrigger.AddEvent(new UnityAction(Deactivate));
+            dayNight.AddTrigger(DayNightManager.Times.DAY, new UnityAction(Activate));
+            dayNight.AddTrigger(DayNightManager.Times.NIGHT, new UnityAction(Deactivate));
         }
     }
 

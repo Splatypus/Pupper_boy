@@ -6,15 +6,17 @@ using UnityEngine.Events;
 public class DayNightManager : MonoBehaviour {
 
     public static DayNightManager Instance; //Static reference to the current instance of this manager
-    public Trigger dayTrigger = new Trigger();
-    public Trigger nightTrigger = new Trigger();
-    public enum Times {DAY, NIGHT};
+    public enum Times { DAY, NIGHT };
     public Times currentTime = Times.DAY;
+    public Dictionary<Times, Trigger> triggers = new Dictionary<Times, Trigger>();
+    Trigger dayTrigger = new Trigger();
+    Trigger nightTrigger = new Trigger();
 
     void Awake() {
         //singleton pattern but for gameobjects.
         if (Instance == null) {
             Instance = this;
+            SetUp();
         } else if (Instance != this) {
             Destroy(gameObject);
         }
@@ -40,7 +42,7 @@ public class DayNightManager : MonoBehaviour {
     }
 
     //Each trigger instance is a set event point, such as night or day starting.
-    public class Trigger{
+    public class Trigger {
         List<ActionContainter> ActionList;
 
         //adds an event to the list of actions at this trigger
@@ -81,16 +83,28 @@ public class DayNightManager : MonoBehaviour {
 
     }
 
+    //when this is first made, do all the data setup thats needed
+    void SetUp() {
+        triggers.Add(Times.DAY, dayTrigger);
+        triggers.Add(Times.NIGHT, nightTrigger);
+    }
+
     //turns time to the given time if it isnt already. 
     public void SetTime(Times t) {
         if (currentTime == t) {
             return;
         }
         currentTime = t;
-        //then do the corrisponding trigger. This may want to be made into a map if more than two triggers are added.
-        if (t == Times.DAY)
-            dayTrigger.DoTrigger();
-        else
-            nightTrigger.DoTrigger();
+        //then do the corrisponding trigger. 
+        triggers[t].DoTrigger();
+
+    }
+
+    //adds an event at the designated time
+    public void AddTrigger(Times t, UnityAction action) {
+        triggers[t].AddEvent(action);
+    }
+    public void AddTrigger(Times t, UnityAction a, int repititions) {
+        triggers[t].AddEvent(a, repititions);
     }
 }
