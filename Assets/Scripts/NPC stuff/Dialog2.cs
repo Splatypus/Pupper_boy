@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
@@ -15,8 +17,9 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
     public Sprite image;
 
     //camera references
-    public GameObject playercam;
-    public GameObject npccam;
+    public float dynamicCameraDistance = 4.0f;
+    public float dynamicCameraHeight = 2.5f;
+    public float dynamicCameraTime = 1.0f;
 
     //Progression info
     public DialogNodeStart startNode = null;
@@ -87,15 +90,31 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                 Debug.LogError("Start node placed with no out connection. Dialog bugging out.");
             }
         }
-        //finally, set up cameras and players and everything for dialog
-        npccam.SetActive(true);
-        playercam.SetActive(false);
+
+        //make two vectors pointing away from the plane created by the two dogs talking. Then move the camera to the closer of the two.
+        Vector3 midpoint = Vector3.Lerp(pdialog.transform.position, transform.position, 0.5f);
+        Vector3 position1 = midpoint + Vector3.Cross(transform.position - pdialog.transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+        Vector3 position2 = midpoint + Vector3.Cross(pdialog.transform.position - transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+        
+        Vector3 cameraPosition = Vector3.zero;
+        if (Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position))
+            cameraPosition = position1;
+        else
+            cameraPosition = position2;
+        //Vector3 cameraPosition = Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position) ? position1 : position2;
+        Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(cameraPosition, midpoint, dynamicCameraTime);
+
         //change player mode to dialog mode when they interact with this npc
         controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);
         pdialog.npcDialog = this;
         //Assign image and name
         pdialog.imageObject.sprite = image;
         pdialog.nameTextObject.text = characterName;
+    }
+
+    public void OnEnd() {
+        controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
+        Camera.main.GetComponent<FreeCameraLook>().RestoreCamera(dynamicCameraTime);
     }
 
     //should be called to swap the current node. 
@@ -126,9 +145,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             }
         } else if (node is DialogNodeBreak) {  //break
             //if dialog is going, end it.
-            controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
-            playercam.SetActive(true);
-            npccam.SetActive(false);
+            OnEnd();
         } else if (node is DialogNodeStart) { //start
             //procede to the next node
             if(node.connections != null) {
@@ -263,24 +280,24 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                     nodes.Add(temp);
                     break;
                 case NodeType.CHOICE:
-                    temp = new DialogNodeChoice(new Vector2(s.x, s.y), s.width, s.height, null, null, null, null, null) {
+                    temp = new DialogNodeChoice(new Vector2(s.x, s.y), s.width, s.height) {
                         text = s.text,
                         num = s.num
                     };
                     nodes.Add(temp);
                     break;
                 case NodeType.FUNCTION:
-                    temp = new DialogNodeFunction(new Vector2(s.x, s.y), s.width, s.height, null, null, null, null, null) {
+                    temp = new DialogNodeFunction(new Vector2(s.x, s.y), s.width, s.height) {
                         functionNum = s.num
                     };
                     nodes.Add(temp);
                     break;
                 case NodeType.BREAK:
-                    temp = new DialogNodeBreak(new Vector2(s.x, s.y), s.width, s.height, null, null, null, null, null);
+                    temp = new DialogNodeBreak(new Vector2(s.x, s.y), s.width, s.height);
                     nodes.Add(temp);
                     break;
                 case NodeType.START:
-                    temp = new DialogNodeStart(new Vector2(s.x, s.y), s.width, s.height, null, null, null, null, null);
+                    temp = new DialogNodeStart(new Vector2(s.x, s.y), s.width, s.height);
                     nodes.Add(temp);
                     break;
                 default:
@@ -294,7 +311,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         connections.Clear();
 
         foreach (SerializedConnection s in serializedConnections) {
-            connections.Add(new Connection(nodes[s.inIndex].inPoint, nodes[s.outIndex].outPoint, null));
+            connections.Add(new Connection(nodes[s.inIndex].inPoint, nodes[s.outIndex].outPoint));
             nodes[s.outIndex].connections.Add(nodes[s.inIndex]);
         }
 
@@ -304,7 +321,9 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
     #region Nodes
     public class DialogNode
     {
+        #if UNITY_EDITOR
         public DialogEditorWindow window;
+        #endif
         //DrawingStuff
         public Rect rect;
         public string title;
@@ -326,6 +345,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
         //public DialogLinkedNode linkedNode;
 
+        #if UNITY_EDITOR
         //constructer
         public DialogNode(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, DialogEditorWindow windowRef)
         {
@@ -338,6 +358,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             connections = new List<DialogNode>();
             window = windowRef;
         }
+        #endif
         //serialization constructor
         public DialogNode(Vector2 position, float width, float height)
         {
@@ -348,7 +369,6 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             defaultStyle = null;
             selectedStyle = null;
             connections = new List<DialogNode>();
-            window = null;
         }
 
         //Drags the node
@@ -357,6 +377,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             rect.position += delta;
         }
 
+        #if UNITY_EDITOR
         //draw function
         public virtual void Draw()
         {
@@ -419,6 +440,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         {
             window.OnClickRemoveNode(this);
         }
+        #endif
 
         //Connects this node to a new one in the linked dialog representation
         public virtual void LinkNode(DialogNode d)
@@ -433,12 +455,14 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
         public string text;
         //node editor constructor
+        #if UNITY_EDITOR
         public DialogNodeDialog(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, DialogEditorWindow windowRef)
             : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle, windowRef)
         {
             text = "";
             title = "Dialog";
         }
+        #endif
         //Serializer constructor
         public DialogNodeDialog(Vector2 position, float width, float height)
             : base(position, width, height)
@@ -447,21 +471,23 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             title = "Dialog";
         }
 
+        #if UNITY_EDITOR
         public override void Draw()
         {
             base.Draw();
             Rect textAreaRect = new Rect(rect.x + 20, rect.y + 35, rect.width - 40, rect.height - 55);
             text = EditorGUI.TextArea(textAreaRect, text);
         }
+        #endif
 
     }
 
-    public class DialogNodeChoice : DialogNode
-    {
+    public class DialogNodeChoice : DialogNode{
 
         public string text;
         public int num;
 
+        #if UNITY_EDITOR
         public DialogNodeChoice(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, DialogEditorWindow windowRef)
             : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle, windowRef)
         {
@@ -469,7 +495,17 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             title = "Choice";
             num = 0;
         }
+        #endif
 
+        //Serializer constructor
+        public DialogNodeChoice(Vector2 position, float width, float height)
+            : base(position, width, height) {
+            text = "";
+            title = "Choice";
+            num = 0;
+        }
+
+#if UNITY_EDITOR
         public override void Draw()
         {
             base.Draw();
@@ -477,51 +513,79 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             text = EditorGUI.TextField(textAreaRect, text);
             num = EditorGUI.IntField(new Rect(rect.x + 15, rect.y + 30, 30, 25), num);
         }
+        #endif
     }
 
     public class DialogNodeFunction : DialogNode
     {
         public int functionNum;
 
+        #if UNITY_EDITOR
         public DialogNodeFunction(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, DialogEditorWindow windowRef)
             : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle, windowRef)
         {
             functionNum = 0;
             title = "Function";
         }
+        #endif
+        //Serializer constructor
+        public DialogNodeFunction(Vector2 position, float width, float height)
+            : base(position, width, height) {
+            functionNum = 0;
+            title = "Function";
+        }
 
+        #if UNITY_EDITOR
         public override void Draw()
         {
             base.Draw();
             Rect textAreaRect = new Rect(rect.x + 15, rect.y + 30, rect.width - 30, rect.height - 45);
             functionNum = EditorGUI.IntField(textAreaRect, functionNum);
         }
-
+        #endif
     }
 
     public class DialogNodeBreak : DialogNode
     {
+        #if UNITY_EDITOR
         public DialogNodeBreak(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, DialogEditorWindow windowRef)
             : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle, windowRef)
         {
             title = "Break";
         }
+        #endif
 
+        //Serializer constructor
+        public DialogNodeBreak(Vector2 position, float width, float height)
+            : base(position, width, height) {
+            title = "Break";
+        }
+
+        #if UNITY_EDITOR
         public override void Draw()
         {
             base.Draw();
         }
+        #endif
 
     }
 
     public class DialogNodeStart : DialogNode
     {
 
+        #if UNITY_EDITOR
         public DialogNodeStart(Vector2 position, float width, float height, GUIStyle nodeStyle, GUIStyle _selectedStyle, GUIStyle inPointStyle, GUIStyle outPointStyle, DialogEditorWindow windowRef)
             : base(position, width, height, nodeStyle, _selectedStyle, inPointStyle, outPointStyle, windowRef)
         {
             title = "Start";
         }
+        #endif
+        //Serializer constructor
+        public DialogNodeStart(Vector2 position, float width, float height)
+            : base(position, width, height) {
+            title = "Start";
+        }
+
     }
 
     public enum ConnectionPointType { In, Out }
@@ -546,7 +610,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             this.type = type;
             rect = new Rect(0, 0, 10f, 20f);
         }
-
+#if UNITY_EDITOR
         public void Draw()
         {
             rect.y = node.rect.y + (node.rect.height * 0.5f) - rect.height * 0.5f;
@@ -576,21 +640,32 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                 }
             }
         }
+#endif
     }
 
     public class Connection
     {
         public ConnectionPoint inPoint;
         public ConnectionPoint outPoint;
+        #if UNITY_EDITOR
         public DialogEditorWindow window;
+        #endif
 
+        #if UNITY_EDITOR
         public Connection(ConnectionPoint inPoint, ConnectionPoint outPoint, DialogEditorWindow windowRef)
         {
             this.inPoint = inPoint;
             this.outPoint = outPoint;
             window = windowRef;
         }
+        #endif
 
+        public Connection(ConnectionPoint inPoint, ConnectionPoint outPoint) {
+            this.inPoint = inPoint;
+            this.outPoint = outPoint;
+        }
+
+        #if UNITY_EDITOR
         public void Draw()
         {
             Handles.DrawBezier(
@@ -608,6 +683,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                 window.OnClickRemoveConnection(this);
             }
         }
+        #endif
     }
     #endregion
 }

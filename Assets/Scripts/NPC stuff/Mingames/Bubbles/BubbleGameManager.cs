@@ -17,7 +17,7 @@ public class BubbleGameManager : MiniGameManager {
 
     public int rewardScore;
 
-    public GameObject bubblesRef;
+    public BubblesAI bubblesRef;
 
     //called when the minigame is started
     public override void GameStart() {
@@ -61,7 +61,7 @@ public class BubbleGameManager : MiniGameManager {
             highscores.Sort();
         }
         if (score >= rewardScore) {
-            bubblesRef.GetComponent<BubblesAI>().FinishedGame(score >= rewardScore);
+            bubblesRef.FinishedGame(score >= rewardScore);
         }
     }
 

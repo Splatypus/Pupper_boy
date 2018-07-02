@@ -19,6 +19,8 @@ public class BlackieMiniGame2 : Dialog2 {
     public GameObject[] prefabs;
     public GameObject connectionPrefab;
     public GameObject[] gridTiles;
+    public GameObject shortParticle;
+    public Material redMat, greenMat, blueMat, greyMat, fixedMat;
     public float tileDis;
 
     public int puzzleNumber = 0;
@@ -31,6 +33,7 @@ public class BlackieMiniGame2 : Dialog2 {
         gameBounds.enabled = false;
         emptyPiece = new EmptyNode();
         state = States.READY;
+        shortParticle = Instantiate(shortParticle);
     }
 
 
@@ -150,13 +153,12 @@ public class BlackieMiniGame2 : Dialog2 {
                 int type = int.Parse(line[3]);
                 int extra = int.Parse(line[4]);
                 //make a new object of the given type
-                int prefabToSpawn = i; //adjust which object to spawn based on the type indication and the "extra" field
+                int prefabToSpawn = type; //adjust which object to spawn based on the type indication and the "extra" field
                 if (i == 1)
                     prefabToSpawn = extra;
                 else if (i > 1)
-                    prefabToSpawn += 4;
+                    prefabToSpawn += 3;
                 GameObject inWorld = Instantiate(prefabs[prefabToSpawn], GridToWorldSpace(new Vector2Int(x, y)),transform.rotation);
-                inWorld.transform.Rotate(0, 90.0f * d, 0);
                 inWorld.transform.Rotate(Vector3.up * d * 90.0f); //rotate it to match the input direction
 
                 Gamepiece temp;
@@ -204,6 +206,9 @@ public class BlackieMiniGame2 : Dialog2 {
                 inWorldScript.Start();
                 inWorldScript.boardPiece = temp;
                 inWorldScript.OnPlace();
+                //color the designated mesh to the fixed material color (if that mesh exists)
+                if (inWorldScript.fixedPieceMesh != null)
+                    inWorldScript.fixedPieceMesh.material = fixedMat;
             }
         }
 
@@ -380,6 +385,18 @@ public class BlackieMiniGame2 : Dialog2 {
         if (p != emptyPiece) {
             gameBounds.enabled = false;
             //Spawn particle systems
+            if (shortParticle != null) {
+                //move it to the short locaiton
+                shortParticle.transform.position = GridToWorldSpace(new Vector2Int(x, y));
+                //play every particle system on the object
+                ParticleSystem[] ps = shortParticle.GetComponentsInChildren<ParticleSystem>();
+                if (ps != null) {
+                    foreach (ParticleSystem system in ps) {
+                        system.Play();
+                    }
+                }
+                    
+            }
             //remove peice
             p.worldObject.GetComponent<WorldGamepiece>().DoForcedRemove();
             gameBounds.enabled = true;
@@ -486,7 +503,22 @@ public class BlackieMiniGame2 : Dialog2 {
         }
 
         //called on each piece when powercheck happens.
-        public void PrepareForCheck() {
+        public virtual void PrepareForCheck() {
+            //turn off particles
+            ParticleSystem ps = null;
+            if (worldObject != null) {
+                ps = worldObject.GetComponentInChildren<ParticleSystem>();
+                //set the material to grey
+                List<MeshRenderer> meshList = worldObject.GetComponent<WorldGamepiece>().meshes;
+                if (meshList != null) {
+                    foreach (MeshRenderer m in meshList) {
+                        m.material = gameRef.greyMat;
+                    }
+                }
+            }
+            if(ps != null && ps.isPlaying)
+                ps.Stop();
+            //reset sources list
             if (sources == null)
                 sources = new List<PowerTransfer>();
             else
@@ -514,17 +546,42 @@ public class BlackieMiniGame2 : Dialog2 {
             }
             if (state == PowerStates.OFF) {
                 ps.Stop();
+                //color it grey
+                List<MeshRenderer> meshList = worldObject.GetComponent<WorldGamepiece>().meshes;
+                if (meshList != null) {
+                    foreach (MeshRenderer m in meshList) {
+                        m.material = gameRef.greyMat;
+                    }
+                }
             }
             //if turned on change particles to the right color
             else {
                 ps.Play();
                 ParticleSystem.MainModule module = ps.main;
-                if (state == PowerStates.BLUE)
-                    module.startColor = new Color(0.0f, 0.0f, 1.0f);
-                else if (state == PowerStates.RED)
-                    module.startColor = new Color(1.0f, 0.0f, 0.0f);
-                else if (state == PowerStates.GREEN)
-                    module.startColor = new Color(0.0f, 1.0f, 0.0f);
+                Material colorMat = gameRef.greyMat;
+                switch (state) {
+                    case PowerStates.RED:
+                        module.startColor = new Color(1.0f, 0.0f, 0.0f);
+                        colorMat = gameRef.redMat;
+                        break;
+                    case PowerStates.GREEN:
+                        module.startColor = new Color(0.0f, 1.0f, 0.0f);
+                        colorMat = gameRef.greenMat;
+                        break;
+                    case PowerStates.BLUE:
+                        module.startColor = new Color(0.0f, 0.0f, 1.0f);
+                        colorMat = gameRef.blueMat;
+                        break;
+                    default:
+                        break;
+                }
+
+                List<MeshRenderer> meshList = worldObject.GetComponent<WorldGamepiece>().meshes;
+                if (meshList != null) {
+                    foreach (MeshRenderer m in meshList) {
+                        m.material = colorMat;
+                    }
+                }
             }
         }
 
@@ -552,6 +609,25 @@ public class BlackieMiniGame2 : Dialog2 {
                     break;
             }
             return toReturn;
+        }
+
+        //returns a material of the same given color
+        public Material GetMaterialFromColor(PowerStates color) {
+            Material colorMat = gameRef.greyMat;
+            switch (color) {
+                case PowerStates.RED:
+                    colorMat = gameRef.redMat;
+                    break;
+                case PowerStates.GREEN:
+                    colorMat = gameRef.greenMat;
+                    break;
+                case PowerStates.BLUE:
+                    colorMat = gameRef.blueMat;
+                    break;
+                default:
+                    break;
+            }
+            return colorMat;
         }
     }
 
@@ -736,13 +812,22 @@ public class BlackieMiniGame2 : Dialog2 {
         public override List<PowerTransfer> TransferPower(PowerTransfer source) {
             sources.Add(source);
             List<PowerTransfer> output = new List<PowerTransfer>();
+            //find which direction the power is from, and if theres something to pass it on ot, then do so.
+            //also color the world object
             for (int i = 0; i < 4; i++) {
-                if (location + LocalDirectionVector(i) == source.sourceLocation && gameRef.GetAtLocation(location + LocalDirectionVector(i + 2)) != gameRef.emptyPiece) {
-                    output.Add(new PowerTransfer() {    sourceLocation = location,
-                                                        effectLocation = location + LocalDirectionVector(i + 2),
-                                                        powerType = source.powerType});
+                if (location + LocalDirectionVector(i) == source.sourceLocation) { 
+                    if (gameRef.GetAtLocation(location + LocalDirectionVector(i + 2)) != gameRef.emptyPiece) {
+                        output.Add(new PowerTransfer() { sourceLocation = location,
+                            effectLocation = location + LocalDirectionVector(i + 2),
+                            powerType = source.powerType });
 
-                }
+                    }
+                    //then color this accordingly
+                    if (i == 1 || i == 3)
+                        worldObject.GetComponent<WorldGamepiece>().meshes[0].material = GetMaterialFromColor(source.powerType);
+                    else
+                        worldObject.GetComponent<WorldGamepiece>().defaultColorMesh.material = GetMaterialFromColor(source.powerType);
+            }
             }
             return output;
         }
@@ -759,6 +844,29 @@ public class BlackieMiniGame2 : Dialog2 {
                 }
             }
             return hasShort;
+        }
+
+        public override void SetState(PowerStates newstate) {
+            state = newstate;
+        }
+
+        public override void PrepareForCheck() {
+            //turn off particles
+            if (worldObject != null) {
+                //set the material to grey
+                List<MeshRenderer> meshList = worldObject.GetComponent<WorldGamepiece>().meshes;
+                if (meshList != null) {
+                    foreach (MeshRenderer m in meshList) {
+                        m.material = gameRef.greyMat;
+                    }
+                }
+                worldObject.GetComponent<WorldGamepiece>().defaultColorMesh.material = gameRef.greyMat;
+            }
+            //reset sources list
+            if (sources == null)
+                sources = new List<PowerTransfer>();
+            else
+                sources.Clear();
         }
     }
 
@@ -781,16 +889,13 @@ public class BlackieMiniGame2 : Dialog2 {
                                                         powerType = state});
                 }
             }
+            SetState(state); //color itself
             return output;
         }
 
         //source node will recognize a short if anything is trying to power it.
         public override bool DidShort() {
             return sources.Count > 0;
-        }
-
-        //Cannot change the state of a source node
-        public override void SetState(PowerStates newstate) {
         }
 
     }
@@ -805,6 +910,14 @@ public class BlackieMiniGame2 : Dialog2 {
         public GoalNode(GameObject _inWorld, BlackieMiniGame2 gameManager, PowerStates _color, int x, int y) : base (_inWorld, true, gameManager, x, y, 0) {
             powerColor = _color;
             state = PowerStates.OFF;
+            if (_inWorld.GetComponent<WorldGamepiece>().defaultColorMesh != null) 
+                _inWorld.GetComponent<WorldGamepiece>().defaultColorMesh.material = GetMaterialFromColor(_color);
+        }
+
+        //remove power from this if its not powered.
+        public override void PrepareForCheck() {
+            base.PrepareForCheck();
+            state = PowerStates.OFF;
         }
 
         //powers nothing, but will be powered if by its own color
@@ -813,5 +926,6 @@ public class BlackieMiniGame2 : Dialog2 {
                 SetState(powerColor);
             return new List<PowerTransfer>();
         }
+
     }
 }

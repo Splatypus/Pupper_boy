@@ -9,6 +9,9 @@ public class WorldGamepiece : Interactable {
     bool isHeld;
     public BlackieMiniGame2 gameSource;
     public GameObject targeter;
+    public List<MeshRenderer> meshes;
+    public MeshRenderer fixedPieceMesh; //this mesh changes color when this piece is a fixed piece.
+    public MeshRenderer defaultColorMesh; //this mesh is used to display a set initial color, such as for goal nodes
     float distance;
     Vector3 offsets;
     GameObject player;
@@ -59,11 +62,15 @@ public class WorldGamepiece : Interactable {
     }
 
     public void OnPlace() {
-        Vector2Int gridLocation = gameSource.WorldToGridSpace(transform.position);
-        gameSource.PlacePiece(boardPiece, gridLocation.x, gridLocation.y, 0);
-        transform.position = gameSource.GridToWorldSpace(gridLocation);
-        transform.rotation = new Quaternion();
         rb.isKinematic = true;
+        //find where it goes on the grid
+        Vector2Int gridLocation = gameSource.WorldToGridSpace(transform.position);
+        //calculate it's rotation
+        float rotation = Mathf.Repeat(transform.rotation.eulerAngles.y - gameSource.transform.rotation.eulerAngles.y + 720.0f, 360.0f);
+        //place piece
+        gameSource.PlacePiece(boardPiece, gridLocation.x, gridLocation.y, (int)(rotation/90.0f + 0.5f));
+        transform.position = gameSource.GridToWorldSpace(gridLocation);
+        transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
         //if this piece is locked, stop you from ever picking it up by canging its tag and disabling this script
         if (boardPiece.isLocked) {
             gameObject.tag = "Untagged";
@@ -89,9 +96,8 @@ public class WorldGamepiece : Interactable {
 
     //for when a short is caused and this piece needs to be yote into the air
     public void DoForcedRemove() {
-        print("Shorted");
         rb.isKinematic = false;
-        rb.AddForce(new Vector3(0.0f, 70.0f, 0.0f));
+        rb.velocity = (new Vector3(Random.Range(-2.5f, 2.5f), 10.0f, Random.Range(-2.5f, 2.5f)));
     }
 
     public override void onDrop()

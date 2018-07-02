@@ -65,4 +65,5 @@ public class CameraCollision : MonoBehaviour {
         curCamDis = newCamDis;
 
     }
+
 }

@@ -1,96 +1,120 @@
 ﻿using UnityEngine;
+using System.Collections;
 //using UnityEditor;
 
-public class FreeCameraLook : Pivot
-{
+public class FreeCameraLook : MonoBehaviour {
 
-    [SerializeField]
-    private float moveSpeed = 5f;
-    [SerializeField]
-    private float turnSpeed = 1.5f;
-    [SerializeField]
-    private float turnsmoothing = .1f;
-    [SerializeField]
-    private float tiltMax = 75f;
-    [SerializeField]
-    private float tiltMin = 45f;
-    [SerializeField]
-    private bool lockCursor = false;
+    public GameObject player;
 
-    [SerializeField]
-    float joypadXMultiplier = 2.0f;
-    [SerializeField]
-    float joypadYMultiplier = 2.0f;
+    public float maxDistance = 7.0f;
+    public float minDistance = 0.2f;
+    public float collisionPadding = 0.5f;
+    public float turnSpeed = 1.5f;
+    public float tiltMax = 75f;
+    public float tiltMin = 45f;
+    public bool controlLocked = false; //control of camera locks when npc stuff
+
+    public float joypadXMultiplier = 2.0f;
+    public float joypadYMultiplier = 2.0f;
 
     private float lookAngle;
     private float tiltAngle;
 
+    public Transform anchor;
+    public Vector3 previousFrameLocation;
 
-    private const float LookDistance = 100f;
-
-    private float smoothX = 0;
-    private float smoothY = 0;
-    private float smoothXvelocity = 0;
-    private float smoothYvelocity = 0;
-
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        Cursor.lockState = CursorLockMode.Confined;
-
-        cam = GetComponentInChildren<Camera>().transform;
-        pivot = cam.parent;
+    private void Start() {
+        if (player == null) {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+        previousFrameLocation = anchor.position;
     }
 
     // Update is called once per frame
-    protected override void Update()
-    {
-        base.Update();
-
-        HandleRotationMovement();
-
-        if (lockCursor && Input.GetMouseButtonUp(0))
-        {
-            Cursor.lockState = CursorLockMode.Confined;
-        }
+    void Update() {
+        if (!controlLocked)
+            HandleRotationMovement();
     }
 
-    void OnDisable()
-    {
-        Cursor.lockState = CursorLockMode.None;
-    }
 
-    protected override void Follow(float deltaTime)
-    {
-        transform.position = Vector3.Lerp(transform.position, target.position, deltaTime * moveSpeed);
+    void HandleRotationMovement() {
 
-    }
+        //the amount the player has moved awayfrom/towards the camer, or up and down since the last frame
+        Vector3 movementDelta = Vector3.ProjectOnPlane(anchor.position - previousFrameLocation, transform.right);
+        transform.position += movementDelta;
 
-    void HandleRotationMovement()
-    {
+        //apply mouse movement
         float x = Input.GetAxis("Mouse X") + Input.GetAxis("RightJoystickX") * joypadXMultiplier;
         float y = Input.GetAxis("Mouse Y") + Input.GetAxis("RightJoystickY") * joypadYMultiplier;
+        transform.RotateAround(anchor.position, anchor.up, x);
+        transform.RotateAround(anchor.position, transform.right, -y);
 
-        if (turnsmoothing > 0)
-        {
-            smoothX = Mathf.SmoothDamp(smoothX, x, ref smoothXvelocity, turnsmoothing);
-            smoothY = Mathf.SmoothDamp(smoothY, y, ref smoothYvelocity, turnsmoothing);
+
+        //find out how many units back the camera can be
+        RaycastHit hit;
+        int layermask = 1 << 2; //ignore raycast layer is skipped
+        layermask = ~layermask;
+        if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, maxDistance, layermask)) {
+            transform.position = anchor.position + (transform.position - anchor.position).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
+        } else {
+            transform.position = anchor.position + (transform.position - anchor.position).normalized * maxDistance;
         }
-        else
-        {
-            smoothX = x;
-            smoothY = y;
-        }
-        lookAngle += smoothX * turnSpeed;
 
-        transform.rotation = Quaternion.Euler(0f, lookAngle, 0);
 
-        tiltAngle -= smoothY * turnSpeed;
-        tiltAngle = Mathf.Clamp(tiltAngle, -tiltMin, tiltMax);
+        previousFrameLocation = anchor.position;
+        //always look at the player
+        transform.LookAt(anchor);
 
-        pivot.localRotation = Quaternion.Euler(tiltAngle, 0, 0);
     }
+
+    //moves the camera to the given position, facing lookat, over the duration given. Smooths movement and disables input.
+    public void MoveToPosition(Vector3 location, Vector3 lookAt, float duration) {
+        controlLocked = true;
+        StartCoroutine(Pan(location, lookAt, duration));
+    }
+
+    //smoothly moves the camera to it's closest valid location, then reenables input
+    public void RestoreCamera(float duration) {
+        Vector3 targetPosition = anchor.position + (transform.position - anchor.position).normalized * maxDistance;
+        //raycast towards targetPosition and move it in if needed to avoid camera collision
+        RaycastHit hit;
+        int layermask = 1 << 2; //ignore raycast layer is skipped
+        layermask = ~layermask;
+        if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, maxDistance, layermask)) {
+            targetPosition = anchor.position + (transform.position - anchor.position).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
+        }
+
+        //start a pan coroutine to move camera, and an unlock control one to return control to the player as that ends
+        StartCoroutine(Pan(targetPosition, anchor.position, duration));
+        StartCoroutine(UnlockControl(duration));
+    }
+
+    //unlocks control after the given amount of time
+    IEnumerator UnlockControl(float time) {
+        yield return new WaitForSeconds(time);
+        controlLocked = false;
+    }
+
+    //takes in a location and a spot to look at, and a duration. Pans to location, looking towards lookAt over the given duration
+    IEnumerator Pan(Vector3 location, Vector3 lookAt, float duration) {
+        float startTime = Time.time;
+        Quaternion startRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.LookRotation(lookAt - location);
+        float startDistance = Vector3.Distance(lookAt, transform.position);
+        float targetDistance = Vector3.Distance(lookAt, location);
+        Quaternion startAngle = Quaternion.LookRotation(transform.position - lookAt);
+        Quaternion targetAngle = Quaternion.LookRotation(location - lookAt);
+
+        while (Time.time < startTime + duration) {
+            float scaledTime = (Time.time - startTime) / duration;
+            //keeps the camera distance away from lookat point, at an angle slerping between target and start.
+            transform.position = lookAt + ((Quaternion.Slerp(startAngle, targetAngle, scaledTime) * Vector3.forward).normalized * Mathf.Lerp(startDistance, targetDistance, scaledTime));
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, scaledTime);
+            yield return new WaitForFixedUpdate();
+        }
+        transform.position = lookAt + (targetAngle * Vector3.forward).normalized * targetDistance;
+        transform.rotation = targetRotation;
+    }
+
 
 }

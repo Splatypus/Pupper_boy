@@ -29,7 +29,7 @@ public class AIbase : Dialog2 {
 
     //Displays the thought bubble
     public void Display(int iconIndex) {
-        if (Icons.Length != 0) {
+        if (Icons.Length != 0 && iconIndex < Icons.Length) {
             iconCanvas.SetActive(true);
             iconRenderer.sprite = Icons[iconIndex];
         }
