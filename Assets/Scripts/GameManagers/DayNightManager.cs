@@ -7,10 +7,9 @@ public class DayNightManager : MonoBehaviour {
 
     public static DayNightManager Instance; //Static reference to the current instance of this manager
     public enum Times { DAY, NIGHT };
+    int numberOfTimes = 2;
     public Times currentTime = Times.DAY;
-    public Dictionary<Times, Trigger> triggers = new Dictionary<Times, Trigger>();
-    Trigger dayTrigger = new Trigger();
-    Trigger nightTrigger = new Trigger();
+    public List<Trigger> triggers;
 
     void Awake() {
         //singleton pattern but for gameobjects.
@@ -85,8 +84,10 @@ public class DayNightManager : MonoBehaviour {
 
     //when this is first made, do all the data setup thats needed
     void SetUp() {
-        triggers.Add(Times.DAY, dayTrigger);
-        triggers.Add(Times.NIGHT, nightTrigger);
+        triggers = new List<Trigger>();
+        for (int i = 0; i < numberOfTimes; i++) {
+            triggers.Add(new Trigger());
+        }
     }
 
     //turns time to the given time if it isnt already. 
@@ -96,15 +97,15 @@ public class DayNightManager : MonoBehaviour {
         }
         currentTime = t;
         //then do the corrisponding trigger. 
-        triggers[t].DoTrigger();
+        triggers[(int)t].DoTrigger();
 
     }
 
     //adds an event at the designated time
     public void AddTrigger(Times t, UnityAction action) {
-        triggers[t].AddEvent(action);
+        triggers[(int)t].AddEvent(action);
     }
     public void AddTrigger(Times t, UnityAction a, int repititions) {
-        triggers[t].AddEvent(a, repititions);
+        triggers[(int)t].AddEvent(a, repititions);
     }
 }
