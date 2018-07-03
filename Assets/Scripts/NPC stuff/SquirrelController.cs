@@ -278,8 +278,7 @@ public class SquirrelController : MonoBehaviour {
 
             // set up animator
             anim.SetBool("isWander", false);
-
-            BoxCollider mcol = GetComponent<BoxCollider>();
+            
         }
         
     }
