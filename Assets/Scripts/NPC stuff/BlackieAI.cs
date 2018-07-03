@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackieAI : AIbase, ISavesData {
+public class BlackieAI : AIbase {
 
 
     public GameObject rewardSpawn; //location at which the reward is spawned
@@ -12,7 +12,7 @@ public class BlackieAI : AIbase, ISavesData {
     public BlackieMiniGame2 blackieGameRef;
 
     void Awake() {
-        Saving.Instance.AddCallback(this);
+        Saving.Instance.AddCallback(new UnityEngine.Events.UnityAction(OnLoad));
     }
 
     // Use this for initialization
@@ -54,7 +54,7 @@ public class BlackieAI : AIbase, ISavesData {
     }
 
     //called when saved data is loaded
-    void ISavesData.OnLoad() {
+    void OnLoad() {
         currentNode = nodes[Saving.Instance.data.blackieConversationNumber];
         Debug.Log("Loaded to node index " + Saving.Instance.data.blackieConversationNumber);
     }

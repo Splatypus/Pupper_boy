@@ -19,6 +19,10 @@ public class DayNightSpawn : MonoBehaviour {
             dayNight.AddTrigger(DayNightManager.Times.DAY, new UnityAction(Activate));
             dayNight.AddTrigger(DayNightManager.Times.NIGHT, new UnityAction(Deactivate));
         }
+        //then set if it should currently be active or not
+        if((dayNight.currentTime == DayNightManager.Times.DAY && isActiveAtNight) || (dayNight.currentTime == DayNightManager.Times.NIGHT && !isActiveAtNight)){
+            Deactivate();
+        }
     }
 
     public void Activate() {

@@ -70,7 +70,7 @@ public class DayNightManager : MonoBehaviour {
             //resolve each action, remove it from the list if it runs out of triggers.
             List<ActionContainter> expired = new List<ActionContainter>();
             for (int i = 0; i < ActionList.Count; i++) {
-                if (ActionList[i].DoTrigger()) {
+                if (!ActionList[i].DoTrigger()) {
                     expired.Add(ActionList[i]);
                 }
             }

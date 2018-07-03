@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class Saving : MonoBehaviour {
 
@@ -17,7 +18,7 @@ public class Saving : MonoBehaviour {
     public static Saving Instance;
     public int FilelNum = 0;
     public SaveData data = new SaveData();
-    public List<ISavesData> callbacks = new List<ISavesData>(); 
+    public Queue<UnityAction> callbacks = new Queue<UnityAction>();
 
     void Awake() {
         //singleton pattern but for gameobjects.
@@ -36,6 +37,8 @@ public class Saving : MonoBehaviour {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        //things that want data loaded to them need to add themselves to callback list during awake.
+        //then on scene load will load data to them as a one shot effect.
         Load();
     }
 
@@ -58,26 +61,19 @@ public class Saving : MonoBehaviour {
             file.Close();
 
             //then inform everything that needs to be informed about the load
-            foreach (ISavesData sd in callbacks) {
-                if (sd != null)
-                    sd.OnLoad();
+            while (callbacks.Count > 0) {
+                UnityAction a = callbacks.Dequeue();
+                a.Invoke();
             }
         } else {
             Debug.LogError("Failed to find save file: /SaveFile" + FilelNum + ".dat");
         }
     }
 
-    public void AddCallback(ISavesData s) {
-        if (!callbacks.Contains(s)) {
-            callbacks.Add(s);
-        }
+    public void AddCallback(UnityAction a) {
+        callbacks.Enqueue(a);
     }
 
-}
-
-//interface that anything that saves data needs. 
-public interface ISavesData {
-    void OnLoad();
 }
 
 
