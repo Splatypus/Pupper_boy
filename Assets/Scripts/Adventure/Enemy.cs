@@ -6,7 +6,7 @@ public class Enemy : Character {
 
     public override void OnTurnStart() {
         //generate list of usable abilities and randomly select one
-        gameManager.NextTurn();
+        //gameManager.NextTurn();
     }
 
 }

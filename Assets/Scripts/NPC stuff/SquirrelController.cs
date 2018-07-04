@@ -19,7 +19,6 @@ public class SquirrelController : MonoBehaviour {
     [Header("Movement Stats")]
     [SerializeField] private int minNumMovementLoops = 2;
     [SerializeField] private int maxNumMovementLoops = 5;
-    [SerializeField] private float WanderMaxAngleChange = 10.0f;
     [SerializeField] private float wanderMovementSpeed = 2.0f;
     [SerializeField] private float wanderJumpForce1 = 150.0f;
     [SerializeField] private bool constantMovement = false;
@@ -41,7 +40,6 @@ public class SquirrelController : MonoBehaviour {
     private bool onGround = false;
     private BoxCollider col;
     private float start_climb_time = 0.0f;
-    private Vector3 start_tree_climb_pos = Vector3.zero;
 
     private void Start()
     {
@@ -225,7 +223,6 @@ public class SquirrelController : MonoBehaviour {
         rb.velocity = Vector3.up * climbMoveSpeed;
 
         start_climb_time = Time.time;
-        start_tree_climb_pos = transform.position;
     }
 
     #region Animation Events

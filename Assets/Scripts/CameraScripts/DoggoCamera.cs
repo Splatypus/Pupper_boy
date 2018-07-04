@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using UnityEngine;
 #if UNITY_EDITOR
 
@@ -77,10 +77,6 @@ namespace UnityStandardAssets.Cameras
                 return;
 
             // Read the user input
-            /*
-            var x = CrossPlatformInputManager.GetAxis("Mouse X");
-            var y = CrossPlatformInputManager.GetAxis("Mouse Y");
-            */
             var x = Input.GetAxis("Mouse X");
             var y = Input.GetAxis("Mouse Y");
 
@@ -200,4 +196,4 @@ namespace UnityStandardAssets.Cameras
             transform.rotation = Quaternion.Lerp(transform.rotation, rollRotation, m_TurnSpeed * m_CurrentTurnAmount * deltaTime);
         }
     }
-}
+}*/

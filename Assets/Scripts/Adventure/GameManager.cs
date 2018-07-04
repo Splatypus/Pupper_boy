@@ -2,7 +2,7 @@
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
-
+/*
     //character organization and rounds
     int round = 0;
     Character[] allies = new Character[4];
@@ -46,5 +46,5 @@ public class GameManager : MonoBehaviour {
     public void EndCombat() {
 
     }
-
+    */
 }

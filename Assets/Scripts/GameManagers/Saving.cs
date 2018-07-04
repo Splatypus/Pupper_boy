@@ -17,6 +17,8 @@ public class Saving : MonoBehaviour {
 
     public static Saving Instance;
     public int FilelNum = 0;
+    public bool ShouldLoad = false; //set to true if data should be loaded on scene load, false if it should not be
+    public bool ShouldSave = true;
     public SaveData data = new SaveData();
     public Queue<UnityAction> callbacks = new Queue<UnityAction>();
 
@@ -39,16 +41,21 @@ public class Saving : MonoBehaviour {
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         //things that want data loaded to them need to add themselves to callback list during awake.
         //then on scene load will load data to them as a one shot effect.
-        Load();
+        if (ShouldLoad)
+            Load();
+        else
+            callbacks.Clear();
     }
 
     //saves the game
     public void Save() {
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + FilelNum + ".dat", FileMode.OpenOrCreate);
+        if (ShouldSave) {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + FilelNum + ".dat", FileMode.OpenOrCreate);
 
-        bf.Serialize(file, data);
-        file.Close();
+            bf.Serialize(file, data);
+            file.Close();
+        }
     }
 
     //loads the game
