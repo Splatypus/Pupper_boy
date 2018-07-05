@@ -19,7 +19,7 @@ public class DogControllerV2 : Controller {
 
 
     #region new world order movement variables
-    Vector3 v; //velocity
+    public Vector3 v; //velocity
     private float lastJumpTime = 0.0f;
     public float maxSpeed;
     public float sprintMultiplier;
@@ -30,9 +30,9 @@ public class DogControllerV2 : Controller {
     public float maxFallSpeed;
     public float jumpForce;
     public float turnspeed = 5;
+    public float freezeMovementAngle = 90.0f;
     #endregion
 
-    Vector3 directionPos;
     Vector3 cam_right, cam_fwd;
 
     float horizontal;
@@ -56,7 +56,7 @@ public class DogControllerV2 : Controller {
     [SerializeField]
     private AudioSource dig_sound;
     public float rotateSpeed = 10.0f;
-    public float maxRoationTime = 0.4f; 
+    public float maxRotaionTime = 0.4f; 
 
     DigZone curZone;
     IconManager my_icon;
@@ -147,6 +147,19 @@ public class DogControllerV2 : Controller {
             newMaxSpeed = maxSpeed * sprintMultiplier;
         }
 
+        //find the direction doggo is supposed to move
+        Vector3 dir = transform.position + (cam_right) + (cam_fwd);
+        dir -= transform.position;
+        dir.y = 0;
+        //the angle of rotation between doggo and the desired movement 
+        float angle = 0;
+        if (dir.sqrMagnitude > Mathf.Epsilon) //angle is only nonzero if the movement direction exists
+            angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
+
+        //reduce the speed if your angle is too far off
+        if (angle > freezeMovementAngle)
+            newMaxSpeed = 0;
+
         //store vertical movement speed before messing with horizontal, since the entire vector is changed
         float verticalSpeed = v.y;
         //if doggo would accelerate past max speed, then go just to max speed instead. Amout you accelerate is multiplied by the inair mult if youre in the air
@@ -191,14 +204,7 @@ public class DogControllerV2 : Controller {
         // Update player rotation
         if (horizontal != 0 || vertical != 0)
         {
-            directionPos = transform.position + (cam_right) + (cam_fwd);
-
-            Vector3 dir = directionPos - transform.position;
-            dir.y = 0;
-
-            float angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
-
-            if (angle != 0)
+            if (angle > Mathf.Epsilon)
                 rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle/180.0f + 1.0f) * turnspeed/angle * Time.deltaTime);
         }
     }
@@ -293,7 +299,7 @@ public class DogControllerV2 : Controller {
         }
         //rotate towards the fence
         float timeTaken = 0.0f;
-        while ( transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRoationTime){
+        while ( transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRotaionTime){
             transform.rotation = Quaternion.RotateTowards(  transform.rotation, 
                                                             Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position), 
                                                             rotateSpeed * Time.fixedDeltaTime);
