@@ -21,8 +21,6 @@ public class PlayerDialog : Controller {
     //reference to the current Dialog object this is interacting with. Set to null if there is none
     public Dialog2 npcDialog = null;
 
-    
-	
 	// Update is called once per frame
 	void Update () {
         //if any key is pressed, display the full text of the current text box, or if it already is, then display next

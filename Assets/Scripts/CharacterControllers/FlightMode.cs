@@ -12,24 +12,14 @@ public class FlightMode : Controller {
     private Rigidbody rb;
     private TrailRenderer tr;
     private ParticleSystem ps;
-
-    [SerializeField] private AudioSource BackgroundMusic;
-    [SerializeField] private AudioSource launchSound;
-    [SerializeField] private AudioSource flightSound;
-    [SerializeField] private AudioSource flightMusic;
+    
+    public AudioSource launchSound;
+    public AudioSource flightSound;
+    public AudioClip flightMusic;
 
     BoxCollider col;
     [SerializeField] private PhysicMaterial flightMaterial;
 
-    [SerializeField] private float fadeTime;
-    [SerializeField] private float fadeBGTime;
-
-    float BGMusicNormalVolume;
-
-    private Coroutine fadeRoutine = null;
-    private Coroutine BGFadeOutRoutine = null;
-    private Coroutine BGFadeInRoutine = null;
-    private float musicStartVolume;
     
     private PuppyPickup pickup;
     private Vector3 euler_rotation;
@@ -44,12 +34,8 @@ public class FlightMode : Controller {
         tr = this.GetComponentInChildren<TrailRenderer>();
         ps = this.GetComponent<ParticleSystem>();
         col = GetComponent<BoxCollider>();
-        if(BackgroundMusic != null)
-            BGMusicNormalVolume = BackgroundMusic.volume;
 
         tr.enabled = false;
-
-        musicStartVolume = flightMusic.volume;
 
         pickup = FindObjectOfType<PuppyPickup>();
 
@@ -111,23 +97,8 @@ public class FlightMode : Controller {
 
         // set up sounds for flight
         launchSound.Play();
-        if(flightMusic.isPlaying)
-            flightMusic.Stop();
-        if (fadeRoutine != null)
-        {
-            StopCoroutine(fadeRoutine);
-            fadeRoutine = null;
-        }
-        flightMusic.volume = musicStartVolume;
-        flightMusic.Play();
-
-        // if bg music is currently fading in, stop fading it in
-        if(BGFadeInRoutine != null)
-        {
-            StopCoroutine(BGFadeInRoutine);
-            BGFadeInRoutine = null;
-        }
-        BGFadeOutRoutine = StartCoroutine(FadeBGOut());
+        //swap music to flight music
+        MusicManager.Instance.ChangeSong(1.0f, flightMusic);
 
         anim.SetBool("isFlying", true);
     }
@@ -151,62 +122,10 @@ public class FlightMode : Controller {
             launchSound.Stop();
         if(flightSound.isPlaying)
             flightSound.Stop();
-        fadeRoutine = StartCoroutine(FadeMusic());
-        BGFadeInRoutine = StartCoroutine(FadeBGIn());
 
-        // if bg music is currently fading in, stop fading it out
-        if (BGFadeOutRoutine != null)
-        {
-            StopCoroutine(BGFadeOutRoutine);
-            BGFadeOutRoutine = null;
-        }
+        //return music back to default
+        MusicManager.Instance.ChangeSong(1.0f, MusicManager.Instance.defaultTheme);
 
         anim.SetBool("isFlying", false);
-    }
-
-
-    private IEnumerator FadeBGOut()
-    {
-        float startVolume = BackgroundMusic.volume;
-        float startTime = Time.time;
-        while (BackgroundMusic.volume > 0.01f)
-        {
-            float lerpAmount = 1f - ((Time.time - startTime) / fadeBGTime);
-            BackgroundMusic.volume = startVolume * lerpAmount;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-
-        BackgroundMusic.Pause();
-        BGFadeOutRoutine = null;
-    }
-
-    private IEnumerator FadeBGIn()
-    {
-        float startVolume = BGMusicNormalVolume;
-        float startTime = Time.time;
-        BackgroundMusic.UnPause();
-        while (BackgroundMusic.volume < 1.0f)
-        {
-            float lerpAmount = ((Time.time - startTime) / fadeBGTime);
-            BackgroundMusic.volume = startVolume * lerpAmount;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-        BackgroundMusic.volume = 1.0f;
-        BGFadeInRoutine = null;
-    }
-
-    private IEnumerator FadeMusic()
-    {
-        float startVolume = flightMusic.volume;
-        float startTime = Time.time;
-        while (flightMusic.volume > 0.01f)
-        {
-            float lerpAmount = 1f - ((Time.time - startTime) / fadeTime);
-            flightMusic.volume = startVolume * lerpAmount;
-            yield return new WaitForSeconds(Time.deltaTime);
-        }
-
-        flightMusic.Stop();
-        fadeRoutine = null;
     }
 }
