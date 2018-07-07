@@ -157,26 +157,33 @@ public class DogControllerV2 : Controller {
             angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
 
         //reduce the speed if your angle is too far off
-        if (angle > freezeMovementAngle)
+        if (angle > freezeMovementAngle && onGround > 0)
             newMaxSpeed = 0;
 
         //store vertical movement speed before messing with horizontal, since the entire vector is changed
         float verticalSpeed = v.y;
-        //if doggo would accelerate past max speed, then go just to max speed instead. Amout you accelerate is multiplied by the inair mult if youre in the air
+        v.y = 0;
+
+        //##TODO: With input: always accelerate, capped at maxSpeed
+        //with no input: in air, decellerate. On ground, drop to 0 automatically.
+                
+        //if doggo would accelerate past max speed, then go just to max speed instead.
         if ((v + moveDirection * a * Time.deltaTime).sqrMagnitude > newMaxSpeed * newMaxSpeed) {
-            v = moveDirection * newMaxSpeed;
-        } else if ((cam_right + cam_fwd).sqrMagnitude < 0.0001f) {//deceleration if no movement input in either direction
-            //if decelerating would put speed lower than zero, set v to zero vector
-            /*float curSpeed = v.magnitude;
-            if (curSpeed - (decceleration * Time.deltaTime) < 0) {
-                v = Vector3.zero;
-            } else {
-                v = v.normalized * (curSpeed - (decceleration * Time.deltaTime));
-            }*/
-            v = Vector3.zero; //testing no decel
-        } else {
+            v = (v + moveDirection * a * Time.deltaTime).normalized * newMaxSpeed; 
+        }
+        //Freeze movement if no movement input
+        else if ((cam_right + cam_fwd).sqrMagnitude < Mathf.Epsilon) {
+            v = Vector3.zero;
+        }
+        //otherwise, just accelerate in the given direction
+        else {
             v += moveDirection * a * Time.deltaTime;
         }
+        //if doggo is moving past the maximum speed before applying the acceleration from this frame, slow down doggo, but not below the max speed
+        if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
+            v = v.normalized * Mathf.Max((v.magnitude - decceleration * Time.deltaTime), newMaxSpeed);
+        }
+
 
         v.y = verticalSpeed;//reset v.y after changes from horizontal movement
 
@@ -190,7 +197,7 @@ public class DogControllerV2 : Controller {
         } else if (jumpInput) { //jump if jump input
             v.y = jumpForce;
             lastJumpTime = Time.time;
-        } else if (Time.time > lastJumpTime + 0.2f) {
+        } else if (Time.time > lastJumpTime + 0.2f && v.y < 0.0f) {
             //if nothing is affecting velocity and have not jumped recently, then set it to 0. The time check is to make sure jumping allows you to leave the ground
             v.y = 0;
         }
@@ -201,14 +208,15 @@ public class DogControllerV2 : Controller {
         float animValue = Mathf.Sqrt(vertical*vertical + horizontal*horizontal);
         anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime);
 
-        // Update player rotation
-        if (horizontal != 0 || vertical != 0)
-        {
+        // Update player rotation if there is movement in any direction
+        if (horizontal != 0 || vertical != 0) {
             if (angle > Mathf.Epsilon)
-                rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle/180.0f + 1.0f) * turnspeed/angle * Time.deltaTime);
+                rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
+        } else if (Input.GetButtonDown("CameraLock")) {
+            //look vector directly through the doggo
+            Vector3 newLookDirection = Vector3.ProjectOnPlane(transform.position - cam.transform.position, transform.up).normalized;
         }
     }
-
     
     private void OnCollisionEnter(Collision collision)
     {
