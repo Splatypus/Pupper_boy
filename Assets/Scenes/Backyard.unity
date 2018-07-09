@@ -60176,7 +60176,7 @@ Prefab:
     - target: {fileID: 114617946213332872, guid: 7c5cbe28d9747894f997bc050f5504af,
         type: 2}
       propertyPath: maxSpeed
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 114617946213332872, guid: 7c5cbe28d9747894f997bc050f5504af,
         type: 2}
@@ -60186,7 +60186,7 @@ Prefab:
     - target: {fileID: 114617946213332872, guid: 7c5cbe28d9747894f997bc050f5504af,
         type: 2}
       propertyPath: turnspeed
-      value: 360
+      value: 270
       objectReference: {fileID: 0}
     - target: {fileID: 114617946213332872, guid: 7c5cbe28d9747894f997bc050f5504af,
         type: 2}
@@ -60196,7 +60196,16 @@ Prefab:
     - target: {fileID: 114617946213332872, guid: 7c5cbe28d9747894f997bc050f5504af,
         type: 2}
       propertyPath: decceleration
-      value: 20
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114617946213332872, guid: 7c5cbe28d9747894f997bc050f5504af,
+        type: 2}
+      propertyPath: sprintMultiplier
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4203780393901814, guid: 7c5cbe28d9747894f997bc050f5504af, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0.78
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 82991685048565374, guid: 7c5cbe28d9747894f997bc050f5504af, type: 2}

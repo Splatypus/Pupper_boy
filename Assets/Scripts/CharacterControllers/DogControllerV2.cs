@@ -164,9 +164,32 @@ public class DogControllerV2 : Controller {
         float verticalSpeed = v.y;
         v.y = 0;
 
-        //##TODO: With input: always accelerate, capped at maxSpeed
-        //with no input: in air, decellerate. On ground, drop to 0 automatically.
-                
+        //if input
+        if ((cam_right + cam_fwd).sqrMagnitude > Mathf.Epsilon) {
+            //acceleration only affects speed
+            v = moveDirection * Mathf.Min(v.magnitude + a * Time.deltaTime, newMaxSpeed);
+
+            //acceleration affects velocity (drift doggo)
+            /*v += moveDirection * a * Time.deltaTime;
+            //if this acceleration pushes it over the max speed, cap it there instead
+            if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
+                v = v.normalized * maxSpeed;
+            }*/
+        }
+        //no input
+        else {
+            //in air
+            if (onGround == 0) {
+                v = v.normalized * (v.magnitude - decceleration * Time.deltaTime);
+            }
+            //grouned
+            else {
+                v = Vector3.zero;
+            }
+        }
+        
+        #region old move
+        /*
         //if doggo would accelerate past max speed, then go just to max speed instead.
         if ((v + moveDirection * a * Time.deltaTime).sqrMagnitude > newMaxSpeed * newMaxSpeed) {
             v = (v + moveDirection * a * Time.deltaTime).normalized * newMaxSpeed; 
@@ -182,8 +205,8 @@ public class DogControllerV2 : Controller {
         //if doggo is moving past the maximum speed before applying the acceleration from this frame, slow down doggo, but not below the max speed
         if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
             v = v.normalized * Mathf.Max((v.magnitude - decceleration * Time.deltaTime), newMaxSpeed);
-        }
-
+        }*/
+        #endregion
 
         v.y = verticalSpeed;//reset v.y after changes from horizontal movement
 
@@ -212,38 +235,38 @@ public class DogControllerV2 : Controller {
         if (horizontal != 0 || vertical != 0) {
             if (angle > Mathf.Epsilon)
                 rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
-        } else if (Input.GetButtonDown("CameraLock")) {
+        } else if (Input.GetButton("CameraLock")) {
             //look vector directly through the doggo
-            Vector3 newLookDirection = Vector3.ProjectOnPlane(transform.position - cam.transform.position, transform.up).normalized;
+            Quaternion newLookDirection = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.position - cam.transform.position, transform.up).normalized);
+            angle = Quaternion.Angle(transform.rotation, newLookDirection);
+            rigidBody.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
         }
     }
     
     private void OnCollisionEnter(Collision collision)
     {
         // Check if the thing we hit is the ground
-        if (collision.gameObject.tag == "Ground")
-        {
+       // if (collision.gameObject.tag == "Ground"){
             onGround += 1;
             if (onGround > 0) {
                 //rigidBody.drag = groundDrag;
                 // currently, onAir is not used, but could be if we had an animation for jumping
                 anim.SetBool("onAir", false);
             }
-        }
+        //}
     }
 
     private void OnCollisionExit(Collision collision)
     {
         // Check if the thing we left is the ground
-        if (collision.gameObject.tag == "Ground")
-        {
+        //if (collision.gameObject.tag == "Ground"){
             onGround -= 1;
             if (onGround == 0) {
                 //rigidBody.drag = airDrag;
                 // currently, onAir is not used, but could be if we had an animation for jumping
                 anim.SetBool("onAir", true);
             }
-        }
+        //}
     }
 
     private void OnTriggerEnter(Collider other) {

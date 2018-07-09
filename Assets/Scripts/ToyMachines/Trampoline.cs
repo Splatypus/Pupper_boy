@@ -19,10 +19,14 @@ public class Trampoline : MonoBehaviour {
     private void OnTriggerEnter(Collider other) {
         Rigidbody rb = other.GetComponent<Rigidbody>();
         if (other.CompareTag("Player")) {
+            //if the player collides with this while moving downward, bounce them
             DogControllerV2 control = other.GetComponent<DogControllerV2>();
-            control.v = new Vector3(control.v.x, bounceAmount, control.v.z);
+            if(control.v.y < -1.0f)
+                control.v = new Vector3(control.v.x, bounceAmount, control.v.z);
         } else if (rb != null) {
-            rb.velocity = new Vector3(rb.velocity.x, bounceAmount, rb.velocity.z);
+            //if an object collides with this while moving downward, bounce it
+            if(rb.velocity.y <1.0f)
+                rb.velocity = new Vector3(rb.velocity.x, bounceAmount, rb.velocity.z);
         }
     }
 
