@@ -59,8 +59,7 @@ public class FreeCameraLook : MonoBehaviour {
         } else {
             transform.position = anchor.position + (transform.position - anchor.position).normalized * maxDistance;
         }
-
-
+        
         previousFrameLocation = anchor.position;
         //always look at the player
         transform.LookAt(anchor);

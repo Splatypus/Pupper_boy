@@ -76,13 +76,12 @@ public class DogControllerV2 : Controller {
         Cursor.visible = false;
 
         v = Vector3.zero;
+        
     }
 
 
     // Update is called once per frame
     void Update() {
-
-        //HandleFriction();
 
         //dont do anything if digging
         if (!isDigging) {
@@ -97,7 +96,7 @@ public class DogControllerV2 : Controller {
             }
 
             //handle digging input
-            if (Input.GetButtonDown("Dig")) {
+            if (Input.GetButtonDown("Dig") && onGround > 0) {
                 if (curZone != null) {
                     rigidBody.velocity = Vector3.zero;
                     if (curZone.isPathway) {
@@ -136,7 +135,7 @@ public class DogControllerV2 : Controller {
         cam_fwd = Vector3.ProjectOnPlane(cam.forward, transform.up) * vertical;
         Vector3 moveDirection = (cam_right + cam_fwd).normalized; //new move direction. 
         //^On PC builds this should be normalized, since axies cannot be between 0 and 1, but can both be 1. Meaning you need to prevent faster diagonal movement
-        //on console, this should be non-normalized, since the stick gives values between 0 and 1, but cannot put both at 1
+        //on console, this should be non-normalized, since the stick gives values between 0 and 1, but cannot put both at 1, and you may want <1 values, such as moving the stick half way left
 
         float a = acceleration; //acceleration for this frame
         if (onGround == 0) {
@@ -169,7 +168,7 @@ public class DogControllerV2 : Controller {
             //acceleration only affects speed
             v = moveDirection * Mathf.Min(v.magnitude + a * Time.deltaTime, newMaxSpeed);
 
-            //acceleration affects velocity (drift doggo)
+            //If acceleration affects velocity (drift doggo)
             /*v += moveDirection * a * Time.deltaTime;
             //if this acceleration pushes it over the max speed, cap it there instead
             if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
@@ -234,12 +233,13 @@ public class DogControllerV2 : Controller {
         // Update player rotation if there is movement in any direction
         if (horizontal != 0 || vertical != 0) {
             if (angle > Mathf.Epsilon)
-                rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
         } else if (Input.GetButton("CameraLock")) {
             //look vector directly through the doggo
             Quaternion newLookDirection = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.position - cam.transform.position, transform.up).normalized);
             angle = Quaternion.Angle(transform.rotation, newLookDirection);
-            rigidBody.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
+            
         }
     }
     
@@ -289,21 +289,6 @@ public class DogControllerV2 : Controller {
             my_icon.set_single_bubble_active(false);
         }
 
-    }
-
-    void HandleFriction()
-    {
-        // If there is no input, we set our physics material to have max friction
-        if(horizontal == 0 && vertical == 0)
-        {
-            capCol.material = mFriction;
-        }
-        else
-        {
-            // If the player is moving, don't apply any friction
-            capCol.material = zFriction;
-        }
-        
     }
 
     public override void OnDeactivated() {

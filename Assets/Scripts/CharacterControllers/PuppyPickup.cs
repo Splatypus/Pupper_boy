@@ -27,47 +27,41 @@ public class PuppyPickup : MonoBehaviour {
     private IconManager iconManager;
 
     BirdMovementV2[] birds;
-    
 
-	// Use this for initialization
-	void Start () {
+
+    // Use this for initialization
+    void Start() {
         m_audio_source = GetComponent<AudioSource>();
         birds = FindObjectsOfType<BirdMovementV2>();
         iconManager = GetComponentInChildren<IconManager>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update() {
         //determine if E key has been pressed.  E key is used to pickup and drop objects
         //if(Input.GetKeyDown(KeyCode.E))
-        if(Input.GetButtonDown("Interact"))
-        {
+        if (Input.GetButtonDown("Interact")) {
             //Debug.Log("got e");
             //first, if there is an object in the dog's mouth, drop it or load it into a launcher
-            if(itemInMouth != null)
-            {
+            if (itemInMouth != null) {
                 //first check if we're in range of a ball launcher.  If so, load it
                 Interactable i = itemInMouth.GetComponent<Interactable>();
                 if (launcherInRange && i != null) //&& i.tagList.Contains(Interactable.Tag.Ball))
                 {
                     itemInMouth.transform.parent = null;
-                    launcherInRange.LoadBall(itemInMouth);            
+                    launcherInRange.LoadBall(itemInMouth);
                 }
                 //Otherwise, drop it
-                else
-                {
+                else {
                     DropItem();
                 }
                 itemInMouth = null;
-            }
-            else if (foodInRange != null && foodInRange.CanEat())
-            {
+            } else if (foodInRange != null && foodInRange.CanEat()) {
                 foodInRange.EatFood();
 
                 // eat some goddamn food
                 m_num_food++;
-                if (m_num_food >= num_food_for_memes)
-                {
+                if (m_num_food >= num_food_for_memes) {
                     //Debug.Log("ENTER MEME ZONE!!!!");
                     DogControllerV2 flight = GetComponentInParent<DogControllerV2>();
                     flight.hasFlight = true;
@@ -75,44 +69,35 @@ public class PuppyPickup : MonoBehaviour {
                     iconManager.set_single_bubble_active(true);
                     Invoke("dissable_bubble_icon", 2.0f);
                 }
-                if (m_num_food % num_food_for_poop == 0)
-                {
+                if (m_num_food % num_food_for_poop == 0) {
                     Invoke("poop", time_for_poop);
                 }
-                
+
             }
             //otherwise, see if there are objects in range and pick up the closest one
-            else if(objectsInRange.Count > 0)
-            {
-
-
+            else if (objectsInRange.Count > 0) {
                 itemInMouth = ClosestObject();
                 // do stuff with interactable object
                 Interactable interactable = itemInMouth.GetComponent<Interactable>();
-                if(interactable)
-                {
+                if (interactable) {
                     interactable.onPickup();
                 }
                 itemInMouth.transform.parent = mouth;
                 itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
                 itemInMouth.GetComponent<Rigidbody>().useGravity = false;
-            }
-            else
-            {
+            } else {
                 int prev_index = bork_index;
                 // bork
                 bork_index = Random.Range(0, borks.Length);
-                
-                while (bork_index == prev_index)
-                {
+
+                while (bork_index == prev_index) {
                     bork_index = Random.Range(0, borks.Length);
                 }
-                
+
                 m_audio_source.clip = borks[bork_index];
                 m_audio_source.Play();
 
-                foreach(BirdMovementV2 bird in birds)
-                {
+                foreach (BirdMovementV2 bird in birds) {
                     bird.getBarkedAt(transform.position);
                 }
             }
@@ -121,10 +106,9 @@ public class PuppyPickup : MonoBehaviour {
         //update prevPosition
         if (itemInMouth != null)
             prevPosition = itemInMouth.transform.position;
-	}
+    }
 
-    private void dissable_bubble_icon()
-    {
+    private void dissable_bubble_icon() {
         iconManager.set_single_bubble_active(false);
     }
 
@@ -141,65 +125,52 @@ public class PuppyPickup : MonoBehaviour {
         }
     }
 
-    public void poop()
-    {
+    public void poop() {
         //Debug.Log("poop!");
 
         Instantiate(poop_obj, butt.transform.position, butt.transform.rotation);
-        int i= Random.Range(0, poops.Length);
+        int i = Random.Range(0, poops.Length);
         m_audio_source.clip = poops[i];
         m_audio_source.Play();
     }
 
-    private void LateUpdate()
-    {
-        if(itemInMouth != null)
-        {
+    private void LateUpdate() {
+        if (itemInMouth != null) {
             itemInMouth.transform.rotation = mouth.rotation;
             itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
         }
-            
+
     }
 
 
 
 
-    void OnTriggerEnter(Collider other)
-    {
+    void OnTriggerEnter(Collider other) {
         //if it's a pickup item, add it to the list
-        if (other.tag == "Pickup" && !objectsInRange.Contains(other.gameObject))
-        {
+        if (other.tag == "Pickup" && !objectsInRange.Contains(other.gameObject)) {
             //Debug.Log("Object In");
             objectsInRange.Add(other.gameObject);
         }
         //if it's a ball launcher, store it in launcherInRange
-        else if (other.tag == "Launcher")
-        {
+        else if (other.tag == "Launcher") {
             //Debug.Log("Launcher in range");
             launcherInRange = other.GetComponent<BallLaunchV2>();
-        }
-        else if (other.tag == "Food")
-        {
+        } else if (other.tag == "Food") {
             foodInRange = other.GetComponent<FoodDispenser>();
         }
     }
 
-    private void OnTriggerExit(Collider other)
-    {
+    private void OnTriggerExit(Collider other) {
         //if it's a pickup item, remove it from the list
-        if (other.tag == "Pickup" && objectsInRange.Contains(other.gameObject))
-        {
+        if (other.tag == "Pickup" && objectsInRange.Contains(other.gameObject)) {
             //Debug.Log("Object Out");
             objectsInRange.Remove(other.gameObject);
         }
         //if it's a ball launcher, set launcherInRange to null
-        else if (other.tag == "Launcher")
-        {
+        else if (other.tag == "Launcher") {
             //Debug.Log("Launcher out of range");
             launcherInRange = null;
-		}
-        else if (other.tag == "Food")
-        {
+        } else if (other.tag == "Food") {
             foodInRange = null;
         }
     }
@@ -218,15 +189,13 @@ public class PuppyPickup : MonoBehaviour {
         }
     }
 
-    GameObject ClosestObject()
-    {
+    GameObject ClosestObject() {
         RemoveDestroyed();
         GameObject closest = null;
         float minDist = Mathf.Infinity;
-        foreach(GameObject go in objectsInRange){
+        foreach (GameObject go in objectsInRange) {
             float dist = (mouth.position - go.transform.position).magnitude;
-            if (dist < minDist)
-            {
+            if (dist < minDist) {
                 closest = go;
                 minDist = dist;
             }
