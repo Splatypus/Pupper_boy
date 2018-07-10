@@ -39898,7 +39898,6 @@ GameObject:
   - component: {fileID: 1390732191}
   - component: {fileID: 1390732190}
   - component: {fileID: 1390732189}
-  - component: {fileID: 1390732188}
   - component: {fileID: 1390732193}
   - component: {fileID: 1390732194}
   m_Layer: 0
@@ -39922,22 +39921,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1390732188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114705662543658766, guid: ccf89df8c0b45ad4b910eea5486bfbdb,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1390732186}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd263a82e9f60294fa51d08eb7c31310, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxCamDis: 7
-  minCamDis: 0.2
-  moveInPaddingDistance: 1
-  player: {fileID: 0}
 --- !u!81 &1390732189
 AudioListener:
   m_ObjectHideFlags: 0
@@ -40033,7 +40016,6 @@ MonoBehaviour:
   joypadXMultiplier: 2
   joypadYMultiplier: 2
   anchor: {fileID: 2057602178}
-  previousFrameLocation: {x: 0, y: 0, z: 0}
 --- !u!1001 &1397167430
 Prefab:
   m_ObjectHideFlags: 0
@@ -59944,7 +59926,7 @@ GameObject:
   - component: {fileID: 1958321012}
   - component: {fileID: 1958321013}
   m_Layer: 2
-  m_Name: Cylinder
+  m_Name: Trampoline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

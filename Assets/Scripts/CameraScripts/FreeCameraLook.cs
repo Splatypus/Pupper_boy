@@ -21,48 +21,70 @@ public class FreeCameraLook : MonoBehaviour {
     private float tiltAngle;
 
     public Transform anchor;
-    public Vector3 previousFrameLocation;
+    Vector3 previousFrameLocation;
+    Vector3 cameraGoal;
 
     private void Start() {
         if (player == null) {
             player = GameObject.FindGameObjectWithTag("Player");
         }
         previousFrameLocation = anchor.position;
+        cameraGoal = transform.position;
     }
 
     // Update is called once per frame
     void Update() {
-        if (!controlLocked)
-            HandleRotationMovement();
+        //transform.position = Vector3.Lerp(cameraStart, cameraEnd, (Time.time - endTime) / (endTime - startTime));
+        //time-endtime is how long its been since the physics update finished. We take that amount of time, and consider how far that puts us into that update
+ 
+        //transform.position = cameraEnd;
+        //always look at the player
+        transform.LookAt(anchor);
     }
 
+    //find which location the camera should be moving to
+    void FixedUpdate() {
+        if (!controlLocked) {
+
+            Vector3 truePosition = transform.position;
+            transform.position = cameraGoal; //camera end tracks where the camera wants to end up. Start is where it was at the start of the physics update
+            HandleRotationMovement(); //new position is calculated
+            cameraGoal = transform.position; //save goal since the above function modifies transform.position. Position is later set to what it should be
+            //smoothing
+            transform.position = Vector3.Lerp(truePosition, cameraGoal, 10.0f * Time.fixedDeltaTime);
+
+
+
+        }
+    }
 
     void HandleRotationMovement() {
 
+        Vector3 anchorPosition = anchor.position;
+
         //the amount the player has moved awayfrom/towards the camer, or up and down since the last frame
-        Vector3 movementDelta = Vector3.ProjectOnPlane(anchor.position - previousFrameLocation, transform.right);
+        Vector3 movementDelta = Vector3.ProjectOnPlane(anchorPosition - previousFrameLocation, transform.right);
         transform.position += movementDelta;
 
         //apply mouse movement
         float x = Input.GetAxis("Mouse X") + Input.GetAxis("RightJoystickX") * joypadXMultiplier;
         float y = Input.GetAxis("Mouse Y") + Input.GetAxis("RightJoystickY") * joypadYMultiplier;
-        transform.RotateAround(anchor.position, anchor.up, x);
-        transform.RotateAround(anchor.position, transform.right, -y);
+        transform.RotateAround(anchorPosition, anchor.up, x);
+        transform.RotateAround(anchorPosition, transform.right, -y);
 
 
         //find out how many units back the camera can be
         RaycastHit hit;
         int layermask = 1 << 2; //ignore raycast layer is skipped
         layermask = ~layermask;
-        if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, maxDistance, layermask)) {
-            transform.position = anchor.position + (transform.position - anchor.position).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
+        if (Physics.Raycast(anchorPosition, transform.position - anchorPosition, out hit, maxDistance, layermask)) {
+            transform.position = anchorPosition + (transform.position - anchorPosition).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
         } else {
-            transform.position = anchor.position + (transform.position - anchor.position).normalized * maxDistance;
+            transform.position = anchorPosition + (transform.position - anchorPosition).normalized * maxDistance;
         }
-        
+
         previousFrameLocation = anchor.position;
-        //always look at the player
-        transform.LookAt(anchor);
+        
 
     }
 
