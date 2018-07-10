@@ -23,7 +23,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
     //Progression info
     public DialogNodeStart startNode = null;
-    DialogNode currentNode;
+    public DialogNode currentNode = null;
     public int progressionNum;
 
     //EditorInfo
@@ -41,7 +41,8 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             if (n is DialogNodeStart)
                 startNode = (DialogNodeStart)n;
         }
-        currentNode = startNode;
+        if (currentNode == null)
+            currentNode = startNode;
     }
 
     public override void OnInteract() {
@@ -112,7 +113,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         pdialog.nameTextObject.text = characterName;
     }
 
-    public void OnEnd() {
+    public virtual void OnEnd() {
         controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
         Camera.main.GetComponent<FreeCameraLook>().RestoreCamera(dynamicCameraTime);
     }
@@ -269,39 +270,40 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             nodes = new List<DialogNode>();
         nodes.Clear();
 
-        foreach (SerializedNode s in serializedNodes) {
+        for (int i = 0; i < serializedNodes.Count; i++) { //foreach (SerializedNode s in serializedNodes)
             //Create new nodes based on the serialized ones
-            DialogNode temp;
+            SerializedNode s = serializedNodes[i];
+            DialogNode temp = null;
             switch (s.type) {
                 case NodeType.DIALOG:
                     temp = new DialogNodeDialog(new Vector2(s.x, s.y), s.width, s.height) {
                         text = s.text
                     };
-                    nodes.Add(temp);
                     break;
                 case NodeType.CHOICE:
                     temp = new DialogNodeChoice(new Vector2(s.x, s.y), s.width, s.height) {
                         text = s.text,
                         num = s.num
                     };
-                    nodes.Add(temp);
                     break;
                 case NodeType.FUNCTION:
                     temp = new DialogNodeFunction(new Vector2(s.x, s.y), s.width, s.height) {
                         functionNum = s.num
                     };
-                    nodes.Add(temp);
                     break;
                 case NodeType.BREAK:
                     temp = new DialogNodeBreak(new Vector2(s.x, s.y), s.width, s.height);
-                    nodes.Add(temp);
                     break;
                 case NodeType.START:
                     temp = new DialogNodeStart(new Vector2(s.x, s.y), s.width, s.height);
-                    nodes.Add(temp);
                     break;
                 default:
                     break;
+            }
+            //add it to the list of nodes and set its index as long as its non-null
+            if (temp != null) {
+                temp.index = nodes.Count;
+                nodes.Add(temp);
             }
         }
 
@@ -340,7 +342,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         //public UnityAction<DialogNode> OnRemoveNode;
 
         public List<DialogNode> connections;
-        public int index; //WARNING: index is only its accurate position in the nodes list right before and after serialization.
+        public int index;
 
 
         //public DialogLinkedNode linkedNode;

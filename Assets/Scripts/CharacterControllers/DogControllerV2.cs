@@ -19,7 +19,7 @@ public class DogControllerV2 : Controller {
 
 
     #region new world order movement variables
-    Vector3 v; //velocity
+    public Vector3 v; //velocity
     private float lastJumpTime = 0.0f;
     public float maxSpeed;
     public float sprintMultiplier;
@@ -30,9 +30,9 @@ public class DogControllerV2 : Controller {
     public float maxFallSpeed;
     public float jumpForce;
     public float turnspeed = 5;
+    public float freezeMovementAngle = 90.0f;
     #endregion
 
-    Vector3 directionPos;
     Vector3 cam_right, cam_fwd;
 
     float horizontal;
@@ -56,7 +56,7 @@ public class DogControllerV2 : Controller {
     [SerializeField]
     private AudioSource dig_sound;
     public float rotateSpeed = 10.0f;
-    public float maxRoationTime = 0.4f; 
+    public float maxRotaionTime = 0.4f; 
 
     DigZone curZone;
     IconManager my_icon;
@@ -147,23 +147,66 @@ public class DogControllerV2 : Controller {
             newMaxSpeed = maxSpeed * sprintMultiplier;
         }
 
+        //find the direction doggo is supposed to move
+        Vector3 dir = transform.position + (cam_right) + (cam_fwd);
+        dir -= transform.position;
+        dir.y = 0;
+        //the angle of rotation between doggo and the desired movement 
+        float angle = 0;
+        if (dir.sqrMagnitude > Mathf.Epsilon) //angle is only nonzero if the movement direction exists
+            angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
+
+        //reduce the speed if your angle is too far off
+        if (angle > freezeMovementAngle && onGround > 0)
+            newMaxSpeed = 0;
+
         //store vertical movement speed before messing with horizontal, since the entire vector is changed
         float verticalSpeed = v.y;
-        //if doggo would accelerate past max speed, then go just to max speed instead. Amout you accelerate is multiplied by the inair mult if youre in the air
-        if ((v + moveDirection * a * Time.deltaTime).sqrMagnitude > newMaxSpeed * newMaxSpeed) {
-            v = moveDirection * newMaxSpeed;
-        } else if ((cam_right + cam_fwd).sqrMagnitude < 0.0001f) {//deceleration if no movement input in either direction
-            //if decelerating would put speed lower than zero, set v to zero vector
-            /*float curSpeed = v.magnitude;
-            if (curSpeed - (decceleration * Time.deltaTime) < 0) {
-                v = Vector3.zero;
-            } else {
-                v = v.normalized * (curSpeed - (decceleration * Time.deltaTime));
+        v.y = 0;
+
+        //if input
+        if ((cam_right + cam_fwd).sqrMagnitude > Mathf.Epsilon) {
+            //acceleration only affects speed
+            v = moveDirection * Mathf.Min(v.magnitude + a * Time.deltaTime, newMaxSpeed);
+
+            //acceleration affects velocity (drift doggo)
+            /*v += moveDirection * a * Time.deltaTime;
+            //if this acceleration pushes it over the max speed, cap it there instead
+            if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
+                v = v.normalized * maxSpeed;
             }*/
-            v = Vector3.zero; //testing no decel
-        } else {
+        }
+        //no input
+        else {
+            //in air
+            if (onGround == 0) {
+                v = v.normalized * (v.magnitude - decceleration * Time.deltaTime);
+            }
+            //grouned
+            else {
+                v = Vector3.zero;
+            }
+        }
+        
+        #region old move
+        /*
+        //if doggo would accelerate past max speed, then go just to max speed instead.
+        if ((v + moveDirection * a * Time.deltaTime).sqrMagnitude > newMaxSpeed * newMaxSpeed) {
+            v = (v + moveDirection * a * Time.deltaTime).normalized * newMaxSpeed; 
+        }
+        //Freeze movement if no movement input
+        else if ((cam_right + cam_fwd).sqrMagnitude < Mathf.Epsilon) {
+            v = Vector3.zero;
+        }
+        //otherwise, just accelerate in the given direction
+        else {
             v += moveDirection * a * Time.deltaTime;
         }
+        //if doggo is moving past the maximum speed before applying the acceleration from this frame, slow down doggo, but not below the max speed
+        if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
+            v = v.normalized * Mathf.Max((v.magnitude - decceleration * Time.deltaTime), newMaxSpeed);
+        }*/
+        #endregion
 
         v.y = verticalSpeed;//reset v.y after changes from horizontal movement
 
@@ -177,7 +220,7 @@ public class DogControllerV2 : Controller {
         } else if (jumpInput) { //jump if jump input
             v.y = jumpForce;
             lastJumpTime = Time.time;
-        } else if (Time.time > lastJumpTime + 0.2f) {
+        } else if (Time.time > lastJumpTime + 0.2f && v.y < 0.0f) {
             //if nothing is affecting velocity and have not jumped recently, then set it to 0. The time check is to make sure jumping allows you to leave the ground
             v.y = 0;
         }
@@ -188,48 +231,42 @@ public class DogControllerV2 : Controller {
         float animValue = Mathf.Sqrt(vertical*vertical + horizontal*horizontal);
         anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime);
 
-        // Update player rotation
-        if (horizontal != 0 || vertical != 0)
-        {
-            directionPos = transform.position + (cam_right) + (cam_fwd);
-
-            Vector3 dir = directionPos - transform.position;
-            dir.y = 0;
-
-            float angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
-
-            if (angle != 0)
-                rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle/180.0f + 1.0f) * turnspeed/angle * Time.deltaTime);
+        // Update player rotation if there is movement in any direction
+        if (horizontal != 0 || vertical != 0) {
+            if (angle > Mathf.Epsilon)
+                rigidBody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
+        } else if (Input.GetButton("CameraLock")) {
+            //look vector directly through the doggo
+            Quaternion newLookDirection = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.position - cam.transform.position, transform.up).normalized);
+            angle = Quaternion.Angle(transform.rotation, newLookDirection);
+            rigidBody.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
         }
     }
-
     
     private void OnCollisionEnter(Collision collision)
     {
         // Check if the thing we hit is the ground
-        if (collision.gameObject.tag == "Ground")
-        {
+       // if (collision.gameObject.tag == "Ground"){
             onGround += 1;
             if (onGround > 0) {
                 //rigidBody.drag = groundDrag;
                 // currently, onAir is not used, but could be if we had an animation for jumping
                 anim.SetBool("onAir", false);
             }
-        }
+        //}
     }
 
     private void OnCollisionExit(Collision collision)
     {
         // Check if the thing we left is the ground
-        if (collision.gameObject.tag == "Ground")
-        {
+        //if (collision.gameObject.tag == "Ground"){
             onGround -= 1;
             if (onGround == 0) {
                 //rigidBody.drag = airDrag;
                 // currently, onAir is not used, but could be if we had an animation for jumping
                 anim.SetBool("onAir", true);
             }
-        }
+        //}
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -293,7 +330,7 @@ public class DogControllerV2 : Controller {
         }
         //rotate towards the fence
         float timeTaken = 0.0f;
-        while ( transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRoationTime){
+        while ( transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRotaionTime){
             transform.rotation = Quaternion.RotateTowards(  transform.rotation, 
                                                             Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position), 
                                                             rotateSpeed * Time.fixedDeltaTime);
