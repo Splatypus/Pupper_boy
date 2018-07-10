@@ -20,7 +20,6 @@ public class AIbase : Dialog2 {
 
     //Triggers when the player enters the range
     public virtual void OnInRange() {
-        
     }
     //Trigger when the player leaves range
     public virtual void OnExitRange() {

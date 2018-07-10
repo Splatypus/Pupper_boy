@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-public class BlackieMiniGame2 : Dialog2 {
+public class BlackieMiniGame2 : AIbase {
 
     public List<List<Gamepiece>> grid; //grid of game pieces. First list is x values, second is y values
     int width, height;
@@ -452,8 +452,14 @@ public class BlackieMiniGame2 : Dialog2 {
         public Gamepiece.PowerStates powerType;
     }
 
-    //############# GAMEPIECE OBJECTS ############
+    //display icon if in range
+    public override void OnInRange() {
+        base.OnInRange();
+        Display(0);
+    }
 
+    //############# GAMEPIECE OBJECTS ############
+    #region gamepiece
     //Gamepiece parent object
     public class Gamepiece {
 
@@ -928,4 +934,5 @@ public class BlackieMiniGame2 : Dialog2 {
         }
 
     }
+    #endregion
 }

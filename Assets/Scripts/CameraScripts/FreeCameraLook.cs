@@ -53,8 +53,6 @@ public class FreeCameraLook : MonoBehaviour {
             //smoothing
             transform.position = Vector3.Lerp(truePosition, cameraGoal, 10.0f * Time.fixedDeltaTime);
 
-
-
         }
     }
 
@@ -135,6 +133,7 @@ public class FreeCameraLook : MonoBehaviour {
         }
         transform.position = lookAt + (targetAngle * Vector3.forward).normalized * targetDistance;
         transform.rotation = targetRotation;
+        cameraGoal = transform.position;
     }
 
 
