@@ -27,6 +27,10 @@ public class Objective : MonoBehaviour {
     void OnTriggerEnter(Collider col) {
         if (col.gameObject.CompareTag("Player")) {
             manager.ObjectiveReached(ID);
+            //play a sound
+            AudioSource a = gameObject.GetComponent<AudioSource>();
+            if (a != null)
+                a.Play();
         }
     }
 }
