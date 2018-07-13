@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 7b8facac9ec89504fb05da615dab81bb
 ModelImporter:
-  serializedVersion: 21
+  serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     100002: group1
@@ -39,13 +39,22 @@ ModelImporter:
     400030: transform3
     400032: transform4
     400034: transform5
+    2300000: pCylinder2
+    3300000: pCylinder2
     4300000: pCylinder2
     9500000: //RootNode
     13700000: pCylinder2
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: dogtoy3color
+    second: {fileID: 2100000, guid: af2be82b72040a847adbfdf448f24e0d, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -58,6 +67,7 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -82,6 +92,8 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
