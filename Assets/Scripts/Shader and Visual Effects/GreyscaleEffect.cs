@@ -19,7 +19,6 @@ public class GreyscaleEffect : MonoBehaviour {
         isEnabled = false;
         startTime = -duration;
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        mat.SetMatrix("_InverseProjectionView", (Camera.main.projectionMatrix * Camera.main.worldToCameraMatrix).inverse);
 
         points = new Vector3[4];
     }
@@ -48,7 +47,7 @@ public class GreyscaleEffect : MonoBehaviour {
             points[i] -= transform.position;
             Debug.DrawRay(transform.position, points[i] + transform.position, Color.blue);
         }
-        mat.SetMatrix("_ViewFrustum", new Matrix4x4(points[0], points[1], points[2], points[3]));
+        mat.SetMatrix("_ViewFrustum", (new Matrix4x4(points[0], points[1], points[2], points[3])).transpose);
 
         Graphics.Blit(source, destination, mat);
         //mat is the material which contains the shader

@@ -26,7 +26,6 @@ Shader "Custom/Greyscale" {
 			float _DepthFadeCutoff;
 			float4 _DoggoPosition;
 			float4 _CameraPosition;
-			float4x4 _InverseProjectionView;
 			float4x4 _ViewFrustum;
 
 
@@ -38,20 +37,14 @@ Shader "Custom/Greyscale" {
 
 			//Vertex Shader
 			v2f vert(appdata_base v) {
-
-
 				v2f o;
 				o.pos = UnityObjectToClipPos(v.vertex);
 				o.scrPos = ComputeScreenPos(o.pos);
 
-				//raycast from each frag
-				//half index = v.vertex.z;
-				//o.interpolatedRay = mul(_InverseProjectionView, v.vertex);
-				//o.interpolatedRay.xyz /= o.interpolatedRay.w;
-
-				float4 top = lerp(float4(_ViewFrustum[1].xyz, 0), float4(_ViewFrustum[2].xyz, 0), (o.scrPos.x + 1.0)/2.0);
-				float4 bottom = lerp(float4(_ViewFrustum[0].xyz, 0), float4(_ViewFrustum[3].xyz, 0), (o.scrPos.x + 1.0) / 2.0);
-				o.interpolatedRay = lerp(bottom, top, (o.scrPos.y + 1.0) / 2.0);
+				//set each vertex to have a ray casting thru it. Since the ray is marked as texcoords, it will be interpolated to the fragments
+				float4 top = lerp(float4(_ViewFrustum[1].xyz, 0), float4(_ViewFrustum[2].xyz, 0), (o.pos.x + 1.0)/2.0);
+				float4 bottom = lerp(float4(_ViewFrustum[0].xyz, 0), float4(_ViewFrustum[3].xyz, 0), (o.pos.x + 1.0) / 2.0);
+				o.interpolatedRay = lerp(bottom, top, (o.pos.y + 1.0) / 2.0);
 				
 				return o;
 			}
@@ -60,19 +53,14 @@ Shader "Custom/Greyscale" {
 
 			//Fragment Shader
 			half4 frag(v2f i) : COLOR{
-				
+				//find a depth value based on depth textures, then use that and the interpolated ray to find the location in world space of each fragment
 				float depthValue = Linear01Depth(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.scrPos)).r);
 				float3 worldSpaceLocation = _CameraPosition + (depthValue * i.interpolatedRay.xyz);
-				depthValue = distance(worldSpaceLocation, _DoggoPosition.xyz);
+				depthValue = distance(worldSpaceLocation, _DoggoPosition.xyz)/500;
+				//save the original color of each frag
 				fixed4 orgColor = tex2Dproj(_MainTex, i.scrPos);
-				float4 newColor;
-				return (i.scrPos.y > 0.4 && i.scrPos.y < 0.6) ? float4((i.interpolatedRay.yyy/650 + 1 )/2, 1.0) : orgColor;
-				return depthValue > 10 ? float4(0, 0, 0, 1) : orgColor;
+				float4 newColor = orgColor;
 
-
-				//newColor.xyz = worldSpaceLocation/600;
-				//newColor.a = 1;
-				//return newColor;
 				//the percentage we are through the animation
 				float t = clamp( (_Time.y - _StartingTime) / _RingPassTimeLength , 0, 1);
 				t = (_RunRingPass == 2 ? 1 - t : t);

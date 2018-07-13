@@ -40625,6 +40625,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mat: {fileID: 2100000, guid: e003ff24612ed5645bb48cf7907b0b18, type: 2}
   duration: 1.7
+  points:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
 --- !u!81 &1390732189
 AudioListener:
   m_ObjectHideFlags: 0
@@ -62276,7 +62281,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f3eb1dbeda351a046b6fc97322ed12cc, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.17
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
