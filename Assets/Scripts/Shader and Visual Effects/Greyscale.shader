@@ -5,8 +5,8 @@ Shader "Custom/Greyscale" {
 	Properties{
 		_MainTex("", 2D) = "white" {} //this texture will have the rendered image before post-processing
 		_RingWidth("ring width", Float) = 0.01
-		_RingPassTimeLength("ring pass time", Float) = 2.0
-		_DepthFadeCutoff("depth fade cutoff", Float) = 0.9
+		//_RingPassTimeLength("ring pass time", Float) = 2.0
+		_RingColor("ring color", Color) = (0,0,0,1)
 	}
 
 	SubShader{
@@ -22,9 +22,10 @@ Shader "Custom/Greyscale" {
 			float _StartingTime;
 			uniform float _RingPassTimeLength;
 			uniform float _RingWidth;
+			uniform float _RingMaxDistance;
+			uniform float4 _RingColor;
 			float _RunRingPass = 0;
-			float _DepthFadeCutoff;
-			float4 _DoggoPosition;
+			float3 _DoggoPosition;
 			float4 _CameraPosition;
 			float4x4 _ViewFrustum;
 
@@ -56,7 +57,7 @@ Shader "Custom/Greyscale" {
 				//find a depth value based on depth textures, then use that and the interpolated ray to find the location in world space of each fragment
 				float depthValue = Linear01Depth(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.scrPos)).r);
 				float3 worldSpaceLocation = _CameraPosition + (depthValue * i.interpolatedRay.xyz);
-				depthValue = distance(worldSpaceLocation, _DoggoPosition.xyz)/500;
+				depthValue = distance(worldSpaceLocation, _DoggoPosition.xyz)/_RingMaxDistance;
 				//save the original color of each frag
 				fixed4 orgColor = tex2Dproj(_MainTex, i.scrPos);
 				float4 newColor = orgColor;
@@ -64,7 +65,8 @@ Shader "Custom/Greyscale" {
 				//the percentage we are through the animation
 				float t = clamp( (_Time.y - _StartingTime) / _RingPassTimeLength , 0, 1);
 				t = (_RunRingPass == 2 ? 1 - t : t);
-				t = pow(t, 2.5);
+				t = pow(t, 2.7);
+				float ringW = t * _RingWidth;
 				
 				//runningpass will be set to 1 or 2 to trigger this event
 				if (_RunRingPass >= 1) {
@@ -72,14 +74,10 @@ Shader "Custom/Greyscale" {
 					newColor.rgb = (orgColor.r * 0.2989) + (orgColor.g * 0.5870) + (orgColor.b * 0.1140);
 					newColor.a = 1;
 
-					newColor =	newColor * (depthValue < (t - _RingWidth) && depthValue < _DepthFadeCutoff) +	//set to 1 when inside ring and depthcutoff
-								orgColor * (depthValue > t && depthValue < _DepthFadeCutoff) +	//set to 1 when outside ring and inside depthcutoff
-								lerp(orgColor, newColor, t) * (depthValue > _DepthFadeCutoff); //set to 1 when past depthcutoff
-
-
-					//multiply the color of stuff inside the ring zone by 0, chaning it to black.
-					newColor *= (depthValue > t || depthValue < (t  -_RingWidth)) || depthValue > _DepthFadeCutoff; //0 when within ring and not past cutoff
-					
+					newColor =	newColor * (depthValue < (t - ringW) ) +	//greyscale when inside ring
+								orgColor * (depthValue > t && depthValue < 1- ringW) +	//original when outside ring and inside max ring distance
+								lerp(orgColor, newColor, t) * (depthValue > 1 - ringW) + //lerp when past max ring distance
+								_RingColor * (depthValue < t && depthValue > t - ringW && depthValue < 1 - ringW); //ringColor when on the ring
 
 					return newColor;
 				}

@@ -67,8 +67,9 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RingPassTimeLength: 1.7
-    - _RingWidth: 0.005
+    - _RingMaxDistance: 300
+    - _RingPassTimeLength: 1.5
+    - _RingWidth: 0.1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -77,3 +78,4 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _RingColor: {r: 0.7352941, g: 0.7352941, b: 0.7352941, a: 1}
