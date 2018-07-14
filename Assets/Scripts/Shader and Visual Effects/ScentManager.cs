@@ -17,6 +17,7 @@ public class ScentManager : MonoBehaviour {
     float startTime;
     bool isEnabled;
     Vector3[] points;
+    bool shaderActive = false;
 
     //static ref
     public static ScentManager Instance;
@@ -64,6 +65,9 @@ public class ScentManager : MonoBehaviour {
                     g.SetActive(false);
                 }
             }
+        } else if (!isEnabled && shaderActive) {//the animation is no longer running in this case, so if this variable is true, toggle it
+            shaderActive = false;
+            mat.SetFloat("_RunRingPass", 0.0f); //set the shader to 0 so that it saves processing stuff
         }
     }
 
@@ -91,6 +95,7 @@ public class ScentManager : MonoBehaviour {
     //starts expanding the effect
     public void EnableEffect() {
         isEnabled = true;
+        shaderActive = true;
         mat.SetFloat("_RunRingPass", 1); //run outward pass
 
         if (startTime + duration < Time.time) {

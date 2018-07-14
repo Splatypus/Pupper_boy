@@ -77,8 +77,8 @@ Shader "Custom/Greyscale" {
 					newColor =	newColor * (depthValue < (t - ringW) ) +	//greyscale when inside ring
 								orgColor * (depthValue > t && depthValue < 1- ringW) +	//original when outside ring and inside max ring distance
 								lerp(orgColor, newColor, t) * (depthValue > 1 - ringW) + //lerp when past max ring distance
-								_RingColor * (depthValue < t && depthValue > t - ringW && depthValue < 1 - ringW); //ringColor when on the ring
-
+								clamp(lerp(newColor, _RingColor, (depthValue - (t - ringW)) / ringW), 0, 1) * (depthValue < t && depthValue > t - ringW && depthValue < 1 - ringW); //ringColor when on the ring
+								//lerp(newColor, _RingColor, (depthValue-(t-ringW))/ringW)
 					return newColor;
 				}
 				else {
