@@ -27,7 +27,6 @@ public class MiniGameManager : MonoBehaviour {
     public virtual void GameEnd() {
         //end event, add scores n stuff
         isPlaying = false;
-        print("Game Ended");
         //clear time UI
         canvasTimeField.text = "";
         canvasTimeField.gameObject.SetActive(false);

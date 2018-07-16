@@ -42,4 +42,23 @@ public class DayNigtLightChange : MonoBehaviour {
         lightSource.transform.rotation = Quaternion.Euler(nightRotation);
         lightSource.intensity = nightIntensity;
     }
+
+    /*void Update() {
+        if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            StartCoroutine(LerpTimeCo());
+        }
+    }
+
+    IEnumerator LerpTimeCo() {
+        float startTime = Time.time;
+        while (lightSource.color != nightColor) {
+            float t = 3;
+            lightSource.color = Color.Lerp(dayColor, nightColor, (Time.time - startTime)/t);
+            lightSource.transform.rotation = Quaternion.Slerp(Quaternion.Euler(dayRotation), Quaternion.Euler(nightRotation), (Time.time - startTime) / t);
+            lightSource.intensity = Mathf.Lerp(dayIntensity, nightIntensity, (Time.time - startTime) / t);
+            yield return new WaitForFixedUpdate();
+        }
+        DayNightManager.Instance.SetTime(DayNightManager.Times.NIGHT);
+    }*/
+
 }
