@@ -31,13 +31,13 @@ MonoBehaviour:
   antialiasing:
     m_Enabled: 1
     m_Settings:
-      method: 1
+      method: 0
       fxaaSettings:
         preset: 2
       taaSettings:
-        jitterSpread: 0.413
-        sharpen: 0.3
-        stationaryBlending: 0.95
+        jitterSpread: 0.438
+        sharpen: 0
+        stationaryBlending: 0.942
         motionBlending: 0.85
   ambientOcclusion:
     m_Enabled: 0
@@ -95,7 +95,7 @@ MonoBehaviour:
       speedUp: 2
       speedDown: 1
       logMin: -8
-      logMax: 4
+      logMax: 1
   bloom:
     m_Enabled: 0
     m_Settings:
@@ -103,7 +103,7 @@ MonoBehaviour:
         intensity: 0.1
         threshold: 1.1
         softKnee: 0.6
-        radius: 4
+        radius: 7
         antiFlicker: 1
       lensDirt:
         texture: {fileID: 0}

@@ -74,6 +74,7 @@ public class FreeCameraLook : MonoBehaviour {
         //find out how many units back the camera can be
         RaycastHit hit;
         int layermask = 1 << 2; //ignore raycast layer is skipped
+        layermask |= 1 << 9;
         layermask = ~layermask;
         if (Physics.Raycast(anchorPosition, transform.position - anchorPosition, out hit, maxDistance, layermask)) {
             transform.position = anchorPosition + (transform.position - anchorPosition).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);

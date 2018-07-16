@@ -10,7 +10,7 @@ public class ScentManager : MonoBehaviour {
     public Material mat;
     public float duration;
     public float maxDistance = 300;
-    public List<GameObject> scentObjects = new List<GameObject>();
+    public List<ScentObject> scentObjects = new List<ScentObject>();
 
     //internal variables
     Transform playerTransform;
@@ -35,10 +35,6 @@ public class ScentManager : MonoBehaviour {
         startTime = -duration;
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         points = new Vector3[4];
-
-        foreach (GameObject g in scentObjects) {
-            g.SetActive(false);
-        }
     }
 
     void Update() {
@@ -58,11 +54,11 @@ public class ScentManager : MonoBehaviour {
                 t = (1 - t);
             t = Mathf.Pow(t, 2.7f);
             //then actually toggle active
-            foreach (GameObject g in scentObjects) {
-                if (isEnabled && !g.activeInHierarchy && Vector3.Distance(g.transform.position, playerTransform.position) < t * maxDistance) {
-                    g.SetActive(true);
-                } else if (!isEnabled && g.activeInHierarchy && Vector3.Distance(g.transform.position, playerTransform.position) > t * maxDistance) {
-                    g.SetActive(false);
+            foreach (ScentObject g in scentObjects) {
+                if (isEnabled && !g.isActive && Vector3.Distance(g.transform.position, playerTransform.position) < t * maxDistance) {
+                    g.StartScent();
+                } else if (!isEnabled && g.isActive && Vector3.Distance(g.transform.position, playerTransform.position) > t * maxDistance) {
+                    g.EndScent();
                 }
             }
         } else if (!isEnabled && shaderActive) {//the animation is no longer running in this case, so if this variable is true, toggle it
@@ -105,11 +101,6 @@ public class ScentManager : MonoBehaviour {
             startTime = Time.time + Time.time - startTime - duration;
             mat.SetFloat("_StartingTime", startTime);
         }
-    }
-
-    //Unused right now. Might want to use rather than the current update
-    IEnumerator EnableWhenInRange(GameObject g) {
-        yield return new WaitUntil(() => Vector3.Distance(playerTransform.position, g.transform.position) > 2);
     }
 
 
