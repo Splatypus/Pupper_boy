@@ -9,7 +9,6 @@ public class DogControllerV2 : Controller {
     #region Component Variables
     Rigidbody rigidBody;
     Animator anim;
-    Collider capCol;
     [SerializeField] PhysicMaterial zFriction;
     [SerializeField] PhysicMaterial mFriction;
     Transform cam;
@@ -67,7 +66,6 @@ public class DogControllerV2 : Controller {
     void Start () {
         rigidBody = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
-        capCol = GetComponent<Collider>();
         anim = GetComponentInChildren<Animator>();
         my_icon = GetComponentInChildren<IconManager>();
         houseText = FindObjectOfType<TextFadeOut>();
@@ -78,7 +76,6 @@ public class DogControllerV2 : Controller {
         v = Vector3.zero;
         
     }
-
 
     // Update is called once per frame
     void Update() {
@@ -95,7 +92,7 @@ public class DogControllerV2 : Controller {
                 }
             }
 
-            //handle digging input
+            //handle digging input -- why tf are these not done as interactable objects?!
             if (Input.GetButtonDown("Dig") && onGround > 0) {
                 if (curZone != null) {
                     rigidBody.velocity = Vector3.zero;
@@ -118,9 +115,13 @@ public class DogControllerV2 : Controller {
                 gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Flight);
             }
 
+            //turning scent on or off
+            if (Input.GetButtonDown("Scent")) {
+                ScentManager.Instance.ToggleEffect();
+            }
+
         }//end isdigging check
     }
-    
 
     //void FixedUpdate()
     void Move()
@@ -243,30 +244,21 @@ public class DogControllerV2 : Controller {
         }
     }
     
-    private void OnCollisionEnter(Collision collision)
-    {
-        // Check if the thing we hit is the ground
-       // if (collision.gameObject.tag == "Ground"){
-            onGround += 1;
-            if (onGround > 0) {
-                //rigidBody.drag = groundDrag;
-                // currently, onAir is not used, but could be if we had an animation for jumping
-                anim.SetBool("onAir", false);
-            }
-        //}
+    //called when touches ground
+    public void OnGroundEnter() {
+        onGround += 1;
+        if (onGround > 0) {
+            anim.SetBool("onAir", false);
+        }
+
     }
 
-    private void OnCollisionExit(Collision collision)
-    {
-        // Check if the thing we left is the ground
-        //if (collision.gameObject.tag == "Ground"){
-            onGround -= 1;
-            if (onGround == 0) {
-                //rigidBody.drag = airDrag;
-                // currently, onAir is not used, but could be if we had an animation for jumping
-                anim.SetBool("onAir", true);
-            }
-        //}
+    //called when leaves ground
+    public void OnGroundExit() {
+        onGround -= 1;
+        if (onGround == 0) {
+            anim.SetBool("onAir", true);
+        }
     }
 
     private void OnTriggerEnter(Collider other) {
@@ -300,7 +292,6 @@ public class DogControllerV2 : Controller {
     public void addObject(InteractableObject i) {
         inRangeOf.Add(i);
     }
-
 
     //remove object from list
     public void removeObject(InteractableObject i) {

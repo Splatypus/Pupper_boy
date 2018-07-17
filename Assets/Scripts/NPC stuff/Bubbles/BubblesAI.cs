@@ -19,10 +19,8 @@ public class BubblesAI : AIbase {
         base.Start();	
 	}
 
-    public override void OnTriggerEnter(Collider col)
-    {
-        base.OnTriggerEnter(col);
-
+    //swap icon depending on state when player is in range
+    public override void OnInRange() {
         switch (state) {
             case States.NOBUBBLES:
                 Display(0);
@@ -33,26 +31,18 @@ public class BubblesAI : AIbase {
             default:
                 break;
         }
-
-
-        //if an item is brought to tiffany, and is her quest item, delete it, cand call toyInRange.
-        Interactable intObject = col.gameObject.GetComponent<Interactable>();
-        if (intObject != null && intObject.hasTag(Interactable.Tag.Soap)) {
-            PuppyPickup inMouth = Player.GetComponent<DogControllerV2>().ppickup;
-            if (inMouth.itemInMouth != null && inMouth.itemInMouth == col.gameObject) {
-                inMouth.DropItem();
-                inMouth.objectsInRange.Remove(col.gameObject);
-            }
-            ToyInRange(col.gameObject);
-            Destroy(col.gameObject);
-        }
     }
 
-    public void ToyInRange(GameObject toy){
-        if (state == States.NOBUBBLES) {
-            state = States.BUBBLES;
-            Display(1);
-            progressionNum = 1;
+    //if soap is brought in range, destory it and progress quest
+    public override void ToyInRange(Interactable toy) {
+        base.ToyInRange(toy);
+        if (toy.hasTag(Interactable.Tag.Soap)) {
+            DestoryObjectInMouth(toy.gameObject);
+            if (state == States.NOBUBBLES) {
+                state = States.BUBBLES;
+                Display(1);
+                progressionNum = 1;
+            }
         }
     }
 
@@ -68,7 +58,6 @@ public class BubblesAI : AIbase {
     public void StartGame(int scoreToWin) {
         bubbleGameRef.GameStartForReward(scoreToWin);
     }
-
 
     //called by bubble machine when the game is finished
     public void FinishedGame(bool didWin) {

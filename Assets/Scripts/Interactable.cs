@@ -9,7 +9,7 @@ public class Interactable : MonoBehaviour {
     public AudioClip[] pickup_sounds;
     public AudioClip[] drop_sounds;
 
-    public enum Tag {Ball, Smell, TiffyQuestItem, Soap};
+    public enum Tag {Ball, Smell, TiffyQuestItem, Soap, RexQuestItem};
     public List<Tag> tagList = new List<Tag>();
 
     AudioSource m_source;

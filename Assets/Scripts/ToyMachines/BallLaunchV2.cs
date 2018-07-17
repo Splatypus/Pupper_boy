@@ -29,14 +29,12 @@ public class BallLaunchV2 : MonoBehaviour {
 
     public void LoadBall(GameObject ball)
     {
-        print("LAUNCHER: got ball");
         ballToLaunch = ball;
         ballToLaunch.transform.position = storePosition.position;
 
         ball_rb = ballToLaunch.GetComponent<Rigidbody>();
         if(ball_rb != null)
         {
-            print("LAUNCHER: have rb for load");
             ball_rb.useGravity = false;
             ball_rb.velocity = Vector3.zero;
         }
@@ -52,7 +50,6 @@ public class BallLaunchV2 : MonoBehaviour {
 
     void LaunchBall()
     {
-        print("LAUNCHER: shoot ball");
         audioSource.Play();
         ballToLaunch.transform.position = launch_start_pos.position;
 
@@ -64,7 +61,6 @@ public class BallLaunchV2 : MonoBehaviour {
 
         if (ball_rb != null)
         {
-            print("LAUNCHER: have rb for shoot");
             ball_rb.useGravity = true;
             //ball_rb.velocity = launch_direction.normalized * launch_force;
             ball_rb.velocity = (transform.forward+ launch_direction).normalized * launch_force;

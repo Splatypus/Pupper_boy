@@ -9,7 +9,6 @@ public class DayNightMusicChange : MonoBehaviour {
     public AudioClip nightTheme;
     public AudioSource source;
     public float duration;
-    bool songIsChanging = false;
 
 	// Use this for initialization
 	void Start () {

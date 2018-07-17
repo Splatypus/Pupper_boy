@@ -17,8 +17,6 @@ public class TreeSpriterender : MonoBehaviour {
     public GameObject meshObject;
     public GameObject spriteObject;
 
-    bool isFade = false;
-
 	// Use this for initialization
 	void Start () {
         sr = spriteObject.GetComponentsInChildren<SpriteRenderer>();

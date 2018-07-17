@@ -9,8 +9,6 @@ public class AIbase : Dialog2 {
     public SpriteRenderer iconRenderer;
     public GameObject iconCanvas;
 
-    private bool inRange = false;
-
     // Use this for initialization
     new public void Start(){
         base.Start();
@@ -39,19 +37,35 @@ public class AIbase : Dialog2 {
             iconCanvas.SetActive(false);
     }
 
+    //called when something with the toy interaction script on it is brought within range
+    public virtual void ToyInRange(Interactable toy) {
+        
+    }
+
+    //destroys a gameobject and removes it from the player's mouth if its being held. Note that even if the object is not help, this function deltes it anyway
+    public void DestoryObjectInMouth(GameObject toDestroy) {
+        PuppyPickup inMouth = Player.GetComponent<DogControllerV2>().ppickup;
+        if (inMouth.itemInMouth != null && inMouth.itemInMouth == toDestroy) {
+            inMouth.DropItem();
+            inMouth.objectsInRange.Remove(toDestroy);
+        }
+        Destroy(toDestroy);
+    }
 
     public override void OnTriggerEnter(Collider col) {
         base.OnTriggerEnter(col);
+        Interactable toyScript = col.GetComponent<Interactable>();
+        //if this is the player, call OnInRange, if this is a toy, call ToyInRange
         if (col.gameObject.CompareTag("Player")) {
-            inRange = true;
             OnInRange();
+        } else if (toyScript != null) {
+            ToyInRange(toyScript);
         }
     }
 
     public override void OnTriggerExit(Collider col){
         base.OnTriggerExit(col);
         if (col.gameObject.CompareTag("Player")) {
-            inRange = false;
             OnExitRange();
         }
     }

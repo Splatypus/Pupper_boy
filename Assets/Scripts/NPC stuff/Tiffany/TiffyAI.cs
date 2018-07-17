@@ -31,30 +31,20 @@ public class TiffyAI : AIbase {
         }
     }
 
-    public override void OnTriggerEnter(Collider col){
-        base.OnTriggerEnter(col);
-
-        //if an item is brought to tiffany, and is her quest item, delete it, cand call toyInRange.
-        Interactable intObject = col.gameObject.GetComponent<Interactable>();
-        if ( intObject != null && intObject.hasTag(Interactable.Tag.TiffyQuestItem) && state == States.Rescued){
-            PuppyPickup inMouth = Player.GetComponent<DogControllerV2>().ppickup;
-            if (inMouth.itemInMouth != null && inMouth.itemInMouth == col.gameObject) {
-                inMouth.DropItem();
-                inMouth.objectsInRange.Remove(col.gameObject);
+    //called when a toy is brought in range. If its the bandana, progress the quest
+    public override void ToyInRange(Interactable toy) {
+        base.ToyInRange(toy);
+        //check to make sure the quest state and toy tag are correct. If so, delete the bandana and do her stuff
+        if (toy.hasTag(Interactable.Tag.TiffyQuestItem) && state == States.Rescued) {
+            DestoryObjectInMouth(toy.gameObject);
+            state = States.Happy;
+            progressionNum = 1;
+            Display(2);
+            Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
+            if (bandanaCollar != null && defaultCollar != null) {
+                bandanaCollar.SetActive(true);
+                defaultCollar.SetActive(false);
             }
-            ToyInRange(col.gameObject);
-            Destroy(col.gameObject);
-        }
-    }
-
-    public void ToyInRange(GameObject toy) {
-        state = States.Happy;
-        progressionNum = 1;
-        Display(2);
-        Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
-        if (bandanaCollar != null && defaultCollar != null) {
-            bandanaCollar.SetActive(true);
-            defaultCollar.SetActive(false);
         }
     }
 
@@ -91,6 +81,7 @@ public class TiffyAI : AIbase {
                 Saved();
             }
         }
+        //move forward if needed. This should probably be moved to a coroutine
         if (state == States.Rescued && moveDistance > 0) {
             transform.position += gameObject.transform.forward * Time.deltaTime * speed;
             moveDistance -= Time.deltaTime * speed;

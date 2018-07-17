@@ -11,6 +11,7 @@ public class ScentManager : MonoBehaviour {
     public float duration;
     public float maxDistance = 300;
     public List<ScentObject> scentObjects = new List<ScentObject>();
+    public bool isUnlocked = false; //has the player aquired this skill yet
 
     //internal variables
     Transform playerTransform;
@@ -38,14 +39,6 @@ public class ScentManager : MonoBehaviour {
     }
 
     void Update() {
-        
-        //input
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
-            if (!isEnabled)
-                EnableEffect();
-            else
-                DisableEffect();
-        }
 
         //enable or disable scent objects
         float t = (Time.time - startTime) / duration;
@@ -87,6 +80,15 @@ public class ScentManager : MonoBehaviour {
         //we are passing the destination RenderTexture to
     }
 
+    //if the effect is available to the player, toggle its enable/disable state
+    public void ToggleEffect() {
+        if (isUnlocked) {
+            if (!isEnabled)
+                EnableEffect();
+            else
+                DisableEffect();
+        }
+    }
 
     //starts expanding the effect
     public void EnableEffect() {
