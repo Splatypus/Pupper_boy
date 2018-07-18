@@ -16,7 +16,7 @@ public class ScentManager : MonoBehaviour {
     //internal variables
     Transform playerTransform;
     float startTime;
-    bool isEnabled;
+    public bool isEnabled;
     Vector3[] points;
     bool shaderActive = false;
 
@@ -104,7 +104,6 @@ public class ScentManager : MonoBehaviour {
             mat.SetFloat("_StartingTime", startTime);
         }
     }
-
 
     //starts shrinking the effect
     public void DisableEffect() {

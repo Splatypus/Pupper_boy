@@ -36,10 +36,11 @@ public class FreeCameraLook : MonoBehaviour {
     void Update() {
         //transform.position = Vector3.Lerp(cameraStart, cameraEnd, (Time.time - endTime) / (endTime - startTime));
         //time-endtime is how long its been since the physics update finished. We take that amount of time, and consider how far that puts us into that update
- 
+
         //transform.position = cameraEnd;
-        //always look at the player
-        transform.LookAt(anchor);
+        //always look at the player if they have control
+        if(!controlLocked)
+            transform.LookAt(anchor);
     }
 
     //find which location the camera should be moving to

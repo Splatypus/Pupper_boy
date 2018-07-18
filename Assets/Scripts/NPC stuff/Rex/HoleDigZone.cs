@@ -23,21 +23,17 @@ public class HoleDigZone : InteractableObject {
 
     public override void OnInteract() {
         if ((scentActive || digCount > 0) && !isAnimating) {//only run OnInteract if visible
-            if (digCount == 0) {
+            digCount++;
+            if (digCount == 1) {
+                //instantiate the hole and then grow its size
                 holePrefab = Instantiate(holePrefab, transform);
                 holePrefab.layer = 9;
                 originalScale = holePrefab.transform.localScale;
+                holePrefab.transform.localScale = Vector3.zero;
+                StartCoroutine(GrowHole(1.0f));
             }
-            digCount++;
-            //if the max dig count is reached, destroy the hole and spawn a reward, otherwise increase hole size
-            if (digCount >= totalDigCount) {
-                reward = Instantiate(reward, transform.position, transform.rotation);
-                reward.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5.0f, 5.0f), 10.0f, Random.Range(-5.0f, 5.0f));
-                playerController.removeObject(this);
-                StartCoroutine(ShrinkHoleOverTime(3.0f));
-            } else {
-                holePrefab.transform.localScale = originalScale * digCount / totalDigCount;
-            }
+            //increase hole size
+            StartCoroutine(GrowHole(1.0f));
         }
     }
 
@@ -98,8 +94,25 @@ public class HoleDigZone : InteractableObject {
         StartAnim();
         float startTime = Time.time;
         while (startTime + duration > Time.time) {
+            holePrefab.transform.localScale = Vector3.Lerp(originalScale * (digCount - 1) / totalDigCount, originalScale * digCount / totalDigCount, (Time.time - startTime) / duration);
             yield return new WaitForEndOfFrame();
         }
+        StopAnim();
+        //then check to see if the hole reached its full size
+        if (digCount >= totalDigCount) {
+            reward = Instantiate(reward, transform.position, transform.rotation);
+            reward.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5.0f, 5.0f), 10.0f, Random.Range(-5.0f, 5.0f));
+            reward.GetComponent<Collider>().enabled = false;
+            gameObject.GetComponent<Collider>().enabled = false;
+            playerController.removeObject(this);
+            StartCoroutine(EnableCollider(0.5f));
+            StartCoroutine(ShrinkHoleOverTime(3.0f));
+        }
+    }
+
+    IEnumerator EnableCollider(float delay) {
+        yield return new WaitForSeconds(delay);
+        reward.GetComponent<Collider>().enabled = true;
     }
 
     //changes the size of the hole over a given duration to zero, then deletes it

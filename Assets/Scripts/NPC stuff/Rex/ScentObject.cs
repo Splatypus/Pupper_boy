@@ -19,7 +19,11 @@ public class ScentObject : MonoBehaviour {
         if (colorParent) {
             returnLayer = transform.parent.gameObject.layer;
         }
-        EndScent(); //disable at start
+        //enable or disable depending on if scent is active
+        if (ScentManager.Instance.isEnabled)
+            StartScent();
+        else
+            EndScent(); 
     }
 
     //called when inside scent detection range
