@@ -5,7 +5,7 @@ using UnityEngine;
 
 
 //THIS SCRIPT IS NO LONGER USED. EVERYTHING HERE HAS BEEN MOVED INTO DOGCONTROLLERV2. 
-
+/*
 public class PlayerDig : MonoBehaviour {
 
     [SerializeField]
@@ -109,4 +109,4 @@ public class PlayerDig : MonoBehaviour {
         }
             
     }
-}
+}*/

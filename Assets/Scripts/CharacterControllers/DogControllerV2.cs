@@ -51,16 +51,14 @@ public class DogControllerV2 : Controller {
 
     #region Digging
     [SerializeField]
-    private SphereCollider dig_look_zone;
-    [SerializeField]
     private AudioSource dig_sound;
     public float rotateSpeed = 10.0f;
     public float maxRotaionTime = 0.4f; 
 
-    DigZone curZone;
     IconManager my_icon;
     TextFadeOut houseText;
     bool isDigging = false;
+    public int digZoneCount = 0; //how many dig zones the player is currently in
     #endregion
 
     void Start () {
@@ -86,29 +84,19 @@ public class DogControllerV2 : Controller {
             Move();
 
             //Handle interaction input
-            if (Input.GetButtonDown("Dig")) {
+            if (Input.GetButtonDown("Dig") && inRangeOf.Count > 0) {
+                //interact with the closest object  -- yes a binary search type thing would be faster, but this list is rarely of size > 2 so who cares
+                InteractableObject closest = inRangeOf[0];
+                float shortDis = Vector3.Distance(transform.position, closest.transform.position);
                 foreach (InteractableObject i in inRangeOf) {
-                    i.OnInteract();
-                }
-            }
-
-            //handle digging input -- why tf are these not done as interactable objects?!
-            if (Input.GetButtonDown("Dig") && onGround > 0) {
-                if (curZone != null) {
-                    rigidBody.velocity = Vector3.zero;
-                    if (curZone.isPathway) {
-
-                        //Run digging coroutine. This does the animation and movement and eveything
-                        StartCoroutine(StartZoneDig(curZone));
-
-                    } else {
-                        // for digging up object in yard
-                        Instantiate(curZone.objectToDigUp, curZone.transform.position, Quaternion.identity);
-                        // can give it some velocity and spin or whatever
-                        curZone.gameObject.SetActive(false);
+                    float dis = Vector3.Distance(transform.position, i.transform.position);
+                    if ( dis < shortDis) {
+                        shortDis = dis;
+                        closest = i;
                     }
                 }
-            }//end dig input
+                closest.OnInteract();
+            }
 
             //flight mode
             if (hasFlight && Input.GetButtonDown("Fly")) {
@@ -243,88 +231,31 @@ public class DogControllerV2 : Controller {
             
         }
     }
-    
-    //called when touches ground
-    public void OnGroundEnter() {
-        onGround += 1;
+
+    #region digging
+    //digs through the given zone
+    public void Dig(DigZone zone) {
         if (onGround > 0) {
-            anim.SetBool("onAir", false);
-        }
-
-    }
-
-    //called when leaves ground
-    public void OnGroundExit() {
-        onGround -= 1;
-        if (onGround == 0) {
-            anim.SetBool("onAir", true);
+            rigidBody.velocity = Vector3.zero;
+            //Run digging coroutine. This does the animation and movement and eveything
+            StartCoroutine(StartZoneDig(zone));
         }
     }
 
-    private void OnTriggerEnter(Collider other) {
-        //if we enter a dig zone, set that up
-        DigZone digZone = other.GetComponent<DigZone>();
-        if (digZone != null) {
-            //print("digger entered into a trigger named " + other.name);
-            curZone = digZone;
-            my_icon.set_single_icon(Icons.Dig); // make this dig when dig is ready
+    //when entering a dig zone, enable sprite and digzone count
+    public void DigZoneEnter() {
+        if (digZoneCount == 0) {
+            my_icon.set_single_icon(Icons.Dig);
             my_icon.set_single_bubble_active(true);
         }
+        digZoneCount++;
     }
 
-    private void OnTriggerExit(Collider other) {
-        //exiting dig zone
-        DigZone digZone = other.GetComponent<DigZone>();
-        if (digZone != null && digZone == curZone) {
-            //print("digger LEFT trigger " + other.name);
-            curZone = null;
+    //when leaving a dig zone, disable sprite if doggo is now in no zones
+    public void DigZoneExit() {
+        digZoneCount--;
+        if (digZoneCount == 0) {
             my_icon.set_single_bubble_active(false);
-        }
-
-    }
-
-    public override void OnDeactivated() {
-        anim.SetFloat("Forward", 0.0f); //disable animations
-        rigidBody.velocity = Vector3.zero; //and stop it from moving
-    }
-
-    //add object to things we can interact with
-    public void addObject(InteractableObject i) {
-        inRangeOf.Add(i);
-    }
-
-    //remove object from list
-    public void removeObject(InteractableObject i) {
-        inRangeOf.Remove(i);
-    }
-
-    //starts dig animation
-    IEnumerator StartZoneDig(DigZone digZone) {
-        isDigging = true;
-        if (ppickup.itemInMouth != null) {
-            ppickup.itemInMouth.SetActive(false);
-        }
-        //rotate towards the fence
-        float timeTaken = 0.0f;
-        while ( transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRotaionTime){
-            transform.rotation = Quaternion.RotateTowards(  transform.rotation, 
-                                                            Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position), 
-                                                            rotateSpeed * Time.fixedDeltaTime);
-            timeTaken += Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
-        }
-        //dig under it
-        anim.SetTrigger("Dig");
-        yield return new WaitForSeconds(0.6f);
-        dig_sound.Play();
-        move_to_next_zone(digZone);
-        anim.SetTrigger("Dig2");
-        houseText.setText(digZone.other_side.enteringYardName);
-        //after the animation, restore movement
-        yield return new WaitForSeconds(0.6f);
-        isDigging = false;
-        if (ppickup.itemInMouth != null) {
-            ppickup.itemInMouth.SetActive(true);
         }
     }
 
@@ -347,6 +278,71 @@ public class DogControllerV2 : Controller {
         }
 
         transform.position = targetLocation;
+    }
+
+    //starts dig animation
+    IEnumerator StartZoneDig(DigZone digZone) {
+        isDigging = true;
+        if (ppickup.itemInMouth != null) {
+            ppickup.itemInMouth.SetActive(false);
+        }
+        //rotate towards the fence
+        float timeTaken = 0.0f;
+        while (transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRotaionTime) {
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,
+                                                            Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position),
+                                                            rotateSpeed * Time.fixedDeltaTime);
+            timeTaken += Time.fixedDeltaTime;
+            yield return new WaitForFixedUpdate();
+        }
+        //dig under it
+        anim.SetTrigger("Dig");
+        yield return new WaitForSeconds(0.6f);
+        dig_sound.Play();
+        move_to_next_zone(digZone);
+        anim.SetTrigger("Dig2");
+        houseText.setText(digZone.other_side.enteringYardName);
+        //after the animation, restore movement
+        yield return new WaitForSeconds(0.6f);
+        isDigging = false;
+        if (ppickup.itemInMouth != null) {
+            ppickup.itemInMouth.SetActive(true);
+        }
+    }
+
+
+    #endregion
+
+    //called when touches ground
+    public void OnGroundEnter() {
+        onGround += 1;
+        if (onGround > 0) {
+            anim.SetBool("onAir", false);
+        }
+
+    }
+
+    //called when leaves ground
+    public void OnGroundExit() {
+        onGround -= 1;
+        if (onGround == 0) {
+            anim.SetBool("onAir", true);
+        }
+    }
+
+    public override void OnDeactivated() {
+        anim.SetFloat("Forward", 0.0f); //disable animations
+        rigidBody.velocity = Vector3.zero; //and stop it from moving
+    }
+
+    //add object to things we can interact with
+    public void addObject(InteractableObject i) {
+        inRangeOf.Add(i);
+    }
+
+    //remove object from list
+    public void removeObject(InteractableObject i) {
+        inRangeOf.Remove(i);
     }
 
 }
