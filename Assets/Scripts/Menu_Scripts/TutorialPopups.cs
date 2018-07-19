@@ -8,13 +8,12 @@ public class TutorialPopups : MonoBehaviour {
     public GameObject popup;
     public Text text;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public void EnableWithText(string t) {
+        popup.SetActive(true);
+        text.text = t;
+    }
+
+    public void OnDisable() {
+        popup.SetActive(false);
+    }
 }

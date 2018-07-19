@@ -40,12 +40,15 @@ public class TiffyAI : AIbase {
             state = States.Happy;
             progressionNum = 1;
             Display(2);
-            Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
             if (bandanaCollar != null && defaultCollar != null) {
                 bandanaCollar.SetActive(true);
                 defaultCollar.SetActive(false);
             }
         }
+    }
+
+    public void SpawnReward() {
+        Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
     }
 
     public void Saved() {

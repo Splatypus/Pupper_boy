@@ -9,7 +9,10 @@ public class HoleDigZone : InteractableObject {
     public GameObject IconCanvas;
     public GameObject ParticleObject;
     public int totalDigCount = 3; //how many times this needs to be dug
+    public AudioClip digSound;
+    public AudioClip toySpawnSound;
 
+    AudioSource audioSource;
     bool inRange = false;
     bool scentActive = false;
     bool isAnimating = false;
@@ -18,12 +21,15 @@ public class HoleDigZone : InteractableObject {
     DogControllerV2 playerController;
 
     private void Start() {
+        audioSource = gameObject.GetComponent<AudioSource>();
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<DogControllerV2>();
     }
 
     public override void OnInteract() {
         if ((scentActive || digCount > 0) && !isAnimating) {//only run OnInteract if visible
             digCount++;
+            audioSource.clip = digSound;
+            audioSource.Play();
             if (digCount == 1) {
                 //instantiate the hole and then grow its size
                 holePrefab = Instantiate(holePrefab, transform);
@@ -106,7 +112,10 @@ public class HoleDigZone : InteractableObject {
             gameObject.GetComponent<Collider>().enabled = false;
             playerController.removeObject(this);
             StartCoroutine(EnableCollider(0.5f));
-            StartCoroutine(ShrinkHoleOverTime(3.0f));
+            StartCoroutine(ShrinkHoleOverTime(10.0f));
+            //play spawn sound
+            audioSource.clip = toySpawnSound;
+            audioSource.Play();
         }
     }
 

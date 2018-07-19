@@ -28,6 +28,7 @@ Shader "Custom/Greyscale" {
 			float3 _DoggoPosition;
 			float4 _CameraPosition;
 			float4x4 _ViewFrustum;
+			float _GameTime;
 
 
 			struct v2f {
@@ -63,7 +64,7 @@ Shader "Custom/Greyscale" {
 				float4 newColor = orgColor;
 
 				//the percentage we are through the animation
-				float t = clamp( (_Time.y - _StartingTime) / _RingPassTimeLength , 0, 1);
+				float t = clamp( (_GameTime - _StartingTime) / _RingPassTimeLength , 0, 1);
 				t = (_RunRingPass == 2 ? 1 - t : t);
 				t = pow(t, 2.7);
 				float ringW = t * _RingWidth;

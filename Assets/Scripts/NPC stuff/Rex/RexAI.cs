@@ -34,6 +34,7 @@ public class RexAI : AIbase {
         base.ToyInRange(toy);
         if (toy.hasTag(Interactable.Tag.RexQuestItem) && state == States.READYFORTOYS) {
             toysCollected++;
+            progressionNum = 2;
             if (toysCollected >= totalToys)
                 state = States.HAPPY;
             DestoryObjectInMouth(toy.gameObject);

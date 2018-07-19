@@ -33,7 +33,7 @@ public class ScentManager : MonoBehaviour {
         mat.SetFloat("_RingPassTimeLength", duration);
         mat.SetFloat("_RingMaxDistance", maxDistance);
         isEnabled = false;
-        startTime = -duration;
+        startTime = Time.time - duration;
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         points = new Vector3[4];
     }
@@ -65,6 +65,7 @@ public class ScentManager : MonoBehaviour {
         if (startTime + duration > Time.time) {
             mat.SetVector("_CameraPosition", transform.position);
             mat.SetVector("_DoggoPosition", playerTransform.position);
+            mat.SetFloat("_GameTime", Time.time);
 
             //set up camera frustum
             Camera.main.CalculateFrustumCorners(new Rect(0, 0, 1, 1), Camera.main.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, points);
