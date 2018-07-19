@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TutorialAi : Dialog {
+public class TutorialAi : Dialog2 {
 
 	// Use this for initialization
 	new void Start () {
         base.Start();
-        StartCoroutine(afterStart());
+        StartCoroutine(AfterStart());
     }
 	
 	// Update is called once per frame
@@ -15,8 +15,8 @@ public class TutorialAi : Dialog {
 		
 	}
 
-    IEnumerator afterStart() {
-        yield return new WaitForEndOfFrame();
+    IEnumerator AfterStart() {
+        yield return new WaitForSeconds(0.1f);
         OnInteract();
     }
 }

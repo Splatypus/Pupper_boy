@@ -10,6 +10,9 @@ public class RexAI : AIbase {
     public int totalToys = 5;
     int toysCollected = 0;
 
+    public GameObject rewardSpawn;
+    public GameObject rewardPrefab;
+
     new public void Start() {
         base.Start();
         DayNightManager dnMan = DayNightManager.Instance;
@@ -42,6 +45,11 @@ public class RexAI : AIbase {
     }
 
     #region dialogFunctions
+    //spawns food bowl at designated location
+    public void SpawnReward() {
+        Instantiate(rewardPrefab, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
+    }
+
     //unllocks scent mode
     public void UnlockScentMode() {
         ScentManager.Instance.isUnlocked = true;
