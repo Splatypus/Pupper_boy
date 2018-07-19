@@ -38,8 +38,10 @@ public class RexAI : AIbase {
         if (toy.hasTag(Interactable.Tag.RexQuestItem) && state == States.READYFORTOYS) {
             toysCollected++;
             progressionNum = 2;
-            if (toysCollected >= totalToys)
+            if (toysCollected >= totalToys) {
                 state = States.HAPPY;
+                progressionNum = 3;
+            }
             DestoryObjectInMouth(toy.gameObject);
         }
     }

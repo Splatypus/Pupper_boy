@@ -135,7 +135,7 @@ public class HoleDigZone : InteractableObject {
             holePrefab.transform.localScale = originalScale * (1 - ((Time.time - startTime) / duration));
             yield return new WaitForEndOfFrame();
         }
-        ScentManager.Instance.scentObjects.Remove(ParticleObject.GetComponent<ScentObject>());
+        ScentManager.Instance.scentObjects.Remove(ParticleObject.GetComponentInChildren<HoleDigZoneScent>());
         //wait for particle system to finish before destroying this
         yield return new WaitForSeconds(Mathf.Max(ParticleObject.GetComponent<ParticleSystem>().main.startLifetime.constant - duration, 0.0f));
         Destroy(gameObject);

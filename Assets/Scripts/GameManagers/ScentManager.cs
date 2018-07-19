@@ -48,9 +48,10 @@ public class ScentManager : MonoBehaviour {
             t = Mathf.Pow(t, 2.7f);
             //then actually toggle active
             foreach (ScentObject g in scentObjects) {
-                if (isEnabled && !g.isActive && Vector3.Distance(g.transform.position, playerTransform.position) < t * maxDistance) {
+                //TODO: Fix this null check to actually remove the object when it should
+                if (isEnabled && g != null && !g.isActive && Vector3.Distance(g.transform.position, playerTransform.position) < t * maxDistance) {
                     g.StartScent();
-                } else if (!isEnabled && g.isActive && Vector3.Distance(g.transform.position, playerTransform.position) > t * maxDistance) {
+                } else if (!isEnabled && g != null && g.isActive && Vector3.Distance(g.transform.position, playerTransform.position) > t * maxDistance) {
                     g.EndScent();
                 }
             }
