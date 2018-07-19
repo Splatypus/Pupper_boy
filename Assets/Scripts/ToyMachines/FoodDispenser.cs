@@ -33,7 +33,9 @@ public class FoodDispenser : MonoBehaviour {
         m_source.clip = eating_clips[i];
         m_source.Play();
         food_holder.SetActive(false);
-        scent.GetComponent<ScentObject>().EndScent();
-        scent.SetActive(false);
+        //scent.GetComponent<ScentObject>().EndScent();
+        //scent.SetActive(false);
+        ScentManager.Instance.scentObjects.Remove(scent.GetComponent<ScentObject>());
+        Destroy(scent);
     }
 }

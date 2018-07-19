@@ -7880,7 +7880,8 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114918645976036634, guid: 39da450614a39a34dae331c2e27f143c, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 39da450614a39a34dae331c2e27f143c, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &181892461 stripped
@@ -7905,6 +7906,350 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.02317186, y: 0.04592334, z: 0.05444137}
   m_Center: {x: -0.00017025122, y: -0.005377126, z: -0.019684276}
+--- !u!114 &181892464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 181892462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb66551a4e9f2ce44b48846097b43a96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Rex
+  image: {fileID: 21300000, guid: a05a8c11115cba740b19c51d9fbac9ce, type: 3}
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
+  progressionNum: 0
+  functions:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 181892464}
+        m_MethodName: SetProgressionNum
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 181892464}
+        m_MethodName: UnlockScentMode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 181892464}
+        m_MethodName: SpawnReward
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  serializedNodes:
+  - x: -186
+    y: -22
+    width: 70
+    height: 70
+    text: 
+    num: -1
+    type: 4
+  - x: 169
+    y: -126
+    width: 200
+    height: 150
+    text: Woof! Get out of my yard!
+    num: -1
+    type: 0
+  - x: -107
+    y: -176
+    width: 70
+    height: 40
+    text: 
+    num: -1
+    type: 3
+  - x: -43
+    y: -31
+    width: 180
+    height: 70
+    text: day
+    num: 0
+    type: 1
+  - x: -38
+    y: 58
+    width: 180
+    height: 70
+    text: night
+    num: 1
+    type: 1
+  - x: -193
+    y: -194
+    width: 80
+    height: 70
+    text: 
+    num: 0
+    type: 2
+  - x: 5
+    y: 167
+    width: 200
+    height: 150
+    text: Ugh. You have no idea how exhausting it is to keep every living thing out
+      of my yard day in and day out.
+    num: -1
+    type: 0
+  - x: 227
+    y: 200
+    width: 200
+    height: 150
+    text: I can't let my guard down while those raccoons are still out and about.
+    num: -1
+    type: 0
+  - x: 409
+    y: 409
+    width: 200
+    height: 150
+    text: Press left mouse button to smell. Press it again to leave scent mode.
+    num: -1
+    type: 0
+  - x: 622
+    y: 408
+    width: 200
+    height: 150
+    text: Scents will be highlighted in color. See if you can find anything that matches
+      my scent.
+    num: -1
+    type: 0
+  - x: 297
+    y: 435
+    width: 80
+    height: 70
+    text: 
+    num: 1
+    type: 2
+  - x: 688
+    y: 201
+    width: 80
+    height: 70
+    text: 
+    num: 0
+    type: 2
+  - x: 801
+    y: 214
+    width: 70
+    height: 40
+    text: 
+    num: -1
+    type: 3
+  - x: 664
+    y: -71
+    width: 200
+    height: 150
+    text: Grrr.... I've got my eye on you.
+    num: -1
+    type: 0
+  - x: 944
+    y: 93
+    width: 180
+    height: 70
+    text: Day
+    num: 0
+    type: 1
+  - x: 948
+    y: 182
+    width: 180
+    height: 70
+    text: Night
+    num: 1
+    type: 1
+  - x: 958
+    y: 256
+    width: 180
+    height: 70
+    text: toy recoverd
+    num: 2
+    type: 1
+  - x: 954
+    y: 327
+    width: 180
+    height: 70
+    text: all toys
+    num: 3
+    type: 1
+  - x: 1173
+    y: 217
+    width: 200
+    height: 150
+    text: '... I wasn''t actually sure you would do it, but you proved me wrong. Thank
+      you.'
+    num: -1
+    type: 0
+  - x: 1216
+    y: 384
+    width: 200
+    height: 150
+    text: Holy bork! You did it kid! I never should've doubted you. If you ever find
+      yourself n a tight spot, you can count on me to retur the favor.
+    num: -1
+    type: 0
+  - x: 1600
+    y: 606
+    width: 70
+    height: 40
+    text: 
+    num: -1
+    type: 3
+  - x: 232
+    y: 30
+    width: 200
+    height: 150
+    text: '...'
+    num: -1
+    type: 0
+  - x: 459
+    y: 44
+    width: 200
+    height: 150
+    text: Hey! What's with that face? I can be civil every now and then.
+    num: -1
+    type: 0
+  - x: 468
+    y: 205
+    width: 200
+    height: 150
+    text: They took all my favorite toys. I'd go after them myself if I wasn't so
+      worried about them taking over my yard completely. *grumble grumble*
+    num: -1
+    type: 0
+  - x: 73
+    y: 394
+    width: 200
+    height: 150
+    text: Do you think you could go looking for my toys in my stead?
+    num: -1
+    type: 0
+  - x: 1440
+    y: 376
+    width: 200
+    height: 150
+    text: Oh, and feel free to take some of this food here. You've earned it.
+    num: -1
+    type: 0
+  - x: 1417
+    y: 588
+    width: 80
+    height: 70
+    text: 
+    num: 2
+    type: 2
+  - x: 1766
+    y: 524
+    width: 200
+    height: 150
+    text: See you around, kid.
+    num: -1
+    type: 0
+  serializedConnections:
+  - outIndex: 0
+    inIndex: 3
+  - outIndex: 0
+    inIndex: 4
+  - outIndex: 3
+    inIndex: 1
+  - outIndex: 1
+    inIndex: 5
+  - outIndex: 5
+    inIndex: 2
+  - outIndex: 2
+    inIndex: 3
+  - outIndex: 2
+    inIndex: 4
+  - outIndex: 4
+    inIndex: 6
+  - outIndex: 8
+    inIndex: 9
+  - outIndex: 11
+    inIndex: 12
+  - outIndex: 13
+    inIndex: 12
+  - outIndex: 12
+    inIndex: 14
+  - outIndex: 12
+    inIndex: 15
+  - outIndex: 12
+    inIndex: 16
+  - outIndex: 12
+    inIndex: 17
+  - outIndex: 14
+    inIndex: 13
+  - outIndex: 15
+    inIndex: 8
+  - outIndex: 10
+    inIndex: 8
+  - outIndex: 9
+    inIndex: 11
+  - outIndex: 16
+    inIndex: 18
+  - outIndex: 18
+    inIndex: 12
+  - outIndex: 17
+    inIndex: 19
+  - outIndex: 6
+    inIndex: 21
+  - outIndex: 21
+    inIndex: 22
+  - outIndex: 22
+    inIndex: 7
+  - outIndex: 7
+    inIndex: 23
+  - outIndex: 23
+    inIndex: 24
+  - outIndex: 24
+    inIndex: 10
+  - outIndex: 19
+    inIndex: 25
+  - outIndex: 26
+    inIndex: 20
+  - outIndex: 25
+    inIndex: 26
+  - outIndex: 20
+    inIndex: 27
+  - outIndex: 27
+    inIndex: 20
+  Icons:
+  - {fileID: 21300000, guid: 444ed615244a40540adecf478143053a, type: 3}
+  - {fileID: 21300000, guid: a35c4af3a2ceb044dab4383984f1bb39, type: 3}
+  - {fileID: 21300000, guid: 3cbd4bdb13535a349b93bb14a2c37334, type: 3}
+  Player: {fileID: 0}
+  iconRenderer: {fileID: 1242148679}
+  iconCanvas: {fileID: 1153579885}
+  state: 0
+  totalToys: 4
+  rewardSpawn: {fileID: 1710520733}
+  rewardPrefab: {fileID: 1345246143572934, guid: 2913802208bee5a47aa147c46eafc6ad,
+    type: 2}
 --- !u!4 &182556738 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4875745545522148, guid: 41e5e79a5b6ac8c4680dcbe5993785fa,
@@ -18052,6 +18397,26 @@ Prefab:
         type: 2}
       propertyPath: ShapeModule.radiusThickness
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
       objectReference: {fileID: 0}
     - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
         type: 2}
@@ -48201,6 +48566,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5a15747d0d4142245a915c83a61b4fe9, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &1153579885 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1787728240731300, guid: 39da450614a39a34dae331c2e27f143c,
+    type: 2}
+  m_PrefabInternal: {fileID: 181892460}
 --- !u!1 &1157865184
 GameObject:
   m_ObjectHideFlags: 0
@@ -50263,6 +50633,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1239596658}
   m_Mesh: {fileID: 4300000, guid: 5d92abef242cfcc4781ac2ae661d8fe8, type: 3}
+--- !u!212 &1242148679 stripped
+SpriteRenderer:
+  m_PrefabParentObject: {fileID: 212021810489913024, guid: 39da450614a39a34dae331c2e27f143c,
+    type: 2}
+  m_PrefabInternal: {fileID: 181892460}
 --- !u!1 &1245092709
 GameObject:
   m_ObjectHideFlags: 0
@@ -59949,6 +60324,26 @@ Prefab:
       propertyPath: ShapeModule.radiusThickness
       value: 1.0000
       objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 74c91bbf343c52b4c97c0797efc497a9, type: 2}
   m_IsPrefabParent: 0
@@ -60986,6 +61381,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.14, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &1710520733 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1297412744977332, guid: 39da450614a39a34dae331c2e27f143c,
+    type: 2}
+  m_PrefabInternal: {fileID: 181892460}
 --- !u!1001 &1714140864
 Prefab:
   m_ObjectHideFlags: 0
@@ -76227,6 +76627,26 @@ Prefab:
         type: 2}
       propertyPath: ShapeModule.radiusThickness
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
       objectReference: {fileID: 0}
     - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
         type: 2}

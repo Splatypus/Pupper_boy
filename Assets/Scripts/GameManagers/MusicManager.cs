@@ -14,7 +14,7 @@ public class MusicManager : MonoBehaviour {
         //singleton pattern but for gameobjects.
         if (Instance == null) {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         } else if (Instance != this) {
             Destroy(gameObject);
         }
