@@ -9,8 +9,6 @@ public class DogControllerV2 : Controller {
     #region Component Variables
     Rigidbody rigidBody;
     Animator anim;
-    [SerializeField] PhysicMaterial zFriction;
-    [SerializeField] PhysicMaterial mFriction;
     Transform cam;
     #endregion
 

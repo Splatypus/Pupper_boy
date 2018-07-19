@@ -14,12 +14,14 @@ public class GroundCheck : MonoBehaviour {
 	}
 
     private void OnTriggerEnter(Collider other) {
-        if (other.CompareTag("Ground"))
+        //if (other.CompareTag("Ground"))
+        if(!other.isTrigger)
             control.OnGroundEnter();
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("Ground"))
+        //if (other.CompareTag("Ground"))
+        if (!other.isTrigger)
             control.OnGroundExit();
     }
 }

@@ -13,6 +13,9 @@ public class Trampoline : MonoBehaviour {
 	}
 
     private void OnTriggerEnter(Collider other) {
+        //do nothing unless this hits a real collider
+        if (other.isTrigger)
+            return;
         Rigidbody rb = other.GetComponent<Rigidbody>();
         if (other.CompareTag("Player")) {
             //if the player collides with this while moving downward, bounce them
