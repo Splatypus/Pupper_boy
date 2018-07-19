@@ -10,10 +10,8 @@ public class DogControllerV2 : Controller {
     Rigidbody rigidBody;
     Animator anim;
     Transform cam;
+    PuppyPickup mouth;
     #endregion
-
-    public Text debug_text;
-
 
     #region new world order movement variables
     public Vector3 v; //velocity
@@ -38,8 +36,6 @@ public class DogControllerV2 : Controller {
     public int onGround = 0;
     public bool hasFlight = false;
 
-    public GameObject mainCam;
-
     //float m_speed;
 
     #region InteractionVariables
@@ -59,9 +55,15 @@ public class DogControllerV2 : Controller {
     public int digZoneCount = 0; //how many dig zones the player is currently in
     #endregion
 
+    #region tutorial shit
+    //everything related to this is tagged with "//TUTORIAL" for easy removal
+    TutorialPopups tut;
+    #endregion
+
     void Start () {
         rigidBody = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
+        mouth = GetComponentInChildren<PuppyPickup>();
         anim = GetComponentInChildren<Animator>();
         my_icon = GetComponentInChildren<IconManager>();
         houseText = FindObjectOfType<TextFadeOut>();
@@ -70,7 +72,8 @@ public class DogControllerV2 : Controller {
         Cursor.visible = false;
 
         v = Vector3.zero;
-        
+
+        tut = gameObject.GetComponent<TutorialPopups>();//TUTORIAL
     }
 
     // Update is called once per frame
@@ -83,6 +86,8 @@ public class DogControllerV2 : Controller {
 
             //Handle interaction input
             if (Input.GetButtonDown("Dig") && inRangeOf.Count > 0) {
+                tut.CompleteTutorial(); //TUTORIAL
+
                 //interact with the closest object  -- yes a binary search type thing would be faster, but this list is rarely of size > 2 so who cares
                 InteractableObject closest = inRangeOf[0];
                 float shortDis = Vector3.Distance(transform.position, closest.transform.position);
@@ -104,6 +109,10 @@ public class DogControllerV2 : Controller {
             //turning scent on or off
             if (Input.GetButtonDown("Scent")) {
                 ScentManager.Instance.ToggleEffect();
+            }
+
+            if (Input.GetButtonDown("Interact")) {
+                mouth.DoInputAction();
             }
 
         }//end isdigging check
@@ -243,6 +252,7 @@ public class DogControllerV2 : Controller {
     //when entering a dig zone, enable sprite and digzone count
     public void DigZoneEnter() {
         if (digZoneCount == 0) {
+            tut.DoDigTutorial(); //TUTORIAL
             my_icon.set_single_icon(Icons.Dig);
             my_icon.set_single_bubble_active(true);
         }
@@ -253,6 +263,7 @@ public class DogControllerV2 : Controller {
     public void DigZoneExit() {
         digZoneCount--;
         if (digZoneCount == 0) {
+            tut.DisableTutorial();//TUTORIAL
             my_icon.set_single_bubble_active(false);
         }
     }
@@ -260,6 +271,8 @@ public class DogControllerV2 : Controller {
     //moves the character to the next dig zone when digging
     private void move_to_next_zone(DigZone digZone) {
         DigZone zone_to_go_to = digZone.other_side;
+
+        tut.CompleteTutorial(); //TUTORIAL
 
         //find out how far to move. This is done by assuming that one dig zone is a plane with a normal pointing towards the other zone
         //this makes it easy to find the distance from the character to that plane and move the player that far
@@ -308,7 +321,6 @@ public class DogControllerV2 : Controller {
         }
     }
 
-
     #endregion
 
     //called when touches ground
@@ -336,11 +348,21 @@ public class DogControllerV2 : Controller {
     //add object to things we can interact with
     public void addObject(InteractableObject i) {
         inRangeOf.Add(i);
+        //TUTORIAL
+        if (i.GetComponent<DigZone>() != null) {
+            tut.DoDigTutorial();
+        } else {
+            tut.DoTalkTutorial();
+        }
     }
 
     //remove object from list
     public void removeObject(InteractableObject i) {
         inRangeOf.Remove(i);
+        //TUTORIAL
+        if (inRangeOf.Count == 0) {
+            tut.DisableTutorial();
+        }
     }
 
 }

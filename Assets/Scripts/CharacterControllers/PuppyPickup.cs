@@ -38,74 +38,72 @@ public class PuppyPickup : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        //determine if E key has been pressed.  E key is used to pickup and drop objects
-        //if(Input.GetKeyDown(KeyCode.E))
-        if (Input.GetButtonDown("Interact")) {
-            //Debug.Log("got e");
-            //first, if there is an object in the dog's mouth, drop it or load it into a launcher
-            if (itemInMouth != null) {
-                //first check if we're in range of a ball launcher.  If so, load it
-                Interactable i = itemInMouth.GetComponent<Interactable>();
-                if (launcherInRange && i != null) //&& i.tagList.Contains(Interactable.Tag.Ball))
-                {
-                    itemInMouth.transform.parent = null;
-                    launcherInRange.LoadBall(itemInMouth);
-                }
-                //Otherwise, drop it
-                else {
-                    DropItem();
-                }
-                itemInMouth = null;
-            } else if (foodInRange != null && foodInRange.CanEat()) {
-                foodInRange.EatFood();
-
-                // eat some goddamn food
-                m_num_food++;
-                if (m_num_food >= num_food_for_memes) {
-                    //Debug.Log("ENTER MEME ZONE!!!!");
-                    DogControllerV2 flight = GetComponentInParent<DogControllerV2>();
-                    flight.hasFlight = true;
-                    iconManager.set_single_icon(Icons.Flight);
-                    iconManager.set_single_bubble_active(true);
-                    Invoke("dissable_bubble_icon", 2.0f);
-                }
-                if (m_num_food % num_food_for_poop == 0) {
-                    Invoke("poop", time_for_poop);
-                }
-
-            }
-            //otherwise, see if there are objects in range and pick up the closest one
-            else if (objectsInRange.Count > 0) {
-                itemInMouth = ClosestObject();
-                // do stuff with interactable object
-                Interactable interactable = itemInMouth.GetComponent<Interactable>();
-                if (interactable) {
-                    interactable.onPickup();
-                }
-                itemInMouth.transform.parent = mouth;
-                itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
-                itemInMouth.GetComponent<Rigidbody>().useGravity = false;
-            } else {
-                int prev_index = bork_index;
-                // bork
-                bork_index = Random.Range(0, borks.Length);
-
-                while (bork_index == prev_index) {
-                    bork_index = Random.Range(0, borks.Length);
-                }
-
-                m_audio_source.clip = borks[bork_index];
-                m_audio_source.Play();
-
-                foreach (BirdMovementV2 bird in birds) {
-                    bird.getBarkedAt(transform.position);
-                }
-            }
-        }
-
         //update prevPosition
         if (itemInMouth != null)
             prevPosition = itemInMouth.transform.position;
+    }
+
+    //called when the picup button is pressed
+    public void DoInputAction() {
+        //first, if there is an object in the dog's mouth, drop it or load it into a launcher
+        if (itemInMouth != null) {
+            //first check if we're in range of a ball launcher.  If so, load it
+            Interactable i = itemInMouth.GetComponent<Interactable>();
+            if (launcherInRange && i != null) //&& i.tagList.Contains(Interactable.Tag.Ball))
+            {
+                itemInMouth.transform.parent = null;
+                launcherInRange.LoadBall(itemInMouth);
+            }
+            //Otherwise, drop it
+            else {
+                DropItem();
+            }
+            itemInMouth = null;
+        } else if (foodInRange != null && foodInRange.CanEat()) {
+            foodInRange.EatFood();
+
+            // eat some goddamn food
+            m_num_food++;
+            if (m_num_food >= num_food_for_memes) {
+                //Debug.Log("ENTER MEME ZONE!!!!");
+                DogControllerV2 flight = GetComponentInParent<DogControllerV2>();
+                flight.hasFlight = true;
+                iconManager.set_single_icon(Icons.Flight);
+                iconManager.set_single_bubble_active(true);
+                Invoke("dissable_bubble_icon", 2.0f);
+            }
+            if (m_num_food % num_food_for_poop == 0) {
+                Invoke("poop", time_for_poop);
+            }
+
+        }
+        //otherwise, see if there are objects in range and pick up the closest one
+        else if (objectsInRange.Count > 0) {
+            itemInMouth = ClosestObject();
+            // do stuff with interactable object
+            Interactable interactable = itemInMouth.GetComponent<Interactable>();
+            if (interactable) {
+                interactable.onPickup();
+            }
+            itemInMouth.transform.parent = mouth;
+            itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
+            itemInMouth.GetComponent<Rigidbody>().useGravity = false;
+        } else {
+            int prev_index = bork_index;
+            // bork
+            bork_index = Random.Range(0, borks.Length);
+
+            while (bork_index == prev_index) {
+                bork_index = Random.Range(0, borks.Length);
+            }
+
+            m_audio_source.clip = borks[bork_index];
+            m_audio_source.Play();
+
+            foreach (BirdMovementV2 bird in birds) {
+                bird.getBarkedAt(transform.position);
+            }
+        }
     }
 
     private void dissable_bubble_icon() {
@@ -141,9 +139,6 @@ public class PuppyPickup : MonoBehaviour {
         }
 
     }
-
-
-
 
     void OnTriggerEnter(Collider other) {
         //if it's a pickup item, add it to the list

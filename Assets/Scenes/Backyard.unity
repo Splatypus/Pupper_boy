@@ -17783,6 +17783,41 @@ Prefab:
       propertyPath: ShapeModule.radiusThickness
       value: 1.0000
       objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 74c91bbf343c52b4c97c0797efc497a9, type: 2}
   m_IsPrefabParent: 0
@@ -50414,7 +50449,7 @@ GameObject:
   - component: {fileID: 1279465205}
   - component: {fileID: 1279465204}
   m_Layer: 5
-  m_Name: Text
+  m_Name: TutorialText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53101,6 +53136,24 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1960520266}
   m_Script: {fileID: 11500000, guid: a901ff32ced2cc24aa834af6cb637f5b, type: 3}
+--- !u!114 &1407493909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1407493907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 100a0695daec8b646ad440a0cbc0725b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popup: {fileID: 1046236683}
+  text: {fileID: 1279465204}
+  digTutorial: 1
+  digString: Press Q to dig under fences!
+  talkTutorial: 1
+  talkString: Press Q to interact with other dogs or objects!
+  state: 3
 --- !u!1 &1408004438
 GameObject:
   m_ObjectHideFlags: 0
@@ -55725,32 +55778,39 @@ MonoBehaviour:
   progressionNum: 0
   functions: []
   serializedNodes:
-  - x: 535
-    y: 379
+  - x: 297
+    y: 355
     width: 70
     height: 70
     text: 
     num: -1
     type: 4
-  - x: 639
-    y: 338
+  - x: 401
+    y: 314
     width: 200
     height: 150
     text: Welcome to Doggo Unleashed!
     num: -1
     type: 0
-  - x: 1095
-    y: 392
+  - x: 1063
+    y: 376
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 853
-    y: 340
+  - x: 615
+    y: 316
     width: 200
     height: 150
     text: Use the WASD keys to move. You can use the mouse to look around.
+    num: -1
+    type: 0
+  - x: 838
+    y: 317
+    width: 200
+    height: 150
+    text: Press E to bark or pick up toys!
     num: -1
     type: 0
   serializedConnections:
@@ -55758,8 +55818,10 @@ MonoBehaviour:
     inIndex: 1
   - outIndex: 1
     inIndex: 3
-  - outIndex: 3
+  - outIndex: 4
     inIndex: 2
+  - outIndex: 3
+    inIndex: 4
 --- !u!4 &1516583018
 Transform:
   m_ObjectHideFlags: 0
@@ -74319,6 +74381,41 @@ Prefab:
         type: 2}
       propertyPath: ShapeModule.radiusThickness
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
+      objectReference: {fileID: 0}
+    - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 2}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
       objectReference: {fileID: 0}
     - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
         type: 2}
