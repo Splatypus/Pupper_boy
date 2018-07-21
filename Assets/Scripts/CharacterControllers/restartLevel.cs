@@ -20,7 +20,7 @@ public class restartLevel : MonoBehaviour {
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            SceneManager.LoadScene("title_screen");
+            SceneManager.LoadScene("DankAssTitleScreen");
         }
 	}
 }

@@ -12,7 +12,7 @@ public class BlackieAI : AIbase {
     public BlackieMiniGame2 blackieGameRef;
 
     void Awake() {
-        Saving.Instance.AddCallback(new UnityEngine.Events.UnityAction(OnLoad));
+        //Saving.Instance.AddCallback(new UnityEngine.Events.UnityAction(OnLoad));
     }
 
     // Use this for initialization
@@ -45,7 +45,7 @@ public class BlackieAI : AIbase {
     //when you finish conversation, save the data
     public override void OnEnd() {
         base.OnEnd();
-        Save();
+        //Save();
     }
 
     //called by game machine when a game ends
@@ -55,15 +55,15 @@ public class BlackieAI : AIbase {
 
     //called when saved data is loaded
     void OnLoad() {
-        currentNode = nodes[Saving.Instance.data.blackieConversationNumber];
+        //currentNode = nodes[Saving.Instance.data.blackieConversationNumber];
         Debug.Log("Loaded to node index " + Saving.Instance.data.blackieConversationNumber);
     }
 
     //Writes this data to the save file, then saves
     void Save() {
         //this probably works right? Index should only ever be changed from the editor.
-        Saving.Instance.data.blackieConversationNumber = currentNode.index;
-        Saving.Instance.Save();
+        //Saving.Instance.data.blackieConversationNumber = currentNode.index;
+        //Saving.Instance.Save();
         Debug.Log("Saving node index " + currentNode.index);
     }
 
