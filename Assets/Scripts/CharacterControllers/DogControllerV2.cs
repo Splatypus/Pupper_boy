@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -76,13 +77,20 @@ public class DogControllerV2 : Controller {
         tut = gameObject.GetComponent<TutorialPopups>();//TUTORIAL
     }
 
+    //move in fixed update since it changes velocity. In normal update it would sometimes feel like it had small delays.
+    void FixedUpdate() {
+        if (!isDigging) {
+            Move();
+        }
+    }
+
     // Update is called once per frame
     void Update() {
 
         //dont do anything if digging
         if (!isDigging) {
 
-            Move();
+            //Move();
 
             //Handle interaction input
             if (Input.GetButtonDown("Dig") && inRangeOf.Count > 0) {
@@ -117,8 +125,7 @@ public class DogControllerV2 : Controller {
 
         }//end isdigging check
     }
-
-    //void FixedUpdate()
+    
     void Move()
     {
         // Get input from Unity's default input control system
@@ -133,6 +140,7 @@ public class DogControllerV2 : Controller {
         //^On PC builds this should be normalized, since axies cannot be between 0 and 1, but can both be 1. Meaning you need to prevent faster diagonal movement
         //on console, this should be non-normalized, since the stick gives values between 0 and 1, but cannot put both at 1, and you may want <1 values, such as moving the stick half way left
 
+        //find accelerations and max speeds
         float a = acceleration; //acceleration for this frame
         if (onGround == 0) {
             a *= inAirMult;
@@ -159,10 +167,21 @@ public class DogControllerV2 : Controller {
         float verticalSpeed = v.y;
         v.y = 0;
 
-        //if input
+        //find horizontal movement based on input
         if ((cam_right + cam_fwd).sqrMagnitude > Mathf.Epsilon) {
-            //acceleration only affects speed
-            v = moveDirection * Mathf.Min(v.magnitude + a * Time.deltaTime, newMaxSpeed);
+            //in air
+            if (onGround == 0) {
+                v += moveDirection * a * Time.deltaTime;
+                //if this acceleration pushes it over the max speed, cap it there instead
+                if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
+                    v = v.normalized * maxSpeed;
+                }
+            }
+
+            //acceleration only affects speed while on the ground. 
+            else {
+                v = moveDirection * Mathf.Min(v.magnitude + a * Time.deltaTime, newMaxSpeed);
+            }
 
             //If acceleration affects velocity (drift doggo)
             /*v += moveDirection * a * Time.deltaTime;
@@ -170,7 +189,7 @@ public class DogControllerV2 : Controller {
             if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
                 v = v.normalized * maxSpeed;
             }*/
-        }
+            }
         //no input
         else {
             //in air
@@ -226,16 +245,23 @@ public class DogControllerV2 : Controller {
         float animValue = Mathf.Sqrt(vertical*vertical + horizontal*horizontal);
         anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime);
 
+        //set turnspeed
+        float ts = turnspeed;
+        //if doggo is in the air, he turns slower
+        if (onGround == 0) {
+            ts *= inAirMult;
+        }
+
         // Update player rotation if there is movement in any direction
         if (horizontal != 0 || vertical != 0) {
             if (angle > Mathf.Epsilon)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * ts / angle * Time.deltaTime);
+        //If the cameralock button is pressed, then look towards the camera vector
         } else if (Input.GetButton("CameraLock")) {
             //look vector directly through the doggo
             Quaternion newLookDirection = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.position - cam.transform.position, transform.up).normalized);
             angle = Quaternion.Angle(transform.rotation, newLookDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * turnspeed / angle * Time.deltaTime);
-            
+            transform.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * ts / angle * Time.deltaTime);
         }
     }
 
