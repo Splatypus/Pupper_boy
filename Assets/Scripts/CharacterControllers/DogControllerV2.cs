@@ -80,7 +80,7 @@ public class DogControllerV2 : Controller {
     //move in fixed update since it changes velocity. In normal update it would sometimes feel like it had small delays.
     void FixedUpdate() {
         if (!isDigging) {
-            Move();
+            //Move();
         }
     }
 
@@ -90,7 +90,7 @@ public class DogControllerV2 : Controller {
         //dont do anything if digging
         if (!isDigging) {
 
-            //Move();
+            Move();
 
             //Handle interaction input
             if (Input.GetButtonDown("Dig") && inRangeOf.Count > 0) {
@@ -128,7 +128,8 @@ public class DogControllerV2 : Controller {
     
     void Move()
     {
-        // Get input from Unity's default input control system
+        // Get input from Unity's default input control system (Can this be called from fixed update? Might need to set these in update or somethin)
+        //Yes, the issue is that putting this in fixed update means at high fps you can have input start and end before the next fixed update, skipping input checks here. 
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
         jumpInput = Input.GetButtonDown("Jump");
@@ -202,25 +203,6 @@ public class DogControllerV2 : Controller {
             }
         }
         
-        #region old move
-        /*
-        //if doggo would accelerate past max speed, then go just to max speed instead.
-        if ((v + moveDirection * a * Time.deltaTime).sqrMagnitude > newMaxSpeed * newMaxSpeed) {
-            v = (v + moveDirection * a * Time.deltaTime).normalized * newMaxSpeed; 
-        }
-        //Freeze movement if no movement input
-        else if ((cam_right + cam_fwd).sqrMagnitude < Mathf.Epsilon) {
-            v = Vector3.zero;
-        }
-        //otherwise, just accelerate in the given direction
-        else {
-            v += moveDirection * a * Time.deltaTime;
-        }
-        //if doggo is moving past the maximum speed before applying the acceleration from this frame, slow down doggo, but not below the max speed
-        if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
-            v = v.normalized * Mathf.Max((v.magnitude - decceleration * Time.deltaTime), newMaxSpeed);
-        }*/
-        #endregion
 
         v.y = verticalSpeed;//reset v.y after changes from horizontal movement
 

@@ -1,28 +1,68 @@
 ﻿
-Shader "Custom/ToonShader" {
+Shader "Custom/ViewThroughObject" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
 		_DarknessColor("Darkness color", Color) = (0.4,0.4,0.4,1)
 		_ShadowTint("Shadow Tint", Color) = (1,1,1,1)
 		_ShadowCutoff("Shadow Tint Cutoff", Float) = 0.95
-		_ShadowMult("Shadow Tint Intensity", Float) = 2.0
+		_ShadowMult("Tint Light Multiplier", Float) = 2.0
 		_SunspotCutoff("Sunglow Cutoff", Float) = 0.95
-		_Sunspot("Sunglow Intensity", Float) = 1
-		_EdgeGlow("Edgeglow Intensity", Float) = 6
+		_Sunspot("Sunglow Intensity", Float) = 6
+
+
+
+			//_Glossiness ("Smoothness", Range(0,1)) = 0.5
+			//_Metallic ("Metallic", Range(0,1)) = 0.0
 	}
-	SubShader {
-		Tags { "RenderType"="Opaque" }
-		LOD 200
+		SubShader{
+			Tags { "RenderType" = "Transparent" }
+			LOD 200
+
+
+			Pass{
+				CGPROGRAM
+				#pragma vertex vert
+				#pragma fragment frag
+				#include "UnityCG.cginc"
+
+				float3 _CameraPosition;
+				float3 _DoggoPosition;
+				float3 _ObjectPosition;
+
+
+				struct v2f {
+					float3 worldPosition : TEXCOORD2;
+				};
+
+				//interpolate worldspace position to each fragment
+				v2f vert(appdata_base v) {
+					v2f o;
+					o.worldPosition = v.vertex + _ObjectPosition;
+					return o;
+				}
+
+				//change alpha channel
+				half4 frag(v2f i) : COLOR {
+					half a = dot(normalize(_DoggoPosition - _CameraPosition), normalize(i.worldPosition - _CameraPosition));
+					a = (a < 0.85);
+					half4 ret;
+					ret.a = a;
+					ret.rgb = 0;
+					return ret;
+				}
+
+				ENDCG
+			}
 
 		//surface shader (cel shading)
 
 		CGPROGRAM
 		#pragma surface surf CelShadingForward addshadow
-			//#pragma surface surf BlinnPhong vertex:vert addshadow
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
 
+		//float _MinDark;
 		float _SunspotCutoff;
 		float _Sunspot;
 		float4 _ShadowTint;
@@ -47,8 +87,6 @@ Shader "Custom/ToonShader" {
 			_DarknessColor *= (lightStr < 0); //in shade
 			_DarknessColor += 1;
 			
-			
-
 			c.rgb *= _DarknessColor * _ShadowTint.rgb * _ShadowTint.a;
 			c.a = s.Alpha;
 			return c;
@@ -60,12 +98,13 @@ Shader "Custom/ToonShader" {
 			float2 uv_MainTex;
 		};
 
+
 		fixed4 _Color;
 
 		void surf (Input IN, inout SurfaceOutput o) {
 			// Albedo comes from a texture tinted by color
-			fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color *_Color.a;
-			o.Albedo = c.rgba;
+			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color * _Color.a;
+			o.Albedo = c.rgb;
 			o.Alpha = c.a;
 		}
 
