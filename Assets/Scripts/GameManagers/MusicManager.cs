@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//public void ChangeSong(float duration, AudioClip song)
+//changes the current playing song to a new one, fading over the given duration
+
 public class MusicManager : MonoBehaviour {
 
     public static MusicManager Instance;
