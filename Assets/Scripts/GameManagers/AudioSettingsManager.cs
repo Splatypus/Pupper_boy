@@ -23,6 +23,8 @@ public class AudioSettingsManager : MonoBehaviour {
         masterSlider.GetComponent<PlayerPrefsManager>().myManager = this;
         musicSlider.GetComponent<PlayerPrefsManager>().myManager = this;
         sfxSlider.GetComponent<PlayerPrefsManager>().myManager = this;
+
+        this.gameObject.SetActive(false);
     }
 
     public void ChangeMixerVolume(string mixKey, float value) {
