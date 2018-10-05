@@ -2764,10 +2764,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 441163983}
   m_HandleRect: {fileID: 520446614}
   m_Direction: 0
-  m_MinValue: -60
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.0001
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -2815,7 +2815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: musicVol
-  myObject: {fileID: 256809902}
+  myManager: {fileID: 0}
 --- !u!1 &277327011 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100000, guid: 4cd714ddf76f5fb459156afd69afab27, type: 3}
@@ -4583,10 +4583,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 697798690}
   m_HandleRect: {fileID: 1766013422}
   m_Direction: 0
-  m_MinValue: -60
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.0001
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -4634,7 +4634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: masterVol
-  myObject: {fileID: 473871271}
+  myManager: {fileID: 0}
 --- !u!1 &483530985
 GameObject:
   m_ObjectHideFlags: 0
@@ -14197,10 +14197,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1047567229}
   m_HandleRect: {fileID: 94771862}
   m_Direction: 0
-  m_MinValue: -60
+  m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.0001
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -14248,7 +14248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   key: sfxVol
-  myObject: {fileID: 1537569251}
+  myManager: {fileID: 0}
 --- !u!1001 &1537990834
 Prefab:
   m_ObjectHideFlags: 0

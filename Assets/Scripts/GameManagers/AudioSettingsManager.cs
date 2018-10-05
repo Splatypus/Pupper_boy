@@ -26,6 +26,6 @@ public class AudioSettingsManager : MonoBehaviour {
     }
 
     public void ChangeMixerVolume(string mixKey, float value) {
-        masterMixer.SetFloat(mixKey, value);
+        masterMixer.SetFloat(mixKey, Mathf.Log10(value) * 33);
     }
 }
