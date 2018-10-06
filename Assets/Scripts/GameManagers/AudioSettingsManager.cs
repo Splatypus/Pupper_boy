@@ -14,7 +14,7 @@ public class AudioSettingsManager : MonoBehaviour {
     public Slider musicSlider;
     public Slider sfxSlider;
 
-    void Start() {
+    public void RemoteStart() {
 
         //mute music at the start to account for needed delay
         masterMixer.SetFloat("musicVol", -60f);
@@ -23,8 +23,6 @@ public class AudioSettingsManager : MonoBehaviour {
         masterSlider.GetComponent<PlayerPrefsManager>().myManager = this;
         musicSlider.GetComponent<PlayerPrefsManager>().myManager = this;
         sfxSlider.GetComponent<PlayerPrefsManager>().myManager = this;
-
-        this.gameObject.SetActive(false);
     }
 
     public void ChangeMixerVolume(string mixKey, float value) {

@@ -5,18 +5,30 @@ using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour {
 
-    //Save Manager reference
+    //Save Manager Reference and Audio Settings Reference
+    [Header("References")]
     public SaveManager mySaveManager;
+    public AudioSettingsManager audioSettingsRemote;
 
+    [Header("Buttons")]
     public Button[] myButtons;
+
 
 
     // Use this for initialization
     void Start() {
-        if (mySaveManager.CheckForSaves())
+
+        audioSettingsRemote.RemoteStart();
+        mySaveManager.RemoteStart();
+
+        if (mySaveManager.CheckForAnySaves()) {
             myButtons[0].gameObject.SetActive(true);
-        else
+            myButtons[2].gameObject.SetActive(true);
+        }
+        else {
             myButtons[0].gameObject.SetActive(false);
+            myButtons[2].gameObject.SetActive(false);
+        }
     }
 
     //Used to continue on last save
@@ -26,6 +38,6 @@ public class MainMenuManager : MonoBehaviour {
 
     //Used For Creating a New Save
     public void CreateNewSaveGame() {
-        mySaveManager.NewSaveGame();
+        mySaveManager.CreateNewSave();
     }
 }
