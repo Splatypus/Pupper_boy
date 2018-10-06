@@ -13,11 +13,24 @@ public class SaveManager : MonoBehaviour {
     //class containing all of the items to save
     [Serializable]
     public class SaveData {
-        public int savedThing;
+        public string nameOfSave;
+        public int blackieConversationNumber;
     }
+
+    //Continue Save
+    [Serializable]
+    public class ContinueSaveData {
+        public int saveSlot;
+        public bool[] saveSlotsFilled = new bool[3];
+    }
+
+    [Header("Global File Extension")]
+    //Global file extension
+    public string fileExtension = ".dog";
 
     public static SaveManager Instance;
 
+    [Header("UI References")]
     //Put the UI for save games under this
     public GameObject saveHolder;
 
@@ -25,13 +38,11 @@ public class SaveManager : MonoBehaviour {
     public GameObject saveSlotBase;
 
     //Save Game Slots To Load Into
-    public List<GameObject> saveSlots = new List<GameObject>();
+    List<GameObject> saveSlots = new List<GameObject>();
 
+    [Header("Save Game Variables")]
     //Max Number of Saves
     public int maxSaves = 3;
-
-    //Global file extension
-    public string fileExtension = ".dog";
 
     void Awake() {
         //singleton pattern but for gameobjects.
@@ -51,56 +62,164 @@ public class SaveManager : MonoBehaviour {
         }
     }
 
+    void OnEnable() {
+        for(int i = 0; i < maxSaves; i++) {
+            CheckForSaveGame(saveSlots[i], i);
+        }
+    }
+
     //Called On New Game
     public void CreateNewSave() {
 
-        for (int i = 0; i < maxSaves; i++) {
+        BinaryFormatter bf = new BinaryFormatter();
 
-            if (CheckForSaveGame(saveSlots[i]) == 0) {
+        if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
 
-                BinaryFormatter bf = new BinaryFormatter();
-                FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + i + fileExtension, FileMode.OpenOrCreate);
+            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
+            ContinueSaveData continueData = new ContinueSaveData();
+            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
+            continueFile.Close();
 
-                SaveData data = new SaveData();
-                bf.Serialize(file, data);
-                file.Close();
+            int slotToFill = 0;
 
-                break;
+            for (int i = 0; i < maxSaves; i++) {
+                if(continueData.saveSlotsFilled[i] == false) {
+                    slotToFill = i;
+                    break;
+                }
             }
+
+            continueData.saveSlot = slotToFill;
+            continueData.saveSlotsFilled[slotToFill] = true;
+
+            continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
+
+            bf.Serialize(continueFile, continueData);
+            continueFile.Close();
+
+            FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotToFill + fileExtension, FileMode.OpenOrCreate);
+
+            SaveData data = new SaveData();
+            bf.Serialize(file, data);
+            file.Close();
+
+        }
+        else {
+
+            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
+
+            ContinueSaveData continueData = new ContinueSaveData();
+
+            continueData.saveSlot = 0;
+            continueData.saveSlotsFilled[0] = true;
+
+            bf.Serialize(continueFile, continueData);
+            continueFile.Close();
+
+            FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + 0 + fileExtension, FileMode.OpenOrCreate);
+
+            print(0);
+
+            SaveData data = new SaveData();
+            bf.Serialize(file, data);
+            file.Close();
         }
     }
 
     //Used For Loading Of A Save
-    public void LoadSaveGame() {
+    public void LoadGame() {
         Debug.Log("Loading a Save Does Nothing Yet");
+    }
+
+    //Used For Saving Of A Save
+    public void SaveGame() {
+        Debug.Log("Saving a Save Does Nothing Yet");
     }
 
     //Check Eech Slot For Any Save
     public bool CheckForAnySaves() {
 
-        //variables to check for any saves
-        int anySaves = 0;
+        #region oldCheckingCode
+        //
+        ////variables to check for any saves
+        //int anySaves = 0;
+        //
+        ////Load to slots
+        //for (int i = 0; i < maxSaves; i++) {
+        //    anySaves += CheckForSaveGame(saveSlots[i]);
+        //}
+        //
+        ////if there were any save games
+        //if (anySaves > 0)
+        //    return true;
+        //else
+        //    return false;
+        //
+        #endregion
 
-        //Load to slots
-        for (int i = 0; i < maxSaves; i++) {
-            anySaves += CheckForSaveGame(saveSlots[i]);
-        }
+        if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
 
-        //if there were any save games
-        if (anySaves > 0)
-            return true;
-        else
+            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
+
+            BinaryFormatter bf = new BinaryFormatter();
+            ContinueSaveData continueData = new ContinueSaveData();
+            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
+
+            for (int i = 0; i < maxSaves; i++) {
+
+                //print(continueData.saveSlotsFilled[i]);
+
+                if (continueData.saveSlotsFilled[i] == true) {
+                    continueFile.Close();
+                    return true;
+                }
+            }
+
+            continueFile.Close();
             return false;
+        }
+        else {
+            return false;
+        }
     }
 
     //Checking For Save Games
     int CheckForSaveGame(GameObject saveGameSlot, int slotNumber = 0) {
 
-        if (File.Exists(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension)) {
-            saveGameSlot.GetComponentInChildren<Text>().text = "Hi";
-            return 1;
+        if (!File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
+
+            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
+
+            BinaryFormatter bf = new BinaryFormatter();
+            ContinueSaveData continueData = new ContinueSaveData();
+
+            continueData.saveSlot = slotNumber;
+            continueData.saveSlotsFilled[slotNumber] = true;
+
+            bf.Serialize(continueFile, continueData);
+            continueFile.Close();
         }
-        else
+
+        if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
+
+            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
+
+            BinaryFormatter bf = new BinaryFormatter();
+            ContinueSaveData continueData = new ContinueSaveData();
+            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
+
+            if (continueData.saveSlotsFilled[slotNumber] == true) {
+                saveGameSlot.GetComponentInChildren<Text>().text = "Hi";
+                continueFile.Close();
+                return 1;
+            }
+            else {
+                continueFile.Close();
+                return 0;
+            }
+        }
+        else {
             return 0;
+        }
     }
 }

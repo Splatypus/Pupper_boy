@@ -9,17 +9,11 @@ using UnityEngine.Events;
 
 public class Saving : MonoBehaviour {
 
-    //class containing all of the items to save
-    [Serializable]
-    public class SaveData {
-        public int blackieConversationNumber;
-    }
-
     public static Saving Instance;
     public int FilelNum = 0;
     public bool ShouldLoad = false; //set to true if data should be loaded on scene load, false if it should not be
     public bool ShouldSave = true;
-    public SaveData data = new SaveData();
+    public SaveManager.SaveData data = new SaveManager.SaveData();
     public Queue<UnityAction> callbacks = new Queue<UnityAction>();
 
     void Awake() {
@@ -64,7 +58,7 @@ public class Saving : MonoBehaviour {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + FilelNum + ".dat", FileMode.Open);
 
-            data = (SaveData)bf.Deserialize(file);
+            data = (SaveManager.SaveData)bf.Deserialize(file);
             file.Close();
 
             //then inform everything that needs to be informed about the load

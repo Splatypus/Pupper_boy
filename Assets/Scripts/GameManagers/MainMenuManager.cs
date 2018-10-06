@@ -33,7 +33,7 @@ public class MainMenuManager : MonoBehaviour {
 
     //Used to continue on last save
     public void Continue() {
-        mySaveManager.LoadSaveGame();
+        mySaveManager.LoadGame();
     }
 
     //Used For Creating a New Save
