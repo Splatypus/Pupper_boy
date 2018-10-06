@@ -2,6 +2,13 @@
 using System.Collections;
 //using UnityEditor;
 
+//public void MoveToPosition(Vector3 location, Vector3 lookAt, float duration)
+//moves the camera to the desired location, looking towards location LookAt, and lerped over duration
+
+//public void RestoreCamera(float duration)
+//moves the camera back to the player character over the given duration
+
+
 public class FreeCameraLook : MonoBehaviour {
 
     public GameObject player;
@@ -16,6 +23,9 @@ public class FreeCameraLook : MonoBehaviour {
 
     public float joypadXMultiplier = 2.0f;
     public float joypadYMultiplier = 2.0f;
+
+    public float xSensitivity = 1.0f;
+    public float ySensitivity = 1.0f;
 
     private float lookAngle;
     private float tiltAngle;
@@ -66,8 +76,8 @@ public class FreeCameraLook : MonoBehaviour {
         transform.position += movementDelta;
 
         //apply mouse movement
-        float x = Input.GetAxis("Mouse X") + Input.GetAxis("RightJoystickX") * joypadXMultiplier;
-        float y = Input.GetAxis("Mouse Y") + Input.GetAxis("RightJoystickY") * joypadYMultiplier;
+        float x = (Input.GetAxis("Mouse X") + Input.GetAxis("RightJoystickX") * joypadXMultiplier) * xSensitivity;
+        float y = (Input.GetAxis("Mouse Y") + Input.GetAxis("RightJoystickY") * joypadYMultiplier) * ySensitivity;
         transform.RotateAround(anchorPosition, anchor.up, x);
         transform.RotateAround(anchorPosition, transform.right, -y);
 
