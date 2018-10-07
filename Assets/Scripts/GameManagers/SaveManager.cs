@@ -69,8 +69,9 @@ public class SaveManager : MonoBehaviour {
     }
 
     //Called On New Game
-    public void CreateNewSave() {
+    public void CreateNewSave(string saveName) {
 
+        print(saveName);
         BinaryFormatter bf = new BinaryFormatter();
 
         if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
@@ -100,6 +101,8 @@ public class SaveManager : MonoBehaviour {
             FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotToFill + fileExtension, FileMode.OpenOrCreate);
 
             SaveData data = new SaveData();
+            data.nameOfSave = saveName;
+
             bf.Serialize(file, data);
             file.Close();
 
@@ -121,6 +124,8 @@ public class SaveManager : MonoBehaviour {
             print(0);
 
             SaveData data = new SaveData();
+            data.nameOfSave = saveName;
+
             bf.Serialize(file, data);
             file.Close();
         }
@@ -129,6 +134,10 @@ public class SaveManager : MonoBehaviour {
     //Used For Loading Of A Save
     public void LoadGame() {
         Debug.Log("Loading a Save Does Nothing Yet");
+    }
+
+    public void LoadContinueGame() {
+        Debug.Log("Continue Does Nothing Yet");
     }
 
     //Used For Saving Of A Save
@@ -209,8 +218,16 @@ public class SaveManager : MonoBehaviour {
             continueData = (ContinueSaveData)bf.Deserialize(continueFile);
 
             if (continueData.saveSlotsFilled[slotNumber] == true) {
-                saveGameSlot.GetComponentInChildren<Text>().text = "Hi";
+
                 continueFile.Close();
+
+                FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.OpenOrCreate);
+                SaveData data = new SaveData();
+                data = (SaveData)bf.Deserialize(file);
+
+                saveGameSlot.GetComponentInChildren<Text>().text = data.nameOfSave;
+
+                file.Close();
                 return 1;
             }
             else {

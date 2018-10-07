@@ -13,7 +13,9 @@ public class MainMenuManager : MonoBehaviour {
     [Header("Buttons")]
     public Button[] myButtons;
 
-
+    [Header("Save Information")]
+    string newSaveName = "";
+    public string newSaveNameGet { get { return newSaveName; } set { newSaveName = value; } }
 
     // Use this for initialization
     void Start() {
@@ -38,6 +40,6 @@ public class MainMenuManager : MonoBehaviour {
 
     //Used For Creating a New Save
     public void CreateNewSaveGame() {
-        mySaveManager.CreateNewSave();
+        mySaveManager.CreateNewSave(newSaveName);
     }
 }
