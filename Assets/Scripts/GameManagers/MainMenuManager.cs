@@ -21,7 +21,7 @@ public class MainMenuManager : MonoBehaviour {
     void Start() {
 
         audioSettingsRemote.RemoteStart();
-        mySaveManager.RemoteStart();
+        mySaveManager.CreateSlotUI();
 
         if (mySaveManager.CheckForAnySaves()) {
             myButtons[0].gameObject.SetActive(true);
@@ -35,7 +35,7 @@ public class MainMenuManager : MonoBehaviour {
 
     //Used to continue on last save
     public void Continue() {
-        mySaveManager.LoadGame();
+        mySaveManager.LoadContinueGame();
     }
 
     //Used For Creating a New Save

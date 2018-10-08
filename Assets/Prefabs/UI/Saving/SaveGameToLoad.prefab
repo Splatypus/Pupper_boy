@@ -55,6 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224600440478335442}
   - component: {fileID: 114193577448133054}
+  - component: {fileID: 114243947345323566}
   m_Layer: 5
   m_Name: SaveGameToLoad
   m_TagString: Untagged
@@ -146,9 +147,32 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114191954547247758}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114243947345323566}
+        m_MethodName: LoadGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114243947345323566
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1862345550613660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2527018ba73f36b41a941aff1c440a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotNumber: 0
 --- !u!114 &114950971138027922
 MonoBehaviour:
   m_ObjectHideFlags: 1

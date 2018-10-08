@@ -290,7 +290,6 @@ GameObject:
   - component: {fileID: 51108223}
   - component: {fileID: 51108226}
   - component: {fileID: 51108225}
-  - component: {fileID: 51108224}
   m_Layer: 5
   m_Name: SaveGamesHolder
   m_TagString: Untagged
@@ -316,22 +315,6 @@ RectTransform:
   m_AnchoredPosition: {x: 288, y: -176.09718}
   m_SizeDelta: {x: 0, y: 322.19437}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &51108224
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 51108222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d5fb46ef18bcc94bb5c0a9eb20266b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fileExtension: .dog
-  saveHolder: {fileID: 51108222}
-  saveSlotBase: {fileID: 1862345550613660, guid: 8bb9fada378b4ab4c8d30ca55f3f174d,
-    type: 2}
-  maxSaves: 3
 --- !u!114 &51108225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2496,8 +2479,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 51108224}
-        m_MethodName: LoadContinueGame
+      - m_Target: {fileID: 1498101826}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13633,7 +13616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082d6e297c6cd8249b1da6f60988f7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySaveManager: {fileID: 51108224}
+  mySaveManager: {fileID: 1498101827}
   audioSettingsRemote: {fileID: 1171523245}
   myButtons:
   - {fileID: 214179513}
@@ -15158,6 +15141,52 @@ CapsuleCollider:
   m_Height: 0.2
   m_Direction: 1
   m_Center: {x: 0, y: 0.2, z: 0}
+--- !u!1 &1498101826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1498101828}
+  - component: {fileID: 1498101827}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1498101827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1498101826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d5fb46ef18bcc94bb5c0a9eb20266b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileExtension: .dog
+  saveHolder: {fileID: 51108222}
+  saveSlotBase: {fileID: 1862345550613660, guid: 8bb9fada378b4ab4c8d30ca55f3f174d,
+    type: 2}
+  saveSlotHolder: {fileID: 51108222}
+  maxSaves: 3
+--- !u!4 &1498101828
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1498101826}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 512.5205, y: 276.3804, z: 113.845276}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1509844632 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100002, guid: 966d2644f7340eb4ea44e91b7715fe17, type: 3}
