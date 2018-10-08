@@ -10,13 +10,14 @@ using UnityEngine.Events;
 
 public class SaveManager : MonoBehaviour {
 
+    #region Variables
     //class containing all of the items to save
     [Serializable]
     public class SaveData {
         public string nameOfSave;
-        public int charPosX;
-        public int charPosY;
-        public int charPosZ;
+        public float charPosX;
+        public float charPosY;
+        public float charPosZ;
 
 
         //Old Data Kept To Not Break References
@@ -31,30 +32,36 @@ public class SaveManager : MonoBehaviour {
     }
 
     [Header("Global File Extension")]
-    //Global file extension
+    [Tooltip("Global file extension for saves.")]
     public string fileExtension = ".dog";
 
     public static SaveManager Instance;
 
     [Header("UI References")]
-    //Put the UI for save games under this
-    public GameObject saveHolder;
 
-    //The Default UI Element For Save Slots
+    [Tooltip("The default UI prefab of a save slot.")]
     public GameObject saveSlotBase;
 
-    //The Game Object To Hold The Save Slots
+    [Tooltip("UI reference to create the save slots as children to.")]
     public GameObject saveSlotHolder;
 
-    //Save Game Slots To Load Into
+    [Tooltip("UI references to the visual slots, created at runtime.")]
     List<GameObject> saveSlots = new List<GameObject>();
 
     [Header("Save Game Variables")]
-    //Max Number of Saves
+    [Tooltip("Maximum number of saves allowed to the player.")]
     public int maxSaves = 3;
+
+    [Header("Player Variables")]
+    [Tooltip("Only used when in backyard.")]
+    public GameObject playerDoggo;
 
     //Loaded data gets set here, then any changes are made here before saving this data
     public static SaveData masterData = new SaveData();
+
+    #endregion
+
+    #region Initialization
 
     void Awake() {
         //singleton pattern but for gameobjects.
@@ -78,12 +85,21 @@ public class SaveManager : MonoBehaviour {
         }
     }
 
-    //void OnEnable() {
-    //    for (int i = 0; i < maxSaves; i++) {
-    //        LoadSlotData(saveSlots[i], i);
-    //    }
-    //}
+    void OnEnable() {
+        if (!playerDoggo) {
+            if (SceneManager.GetSceneByName("Backyard").isLoaded) {
 
+                InvokeRepeating("CheckPlayerLocation", 1, 1);
+            }
+            else {
+                InvokeRepeating("FindPlayerDoggo", 3, 3);
+            }
+        }
+    }
+
+    #endregion
+
+    #region Save Game Management
     //Called On New Game
     public void CreateNewSave(string saveName) {
 
@@ -154,7 +170,6 @@ public class SaveManager : MonoBehaviour {
 
             FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.OpenOrCreate);
             BinaryFormatter bf = new BinaryFormatter();
-            //SaveData data = new SaveData();
 
             masterData = (SaveData)bf.Deserialize(file);
             file.Close();
@@ -162,7 +177,6 @@ public class SaveManager : MonoBehaviour {
 
         Debug.Log(masterData.nameOfSave);
     }
-
     public void LoadContinueGame() {
         Debug.Log("Continue Does Nothing Yet");
     }
@@ -222,20 +236,6 @@ public class SaveManager : MonoBehaviour {
     //Loading Data For Save Games
     void LoadSlotData(GameObject saveGameSlot, int slotNumber = 0) {
 
-        /*if (!File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
-        
-           FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
-        
-           BinaryFormatter bf = new BinaryFormatter();
-           ContinueSaveData continueData = new ContinueSaveData();
-        
-           continueData.saveSlot = slotNumber;
-           continueData.saveSlotsFilled[slotNumber] = true;
-        
-           bf.Serialize(continueFile, continueData);
-           continueFile.Close();
-        }*/
-
         if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
 
             FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
@@ -260,4 +260,30 @@ public class SaveManager : MonoBehaviour {
         else
             print("Oh No It Broke!");
     }
+
+    #endregion
+
+    #region Data Management In Live Game
+
+    void CheckPlayerLocation() {
+        masterData.charPosX = playerDoggo.transform.position.x;
+        masterData.charPosY = playerDoggo.transform.position.y;
+        masterData.charPosZ = playerDoggo.transform.position.z;
+
+        print(playerDoggo.transform.position);
+    }
+
+    void FindPlayerDoggo() {
+        if (!playerDoggo) {
+            if (SceneManager.GetSceneByName("Backyard").isLoaded) {
+
+                playerDoggo = FindObjectOfType<PlayerDialog>().gameObject;
+
+                CancelInvoke();
+                InvokeRepeating("CheckPlayerLocation", 1, 1);
+            }
+        }
+    }
+
+    #endregion
 }
