@@ -11,8 +11,12 @@ using System.Collections;
 
 public class FreeCameraLook : MonoBehaviour {
 
+    [Header("Related Objects")]
     public GameObject player;
+    public Transform anchor;
+    public GameObject LockCameraLocation;
 
+    [Header("Hidden Control Values")]
     public float maxDistance = 7.0f;
     public float minDistance = 0.2f;
     public float collisionPadding = 0.5f;
@@ -24,13 +28,13 @@ public class FreeCameraLook : MonoBehaviour {
     public float joypadXMultiplier = 2.0f;
     public float joypadYMultiplier = 2.0f;
 
+    [Header("Settings Contorl Values")]
     public float xSensitivity = 1.0f;
     public float ySensitivity = 1.0f;
 
     private float lookAngle;
     private float tiltAngle;
 
-    public Transform anchor;
     Vector3 previousFrameLocation;
     Vector3 cameraGoal;
 
@@ -46,6 +50,17 @@ public class FreeCameraLook : MonoBehaviour {
     void Update() {
         //transform.position = Vector3.Lerp(cameraStart, cameraEnd, (Time.time - endTime) / (endTime - startTime));
         //time-endtime is how long its been since the physics update finished. We take that amount of time, and consider how far that puts us into that update
+
+        //Used to lock the camera to a set location. Useful for capturing promotional material
+        if ((Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.L)) || (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKey(KeyCode.L))) {
+            if (controlLocked) {
+                RestoreCamera(0.0f);
+            } else {
+                controlLocked = true;
+                transform.position = LockCameraLocation.transform.position;
+                transform.rotation = LockCameraLocation.transform.rotation;
+            }
+        }
 
         //transform.position = cameraEnd;
         //always look at the player if they have control

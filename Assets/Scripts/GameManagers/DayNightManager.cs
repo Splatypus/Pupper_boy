@@ -6,10 +6,11 @@ using UnityEngine.Events;
 public class DayNightManager : MonoBehaviour {
 
     public static DayNightManager Instance; //Static reference to the current instance of this manager
-    public enum Times { DAY, NIGHT };
-    int numberOfTimes = 2;
+    public enum Times { DAY, NIGHT, SPOOKTOBER };
+    int numberOfTimes = 3;
     public Times currentTime = Times.DAY;
     public List<Trigger> triggers;
+    public Trigger generalChangeNotify; //trigger for when time changes at all
 
     void Awake() {
         //singleton pattern but for gameobjects.
@@ -67,16 +68,18 @@ public class DayNightManager : MonoBehaviour {
 
         //call this when this should trigger
         public void DoTrigger() {
-            //resolve each action, remove it from the list if it runs out of triggers.
-            List<ActionContainter> expired = new List<ActionContainter>();
-            for (int i = 0; i < ActionList.Count; i++) {
-                if (!ActionList[i].DoTrigger()) {
-                    expired.Add(ActionList[i]);
+            if (ActionList != null) {
+                //resolve each action, remove it from the list if it runs out of triggers.
+                List<ActionContainter> expired = new List<ActionContainter>();
+                for (int i = 0; i < ActionList.Count; i++) {
+                    if (!ActionList[i].DoTrigger()) {
+                        expired.Add(ActionList[i]);
+                    }
                 }
-            }
-            //then remove ones that have expired (ya this isnt fast, but its very rare to be removing a lot of stuff at once.
-            foreach (ActionContainter a in expired) {
-                ActionList.Remove(a);
+                //then remove ones that have expired (ya this isnt fast, but its very rare to be removing a lot of stuff at once.
+                foreach (ActionContainter a in expired) {
+                    ActionList.Remove(a);
+                }
             }
         }
 
@@ -88,6 +91,7 @@ public class DayNightManager : MonoBehaviour {
         for (int i = 0; i < numberOfTimes; i++) {
             triggers.Add(new Trigger());
         }
+        generalChangeNotify = new Trigger();
     }
 
     //turns time to the given time if it isnt already. 
@@ -97,15 +101,22 @@ public class DayNightManager : MonoBehaviour {
         }
         currentTime = t;
         //then do the corrisponding trigger. 
+        generalChangeNotify.DoTrigger();
         triggers[(int)t].DoTrigger();
 
     }
 
-    //adds an event at the designated time
+    //adds an event at the designated time. If not time is given, then get notified at any change
     public void AddTrigger(Times t, UnityAction action) {
         triggers[(int)t].AddEvent(action);
     }
-    public void AddTrigger(Times t, UnityAction a, int repititions) {
-        triggers[(int)t].AddEvent(a, repititions);
+    public void AddTrigger(Times t, UnityAction action, int repititions) {
+        triggers[(int)t].AddEvent(action, repititions);
+    }
+    public void AddTrigger(UnityAction action) {
+        generalChangeNotify.AddEvent(action);
+    }
+    public void AddTrigger(UnityAction action, int repititions) {
+        generalChangeNotify.AddEvent(action, repititions);
     }
 }
