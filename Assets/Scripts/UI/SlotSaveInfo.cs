@@ -13,4 +13,8 @@ public class SlotSaveInfo : MonoBehaviour {
 
         SceneManager.LoadSceneAsync(1);
     }
+
+    public void DeleteSave() {
+        FindObjectOfType<SaveManager>().DeleteSave(slotNumber);
+    }
 }

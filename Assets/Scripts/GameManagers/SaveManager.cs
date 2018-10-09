@@ -147,13 +147,13 @@ public class SaveManager : MonoBehaviour {
 
             continueData.saveSlot = 0;
             continueData.saveSlotsFilled[0] = true;
+            continueData.saveSlotsFilled[1] = false;
+            continueData.saveSlotsFilled[2] = false;
 
             bf.Serialize(continueFile, continueData);
             continueFile.Close();
 
             FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + 0 + fileExtension, FileMode.OpenOrCreate);
-
-            print(0);
 
             SaveData data = new SaveData();
             data.nameOfSave = saveName;
@@ -188,24 +188,6 @@ public class SaveManager : MonoBehaviour {
 
     //Check Eech Slot For Any Save
     public bool CheckForAnySaves() {
-
-        #region oldCheckingCode
-        //
-        ////variables to check for any saves
-        //int anySaves = 0;
-        //
-        ////Load to slots
-        //for (int i = 0; i < maxSaves; i++) {
-        //    anySaves += CheckForSaveGame(saveSlots[i]);
-        //}
-        //
-        ////if there were any save games
-        //if (anySaves > 0)
-        //    return true;
-        //else
-        //    return false;
-        //
-        #endregion
 
         if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
 
@@ -256,9 +238,34 @@ public class SaveManager : MonoBehaviour {
 
                 file.Close();
             }
+
+            print("Save Slot Exists");
         }
         else
-            print("Oh No It Broke!");
+            print("No Save Data In Slot: " + slotNumber);
+        saveGameSlot.GetComponentInChildren<Text>().text = "No Save In Slot";
+    }
+
+    public void DeleteSave(int slotToDelete) {
+
+        if (File.Exists(Application.persistentDataPath + "/SaveFile" + slotToDelete + fileExtension)) {
+
+            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
+
+            BinaryFormatter bf = new BinaryFormatter();
+            ContinueSaveData continueData = new ContinueSaveData();
+            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
+
+            continueData.saveSlotsFilled[slotToDelete] = false;
+            bf.Serialize(continueFile, continueData);
+            continueFile.Close();
+
+            if(continueData.saveSlotsFilled[0] == false && continueData.saveSlotsFilled[1] == false && continueData.saveSlotsFilled[2] == false) {
+                File.Delete(Application.persistentDataPath + "/Continue" + fileExtension);
+            }
+
+            File.Delete(Application.persistentDataPath + "/SaveFile" + slotToDelete + fileExtension);
+        }
     }
 
     #endregion
@@ -280,7 +287,7 @@ public class SaveManager : MonoBehaviour {
                 playerDoggo = FindObjectOfType<PlayerDialog>().gameObject;
 
                 CancelInvoke();
-                InvokeRepeating("CheckPlayerLocation", 1, 1);
+                //InvokeRepeating("CheckPlayerLocation", 1, 1);
             }
         }
     }
