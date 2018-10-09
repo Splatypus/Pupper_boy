@@ -229,21 +229,21 @@ public class SaveManager : MonoBehaviour {
 
             if (continueData.saveSlotsFilled[slotNumber] == true) {
 
-
-                FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.OpenOrCreate);
+                FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.Open);
                 SaveData data = new SaveData();
                 data = (SaveData)bf.Deserialize(file);
 
                 saveGameSlot.GetComponentInChildren<Text>().text = data.nameOfSave;
 
                 file.Close();
+                print("Save Slot Exists: " + slotNumber);
             }
+            else {
+                print("No Save Data In Slot: " + slotNumber);
+                saveGameSlot.GetComponentInChildren<Text>().text = "No Save In Slot";
 
-            print("Save Slot Exists");
+            }
         }
-        else
-            print("No Save Data In Slot: " + slotNumber);
-        saveGameSlot.GetComponentInChildren<Text>().text = "No Save In Slot";
     }
 
     public void DeleteSave(int slotToDelete) {
@@ -255,9 +255,13 @@ public class SaveManager : MonoBehaviour {
             BinaryFormatter bf = new BinaryFormatter();
             ContinueSaveData continueData = new ContinueSaveData();
             continueData = (ContinueSaveData)bf.Deserialize(continueFile);
+            continueFile.Close();
+
+            continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
 
             continueData.saveSlotsFilled[slotToDelete] = false;
             bf.Serialize(continueFile, continueData);
+
             continueFile.Close();
 
             if(continueData.saveSlotsFilled[0] == false && continueData.saveSlotsFilled[1] == false && continueData.saveSlotsFilled[2] == false) {
@@ -266,6 +270,8 @@ public class SaveManager : MonoBehaviour {
 
             File.Delete(Application.persistentDataPath + "/SaveFile" + slotToDelete + fileExtension);
         }
+
+        LoadSlotData(saveSlots[slotToDelete], slotToDelete);
     }
 
     #endregion
