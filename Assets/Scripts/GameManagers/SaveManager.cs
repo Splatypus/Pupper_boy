@@ -14,10 +14,13 @@ public class SaveManager : MonoBehaviour {
     //class containing all of the items to save
     [Serializable]
     public class SaveData {
+        //Save Distinction
         public string nameOfSave;
+        //PlayerPos - (Probably Will Reset On Load)
         public float charPosX;
         public float charPosY;
         public float charPosZ;
+
 
 
         //Old Data Kept To Not Break References
@@ -168,7 +171,7 @@ public class SaveManager : MonoBehaviour {
 
         if (File.Exists(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension)) {
 
-            FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.OpenOrCreate);
+            FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.Open);
             BinaryFormatter bf = new BinaryFormatter();
 
             masterData = (SaveData)bf.Deserialize(file);
@@ -191,7 +194,7 @@ public class SaveManager : MonoBehaviour {
 
         if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
 
-            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
+            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
 
             BinaryFormatter bf = new BinaryFormatter();
             ContinueSaveData continueData = new ContinueSaveData();
@@ -220,7 +223,7 @@ public class SaveManager : MonoBehaviour {
 
         if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
 
-            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
+            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
 
             BinaryFormatter bf = new BinaryFormatter();
             ContinueSaveData continueData = new ContinueSaveData();
@@ -243,6 +246,9 @@ public class SaveManager : MonoBehaviour {
                 saveGameSlot.GetComponentInChildren<Text>().text = "No Save In Slot";
 
             }
+        }
+        else {
+            saveGameSlot.GetComponentInChildren<Text>().text = "No Save In Slot";
         }
     }
 
