@@ -27,6 +27,7 @@ public class DogControllerV2 : Controller {
     public float jumpForce;
     public float turnspeed = 5;
     public float freezeMovementAngle = 90.0f;
+    public float SpeedMultScentMode = 0.5f;
     #endregion
 
     Vector3 cam_right, cam_fwd;
@@ -34,7 +35,7 @@ public class DogControllerV2 : Controller {
     float horizontal;
     float vertical;
     bool jumpInput;
-    public int onGround = 0;
+    int onGround = 0;
     public bool hasFlight = false;
 
     //float m_speed;
@@ -96,12 +97,12 @@ public class DogControllerV2 : Controller {
             if (Input.GetButtonDown("Dig") && inRangeOf.Count > 0) {
                 tut.CompleteTutorial(); //TUTORIAL
 
-                //interact with the closest object  -- yes a binary search type thing would be faster, but this list is rarely of size > 2 so who cares
+                //interact with the closest object
                 InteractableObject closest = inRangeOf[0];
                 float shortDis = Vector3.Distance(transform.position, closest.transform.position);
                 foreach (InteractableObject i in inRangeOf) {
                     float dis = Vector3.Distance(transform.position, i.transform.position);
-                    if ( dis < shortDis) {
+                    if (dis < shortDis) {
                         shortDis = dis;
                         closest = i;
                     }
@@ -115,10 +116,16 @@ public class DogControllerV2 : Controller {
             }
 
             //turning scent on or off
-            if (Input.GetButtonDown("Scent")) {
+            /*if (Input.GetButtonDown("Scent") || Input.GetButtonUp("Scent")) {
                 ScentManager.Instance.ToggleEffect();
+            }*/
+            if (Input.GetButtonDown("Scent")) {
+                ScentManager.Instance.InputEnable();
+            } else if (Input.GetButtonUp("Scent")) {
+                ScentManager.Instance.InputDisable();
             }
 
+            
             if (Input.GetButtonDown("Interact")) {
                 mouth.DoInputAction();
             }
@@ -149,6 +156,9 @@ public class DogControllerV2 : Controller {
         float newMaxSpeed = maxSpeed;
         if (Input.GetAxis("Sprint") > float.Epsilon) {
             newMaxSpeed = maxSpeed * sprintMultiplier;
+        }
+        if (ScentManager.Instance.isEnabled) {
+            newMaxSpeed *= SpeedMultScentMode;
         }
 
         //find the direction doggo is supposed to move

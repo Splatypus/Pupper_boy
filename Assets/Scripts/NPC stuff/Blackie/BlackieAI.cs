@@ -15,11 +15,6 @@ public class BlackieAI : AIbase {
         //Saving.Instance.AddCallback(new UnityEngine.Events.UnityAction(OnLoad));
     }
 
-    // Use this for initialization
-    new public void Start () {
-        base.Start();	
-	}
-
     //icons to display if in range of player
     public override void OnInRange() {
         if (!hasDoneReward)

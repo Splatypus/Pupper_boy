@@ -21,6 +21,9 @@ public class SaveManager : MonoBehaviour {
         public float charPosY;
         public float charPosZ;
 
+        //Global save data
+        public int season; //0=summer, 1=fall, 2=winter, 3=spring
+
 
 
         //Old Data Kept To Not Break References

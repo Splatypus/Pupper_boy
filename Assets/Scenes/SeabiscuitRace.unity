@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18379754, g: 0.22839543, b: 0.2999735, a: 1}
+  m_IndirectSpecularColor: {r: 0.18379815, g: 0.22839582, b: 0.29997462, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -193,8 +193,8 @@ MonoBehaviour:
   - {fileID: 635125697}
   track_prefab: {fileID: 1979233375824064, guid: 336c37ab660956b44a0871e0407f6564,
     type: 2}
-  obstacle_prefab: {fileID: 1141443293555300, guid: 3777b7c63d63b6a4dae510a56537e9f7,
-    type: 2}
+  obstacle_prefabs:
+  - {fileID: 1141443293555300, guid: 3777b7c63d63b6a4dae510a56537e9f7, type: 2}
 --- !u!1 &742346372
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15f27ade086a5447b8b2edfd665f376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  switch_time: 0.5
+  switch_time: 0.3
   switch_curve:
     serializedVersion: 2
     m_Curve:
@@ -362,8 +362,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.13, y: 0.3, z: 0.45}
-  m_Center: {x: 0, y: 0.17, z: -0.12}
+  m_Size: {x: 0.13, y: 0.3, z: 0.27868208}
+  m_Center: {x: 0, y: 0.16999999, z: -0.034341026}
 --- !u!54 &927667913
 Rigidbody:
   m_ObjectHideFlags: 0

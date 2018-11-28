@@ -5028,9 +5028,41 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 0.06666667
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 3013a37cddf39f54db659b9a3df8ed59, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3013a37cddf39f54db659b9a3df8ed59, type: 3}
   m_IsPrefabParent: 0
+--- !u!1 &76884937 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 100000, guid: 3013a37cddf39f54db659b9a3df8ed59, type: 3}
+  m_PrefabInternal: {fileID: 76884936}
+--- !u!135 &76884938
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 76884937}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.04
+  m_Center: {x: -0.09, y: 1.13, z: 0.65}
+--- !u!65 &76884939
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 76884937}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.92582864, y: 1.6739452, z: 2.7760217}
+  m_Center: {x: 0.000025598158, y: 0.83664477, z: -0.16981423}
 --- !u!1001 &79667600
 Prefab:
   m_ObjectHideFlags: 0
@@ -36634,6 +36666,14 @@ Prefab:
       value: 
       objectReference: {fileID: -1577725955494882426, guid: 0000000000000000d000000000000000,
         type: 0}
+    - target: {fileID: 1186360229814742, guid: 87ff784fe6beef24ca48b6d2b3bdf75d, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1235124531713068, guid: 87ff784fe6beef24ca48b6d2b3bdf75d, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 87ff784fe6beef24ca48b6d2b3bdf75d, type: 2}
   m_IsPrefabParent: 0
@@ -42805,71 +42845,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.14, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1064426198
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1064426200}
-  - component: {fileID: 1064426199}
-  m_Layer: 0
-  m_Name: Point light
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!108 &1064426199
-Light:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1064426198}
-  m_Enabled: 1
-  serializedVersion: 8
-  m_Type: 2
-  m_Color: {r: 0, g: 0.0064908196, b: 0.9411765, a: 1}
-  m_Intensity: 5
-  m_Range: 10
-  m_SpotAngle: 30
-  m_CookieSize: 10
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_Lightmapping: 4
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_ShadowRadius: 0
-  m_ShadowAngle: 0
---- !u!4 &1064426200
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1064426198}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 237.12, y: 1.43, z: 306.74}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 25
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1067680209
 GameObject:
   m_ObjectHideFlags: 0
@@ -53552,7 +53527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mat: {fileID: 2100000, guid: e003ff24612ed5645bb48cf7907b0b18, type: 2}
-  duration: 1.5
+  duration: 1
   maxDistance: 300
   scentObjects: []
   isUnlocked: 0
@@ -74064,6 +74039,11 @@ Prefab:
       value: 
       objectReference: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1,
         type: 2}
+    - target: {fileID: 114154848396436880, guid: 69521389af0e60342841b9238827cf7a,
+        type: 2}
+      propertyPath: SpeedMultScentMode
+      value: 0.35
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 135588657406485322, guid: 69521389af0e60342841b9238827cf7a, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 69521389af0e60342841b9238827cf7a, type: 2}

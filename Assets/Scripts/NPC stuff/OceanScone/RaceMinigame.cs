@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//UNUSED: See SeabiscuitMinigame -> TrackController/RaceDogController instead
 public class RaceMinigame : MiniGameManager {
 
     public int lapsNeeded;

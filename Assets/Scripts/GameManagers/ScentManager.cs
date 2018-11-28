@@ -91,6 +91,22 @@ public class ScentManager : MonoBehaviour {
                 DisableEffect();
         }
     }
+    //Should be called when player input tries to enable scent mode. Check to make sure that its unlocked and not already enabled, then enables it if it can. Returns true if swap was made
+    public bool InputEnable() {
+        if (isUnlocked && !isEnabled) {
+            EnableEffect();
+            return true;
+        }
+        return false;
+    }
+    //Same thing but for disabling the effect
+    public bool InputDisable() {
+        if (isUnlocked && isEnabled) {
+            DisableEffect();
+            return true;
+        }
+        return false;
+    }
 
     //starts expanding the effect
     public void EnableEffect() {
