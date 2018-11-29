@@ -11,24 +11,24 @@ using UnityEngine.Events;
 public class SaveManager : MonoBehaviour {
 
     #region Variables
-    //class containing all of the items to save
-    [Serializable]
-    public class SaveData {
-        //Save Distinction
-        public string nameOfSave;
-        //PlayerPos - (Probably Will Reset On Load)
-        public float charPosX;
-        public float charPosY;
-        public float charPosZ;
-
-        //Global save data
-        public int season; //0=summer, 1=fall, 2=winter, 3=spring
-
-
-
-        //Old Data Kept To Not Break References
-        public int blackieConversationNumber;
-    }
+    ////class containing all of the items to save
+    //[Serializable]
+    //public class SaveData {
+    //    //Save Distinction
+    //    public string nameOfSave;
+    //    //PlayerPos - (Probably Will Reset On Load)
+    //    public float charPosX;
+    //    public float charPosY;
+    //    public float charPosZ;
+    //
+    //    //Global save data
+    //    public int season; //0=summer, 1=fall, 2=winter, 3=spring
+    //
+    //
+    //
+    //    //Old Data Kept To Not Break References
+    //    public int blackieConversationNumber;
+    //}
 
     //Continue Save
     [Serializable]
@@ -181,15 +181,34 @@ public class SaveManager : MonoBehaviour {
             file.Close();
         }
 
-        Debug.Log(masterData.nameOfSave);
+        Debug.Log("Loaded Game: " + masterData.nameOfSave);
     }
     public void LoadContinueGame() {
-        Debug.Log("Continue Does Nothing Yet");
+
+        if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
+
+            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
+            BinaryFormatter bf = new BinaryFormatter();
+            ContinueSaveData continueData = new ContinueSaveData();
+
+            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
+            continueFile.Close();
+
+            LoadGameFromSlot(continueData.saveSlot);
+        }
     }
 
     //Used For Saving Of A Save
     public void SaveGameToSlot(int slotNumber) {
-        Debug.Log("Saving a Save Does Nothing Yet");
+
+        FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.OpenOrCreate);
+        BinaryFormatter bf = new BinaryFormatter();
+
+        bf.Serialize(file, masterData);
+        file.Close();
+
+        Debug.Log("Saved Game: " + masterData.nameOfSave);
+        //Debug.Log("Saving a Save Does Nothing Yet");
     }
 
     //Check Eech Slot For Any Save

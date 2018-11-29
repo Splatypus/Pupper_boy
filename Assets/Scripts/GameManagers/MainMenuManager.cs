@@ -13,6 +13,9 @@ public class MainMenuManager : MonoBehaviour {
     [Header("Buttons")]
     public Button[] myButtons;
 
+    [Header("Background Sizes")]
+    public GameObject[] myBackgrounds;
+
     [Header("Save Information")]
     string newSaveName = "";
     public string newSaveNameGet { get { return newSaveName; } set { newSaveName = value; } }
@@ -23,14 +26,33 @@ public class MainMenuManager : MonoBehaviour {
         audioSettingsRemote.RemoteStart();
         mySaveManager.CreateSlotUI();
 
+        CheckButtonVisibility();
+    }
+
+    void OnEnable() {
+        CheckButtonVisibility();
+    }
+
+    void CheckButtonVisibility() {
         if (mySaveManager.CheckForAnySaves()) {
             myButtons[0].gameObject.SetActive(true);
             myButtons[2].gameObject.SetActive(true);
+
+            ChangeBackgroundSize(6);
         }
         else {
             myButtons[0].gameObject.SetActive(false);
             myButtons[2].gameObject.SetActive(false);
+
+            ChangeBackgroundSize(4);
         }
+    }
+
+    void ChangeBackgroundSize(int size) {
+        for(int i = 0; i < myBackgrounds.Length; i++) {
+            myBackgrounds[i].SetActive(false);
+        }
+        myBackgrounds[size].SetActive(true);
     }
 
     //Used to continue on last save

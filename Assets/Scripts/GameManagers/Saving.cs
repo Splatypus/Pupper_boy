@@ -13,7 +13,7 @@ public class Saving : MonoBehaviour {
     public int FilelNum = 0;
     public bool ShouldLoad = false; //set to true if data should be loaded on scene load, false if it should not be
     public bool ShouldSave = true;
-    public SaveManager.SaveData data = new SaveManager.SaveData();
+    public SaveData data = new SaveData();
     public Queue<UnityAction> callbacks = new Queue<UnityAction>();
 
     void Awake() {
@@ -58,7 +58,7 @@ public class Saving : MonoBehaviour {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + FilelNum + ".dat", FileMode.Open);
 
-            data = (SaveManager.SaveData)bf.Deserialize(file);
+            data = (SaveData)bf.Deserialize(file);
             file.Close();
 
             //then inform everything that needs to be informed about the load
