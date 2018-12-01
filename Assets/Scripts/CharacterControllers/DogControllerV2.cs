@@ -62,6 +62,12 @@ public class DogControllerV2 : Controller {
     TutorialPopups tut;
     #endregion
 
+    #region esc menu
+    [HideInInspector]
+    public EscMenuManager escMenu;
+    bool escMenuOpen;
+    #endregion
+
     void Start () {
         rigidBody = GetComponent<Rigidbody>();
         cam = Camera.main.transform;
@@ -88,8 +94,22 @@ public class DogControllerV2 : Controller {
     // Update is called once per frame
     void Update() {
 
-        //dont do anything if digging
-        if (!isDigging) {
+        //Opening Esc Menu should always be available
+        if (Input.GetButtonDown("Cancel")) {
+            if (!escMenu.gameObject.activeInHierarchy) {
+                escMenu.Show();
+                Cursor.visible = true;
+                escMenuOpen = true;
+            }
+            else {
+                escMenu.Hide();
+                Cursor.visible = false;
+                escMenuOpen = false;
+            }
+        }
+
+        //dont do anything if digging, or in Esc Menu
+        if (!isDigging && !escMenuOpen) {
 
             Move();
 
@@ -124,7 +144,6 @@ public class DogControllerV2 : Controller {
             } else if (Input.GetButtonUp("Scent")) {
                 ScentManager.Instance.InputDisable();
             }
-
             
             if (Input.GetButtonDown("Interact")) {
                 mouth.DoInputAction();
