@@ -6,7 +6,7 @@ public class EscMenuManager : MonoBehaviour {
 
     public GameObject settingsMenu;
 
-     void Start() {
+    void Start() {
         FindObjectOfType<DogControllerV2>().escMenu = this;
         gameObject.SetActive(false);
         settingsMenu.GetComponentInChildren<AudioSettingsManager>().RemoteStart();
@@ -27,9 +27,11 @@ public class EscMenuManager : MonoBehaviour {
     }
 
     public void QuitGame() {
+       
     }
 
     public void QuitToMM() {
+
     }
 
 }

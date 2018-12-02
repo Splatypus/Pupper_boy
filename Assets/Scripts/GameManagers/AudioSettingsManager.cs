@@ -15,7 +15,7 @@ public class AudioSettingsManager : MonoBehaviour {
     public Slider sfxSlider;
 
     public void RemoteStart() {
-
+        print("Remote Start");
         //mute music at the start to account for needed delay
         masterMixer.SetFloat("musicVol", -60f);
 

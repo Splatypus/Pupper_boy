@@ -43,6 +43,7 @@ public class PlayerPrefsManager : MonoBehaviour {
         PlayerPrefs.SetFloat(key, value);
         PlayerPrefs.Save();
         myValue = value;
+        print(value);
 
         myManager.ChangeMixerVolume(key, value);
     }

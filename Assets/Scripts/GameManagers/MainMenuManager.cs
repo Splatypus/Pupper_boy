@@ -12,6 +12,7 @@ public class MainMenuManager : MonoBehaviour {
 
     [Header("Buttons")]
     public Button[] myButtons;
+    public Button newSaveCnt;
 
     [Header("Background Sizes")]
     public GameObject[] myBackgrounds;
@@ -63,5 +64,14 @@ public class MainMenuManager : MonoBehaviour {
     //Used For Creating a New Save
     public void CreateNewSaveGame() {
         mySaveManager.CreateNewSave(newSaveName);
+    }
+
+    public void CheckSaveName() {
+        if(newSaveNameGet.Length > 2) {
+            newSaveCnt.interactable = true;
+        }
+        else {
+            newSaveCnt.interactable = false;
+        }
     }
 }
