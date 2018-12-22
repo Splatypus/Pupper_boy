@@ -62,11 +62,9 @@ public class DogControllerV2 : Controller {
     TutorialPopups tut;
     #endregion
 
-    #region esc menu
     [HideInInspector]
     public EscMenuManager escMenu;
-    bool escMenuOpen;
-    #endregion
+
 
     void Start () {
         rigidBody = GetComponent<Rigidbody>();
@@ -96,20 +94,12 @@ public class DogControllerV2 : Controller {
 
         //Opening Esc Menu should always be available
         if (Input.GetButtonDown("Cancel")) {
-            if (!escMenu.gameObject.activeInHierarchy) {
                 escMenu.Show();
-                Cursor.visible = true;
-                escMenuOpen = true;
-            }
-            else {
-                escMenu.Hide();
-                Cursor.visible = false;
-                escMenuOpen = false;
-            }
+                gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Dialog); 
         }
 
         //dont do anything if digging, or in Esc Menu
-        if (!isDigging && !escMenuOpen) {
+        if (!isDigging) {
 
             Move();
 
@@ -378,8 +368,13 @@ public class DogControllerV2 : Controller {
     }
 
     public override void OnDeactivated() {
-        anim.SetFloat("Forward", 0.0f); //disable animations
-        rigidBody.velocity = Vector3.zero; //and stop it from moving
+        //anim.SetFloat("Forward", 0.0f); //disable animations
+        //rigidBody.velocity = Vector3.zero; //and stop it from moving
+        v = Vector3.zero;
+    }
+
+    public override void OnActivated() {
+        v = gameObject.GetComponent<Rigidbody>().velocity;
     }
 
     //add object to things we can interact with

@@ -24,16 +24,18 @@ public class PlayerDialog : Controller {
 	// Update is called once per frame
 	void Update () {
         //if any key is pressed, display the full text of the current text box, or if it already is, then display next
-        if (Input.anyKeyDown) {
+        if (Input.anyKeyDown && npcDialog != null) {
             //if all the text is not yet in the text box, put it all there
             if (!isAllShown) {
                 textObject.text = textToShow;
                 isAllShown = true;
-            //if it is allready all in the textbox, go on to the next stuff, but only if dialog options are not available
-            } else if(!buttons[0].activeInHierarchy){
+                //if it is allready all in the textbox, go on to the next stuff, but only if dialog options are not available
+            } else if (!buttons[0].activeInHierarchy) {
                 isAllShown = false;
                 npcDialog.Next();
             }
+        } else if (Input.GetButtonDown("Cancel")) {
+            gameObject.GetComponent<DogControllerV2>().escMenu.Hide();
         }
 	}
 
@@ -41,9 +43,11 @@ public class PlayerDialog : Controller {
     //notifies the player that dialog has started. Changes controls to the dialog box rather than movement
     public override void OnActivated() {
         //Open dialog window
-        canvasGA.SetActive(true);
+        if(npcDialog != null) 
+            canvasGA.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        gameObject.GetComponent<Rigidbody>().drag = 5;
     }
 
     //ends dialog, closes window, and reverts controls to normal
@@ -57,6 +61,8 @@ public class PlayerDialog : Controller {
         for (int i = 0; i < buttons.Length; i++) {
             buttons[i].SetActive(false);
         }
+
+        gameObject.GetComponent<Rigidbody>().drag = 0;
     }
 
     //sets the text in the active dialog box

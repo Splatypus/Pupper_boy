@@ -24,6 +24,7 @@ public class FreeCameraLook : MonoBehaviour {
     public float tiltMax = 75f;
     public float tiltMin = 45f;
     public bool controlLocked = false; //control of camera locks when npc stuff
+    public int[] ignoreLayers;
 
     public float joypadXMultiplier = 2.0f;
     public float joypadYMultiplier = 2.0f;
@@ -35,8 +36,10 @@ public class FreeCameraLook : MonoBehaviour {
     private float lookAngle;
     private float tiltAngle;
 
+
     Vector3 previousFrameLocation;
     Vector3 cameraGoal;
+    int layerMask = 0;
 
     private void Start() {
         if (player == null) {
@@ -44,6 +47,12 @@ public class FreeCameraLook : MonoBehaviour {
         }
         previousFrameLocation = anchor.position;
         cameraGoal = transform.position;
+
+        //add ignored layers to the layermask
+        foreach (int i in ignoreLayers) {
+            layerMask |= 1 << i;
+        }
+        layerMask = ~layerMask;
     }
 
     // Update is called once per frame
@@ -99,10 +108,7 @@ public class FreeCameraLook : MonoBehaviour {
 
         //find out how many units back the camera can be
         RaycastHit hit;
-        int layermask = 1 << 2; //ignore raycast layer is skipped
-        layermask |= 1 << 9;
-        layermask = ~layermask;
-        if (Physics.Raycast(anchorPosition, transform.position - anchorPosition, out hit, maxDistance, layermask)) {
+        if (Physics.Raycast(anchorPosition, transform.position - anchorPosition, out hit, maxDistance, layerMask)) {
             transform.position = anchorPosition + (transform.position - anchorPosition).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
         } else {
             transform.position = anchorPosition + (transform.position - anchorPosition).normalized * maxDistance;
@@ -124,9 +130,7 @@ public class FreeCameraLook : MonoBehaviour {
         Vector3 targetPosition = anchor.position + (transform.position - anchor.position).normalized * maxDistance;
         //raycast towards targetPosition and move it in if needed to avoid camera collision
         RaycastHit hit;
-        int layermask = 1 << 2; //ignore raycast layer is skipped
-        layermask = ~layermask;
-        if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, maxDistance, layermask)) {
+        if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, maxDistance, layerMask)) {
             targetPosition = anchor.position + (transform.position - anchor.position).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
         }
 

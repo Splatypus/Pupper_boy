@@ -8,7 +8,7 @@ public class DigZone : InteractableObject {
 
     public DigZone other_side;
 
-    public string enteringYardName = "";
+    public string enteringYardName = ""; //The name of the yard you enter when you dig INTO this zone
 
     private void Start() {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<DogControllerV2>();

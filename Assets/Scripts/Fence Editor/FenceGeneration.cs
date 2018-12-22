@@ -6,19 +6,33 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class FenceGeneration : MonoBehaviour {
 
-    #region presets
-    public GameObject postObject;
+    #region variables
+    [Header("Horizontal Objects")]
     public GameObject horizontalObject; //objects that are stretched horizontally between posts
     public float lowHeight; //lowest location of a horizontal object
     public float highHeight; //highest
+    public float horizontalOffset = 0.15f;
     public int horizontalNum; //number of horizontal objects to split between lowest and highest points
+
+    [Header("Vertical Objects")]
     public GameObject vertObject; //object that is parallel to posts
     public int vertNum; //number to space evenly between posts
+    public float vertOffset = -0.15f;
+    
+    [Header("Collision")]
+    public GameObject colliderObject;
+    public GameObject firstDigZone;
+    public GameObject secondDigzone;
+    public bool doesGenerateDigZones = true;
+    public float firstOffset, secondOffset;
+    public string firstName = "";
+    public string secondName = "";
+
+    [Header("Preset Objects")]
+    public GameObject postObject;
     public GameObject partStorage;
-    #endregion
-
+    [SerializeField]
     public GameObject sourcePost;
-
     [SerializeField]
     List<GameObject> linkedPosts = new List<GameObject>();
     [SerializeField]
@@ -26,9 +40,11 @@ public class FenceGeneration : MonoBehaviour {
     [SerializeField]
     List<GameObject> verticals = new List<GameObject>();
 
+    #endregion
+
+
     // Use this for initialization
     void Start () {
-        //linkedPosts = new List<GameObject>();
 	}
 	
 	// Update is called once per frame
@@ -48,6 +64,7 @@ public class FenceGeneration : MonoBehaviour {
                     Vector3 newloc = new Vector3(   Mathf.Lerp(transform.position.x, p.transform.position.x, 0.5f), 
                                                     Mathf.Lerp(transform.position.y, p.transform.position.y, 0.5f), 
                                                     Mathf.Lerp(transform.position.z, p.transform.position.z, 0.5f));
+                    newloc += Vector3.Cross(transform.position - p.transform.position, Vector3.up).normalized * f.horizontalOffset; //move the location to the side, based on the offset value
                     float lerpT = 0;
                     if (f.horizontalNum == 1)
                         lerpT = 0.5f;
@@ -60,19 +77,54 @@ public class FenceGeneration : MonoBehaviour {
                     currentTrans.rotation = Quaternion.LookRotation(p.transform.position - transform.position);
                     //set scale so they connect well
                     float scaleAmount = Vector3.Distance(transform.position, p.transform.position)/(horizontalObject.GetComponent<MeshFilter>().sharedMesh.bounds.extents.z * 2);
-                    currentTrans.localScale = new Vector3(currentTrans.localScale.x, currentTrans.localScale.y, scaleAmount/130);
+                    currentTrans.localScale = new Vector3(currentTrans.localScale.x, currentTrans.localScale.y, scaleAmount/100); 
                 }
 
                 //Next do vertical objects
                 for (int i = 0; i < f.vertNum; i++) {
-                    Vector3 newLoc = new Vector3(   Mathf.Lerp(transform.position.x, p.transform.position.x, (float)(i + 1) / (float)(f.vertNum + 1)),
+                    Vector3 newLoc = new Vector3(   Mathf.Lerp(transform.position.x, p.transform.position.x, (float)(i + 1) / (float)(f.vertNum + 1)), //new location splits them evenly between posts
                                                     Mathf.Lerp(transform.position.y, p.transform.position.y, (float)(i + 1) / (float)(f.vertNum + 1)),
                                                     Mathf.Lerp(transform.position.z, p.transform.position.z, (float)(i + 1) / (float)(f.vertNum + 1)));
+                    newLoc += Vector3.Cross(transform.position - p.transform.position, Vector3.up).normalized * f.vertOffset; //move the location to the side, based on the offset value
                     f.verticals[i].transform.position = newLoc;
                     //set rotation to look from one post to the other
                     Vector3 lookVector = new Vector3(p.transform.position.x - transform.position.x, 0.0f, p.transform.position.z - transform.position.z);
                     f.verticals[i].transform.rotation = Quaternion.LookRotation(lookVector, Vector3.up);
                 }
+
+                //Adjust the fence collider
+                f.colliderObject.transform.position = (transform.position + p.transform.position) / 2.0f; //set to the center of the two posts
+                f.colliderObject.transform.rotation = Quaternion.LookRotation(p.transform.position - transform.position); //look from one to the other
+                BoxCollider col = f.colliderObject.GetComponent<BoxCollider>();
+                col.size = new Vector3(col.size.x, col.size.y, Vector3.Distance(transform.position, p.transform.position) / 100);
+
+                //Adjust Dig Zone colliders
+                f.firstDigZone.SetActive(f.doesGenerateDigZones);
+                f.secondDigzone.SetActive(f.doesGenerateDigZones);
+                if (f.doesGenerateDigZones) {
+                    //first dig zone
+                    Vector3 newLoc = (transform.position + p.transform.position) / 2.0f; //set to the center of the two posts
+                    newLoc += Vector3.Cross(transform.position - p.transform.position, Vector3.up).normalized * f.firstOffset;
+                    f.firstDigZone.transform.position = newLoc;
+                    f.firstDigZone.transform.rotation = Quaternion.LookRotation(p.transform.position - transform.position); //look from one to the other
+                    col = f.firstDigZone.GetComponent<BoxCollider>();
+                    col.size = new Vector3(col.size.x, col.size.y, Vector3.Distance(transform.position, p.transform.position) / 100);
+
+                    //second dig zone
+                    newLoc = (transform.position + p.transform.position) / 2.0f; //set to the center of the two posts
+                    newLoc += Vector3.Cross(transform.position - p.transform.position, Vector3.up).normalized * f.secondOffset;
+                    f.secondDigzone.transform.position = newLoc;
+                    f.secondDigzone.transform.rotation = Quaternion.LookRotation(p.transform.position - transform.position); //look from one to the other
+                    col = f.secondDigzone.GetComponent<BoxCollider>();
+                    col.size = new Vector3(col.size.x, col.size.y, Vector3.Distance(transform.position, p.transform.position) / 100);
+
+                    //then assign digzone names
+                    f.firstDigZone.GetComponent<DigZone>().enteringYardName = f.firstName;
+                    f.secondDigzone.GetComponent<DigZone>().enteringYardName = f.secondName;
+                }
+                
+                
+
             } else {
                 needToClearNulls = true;
             }
@@ -89,12 +141,12 @@ public class FenceGeneration : MonoBehaviour {
         }
 	}
 
-    //adds a new post slightly offset
+    //adds a new post
     public void AddPost() {
-        GameObject temp = Instantiate(postObject, transform.position + new Vector3(1.0f, 0, 1.0f), transform.rotation, transform.parent);
+        GameObject temp = Instantiate(postObject, transform.position /*+ new Vector3(1.0f, 0, 1.0f)*/, transform.rotation, transform.parent);
         linkedPosts.Add(temp);
-        temp.GetComponent<FenceGeneration>().OnCreate(gameObject, partStorage, postObject, lowHeight, highHeight, horizontalNum, vertNum);
-        UnityEditor.Selection.activeTransform = temp.transform;
+        temp.GetComponent<FenceGeneration>().OnCreate(gameObject, partStorage, postObject, lowHeight, highHeight,horizontalOffset, vertOffset, horizontalNum, vertNum, doesGenerateDigZones, firstOffset, secondOffset, firstName, secondName);
+        UnityEditor.Selection.activeTransform = temp.transform; 
     }
 
     //Remove this post and clean everything up
@@ -118,6 +170,24 @@ public class FenceGeneration : MonoBehaviour {
         foreach (GameObject v in verticals){
             DestroyImmediate(v);
         }
+
+        //colliders dont need to be reset if the gameobject is deleted
+        /*//reset box collider
+        colliderObject.transform.position = transform.position;
+        colliderObject.transform.rotation = transform.rotation;
+        BoxCollider col = colliderObject.GetComponent<BoxCollider>();
+        col.size = new Vector3(col.size.x, col.size.y, 0.0f);
+
+        //and reset digzone colliders
+        firstDigZone.transform.position = transform.position;
+        firstDigZone.transform.rotation = transform.rotation;
+        col = firstDigZone.GetComponent<BoxCollider>();
+        col.size = new Vector3(col.size.x, col.size.y, 0.0f);
+
+        secondDigzone.transform.position = transform.position;
+        secondDigzone.transform.rotation = transform.rotation;
+        col = secondDigzone.GetComponent<BoxCollider>();
+        col.size = new Vector3(col.size.x, col.size.y, 0.0f);*/
     }
 
     //If you have a list of some object, and a target number of items, it either removes until it has the target num, or adds fillObject onto the end until it has target num
@@ -138,14 +208,21 @@ public class FenceGeneration : MonoBehaviour {
     }
 
     //called when this is created
-    public void OnCreate(GameObject selfReference, GameObject parts, GameObject postRef, float lh, float hh, int hnum, int vnum) {
+    public void OnCreate(GameObject selfReference, GameObject parts, GameObject postRef, float lh, float hh, float horzoff, float vertoff, int hnum, int vnum, bool generate, float foff, float soff, string fname, string sname) {
         sourcePost = selfReference;
         partStorage = parts;
         postObject = postRef;
         highHeight = hh;
         lowHeight = lh;
+        horizontalOffset = horzoff;
         horizontalNum = hnum;
         vertNum = vnum;
+        vertOffset = vertoff;
+        doesGenerateDigZones = generate;
+        firstOffset = foff;
+        secondOffset = soff;
+        firstName = fname;
+        secondName = sname;
         linkedPosts = new List<GameObject>();
         verticals = new List<GameObject>();
         horizontals = new List<GameObject>();
