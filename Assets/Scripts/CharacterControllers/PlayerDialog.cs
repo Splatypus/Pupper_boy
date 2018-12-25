@@ -42,9 +42,8 @@ public class PlayerDialog : Controller {
 
     //notifies the player that dialog has started. Changes controls to the dialog box rather than movement
     public override void OnActivated() {
-        //Open dialog window
-        if(npcDialog != null) 
-            canvasGA.SetActive(true);
+        
+        canvasGA.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         gameObject.GetComponent<Rigidbody>().drag = 5;
