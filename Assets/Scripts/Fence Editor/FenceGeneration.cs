@@ -34,11 +34,11 @@ public class FenceGeneration : MonoBehaviour {
     [SerializeField]
     public GameObject sourcePost;
     [SerializeField]
-    List<GameObject> linkedPosts = new List<GameObject>();
+    List<GameObject> linkedPosts;
     [SerializeField]
-    List<GameObject> horizontals = new List<GameObject>();
+    List<GameObject> horizontals;
     [SerializeField]
-    List<GameObject> verticals = new List<GameObject>();
+    List<GameObject> verticals;
 
     #endregion
 
@@ -55,8 +55,10 @@ public class FenceGeneration : MonoBehaviour {
             if(p != null) {
                 FenceGeneration f = p.GetComponent<FenceGeneration>();
                 //fist fix any issues with adjusting the number of parts
-                FixList(f.horizontals, f.horizontalNum, f.horizontalObject);
-                FixList(f.verticals, f.vertNum, f.vertObject);
+                if(f.horizontals.Count != f.horizontalNum)
+                    FixList(f.horizontals, f.horizontalNum, f.horizontalObject);
+                if(f.verticals.Count != f.vertNum)
+                    FixList(f.verticals, f.vertNum, f.vertObject);
 
                 //do horizontal objects
                 for (int i = 0; i < f.horizontalNum; i++) {
@@ -131,6 +133,7 @@ public class FenceGeneration : MonoBehaviour {
         }
         //if posts have been improperly delted
         if (needToClearNulls) {
+            print("Cleaning up improperly deleted fencepost assests");
             List<GameObject> newLinkedPosts = new List<GameObject>(linkedPosts.Count - 1);
             foreach (GameObject p in linkedPosts) {
                 if (p != null) {
@@ -145,6 +148,7 @@ public class FenceGeneration : MonoBehaviour {
     public void AddPost() {
         GameObject temp = Instantiate(postObject, transform.position /*+ new Vector3(1.0f, 0, 1.0f)*/, transform.rotation, transform.parent);
         linkedPosts.Add(temp);
+        UnityEditor.PrefabUtility.DisconnectPrefabInstance(gameObject);
         temp.GetComponent<FenceGeneration>().OnCreate(gameObject, partStorage, postObject, lowHeight, highHeight,horizontalOffset, vertOffset, horizontalNum, vertNum, doesGenerateDigZones, firstOffset, secondOffset, firstName, secondName);
         UnityEditor.Selection.activeTransform = temp.transform; 
     }
@@ -212,8 +216,8 @@ public class FenceGeneration : MonoBehaviour {
         sourcePost = selfReference;
         partStorage = parts;
         postObject = postRef;
-        highHeight = hh;
         lowHeight = lh;
+        highHeight = hh;
         horizontalOffset = horzoff;
         horizontalNum = hnum;
         vertNum = vnum;
