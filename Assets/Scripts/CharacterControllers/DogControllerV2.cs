@@ -57,10 +57,7 @@ public class DogControllerV2 : Controller {
     public int digZoneCount = 0; //how many dig zones the player is currently in
     #endregion
 
-    #region tutorial shit
-    //everything related to this is tagged with "//TUTORIAL" for easy removal
-    TutorialPopups tut;
-    #endregion
+   
 
     [HideInInspector]
     public EscMenuManager escMenu;
@@ -79,7 +76,7 @@ public class DogControllerV2 : Controller {
 
         v = Vector3.zero;
 
-        tut = gameObject.GetComponent<TutorialPopups>();//TUTORIAL
+        
     }
 
     //move in fixed update since it changes velocity. In normal update it would sometimes feel like it had small delays.
@@ -105,7 +102,6 @@ public class DogControllerV2 : Controller {
 
             //Handle interaction input
             if (Input.GetButtonDown("Dig") && inRangeOf.Count > 0) {
-                tut.CompleteTutorial(); //TUTORIAL
 
                 //interact with the closest object
                 InteractableObject closest = inRangeOf[0];
@@ -279,7 +275,6 @@ public class DogControllerV2 : Controller {
     //when entering a dig zone, enable sprite and digzone count
     public void DigZoneEnter() {
         if (digZoneCount == 0) {
-            tut.DoDigTutorial(); //TUTORIAL
             my_icon.set_single_icon(Icons.Dig);
             my_icon.set_single_bubble_active(true);
         }
@@ -290,7 +285,6 @@ public class DogControllerV2 : Controller {
     public void DigZoneExit() {
         digZoneCount--;
         if (digZoneCount == 0) {
-            tut.DisableTutorial();//TUTORIAL
             my_icon.set_single_bubble_active(false);
         }
     }
@@ -298,8 +292,7 @@ public class DogControllerV2 : Controller {
     //moves the character to the next dig zone when digging
     private void move_to_next_zone(DigZone digZone) {
         DigZone zone_to_go_to = digZone.other_side;
-
-        tut.CompleteTutorial(); //TUTORIAL
+        
 
         //find out how far to move. This is done by assuming that one dig zone is a plane with a normal pointing towards the other zone
         //this makes it easy to find the distance from the character to that plane and move the player that far
@@ -380,21 +373,11 @@ public class DogControllerV2 : Controller {
     //add object to things we can interact with
     public void addObject(InteractableObject i) {
         inRangeOf.Add(i);
-        //TUTORIAL
-        if (i.GetComponent<DigZone>() != null) {
-            tut.DoDigTutorial();
-        } else {
-            tut.DoTalkTutorial();
-        }
     }
 
     //remove object from list
     public void removeObject(InteractableObject i) {
         inRangeOf.Remove(i);
-        //TUTORIAL
-        if (inRangeOf.Count == 0) {
-            tut.DisableTutorial();
-        }
     }
 
 }

@@ -124,6 +124,11 @@ public class FreeCameraLook : MonoBehaviour {
         controlLocked = true;
         StartCoroutine(Pan(location, lookAt, duration));
     }
+    //same as above but includes an action thats called once the camera arives at the designated location
+    public void MoveToPosition(Vector3 location, Vector3 lookAt, float duration, System.Action OnComplete) {
+        controlLocked = true;
+        StartCoroutine(Pan(location, lookAt, duration, OnComplete));
+    }
 
     //smoothly moves the camera to it's closest valid location, then reenables input
     public void RestoreCamera(float duration) {
@@ -165,6 +170,27 @@ public class FreeCameraLook : MonoBehaviour {
         transform.position = lookAt + (targetAngle * Vector3.forward).normalized * targetDistance;
         transform.rotation = targetRotation;
         cameraGoal = transform.position;
+    }
+    IEnumerator Pan(Vector3 location, Vector3 lookAt, float duration, System.Action OnComplete) {
+        float startTime = Time.time;
+        Quaternion startRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.LookRotation(lookAt - location);
+        float startDistance = Vector3.Distance(lookAt, transform.position);
+        float targetDistance = Vector3.Distance(lookAt, location);
+        Quaternion startAngle = Quaternion.LookRotation(transform.position - lookAt);
+        Quaternion targetAngle = Quaternion.LookRotation(location - lookAt);
+
+        while (Time.time < startTime + duration) {
+            float scaledTime = (Time.time - startTime) / duration;
+            //keeps the camera distance away from lookat point, at an angle slerping between target and start.
+            transform.position = lookAt + ((Quaternion.Slerp(startAngle, targetAngle, scaledTime) * Vector3.forward).normalized * Mathf.Lerp(startDistance, targetDistance, scaledTime));
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, scaledTime);
+            yield return new WaitForFixedUpdate();
+        }
+        transform.position = lookAt + (targetAngle * Vector3.forward).normalized * targetDistance;
+        transform.rotation = targetRotation;
+        cameraGoal = transform.position;
+        OnComplete();
     }
 
 

@@ -13,17 +13,22 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
     PlayerControllerManager controlman;
 
     //display info
+    [Header("Display Info")]
     public string characterName;
     public Sprite image;
 
     //camera references
+    [Header("Camera Placement")]
+    public bool useAutomaticPlacement = true;
     public float dynamicCameraDistance = 4.0f;
     public float dynamicCameraHeight = 2.5f;
     public float dynamicCameraTime = 1.0f;
+    public GameObject customCameraLocation;
 
     //Progression info
     public DialogNodeStart startNode = null;
     public DialogNode currentNode = null;
+    [Header("Dialog Info")]
     public int progressionNum;
 
     //EditorInfo
@@ -50,6 +55,25 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         if (currentNode.connections == null || currentNode.connections.Count == 0) {
             return;
         }
+
+        //set camera position
+        if (useAutomaticPlacement) {
+            //make two vectors pointing away from the plane created by the two dogs talking. Then move the camera to the closer of the two.
+            Vector3 midpoint = Vector3.Lerp(pdialog.transform.position, transform.position, 0.5f);
+            Vector3 position1 = midpoint + Vector3.Cross(transform.position - pdialog.transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+            Vector3 position2 = midpoint + Vector3.Cross(pdialog.transform.position - transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+
+            Vector3 cameraPosition = Vector3.zero;
+            if (Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position))
+                cameraPosition = position1;
+            else
+                cameraPosition = position2;
+            //Vector3 cameraPosition = Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position) ? position1 : position2;
+            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(cameraPosition, midpoint, dynamicCameraTime);
+        } else { //if custom placement is enabled, then move to the set location and face the same direction
+            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(customCameraLocation.transform.position, customCameraLocation.transform.position + customCameraLocation.transform.forward, dynamicCameraTime);
+        }
+
         //set up dialog nodes
         if (currentNode is DialogNodeBreak) {
             bool canContinue = false;
@@ -91,19 +115,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                 Debug.LogError("Start node placed with no out connection. Dialog bugging out.");
             }
         }
-
-        //make two vectors pointing away from the plane created by the two dogs talking. Then move the camera to the closer of the two.
-        Vector3 midpoint = Vector3.Lerp(pdialog.transform.position, transform.position, 0.5f);
-        Vector3 position1 = midpoint + Vector3.Cross(transform.position - pdialog.transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
-        Vector3 position2 = midpoint + Vector3.Cross(pdialog.transform.position - transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
         
-        Vector3 cameraPosition = Vector3.zero;
-        if (Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position))
-            cameraPosition = position1;
-        else
-            cameraPosition = position2;
-        //Vector3 cameraPosition = Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position) ? position1 : position2;
-        Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(cameraPosition, midpoint, dynamicCameraTime);
 
         //change player mode to dialog mode when they interact with this npc
         controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);

@@ -9,8 +9,11 @@ public class Interactable : MonoBehaviour {
     public AudioClip[] pickup_sounds;
     public AudioClip[] drop_sounds;
 
-    public enum Tag {Ball, Smell, TiffyQuestItem, Soap, RexQuestItem};
+    public enum Tag {Ball, Smell, TiffyQuestItem, Soap, RexQuestItem, SocksQuestItem};
     public List<Tag> tagList = new List<Tag>();
+
+    [HideInInspector]
+    public bool isCurrentlyHeld = false;
 
     AudioSource m_source;
 
@@ -32,9 +35,11 @@ public class Interactable : MonoBehaviour {
     }
 
 
-
+    //called by the player character when it picks up this item. Plays a sound and notifies the event manager
     public virtual void onPickup()
     {
+        EventManager.Instance.TriggerOnItemPickup(gameObject); //tells the event manager that this item has been picked up to trigger any effects
+        isCurrentlyHeld = true;
         if(play_sound)
         {
             if (!m_source)
@@ -50,8 +55,11 @@ public class Interactable : MonoBehaviour {
         }
     }
 
+    //called by the player when it drops this item. Plays a sound and notifies the event manager
     public virtual void onDrop()
     {
+        EventManager.Instance.TriggerOnItemDrop(gameObject);
+        isCurrentlyHeld = false;
         if (play_sound)
         {
             if (!m_source)

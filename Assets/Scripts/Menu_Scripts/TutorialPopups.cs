@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//Good god please fix this class. Nothing in here functions well and should all be cut and redone entirely
+//UNUSED: See TutorialManager/EventManager for new tutorial system
 
 public class TutorialPopups : MonoBehaviour {
 
