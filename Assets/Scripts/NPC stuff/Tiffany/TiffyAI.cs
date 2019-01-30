@@ -6,7 +6,8 @@ public class TiffyAI : AIbase {
 
     Animator[] anim;
     public float moveDistance;
-    public float speed;
+    public float walkTime;
+    public float birdCount;
 
     public enum States { Hiding, Rescued, Happy }; //this is used instead of the standard quest number variable because why not
     public States state = States.Hiding;
@@ -14,12 +15,22 @@ public class TiffyAI : AIbase {
     public GameObject rewardSpawn; //location to spawn reward
     public GameObject reward; //what to spawn
 
-    public GameObject[] birds; //array of birds attacking her
-
     public GameObject bandanaCollar;
     public GameObject defaultCollar;
 
+    new public void Start() {
+        base.Start();
+        anim = GetComponentsInChildren<Animator>();
+        EventManager.OnFenceDig += OnDoggoEntersYard;
+    }
 
+    //triggers the first time doggo enters tiffany's yard
+    public void OnDoggoEntersYard(GameObject yard) {
+        if (yard.GetComponent<DigZone>().enteringYard == DigZone.Yards.Tiffany) {
+            EventManager.OnFenceDig -= OnDoggoEntersYard;
+            OnInteract();
+        }
+    }
 
     public override void OnInRange() {
         if (state == States.Hiding) {
@@ -52,49 +63,41 @@ public class TiffyAI : AIbase {
     }
 
     public void Saved() {
-        //anim.SetFloat("Forward", 1.0f, 0.1f, Time.deltaTime);
-
-        //anim.SetFloat("Forward", 0.8f);
-        foreach(Animator a in anim)
-        {
-            a.SetFloat("Forward", 0.8f);
-            a.SetTrigger("isSaved");
-        }
         state = States.Rescued;
         progressionNum = 1; //go to the next dialog set
         Display(1);
+        StartCoroutine(WalkOut());
     }
 
-    new public void Start() {
-        base.Start();
-        anim = GetComponentsInChildren<Animator>();
-    }
-
-    public void Update() {
-        //check if tiffy is safe now and if so run saved
-        if (state == States.Hiding) {
-            bool isSafe = true;
-            for (int i = 0; i < birds.Length && isSafe; i++) {
-                if (birds[i].GetComponent<BirdMovementV2>().curState == BirdMovementV2.BirdState.AttackWander) {
-                    isSafe = false;
-                }
-            }
-            //if there are no more birds, she saved
-            if (isSafe) {
-                Saved();
-            }
+    //moves tiffany out of her dog house
+    IEnumerator WalkOut() {
+        //start anims
+        foreach (Animator a in anim) {
+            a.SetFloat("Forward", 0.8f);
+            a.SetTrigger("isSaved");
         }
-        //move forward if needed. This should probably be moved to a coroutine
-        if (state == States.Rescued && moveDistance > 0) {
-            transform.position += gameObject.transform.forward * Time.deltaTime * speed;
-            moveDistance -= Time.deltaTime * speed;
-            if (moveDistance < 0) {
-                //anim.SetFloat("Forward", 0.0f); //, 0.1f, Time.deltaTime);
 
-                foreach (Animator a in anim)
-                {
-                    a.SetFloat("Forward", 0.0f);
-                }
+        //move
+        float startTime = Time.time;
+        Vector3 startPosition = transform.position;
+        Vector3 endPosiotion = startPosition + gameObject.transform.forward * moveDistance;
+        while (startTime + walkTime > Time.time) {
+            transform.position = Vector3.Lerp(startPosition, endPosiotion, (Time.time - startTime)/walkTime);
+            yield return new WaitForFixedUpdate();
+        }
+
+        //end anims
+        foreach (Animator a in anim) {
+            a.SetFloat("Forward", 0.0f);
+        }
+    }
+   
+    //called when a bird is scared off. If shes hiding, check if all birds have been spooked away, then trigger actions if they have
+    public void BirdScared() {
+        if (state == States.Hiding) {
+            birdCount--;
+            if (birdCount == 0) {
+                Saved();
             }
         }
     }

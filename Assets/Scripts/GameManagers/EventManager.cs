@@ -8,20 +8,11 @@ public class EventManager : MonoBehaviour {
 
     public static EventManager Instance;
 
-    #region trigger list
+    #region player trigger list
     //Use EventName += FunctionName to subscribe a function to an event (-= to remove. please dont cause memeory leaks)
     //Simply invoke an event when it should trigger by calling it as if it were a function
 
-    //trigger zones
-    public delegate void EnterTriggerZoneAction(GameObject other);
-    public static event EnterTriggerZoneAction OnEnterTriggerZone;
-    public void TriggerOnEnterTriggerZone(GameObject other) { if (OnEnterTriggerZone != null) OnEnterTriggerZone(other); }
-
-    public delegate void ExitTriggerZoneAction(GameObject other);
-    public static event ExitTriggerZoneAction OnExitTriggerZone;
-    public void TriggerOnExitTriggerZone(GameObject other) { if (OnExitTriggerZone != null) OnExitTriggerZone(other); }
-
-    //NPC interact (triggers on any interaction either fence or NPC or other
+    //NPC interact (triggers on any interaction either fence or NPC or other)
     public delegate void TalkToNPCAction(GameObject npc);
     public static event TalkToNPCAction OnTalk;
     public void TriggerOnTalk(GameObject npc) { if (OnTalk != null) OnTalk(npc); }
@@ -34,6 +25,20 @@ public class EventManager : MonoBehaviour {
     public delegate void ItemDropAction(GameObject item);
     public static event ItemDropAction OnItemDrop;
     public void TriggerOnItemDrop(GameObject item) {if (OnItemDrop != null) OnItemDrop(item);  }
+
+    //barking
+    public delegate void BarkAction(GameObject player);
+    public static event BarkAction OnBark;
+    public void TriggerOnBark(GameObject player) { if (OnBark != null) OnBark(player); }
+
+    //Digging Under a fence (triggers after the dig)
+    public delegate void FenceDigAction(GameObject enteringYard);
+    public static event FenceDigAction OnFenceDig;
+    public void TriggerOnFenceDig(GameObject enteringYard) { if (OnFenceDig != null) OnFenceDig(enteringYard); }
+    #endregion
+
+    #region seasonal, daynight, and weather triggers
+    
     #endregion
 
     void Awake() {

@@ -73,7 +73,7 @@ public class FreeCameraLook : MonoBehaviour {
 
         //transform.position = cameraEnd;
         //always look at the player if they have control
-        if(!controlLocked)
+        if (!controlLocked)
             transform.LookAt(anchor);
     }
 
@@ -115,7 +115,7 @@ public class FreeCameraLook : MonoBehaviour {
         }
 
         previousFrameLocation = anchor.position;
-        
+
 
     }
 
@@ -193,5 +193,17 @@ public class FreeCameraLook : MonoBehaviour {
         OnComplete();
     }
 
+
+    #region Used for camera movement from editor components
+    //For dialog functions, call setposition, setlookat, then move the camera with RunSetMove
+    GameObject targetPosition;
+    GameObject targetLookAt;
+    public void SetTargetPosition(GameObject t) { targetPosition = t; }
+    public void SetTargetLookAt(GameObject t) { targetLookAt = t; }
+    public void RunSetMove(float time) {
+        MoveToPosition(targetPosition.transform.position, targetLookAt.transform.position, time);
+    }
+
+    #endregion
 
 }

@@ -332,13 +332,16 @@ public class DogControllerV2 : Controller {
         dig_sound.Play();
         move_to_next_zone(digZone);
         anim.SetTrigger("Dig2");
-        houseText.setText(digZone.other_side.enteringYardName);
+        houseText.setText(digZone.other_side.GetYardName());
         //after the animation, restore movement
         yield return new WaitForSeconds(0.6f);
         isDigging = false;
         if (ppickup.itemInMouth != null) {
             ppickup.itemInMouth.SetActive(true);
         }
+
+        //and then run the event trigger letting things know we have reached the other side
+        EventManager.Instance.TriggerOnFenceDig(digZone.other_side.gameObject);
     }
 
     #endregion

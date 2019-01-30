@@ -56,6 +56,9 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             return;
         }
 
+        //notify the event manager that someone talked to an NPC
+        EventManager.Instance.TriggerOnTalk(gameObject);
+
         //set camera position
         if (useAutomaticPlacement) {
             //make two vectors pointing away from the plane created by the two dogs talking. Then move the camera to the closer of the two.

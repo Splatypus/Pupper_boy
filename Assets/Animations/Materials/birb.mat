@@ -59,6 +59,8 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EdgeGlowCutoff: 0.08
+    - _EdgeGlowIntensity: 0.45
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -68,14 +70,18 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineSize: 0.1
     - _Parallax: 0.02
+    - _ShadowCutoff: 0.59
+    - _ShadowMult: 0.88
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Sunspot: 6
-    - _SunspotCutoff: 0.95
+    - _Sunspot: 0.23
+    - _SunspotCutoff: 0.83
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.136, g: 0.051879156, b: 0.036584, a: 1}
+    - _Color: {r: 0.13599998, g: 0.051879138, b: 0.036584, a: 1}
+    - _DarknessColor: {r: 0.4705882, g: 0.4705882, b: 0.4705882, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Outline: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadowTint: {r: 1, g: 1, b: 1, a: 1}

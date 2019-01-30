@@ -8,10 +8,25 @@ public class DigZone : InteractableObject {
 
     public DigZone other_side;
 
-    public string enteringYardName = ""; //The name of the yard you enter when you dig INTO this zone
+    //public string enteringYardName = ""; //The name of the yard you enter when you dig INTO this zone
+
+    
+    public enum Yards { Seabiscuit, Bubbles, Tiffany, Home, Rex, Creek, Blackie }
+    public static string[] yardNames = { "Seabiscuit's Yard", "Bubbles' Yard", "Tiffany's Yard", "Home", "Rex's Domain", "Cherry Creek", "Blackie's Workshop" };
+    public Yards enteringYard;
 
     private void Start() {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<DogControllerV2>();
+    }
+
+    //used to easily get the yard name from the enum
+    public static string GetYardName(Yards y) {
+        return yardNames[(int)y];
+    }
+
+    //and one to get the name of a instance of this object specifically
+    public string GetYardName() {
+        return yardNames[(int)enteringYard];
     }
 
     public override void OnTriggerEnter(Collider other) {

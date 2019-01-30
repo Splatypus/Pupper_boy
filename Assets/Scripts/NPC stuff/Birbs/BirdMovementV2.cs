@@ -25,7 +25,9 @@ public class BirdMovementV2 : MonoBehaviour {
     [Header("Flight Start Variables")]
     public float DogDistanceUntilFlight;
     public float borkDistanceUntilFlight;
-    public Vector3 flightStartVelocity; // TODO: MAKE THIS A FLOAT THE VECTOR ASPECT IS NEVER EVER USED!! BAD!! SAD!!
+    public float flightStartVelocity; //upwards velocity
+    public float acceleration;
+    public float accelerationRange;
     private float startHeight;
     #endregion
 
@@ -64,18 +66,20 @@ public class BirdMovementV2 : MonoBehaviour {
 
         if(curState == BirdState.AttackWander)
         {
-            startAttack();
+            StartAtack();
         }
 
         if(curState == BirdState.Wander)
         {
             //anim.StopPlayback();
             anim.enabled = false;
-            Invoke("startAnimating", Random.Range(0.0f, randomStartupTimeMax));
+            Invoke("StartAnimating", Random.Range(0.0f, randomStartupTimeMax));
         }
+
+        EventManager.OnBark += GetBarkedAt;
     }
 
-    private void startAnimating()
+    private void StartAnimating()
     {
         anim.enabled = true;
     }
@@ -103,46 +107,45 @@ public class BirdMovementV2 : MonoBehaviour {
         if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.BathMode || curState == BirdState.AttackWander) &&
             Vector3.Distance(transform.position, player.transform.position) < DogDistanceUntilFlight)
         {
-            startFlight();
+            StartFlight();
         }
         else if(curState == BirdState.FlyAway && transform.position.y - startHeight >= heightToStartFlightWander)
         {
             // We have reached our goal height, so now enter into a holding pattern until we are able to land
-            startFlightWander();
+            StartFlightWander();
         }
         else if (curState == BirdState.FlyWander && Vector3.Distance(transform.position, airPosDest) < 0.5f)
         {
-            startFlyDown();
+            StartFlyDown();
         }
         else if (curState == BirdState.FlyDown && Vector3.Distance(transform.position, landingDest.position) < 0.1f)
         {
-            finishFlight();
+            FinishFlight();
         }
         //else if(curState == BirdState.AttackWander &&
         //        Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.3f)
         else if(curState == BirdState.AttackWander)
         {
             if(Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.3f)
-                nextAttackWaypoint();
+                NextAttackWaypoint();
 
             if(Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) > 50f)
             {
                 transform.position = attackWanderWaypoints[attackWanderWaypointIndex].position;
-                nextAttackWaypoint();
+                NextAttackWaypoint();
             }
         }
     }
 
-    public void getBarkedAt(Vector3 bark_pos)
-    {
+    public void GetBarkedAt(GameObject p){
+        Vector3 bark_pos = p.transform.position;
         if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.AttackWander) &&
-            Vector3.Distance(transform.position, player.transform.position) < borkDistanceUntilFlight)
-        {
-            startFlight();
+            Vector3.Distance(transform.position, player.transform.position) < borkDistanceUntilFlight){
+            StartFlight();
         }
     }
 
-    private void startFlight()
+    public virtual void StartFlight()
     {
         // set behavior state
         curState = BirdState.FlyAway;
@@ -164,17 +167,17 @@ public class BirdMovementV2 : MonoBehaviour {
         /// maybe don't turn off collier?
         rb.useGravity = false;
         col.enabled = false;
+        
+        //Vector3 actualFlightVelocity = (Vector3.up + birdPlayerVec.normalized * 0.5f).normalized * flightStartVelocity;
+        rb.velocity = birdPlayerVec * 0.5f;
+        StartCoroutine(RampSpeedOverTime(flightStartVelocity, acceleration, accelerationRange));
 
-        //rb.velocity = flightStartVelocity;
-        Vector3 actualFlightVelocity = (Vector3.up + birdPlayerVec.normalized * 0.5f).normalized * flightStartVelocity.magnitude;
-        rb.velocity = actualFlightVelocity;
-
-        transform.right = -Vector3.ProjectOnPlane(actualFlightVelocity, transform.up).normalized;
+        transform.right = -Vector3.ProjectOnPlane(birdPlayerVec * 0.5f, transform.up).normalized;
 
         startHeight = transform.position.y;
     }
 
-    private void startAttack()
+    private void StartAtack()
     {
         anim.SetBool("flying", true);
 
@@ -198,39 +201,44 @@ public class BirdMovementV2 : MonoBehaviour {
         transform.right = -line;
         */
 
-        nextAttackWaypoint();
+        NextAttackWaypoint();
         // start flying
         rb.useGravity = false;
         col.enabled = false;
         //rb.velocity = line * flightStartVelocity.magnitude;
     }
 
-    private void startFlightWander()
-    {
+    private void StartFlightWander() {
         // change state
         curState = BirdState.FlyWander;
 
-        // Fix velocity to be in holding
-        airPosDest = landingDest.position;
-        airPosDest.y = transform.position.y;
-        /// set up velocity to move us to airPosDest
-        rb.velocity = (airPosDest - transform.position).normalized * flightStartVelocity.magnitude;
+        if (landingDest != null) {
+            // Fix velocity to be in holding
+            airPosDest = landingDest.position;
+            airPosDest.y = transform.position.y;
+            /// set up velocity to move us to airPosDest
+            rb.velocity = (airPosDest - transform.position).normalized * flightStartVelocity;
 
-        // rotate the bird
-        //transform.right = -(airPosDest - transform.position).normalized;
-        desiredRight = -(airPosDest - transform.position).normalized;
+            // rotate the bird
+            //transform.right = -(airPosDest - transform.position).normalized;
+            desiredRight = -(airPosDest - transform.position).normalized;
+        } else {
+            //if we have no landing dest, just go straight and set up a fade out routine
+            rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
+            StartCoroutine(DeathSequence(5.0f, 5.0f));
+        }
     }
 
-    private void startFlyDown()
+    private void StartFlyDown()
     {
         curState = BirdState.FlyDown;
 
-        rb.velocity = (landingDest.position - transform.position).normalized * flightStartVelocity.magnitude;
+        rb.velocity = (landingDest.position - transform.position).normalized * flightStartVelocity;
         //transform.right = -landingDest.forward;
         desiredRight = -landingDest.forward;
     }
 
-    private void finishFlight()
+    private void FinishFlight()
     {
         transform.position = landingDest.position;
 
@@ -241,7 +249,7 @@ public class BirdMovementV2 : MonoBehaviour {
         anim.SetBool("flying", false);
     }
 
-    private void nextAttackWaypoint()
+    private void NextAttackWaypoint()
     {
         // update index
         attackWanderWaypointIndex++;
@@ -253,9 +261,31 @@ public class BirdMovementV2 : MonoBehaviour {
         // try this to stop flipping?
         //transform.right = -Vector3.ProjectOnPlane(line, Vector3.up);
         desiredRight = -Vector3.ProjectOnPlane(line, Vector3.up);
-        rb.velocity = line * flightStartVelocity.magnitude;
+        rb.velocity = line * flightStartVelocity;
 
         
+    }
+
+    //Ramps up speed to maxSpeed at the acceleration rate
+    IEnumerator RampSpeedOverTime(float maxSpeed, float acc, float accRange) {
+        float newAcc = Random.Range(acc - accRange, acc + accRange);
+        while (rb.velocity.y < maxSpeed) {
+            rb.velocity += new Vector3(0.0f, newAcc * Time.fixedDeltaTime, 0.0f);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    //Sets a delay and then fades the bird out of existance afterward
+    IEnumerator DeathSequence(float delay, float fadeTime) {
+        yield return new WaitForSeconds(delay);
+        Vector3 startScale = gameObject.transform.localScale;
+        float startTime = Time.time;
+        while (startTime + fadeTime > Time.time) {
+            gameObject.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, (Time.time - startTime) / fadeTime);
+            yield return new WaitForFixedUpdate();
+        }
+        EventManager.OnBark -= GetBarkedAt;
+        Destroy(gameObject);
     }
 
     #region Animation Events

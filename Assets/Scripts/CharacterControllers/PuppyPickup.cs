@@ -26,13 +26,10 @@ public class PuppyPickup : MonoBehaviour {
 
     private IconManager iconManager;
 
-    BirdMovementV2[] birds;
-
 
     // Use this for initialization
     void Start() {
         m_audio_source = GetComponent<AudioSource>();
-        birds = FindObjectsOfType<BirdMovementV2>();
         iconManager = GetComponentInChildren<IconManager>();
     }
 
@@ -100,9 +97,7 @@ public class PuppyPickup : MonoBehaviour {
             m_audio_source.clip = borks[bork_index];
             m_audio_source.Play();
 
-            foreach (BirdMovementV2 bird in birds) {
-                bird.getBarkedAt(transform.position);
-            }
+            EventManager.Instance.TriggerOnBark(GameObject.FindGameObjectWithTag("Player"));
         }
     }
 

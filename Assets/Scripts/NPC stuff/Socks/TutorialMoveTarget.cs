@@ -55,7 +55,8 @@ public class TutorialMoveTarget : MonoBehaviour {
 
     //disables emission, waits for the last to despawn, then destroys the gameobject
     IEnumerator DeathSequence() {
-        this.enabled = false;
+        //this.enabled = false;
+        gameObject.GetComponent<Collider>().enabled = false;
         ParticleSystem.EmissionModule em = gameObject.GetComponent<ParticleSystem>().emission;
         em.rateOverTime = 0;
         ParticleSystem.MainModule mm = gameObject.GetComponent<ParticleSystem>().main;
