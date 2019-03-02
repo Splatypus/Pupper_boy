@@ -9,7 +9,8 @@ public class EventManager : MonoBehaviour {
     public static EventManager Instance;
 
     #region player trigger list
-    //Use EventName += FunctionName to subscribe a function to an event (-= to remove. please dont cause memeory leaks)
+    //Use EventName += FunctionName to subscribe a function to an event 
+    //-= will unsubscribe a function. Not unsubscribing will cause memory leaks!
     //Simply invoke an event when it should trigger by calling it as if it were a function
 
     //NPC interact (triggers on any interaction either fence or NPC or other)
@@ -38,7 +39,18 @@ public class EventManager : MonoBehaviour {
     #endregion
 
     #region seasonal, daynight, and weather triggers
-    
+    public delegate void SwapToNightAction();
+    public static event SwapToNightAction OnNight;
+    public void TriggerOnNight() { if (OnNight != null) OnNight(); }
+
+    public delegate void SwapToDayAction();
+    public static event SwapToDayAction OnDay;
+    public void TriggerOnDay() { if (OnDay != null) OnDay(); }
+
+    //season change call
+    public delegate void SeasonChangedAction(SeasonManager.Seasons newSeason);
+    public static event SeasonChangedAction OnSeasonChange;
+    public void TriggerSeasonChange(SeasonManager.Seasons newSeason) { if (OnSeasonChange != null) OnSeasonChange(newSeason); }
     #endregion
 
     void Awake() {

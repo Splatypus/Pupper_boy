@@ -66,5 +66,10 @@ public class BubblesAI : AIbase {
         } else {
             progressionNum = 0;
         }
-    }    
+    }
+
+    //unlocks fences to designated area
+    public void UnlockFences(int y) {
+        FenceUnlockManager.Instance.EnableIntoYard(y);
+    }
 }

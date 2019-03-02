@@ -3,26 +3,71 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BubbleGameManager : MiniGameManager {
+public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
 
-    public GameObject bubble_particle_system;
-    public int score = 0;
-    public int numberOfActiveObjectives;
-    List<int> activeObjectives;
 
+    [Header("Setup")]
+    public Text canvasTimeField; //reference to the text box that displays time. Must be set
     public Text scoreText;
-
-    [SerializeField] List<int> highscores = new List<int>(); //Sorted where highest score is at position [9] and lowest is at [0]
-    public int maxHighScores = 10;
-
-    public int rewardScore;
-
+    public GameObject[] objectives;
+    public int numberOfActiveObjectives;
+    public GameObject bubble_particle_system;
     public BubblesAI bubblesRef;
 
+    [Header("Inital Constraints")]
+    public float timeLimit;
+    public int rewardScore;
+
+    //private
+    bool isPlaying = false;
+    List<int> activeObjectives;
+    int score = 0;
+    float startTime;
+
+
+    //[SerializeField] List<int> highscores = new List<int>(); //Sorted where highest score is at position [9] and lowest is at [0]
+    //public int maxHighScores = 10;
+
+    
+
+    // Use this for initialization
+    public void Start() {
+        //set references on start
+        canvasTimeField.gameObject.SetActive(false);
+        scoreText.gameObject.SetActive(false);
+        //Hide bubble particle system
+        bubble_particle_system.SetActive(false);
+        //Disable objectives to start
+        for (int i = 0; i < objectives.Length; i++) {
+            objectives[i].GetComponent<Objective>().SetUp(this, i);
+            objectives[i].SetActive(false);
+        }
+        //set up objective list
+        activeObjectives = new List<int>(numberOfActiveObjectives);
+        for (int i = 0; i < numberOfActiveObjectives; i++) {
+            activeObjectives.Add(0);
+        }
+    }
+
+    // Update is called once per frame
+    public void Update() {
+        if (isPlaying) {
+            if (startTime + timeLimit < Time.time) {
+                GameEnd();
+            } else {
+                //canvasTimeField.GetComponent<Text>().text = (startTime + timeLimit - Time.time).ToString();
+                canvasTimeField.text = "Time: " + ((int)(startTime + timeLimit - Time.time)).ToString();
+            }
+        }
+    }
+
+
     //called when the minigame is started
-    public override void GameStart() {
+    public void GameStart() {
         if (!isPlaying) {
-            base.GameStart();
+            startTime = Time.time;
+            isPlaying = true;
+            canvasTimeField.gameObject.SetActive(true);
             scoreText.gameObject.SetActive(true);
             scoreText.text = "Score: 0";
             bubble_particle_system.SetActive(true);
@@ -42,8 +87,12 @@ public class BubbleGameManager : MiniGameManager {
     }
 
     //deactivate all when game is over #TODO: add highscore setting and all that
-    public override void GameEnd() {
-        base.GameEnd();
+    public void GameEnd() {
+        //end event, add scores n stuff
+        isPlaying = false;
+        //clear time UI
+        canvasTimeField.text = "";
+        canvasTimeField.gameObject.SetActive(false);
         //reset score text and particle systems
         scoreText.gameObject.SetActive(true);
         scoreText.text = "";
@@ -52,21 +101,21 @@ public class BubbleGameManager : MiniGameManager {
         for (int i = 0; i < objectives.Length; i++) {
             objectives[i].SetActive(false);
         }
-        //if a new high score has been set, update the list of high scores
+        /*//if a new high score has been set, update the list of high scores
         if (highscores.Count < maxHighScores) {
             highscores.Add(score);
             highscores.Sort();
         } else if (highscores.Count > 0 && score > highscores[0]) {
             highscores[0] = score;
             highscores.Sort();
-        }
+        }*/
         if (score >= rewardScore) {
             bubblesRef.FinishedGame(score >= rewardScore);
         }
     }
 
     //called when an objective (bubble) is reached
-    public override void ObjectiveReached(int index) {
+    public void ObjectiveReached(int index) {
         score++;
         scoreText.text = "Score: " + score;
         NewObjective(index);
@@ -103,33 +152,9 @@ public class BubbleGameManager : MiniGameManager {
     }
 
 
-	// Use this for initialization
-	public override void Start () {
-        //Do base start. Find player character, etc
-        base.Start();
-        scoreText.gameObject.SetActive(false);
-        //Hide bubble particle system
-        bubble_particle_system.SetActive(false); 
-        //Disable objectives to start
-        for (int i = 0; i < objectives.Length; i++) {
-            objectives[i].GetComponent<Objective>().SetUp(this, i);
-            objectives[i].SetActive(false);
-        }
-        //set up objective list
-        activeObjectives = new List<int>(numberOfActiveObjectives);
-        for (int i = 0; i < numberOfActiveObjectives; i++) { //yes this sucks, but lists dont allow for setting an initial length.
-            activeObjectives.Add(0);
-        }
-    }
-
     void OnTriggerEnter(Collider col) {
         /*if (col.gameObject.CompareTag("Player") && !isPlaying) {
             GameStart();
         }*/
-    }
-
-    // Update is called once per frame
-    public override void Update () {
-        base.Update();
     }
 }

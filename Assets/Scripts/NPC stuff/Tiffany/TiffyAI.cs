@@ -102,4 +102,9 @@ public class TiffyAI : AIbase {
         }
     }
 
+    //unlocks fences to designated area
+    public void UnlockFences(int y) {
+        FenceUnlockManager.Instance.EnableIntoYard(y);
+    }
+
 }

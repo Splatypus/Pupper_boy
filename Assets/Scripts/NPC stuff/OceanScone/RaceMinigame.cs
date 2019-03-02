@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 //UNUSED: See SeabiscuitMinigame -> TrackController/RaceDogController instead
 public class RaceMinigame : MiniGameManager {
-
+/*
     public int lapsNeeded;
     int score = 0;
     int lapsDone = 0;
@@ -95,4 +95,5 @@ public class RaceMinigame : MiniGameManager {
     public override void Update() {
         base.Update();
     }
+    */
 }

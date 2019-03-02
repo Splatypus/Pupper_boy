@@ -5,13 +5,25 @@ using UnityEngine;
 //used for enabling and disabling dig zones as needed
 public class FenceUnlockManager : MonoBehaviour {
 
+    public GameObject parentFence;
     public bool startAllDisabled;
 
     DigZone[] allDigZones;
 
-	// Use this for initialization
-	void Start () {
-        allDigZones = GetComponentsInChildren<DigZone>();
+    public static FenceUnlockManager Instance;
+
+    void Awake() {
+        //singleton pattern but for gameobjects.
+        if (Instance == null) {
+            Instance = this;
+        } else if (Instance != this) {
+            Destroy(gameObject);
+        }
+    }
+
+    // Use this for initialization
+    void Start () {
+        allDigZones = parentFence.GetComponentsInChildren<DigZone>();
         if (startAllDisabled) {
             DisableAll();
         }
@@ -33,11 +45,9 @@ public class FenceUnlockManager : MonoBehaviour {
 
     //Enables all dig zones into (and out of) the designated yard
     public void EnableIntoYard(int y) {
-        print("Enabling digzones into " + DigZone.yardNames[y]);
+        Debug.Log("Enabling digzones into " + DigZone.yardNames[y]);
         foreach (DigZone d in allDigZones) {
-            print("is looping");
             if ((int)d.enteringYard == y) {
-                print("setting active");
                 d.GetComponent<Collider>().enabled = true;
                 d.other_side.GetComponent<Collider>().enabled = true;
             }

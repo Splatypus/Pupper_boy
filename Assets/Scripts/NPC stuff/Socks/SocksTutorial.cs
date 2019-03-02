@@ -13,11 +13,14 @@ public class SocksTutorial : Dialog2 {
     public GameObject itemTargetObject;
     public int objectiveCount = 0;
 
+    [Header("CameraStuff")]
+    public InSceneCameraReference cameraReference;
     public GameObject[] cameraFocusLocations;
 
     new void Start() {
         base.Start();
         StartCoroutine(AfterStart());
+        customCameraLocation = cameraReference.getCamera();
     }
     //Since other things are getting set up in start functions, this need to initiate dialog after that has already happened
     IEnumerator AfterStart() {
@@ -29,8 +32,9 @@ public class SocksTutorial : Dialog2 {
 
     //points the camera at cameraFocusLocations[index]
     public void PointCamera(int index) {
-        FreeCameraLook cam = Camera.main.GetComponent<FreeCameraLook>();
-        cam.MoveToPosition(cam.transform.position + new Vector3(0.0f, 1.0f, 0.0f), cameraFocusLocations[index].transform.position, 1.0f);
+        //FreeCameraLook cam = Camera.main.GetComponent<FreeCameraLook>();
+        //cam.MoveToPosition(cam.transform.position + new Vector3(0.0f, 1.0f, 0.0f), cameraFocusLocations[index].transform.position, 1.0f);
+        cameraReference.MoveToPosition(cameraReference.getCamera().transform.position + new Vector3(0.0f, 1.0f, 0.0f), cameraFocusLocations[index].transform.position, 1.0f);
     }
 
     #region nomovement functions
@@ -71,6 +75,11 @@ public class SocksTutorial : Dialog2 {
         if (objectiveCount <= 2 || objectiveCount == 5 || objectiveCount == 6 || objectiveCount == 7 || objectiveCount == 10 || objectiveCount == 11) { //looking at targets 3 and 4 do nothing, since 3,4,5 spawn all at once, same as spawns 8,9,10
             OnInteract();
         }
+    }
+
+    //finds the current fence manager and unlocks fences of the given type
+    public void UnlockFences(int y) {
+        FenceUnlockManager.Instance.EnableIntoYard(y);
     }
 
     //called when a player enters a zone theyre suppsoed to bring an item to. If they brought it, tell them to drop it, otherwise tell them to go get it

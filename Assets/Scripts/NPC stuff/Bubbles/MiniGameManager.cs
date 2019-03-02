@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MiniGameManager : MonoBehaviour {
+//UNUSED: Only extending class was Bubble's Game. Everything here has been merged into that
 
+public class MiniGameManager : MonoBehaviour {
+/*
     //public GameObject relatedNPC;
     public float timeLimit;
     public bool isPlaying = false;
@@ -15,22 +17,6 @@ public class MiniGameManager : MonoBehaviour {
     //public ArrayList highscores = new ArrayList(10);
     public float startTime;
 
-
-    //called to start the minigame
-    public virtual void GameStart() {
-        startTime = Time.time;
-        isPlaying = true;
-        canvasTimeField.gameObject.SetActive(true);
-    }
-
-    //called to start the minigame
-    public virtual void GameEnd() {
-        //end event, add scores n stuff
-        isPlaying = false;
-        //clear time UI
-        canvasTimeField.text = "";
-        canvasTimeField.gameObject.SetActive(false);
-    }
 
     public virtual void Start() {
         //set the player character reference on start
@@ -50,8 +36,24 @@ public class MiniGameManager : MonoBehaviour {
         }
 	}
 
+    //called to start the minigame
+    public virtual void GameStart() {
+        startTime = Time.time;
+        isPlaying = true;
+        canvasTimeField.gameObject.SetActive(true);
+    }
+
+    //called to start the minigame
+    public virtual void GameEnd() {
+        //end event, add scores n stuff
+        isPlaying = false;
+        //clear time UI
+        canvasTimeField.text = "";
+        canvasTimeField.gameObject.SetActive(false);
+    }
+
     public virtual void ObjectiveReached(int ID) {
 
     }
-
+    */
 }

@@ -15,9 +15,8 @@ public class RexAI : AIbase {
 
     new public void Start() {
         base.Start();
-        DayNightManager dnMan = DayNightManager.Instance;
-        dnMan.AddTrigger(DayNightManager.Times.DAY, SetProgressionNum);
-        dnMan.AddTrigger(DayNightManager.Times.NIGHT, SetProgressionNum);
+        EventManager.OnDay += SetProgressionNum;
+        EventManager.OnNight += SetProgressionNum;
     }
 
     //icons to display if in range of player
@@ -25,7 +24,7 @@ public class RexAI : AIbase {
         //happy when all toys are collected. Grumpy during the day, sad at night
         if (toysCollected >= totalToys) {
             Display(2);
-        } else if (DayNightManager.Instance.currentTime == DayNightManager.Times.DAY) {
+        } else if (DayNightManager.Instance.IsDay()) {
             Display(0);
         } else {
             Display(1);
@@ -60,7 +59,7 @@ public class RexAI : AIbase {
 
     //sets progression number to 0 if its day, 1 if its night
     public void SetProgressionNum() {
-        if (DayNightManager.Instance.currentTime == DayNightManager.Times.DAY) {
+        if (DayNightManager.Instance.IsDay()) {
             progressionNum = 0;
         } else if (toysCollected >= totalToys) {
             progressionNum = 3;
