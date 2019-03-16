@@ -2,8 +2,12 @@
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_MainTex ("Albedo (RGB)", 2D) = "white" {}
+		_SnowColor ("Snow Color", Color) = (1,1,1,1)
+		_SnowTex ("Snow Texture", 2D) = "white" {}
 		_Glossiness ("Smoothness", Range(0,1)) = 0.5
 		_Metallic ("Metallic", Range(0,1)) = 0.0
+		_Cutoff ("Snow Angle Cutoff", Range(0,1)) = 0.1
+		_Strength("Snow Angle Strength", Float) = 7.0
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -17,34 +21,42 @@
 		#pragma target 3.0
 
 		sampler2D _MainTex;
+		sampler2D _SnowTex;
 
 		struct Input {
+			float2 uv_SnowTex;
 			float2 uv_MainTex;
 			float3 worldNormal; INTERNAL_DATA
+			float3 worldPos;
 		};
 
-		half _Glossiness;
-		half _Metallic;
-		fixed4 _Color;
 
-		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
 		// #pragma instancing_options assumeuniformscaling
 		UNITY_INSTANCING_BUFFER_START(Props)
 			// put more per-instance properties here
 		UNITY_INSTANCING_BUFFER_END(Props)
+
+
+		half _Glossiness;
+		half _Metallic;
+		fixed4 _Color;
+		half _Cutoff;
+		half _Strength;
+		fixed4 _SnowColor;
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
 			// Albedo comes from a texture tinted by color
 			float3 worldNormal = WorldNormalVector(IN, o.Normal);
 			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 
-			//TODO: Not an exact cutoff for snow effect, and remove branching
-			//make it scale with the dot product, cutoff on upper bound
-			if( dot(worldNormal, float3(0,1,0)) > 0.0){
-				c.xyz = 0.8;
-			}
+			fixed4 snow = tex2D (_SnowTex, IN.uv_SnowTex) * _SnowColor;
 
+			//snow effect based on normals
+			float upDot = clamp( dot(worldNormal, float3(0,1,0)) , 0.0, 1.0);
+			float snowAmount = clamp( (upDot - _Cutoff) * _Strength, 0.0, 1.0 );
+			c = lerp(c, snow, snowAmount);
+			c.a = 1;
+			
 
 			o.Albedo = c.rgb;
 			// Metallic and smoothness come from slider variables
