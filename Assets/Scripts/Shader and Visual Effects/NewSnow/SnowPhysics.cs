@@ -10,6 +10,7 @@ public class SnowPhysics : MonoBehaviour {
     //public Texture initialInput; Probably taken from terrain height map??
     public Texture cameraInput;
 
+    //textures
     private int textureIndex;
     public RenderTexture[] texture = new RenderTexture[2];
     public Texture getSnowTexture {
@@ -18,15 +19,14 @@ public class SnowPhysics : MonoBehaviour {
     public Texture getBuffer {
         get { return texture[(textureIndex + 1) % 2]; }
     }
-
+    //compute shader
     private int physicsSimulationID;
-
+    //material
     public Material SnowMaterial;
     public float recoveryTime;
-
+    //player movement tracking
     private GameObject player;
-    private Vector3 lastPosition;
-    public float worldSpaceWidth;
+    private Vector3 initialPlayerPosition;
     private float worldSpaceToPixelMult;
 
 	// Use this for initialization
@@ -55,9 +55,18 @@ public class SnowPhysics : MonoBehaviour {
     }
 
     private void Start() {
-        player = GameObject.FindGameObjectWithTag("Player");
-        lastPosition = player.transform.position;
-        worldSpaceToPixelMult = getSnowTexture.width / worldSpaceWidth;
+        //assign player reference
+        if (player == null) {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+        //find initial position and calculate the number of pixels per worldpsace unit
+        Camera c = gameObject.GetComponent<Camera>();
+        worldSpaceToPixelMult = c.targetTexture.width/(c.orthographicSize * 2) ;
+        initialPlayerPosition = player.transform.position;
+        //set snow shader variables
+        SnowMaterial.SetFloat("_WorldToPixel", worldSpaceToPixelMult);
+        SnowMaterial.SetFloat("_Range", c.farClipPlane - c.nearClipPlane);
+        SnowMaterial.SetFloat("_CameraWidth", getSnowTexture.width);
     }
 
     private void FixedUpdate() {
@@ -65,15 +74,20 @@ public class SnowPhysics : MonoBehaviour {
         calculationEngine.SetFloat("RecoverySpeed", recoveryTime);
 #endif
 
-        //find out how many pixels the player has moved on the texture
-        Vector3 movementDelta = player.transform.position - lastPosition;
-        //converts worldspace movement into a number of pixels moved
-        float xPixelDelta = movementDelta.x * worldSpaceToPixelMult;
-        float zPixelDelta = movementDelta.z * worldSpaceToPixelMult;
-        calculationEngine.SetFloat("deltaX", xPixelDelta);
-        calculationEngine.SetFloat("deltaY", zPixelDelta);
+        //move the camera in pixel increments 
+        Vector3 playerOffset = player.transform.position - initialPlayerPosition;
+        Vector3 newPosition = new Vector3(player.transform.position.x - playerOffset.x % (1/worldSpaceToPixelMult),
+                                            transform.position.y,
+                                            player.transform.position.z - playerOffset.z % (1/worldSpaceToPixelMult));
+        //converts worldspace movement into a number of pixels moved (for compute shader)
+        Vector3 movementDelta = newPosition - transform.position;
+        calculationEngine.SetInt("deltaX", (int)(Mathf.Floor(movementDelta.x * worldSpaceToPixelMult + 0.1f)) );
+        calculationEngine.SetInt("deltaY", (int)(Mathf.Floor(movementDelta.z * worldSpaceToPixelMult + 0.1f)) );
+        transform.position = newPosition;
+        SnowMaterial.SetFloat("_CameraLocationX", newPosition.x);
+        SnowMaterial.SetFloat("_CameraLocationZ", newPosition.z);
 
-    
+        //feed data to compute shader for snowfall
         calculationEngine.SetFloat("ElapsedTime", Time.fixedDeltaTime);
         calculationEngine.SetTexture(physicsSimulationID, "PreviousState", getBuffer);
         calculationEngine.SetTexture(physicsSimulationID, "Result", getSnowTexture);
@@ -82,8 +96,5 @@ public class SnowPhysics : MonoBehaviour {
         SnowMaterial.SetTexture("_DispTex", getSnowTexture);
         //SnowMaterial.SetTexture("_NormalMap", getSnowTexture); TODO: Generate and set a real normal map
         textureIndex = (textureIndex+1) %2;
-
-        //update last position
-        lastPosition = player.transform.position;
     }
 }

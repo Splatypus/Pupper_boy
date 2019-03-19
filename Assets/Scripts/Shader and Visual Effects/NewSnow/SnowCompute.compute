@@ -9,15 +9,15 @@ float Height;
 sampler2D Input;
 sampler2D PreviousState;
 float ElapsedTime;
-float deltaX;
-float deltaY;
+int deltaX;
+int deltaY;
 float RecoverySpeed;
 RWTexture2D<float4> Result;
 
 [numthreads(8,8,1)]
 void SnowPhysicsUpdate (uint3 id : SV_DispatchThreadID)
 {
-	float4 previousState = tex2Dlod(PreviousState, float4(id.x/Width, id.y/Height, 0, 0));	
+	float4 previousState = tex2Dlod(PreviousState, float4( (id.x+deltaX)/Width, (id.y-deltaY)/Height, 0, 0));	
 	float depth = tex2Dlod(Input, float4(id.x/Width, id.y/Height, 0, 0)).r;
 
 	previousState = float4(max(previousState.r - ElapsedTime* RecoverySpeed, depth), previousState.gba);

@@ -10,14 +10,25 @@
 			_TrampleRange("Trample texture vertical fade range", Float) = 0.2
             _DispTex ("Disp Texture", 2D) = "gray" {}
             _NormalMap ("Normalmap", 2D) = "bump" {}
-            _SpecColor ("Spec color", color) = (0.5,0.5,0.5,0.5)
+			_SpecColor("Spec color", color) = (0.5,0.5,0.5,0.5)
+			//Hiden attributes (set in SnowPhysics class)
+			[HideInInspector]
 			_Range("Camra Clipping Range", Float) = 5
-
+			[HideInInspector]
+			_WorldToPixel("World to pixel multiplier (set by SnowPhysics script)", Float) = 1
+			[HideInInspector]
+			_CameraLocationX("Snow Camera X", Float) = 0
+			[HideInInspector]
+			_CameraLocationZ("Smow Camera Z", Float) = 0
+			[HideInInspector]
+			_CameraWidth("Camera Pixel Width/Height", Float) = 512
         }
+
+			
         SubShader {
             Tags { "RenderType"="Opaque" }
             LOD 300
-            
+
             CGPROGRAM
             #pragma surface surf BlinnPhong addshadow fullforwardshadows vertex:disp tessellate:tessDistance nolightmap
             #pragma target 4.6
@@ -30,44 +41,58 @@
                 float2 texcoord : TEXCOORD0;
             };
 
-            float _Tess;  
+            half _Tess;  
 			float _TessMin;
 			float _TessMax;
 			float _Range;
+			float _WorldToPixel;
+			float _CameraLocationX;
+			float _CameraLocationZ;
+			float _CameraWidth;
 			sampler2D _DispTex;
+
+			
 
 			//tesselation shader
             float4 tessDistance (appdata v0, appdata v1, appdata v2) {
-				
+				//pixel locations of the verts, converted to use tex2Dlod. See detailed explanation in vertex shader (disp)
+				float3 p0 = ( float3(_CameraLocationX, 0, _CameraLocationZ) - mul(unity_ObjectToWorld, v0.vertex) ) * _WorldToPixel / _CameraWidth + 0.5;
+				float3 p1 = ( float3(_CameraLocationX, 0, _CameraLocationZ) - mul(unity_ObjectToWorld, v1.vertex) ) * _WorldToPixel / _CameraWidth + 0.5;
+				float3 p2 = ( float3(_CameraLocationX, 0, _CameraLocationZ) - mul(unity_ObjectToWorld, v2.vertex) ) * _WorldToPixel / _CameraWidth + 0.5;
+
 				//Only do full tesselation on things that are displaced
 				//should check midpoints between each vert too
-				float d0 = tex2Dlod(_DispTex, float4(1- v0.texcoord.x, v0.texcoord.y,0,0)).r -0.001;
-				float d1 = tex2Dlod(_DispTex, float4(1- v1.texcoord.x, v1.texcoord.y,0,0)).r -0.001;
-				float d2 = tex2Dlod(_DispTex, float4(1- v2.texcoord.x, v2.texcoord.y,0,0)).r -0.001;
+				float d0 = tex2Dlod(_DispTex, float4(1- p0.x, p0.z,0,0)).r -0.001;
+				float d1 = tex2Dlod(_DispTex, float4(1- p1.x, p1.z,0,0)).r -0.001;
+				float d2 = tex2Dlod(_DispTex, float4(1- p2.x, p2.z,0,0)).r -0.001;
 
-				float d01 = tex2Dlod(_DispTex, float4(1- (v0.texcoord.x + v1.texcoord.x)/2, (v0.texcoord.y + v1.texcoord.y)/2,  0,0)).r -0.001;
-				float d12 = tex2Dlod(_DispTex, float4(1- (v1.texcoord.x + v2.texcoord.x)/2, (v1.texcoord.y + v2.texcoord.y)/2,  0,0)).r -0.001;
-				float d20 = tex2Dlod(_DispTex, float4(1- (v2.texcoord.x + v0.texcoord.x)/2, (v2.texcoord.y + v0.texcoord.y)/2,  0,0)).r -0.001;
+				float d01 = tex2Dlod(_DispTex, float4(1- lerp(p0.x, p1.x, 0.5), lerp(p0.z, p1.z, 0.5),  0,0)).r -0.001;
+				float d12 = tex2Dlod(_DispTex, float4(1- lerp(p1.x, p2.x, 0.5), lerp(p1.z, p2.z, 0.5),  0,0)).r -0.001;
+				float d20 = tex2Dlod(_DispTex, float4(1- lerp(p2.x, p0.x, 0.5), lerp(p2.z, p0.z, 0.5),  0,0)).r -0.001;
 
 
 				if(	v0.vertex.y < -d0*_Range
 					&& v1.vertex.y < -d1*_Range 
 					&& v2.vertex.y < -d2* _Range
 
-					&& (v0.vertex.y + v1.vertex.y)/2 < -d01* _Range
-					&& (v1.vertex.y + v2.vertex.y)/2 < -d12* _Range
-					&& (v2.vertex.y + v0.vertex.y)/2 < -d20* _Range){
+					&& lerp(v0.vertex.y, v1.vertex.y, 0.5) < -d01* _Range
+					&& lerp(v1.vertex.y, v2.vertex.y, 0.5) < -d12* _Range
+					&& lerp(v2.vertex.y, v0.vertex.y, 0.5) < -d20* _Range){
 					_Tess = 1;
 				}
 
                 return UnityDistanceBasedTess(v0.vertex, v1.vertex, v2.vertex, _TessMin, _TessMax, _Tess);
             }
 
-
 			//vertex shader
             void disp (inout appdata v)
             {
-                float d = tex2Dlod(_DispTex, float4(1- v.texcoord.x, v.texcoord.y,0,0)).r;
+				//camera location - worldpsace location : gets the vector from the vector location to the snow Camera
+				// * _WorldToPixel : converts that vector to pixel distances
+				// /_CameraWidth + 0.5 : adjusts the result for tex2Dlod
+				float3 pixelLoc = (float3(_CameraLocationX, 0, _CameraLocationZ) - mul(unity_ObjectToWorld, v.vertex)) * _WorldToPixel / _CameraWidth + 0.5;
+
+                float d = tex2Dlod(_DispTex, float4(1-(pixelLoc.x), pixelLoc.z ,0,0)).r;
                 //v.vertex.xyz += v.normal * d;
 				v.vertex.y = - (d*_Range); //TODO: y = min of initial height and displaced height rather than just displaced height
             }
