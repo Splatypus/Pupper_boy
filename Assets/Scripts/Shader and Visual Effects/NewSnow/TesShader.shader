@@ -22,6 +22,8 @@
 			_CameraLocationZ("Smow Camera Z", Float) = 0
 			[HideInInspector]
 			_CameraWidth("Camera Pixel Width/Height", Float) = 512
+			[HideInInspector]
+			_TerrainHeightMap("Terrain height map", 2D) = "black"{}
         }
 
 			
@@ -50,6 +52,7 @@
 			float _CameraLocationZ;
 			float _CameraWidth;
 			sampler2D _DispTex;
+			sampler2D _TerrainHeightMap;
 
 			
 
@@ -62,6 +65,7 @@
 
 				//Only do full tesselation on things that are displaced
 				//should check midpoints between each vert too
+				//Shouldnt vertex height not matter here? Should be tesselated if displaced height is lower than terrain height
 				float d0 = tex2Dlod(_DispTex, float4(1- p0.x, p0.z,0,0)).r -0.001;
 				float d1 = tex2Dlod(_DispTex, float4(1- p1.x, p1.z,0,0)).r -0.001;
 				float d2 = tex2Dlod(_DispTex, float4(1- p2.x, p2.z,0,0)).r -0.001;
@@ -90,11 +94,18 @@
 				//camera location - worldpsace location : gets the vector from the vector location to the snow Camera
 				// * _WorldToPixel : converts that vector to pixel distances
 				// /_CameraWidth + 0.5 : adjusts the result for tex2Dlod
-				float3 pixelLoc = (float3(_CameraLocationX, 0, _CameraLocationZ) - mul(unity_ObjectToWorld, v.vertex)) * _WorldToPixel / _CameraWidth + 0.5;
-
-                float d = tex2Dlod(_DispTex, float4(1-(pixelLoc.x), pixelLoc.z ,0,0)).r;
-                //v.vertex.xyz += v.normal * d;
-				v.vertex.y = - (d*_Range); //TODO: y = min of initial height and displaced height rather than just displaced height
+				float3 pixelLoc = (float3(_CameraLocationX, 0, _CameraLocationZ) - mul(unity_ObjectToWorld, v.vertex)) * _WorldToPixel;
+                float d = tex2Dlod(_DispTex, float4(1-(pixelLoc.x / _CameraWidth + 0.5), (pixelLoc.z / _CameraWidth + 0.5), 0,0)).r;
+				float halfWidth = _CameraWidth * 0.5;
+				//if true, d = d, if false, d = 0
+				//this is to stop artifacting that results from texture wrapping
+				d *= (pixelLoc.x >= ( -halfWidth)) &&
+					(pixelLoc.x <= ( halfWidth)) &&
+					(pixelLoc.z >= ( -halfWidth)) &&
+					(pixelLoc.z <= (halfWidth));
+                //then find terrain height at this point
+				float th = tex2Dlod(_TerrainHeightMap, float4(mul(unity_ObjectToWorld, v.vertex).xz, 0, 0) / 1500).r;
+				v.vertex.y = max(-d*_Range, th); //TODO: y = min of initial height and displaced height rather than just displaced height
             }
 
             struct Input {
