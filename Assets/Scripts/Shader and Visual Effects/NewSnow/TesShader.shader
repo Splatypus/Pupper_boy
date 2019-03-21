@@ -65,7 +65,7 @@
 
 				//Only do full tesselation on things that are displaced
 				//should check midpoints between each vert too
-				//Shouldnt vertex height not matter here? Should be tesselated if displaced height is lower than terrain height
+				//Note: This is called before the vertex shader, so v.vertex.y represents its original position
 				float d0 = tex2Dlod(_DispTex, float4(1- p0.x, p0.z,0,0)).r -0.001;
 				float d1 = tex2Dlod(_DispTex, float4(1- p1.x, p1.z,0,0)).r -0.001;
 				float d2 = tex2Dlod(_DispTex, float4(1- p2.x, p2.z,0,0)).r -0.001;
@@ -104,8 +104,8 @@
 					(pixelLoc.z >= ( -halfWidth)) &&
 					(pixelLoc.z <= (halfWidth));
                 //then find terrain height at this point
-				float th = tex2Dlod(_TerrainHeightMap, float4(mul(unity_ObjectToWorld, v.vertex).xz, 0, 0) / 1500).r;
-				v.vertex.y = max(-d*_Range, th); //TODO: y = min of initial height and displaced height rather than just displaced height
+				float th = tex2Dlod(_TerrainHeightMap, float4(v.texcoord.x, v.texcoord.y, 0, 0)).a; //float4(mul(unity_ObjectToWorld, v.vertex).xz/1024, 0, 0)).r;
+				v.vertex.y = -d*_Range;
             }
 
             struct Input {

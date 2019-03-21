@@ -1,14 +1,59 @@
 fileFormatVersion: 2
 guid: 4c6f77ad632de6345bfda65d0bcb6e5c
-timeCreated: 1507092809
-licenseType: Free
 ModelImporter:
-  serializedVersion: 21
-  fileIDToRecycleName: {}
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: body_ctrl
+    100004: body_joint
+    100006: head_joint
+    100008: l_wing_base
+    100010: l_wing_ctrl
+    100012: l_wing_tip
+    100014: pCube1
+    100016: pCube2
+    100018: r_wing_base
+    100020: r_wing_ctrl
+    100022: r_wing_tip
+    100024: root
+    100026: root_ctrl
+    400000: //RootNode
+    400002: body_ctrl
+    400004: body_joint
+    400006: head_joint
+    400008: l_wing_base
+    400010: l_wing_ctrl
+    400012: l_wing_tip
+    400014: pCube1
+    400016: pCube2
+    400018: r_wing_base
+    400020: r_wing_ctrl
+    400022: r_wing_tip
+    400024: root
+    400026: root_ctrl
+    2300000: pCube1
+    3300000: pCube1
+    4300000: pCube1
+    4300002: pCube2
+    7400000: Take 001
+    9500000: //RootNode
+    13700000: pCube2
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: birb
+    second: {fileID: 2100000, guid: fe5f0f3bc95959e4abf672a3e5a4cdb2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: c99371ab5ab497240b14a1ea738feb21, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -21,6 +66,8 @@ ModelImporter:
     animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
     animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
@@ -35,6 +82,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
+    useSRGBMaterialColor: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -45,16 +93,23 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
     useFileScale: 1
+    previousCalculatedGlobalScale: 0.01
+    hasPreviousCalculatedGlobalScale: 1
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
@@ -69,7 +124,6 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     rootMotionBoneName: 
-    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1

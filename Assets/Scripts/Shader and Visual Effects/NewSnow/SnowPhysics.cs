@@ -29,7 +29,7 @@ public class SnowPhysics : MonoBehaviour {
     private Vector3 initialPlayerPosition;
     private float worldSpaceToPixelMult;
     //terrain for heightmap
-    public Texture terrainHeightmap;
+    public Terrain terrain;
 
 	// Use this for initialization
 	void Awake () {
@@ -71,7 +71,7 @@ public class SnowPhysics : MonoBehaviour {
         SnowMaterial.SetFloat("_CameraWidth", getSnowTexture.width);
 
         //get terrain heightmap
-        SnowMaterial.SetTexture("_TerrainHeightMap", terrainHeightmap);
+        SnowMaterial.SetTexture("_TerrainHeightMap", terrain.terrainData.heightmapTexture);
 
     }
 

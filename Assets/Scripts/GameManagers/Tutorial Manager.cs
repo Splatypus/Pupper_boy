@@ -9,7 +9,7 @@ public class TutorialManager : MonoBehaviour {
     Text text; //the text box to display tutorial text
 
     public void Start() {
-        text = popup.GetComponentInChildren<Text>();
+        //text = popup.GetComponentInChildren<Text>();
     }
    
 	
