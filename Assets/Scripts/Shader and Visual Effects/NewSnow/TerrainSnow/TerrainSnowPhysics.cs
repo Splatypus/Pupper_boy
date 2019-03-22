@@ -68,6 +68,8 @@ public class TerrainSnowPhysics : MonoBehaviour {
         SnowMaterial.SetFloat("_Range", c.farClipPlane - c.nearClipPlane);
         SnowMaterial.SetFloat("_CameraWidth", getSnowTexture.width);
 
+        Terrain.activeTerrain.patchBoundsMultiplier = new Vector3(1.5f, 1.5f, 1.5f);
+
     }
 
     private void FixedUpdate() {

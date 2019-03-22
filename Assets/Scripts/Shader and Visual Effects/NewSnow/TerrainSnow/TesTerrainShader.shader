@@ -42,7 +42,7 @@
 
         CGPROGRAM
         // Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Standard fullforwardshadows vertex:disp tessellate:tessDistance nolightmap
+		#pragma surface surf Standard addshadow fullforwardshadows vertex:disp tessellate:tessDistance nolightmap
         #pragma target 4.6
 		#include "Tessellation.cginc"
 
@@ -153,7 +153,7 @@
 			//find the trampled color (uv-ed the same as splat0
 			half4 trampleC = tex2D(_TrampledTex, IN.uv_Splat0) * _TrampleColor;
 			float3 localPos = IN.worldPos - mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz; //local position is the difference between world position and the terrain's origin in world position
-			float scale = clamp((0 - localPos.y) / _TrampleRange, 0, 1);
+			float scale = clamp((0 - localPos.y) / _TrampleRange, 0, 1); //how far down its trampled / trample distance
 
 			o.Albedo = lerp(splatFinal, trampleC, scale);
         }

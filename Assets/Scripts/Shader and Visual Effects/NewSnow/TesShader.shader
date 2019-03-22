@@ -128,7 +128,7 @@
                 half4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 				half4 trampleC = tex2D(_TrampledTex, IN.uv_MainTex) * _TrampleColor;
 				float3 localPos = IN.worldPos - mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz;
-				float scale = clamp( (0 - localPos.y) / _TrampleRange, 0, 1);
+				float scale = clamp((0 - localPos.y) / _TrampleRange, 0, 1);
 				o.Albedo = lerp(c, trampleC, scale);
                 o.Specular = 0.2;
                 o.Gloss = 1.0;
