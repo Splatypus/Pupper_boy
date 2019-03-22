@@ -96,15 +96,16 @@
 				// /_CameraWidth + 0.5 : adjusts the result for tex2Dlod
 				float3 pixelLoc = (float3(_CameraLocationX, 0, _CameraLocationZ) - mul(unity_ObjectToWorld, v.vertex)) * _WorldToPixel;
                 float d = tex2Dlod(_DispTex, float4(1-(pixelLoc.x / _CameraWidth + 0.5), (pixelLoc.z / _CameraWidth + 0.5), 0,0)).r;
-				float halfWidth = _CameraWidth * 0.5;
+				
 				//if true, d = d, if false, d = 0
 				//this is to stop artifacting that results from texture wrapping
+				float halfWidth = _CameraWidth * 0.5;
 				d *= (pixelLoc.x >= ( -halfWidth)) &&
 					(pixelLoc.x <= ( halfWidth)) &&
 					(pixelLoc.z >= ( -halfWidth)) &&
 					(pixelLoc.z <= (halfWidth));
                 //then find terrain height at this point
-				float th = tex2Dlod(_TerrainHeightMap, float4(v.texcoord.x, v.texcoord.y, 0, 0)).a; //float4(mul(unity_ObjectToWorld, v.vertex).xz/1024, 0, 0)).r;
+				//float th = tex2Dlod(_TerrainHeightMap, float4(v.texcoord.x, v.texcoord.y, 0, 0)).a; //float4(mul(unity_ObjectToWorld, v.vertex).xz/1024, 0, 0)).r;
 				v.vertex.y = -d*_Range;
             }
 

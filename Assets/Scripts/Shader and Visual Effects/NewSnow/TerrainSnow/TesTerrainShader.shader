@@ -1,9 +1,10 @@
 ﻿Shader "Custom/TesTerrainShader"
 {
-    Properties
-    {
+	Properties
+	{
 		//base
 		_Color("Color", color) = (1,1,1,0)
+		_SnowDepth("Snow Depth", Float) = 1
 		//trample texture
 		_TrampledTex("Trampled Texture", 2D) = "white" {}
 		_TrampleColor("Trampled Color", color) = (0.5, 0.5, 0.5, 1)
@@ -53,7 +54,9 @@
 			float3 normal : NORMAL;
 			float2 texcoord : TEXCOORD0;
 		};
+
 		half _Tess;
+		half _SnowDepth;
 		float _TessMin;
 		float _TessMax;
 		float3 _CameraLocation;
@@ -68,23 +71,27 @@
 			float3 p1 = (_CameraLocation - mul(unity_ObjectToWorld, v1.vertex)) * _WorldToPixel / _CameraWidth + 0.5;
 			float3 p2 = (_CameraLocation - mul(unity_ObjectToWorld, v2.vertex)) * _WorldToPixel / _CameraWidth + 0.5;
 
-			//find displacement at verts and between verts
-			float d0 = tex2Dlod(_DispTex, float4(1 - p0.x, p0.z, 0, 0)).r - 0.001;
-			float d1 = tex2Dlod(_DispTex, float4(1 - p1.x, p1.z, 0, 0)).r - 0.001;
-			float d2 = tex2Dlod(_DispTex, float4(1 - p2.x, p2.z, 0, 0)).r - 0.001;
+			//find depth values at verts and between verts
+			float d0 = tex2Dlod(_DispTex, float4(1 - p0.x, p0.z, 0, 0)).r;
+			float d1 = tex2Dlod(_DispTex, float4(1 - p1.x, p1.z, 0, 0)).r;
+			float d2 = tex2Dlod(_DispTex, float4(1 - p2.x, p2.z, 0, 0)).r;
 
-			float d01 = tex2Dlod(_DispTex, float4(1 - lerp(p0.x, p1.x, 0.5), lerp(p0.z, p1.z, 0.5), 0, 0)).r - 0.001;
-			float d12 = tex2Dlod(_DispTex, float4(1 - lerp(p1.x, p2.x, 0.5), lerp(p1.z, p2.z, 0.5), 0, 0)).r - 0.001;
-			float d20 = tex2Dlod(_DispTex, float4(1 - lerp(p2.x, p0.x, 0.5), lerp(p2.z, p0.z, 0.5), 0, 0)).r - 0.001;
+			float d01 = tex2Dlod(_DispTex, float4(1 - lerp(p0.x, p1.x, 0.5), lerp(p0.z, p1.z, 0.5), 0, 0)).r;
+			float d12 = tex2Dlod(_DispTex, float4(1 - lerp(p1.x, p2.x, 0.5), lerp(p1.z, p2.z, 0.5), 0, 0)).r;
+			float d20 = tex2Dlod(_DispTex, float4(1 - lerp(p2.x, p0.x, 0.5), lerp(p2.z, p0.z, 0.5), 0, 0)).r;
 
-			//Only do full tesselation on things that are displaced
-			if (v0.vertex.y < -d0 * _Range
-				&& v1.vertex.y < -d1 * _Range
-				&& v2.vertex.y < -d2 * _Range
+			//Do not perform full tesselation on things that have a higher designated height than their current (pre-vertex shader) height
+			//desired height is the snowcam location, +1 (range starts 1 unit above camera) + camera range - displacement*range
+			//default height is just the worldspace location of the vert
+			if (	(_CameraLocation.y + 1 + _Range - _Range * d0) > (mul(unity_ObjectToWorld, v0.vertex).y + _SnowDepth) &&
+					(_CameraLocation.y + 1 + _Range - _Range * d1) > (mul(unity_ObjectToWorld, v1.vertex).y + _SnowDepth) &&
+					(_CameraLocation.y + 1 + _Range - _Range * d2) > (mul(unity_ObjectToWorld, v2.vertex).y + _SnowDepth) &&
 
-				&& lerp(v0.vertex.y, v1.vertex.y, 0.5) < -d01 * _Range
-				&& lerp(v1.vertex.y, v2.vertex.y, 0.5) < -d12 * _Range
-				&& lerp(v2.vertex.y, v0.vertex.y, 0.5) < -d20 * _Range) {
+					(_CameraLocation.y + 1 + _Range - _Range * d01) > (mul(unity_ObjectToWorld, lerp(v0.vertex, v1.vertex, 0.5)).y + _SnowDepth) &&
+					(_CameraLocation.y + 1 + _Range - _Range * d12) > (mul(unity_ObjectToWorld, lerp(v1.vertex, v2.vertex, 0.5)).y + _SnowDepth) &&
+					(_CameraLocation.y + 1 + _Range - _Range * d20) > (mul(unity_ObjectToWorld, lerp(v2.vertex, v0.vertex, 0.5)).y + _SnowDepth)
+				
+					) {
 				_Tess = 1;
 			}
 
@@ -96,7 +103,22 @@
 		*/
 		void disp(inout appdata v)
 		{
+			//camera location - worldpsace location : gets the vector from the vector location to the snow Camera
+			// * _WorldToPixel : converts that vector to pixel distances
+			// /_CameraWidth + 0.5 : adjusts the result for tex2Dlod
+			float3 pixelLoc = (_CameraLocation - mul(unity_ObjectToWorld, v.vertex)) * _WorldToPixel;
+			float d = tex2Dlod(_DispTex, float4(1 - (pixelLoc.x / _CameraWidth + 0.5), (pixelLoc.z / _CameraWidth + 0.5), 0, 0)).r;
 
+			//if true, d = d, if false, d = 0
+			//this is to stop artifacting that results from texture wrapping
+			float halfWidth = _CameraWidth * 0.5;
+			d *= (pixelLoc.x >= (-halfWidth)) &&
+				(pixelLoc.x <= (halfWidth)) &&
+				(pixelLoc.z >= (-halfWidth)) &&
+				(pixelLoc.z <= (halfWidth));
+
+			//y position is the lower of the worldspace position of displaced snow and the snow max height
+			v.vertex.y = min(	_CameraLocation.y + 1 + _Range - _Range*d,	mul(unity_ObjectToWorld, v.vertex).y + _SnowDepth	) + 150;
 		}
 
 		/**
@@ -104,6 +126,10 @@
 		*/
 		sampler2D _Control;
 		uniform sampler2D _Splat0, _Splat1, _Splat2, _Splat3;
+		fixed4 _TrampleColor;
+		float _TrampleRange;
+		sampler2D _TrampledTex;
+
 		struct Input
 		{
 			float2 uv_Control : TEXCOORD0;
@@ -111,16 +137,25 @@
 			float2 uv_Splat1 : TEXCOORD2;
 			float2 uv_Splat2 : TEXCOORD3;
 			float2 uv_Splat3 : TEXCOORD4;
+			float3 worldPos;
 		};
+
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
+			//Find the combined splatmap main color of the terrain at this texel
             fixed4 c = tex2D (_Control, IN.uv_Control);
 			fixed4 s0 = tex2D(_Splat0, IN.uv_Splat0);
 			fixed4 s1 = tex2D(_Splat1, IN.uv_Splat1);
 			fixed4 s2 = tex2D(_Splat2, IN.uv_Splat2);
 			fixed4 s3 = tex2D(_Splat3, IN.uv_Splat3);
+			fixed4 splatFinal = s0 * c.r + s1 * c.g + s2 * c.b + s3 * c.a;
 
-			o.Albedo = s0 * c.r + s1 * c.g + s2 * c.b + s3 * c.a;
+			//find the trampled color (uv-ed the same as splat0
+			half4 trampleC = tex2D(_TrampledTex, IN.uv_Splat0) * _TrampleColor;
+			float3 localPos = IN.worldPos - mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz; //local position is the difference between world position and the terrain's origin in world position
+			float scale = clamp((0 - localPos.y) / _TrampleRange, 0, 1);
+
+			o.Albedo = lerp(splatFinal, trampleC, scale);
         }
         ENDCG
     }
