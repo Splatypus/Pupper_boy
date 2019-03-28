@@ -23,10 +23,6 @@ public class DialogEditorWindow : EditorWindow {
 
     Vector2 offset;
 
-    //TextAsset textFile;
-
-    DialogEditorWindow window;
-
     //[MenuItem("Window/Dialog Editor")]
     public void SetupWindow(Dialog2 dialogRef) {
         connectedDialog = dialogRef;
@@ -50,7 +46,6 @@ public class DialogEditorWindow : EditorWindow {
 
     private void OnEnable()
     {
-        window = GetWindow<DialogEditorWindow>();
         //Standard node style
         nodeStyle = new GUIStyle();
         nodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;

@@ -78,6 +78,10 @@ public class BirdMovementV2 : MonoBehaviour {
 
         EventManager.OnBark += GetBarkedAt;
     }
+    //remove eventmanager trigger
+    private void OnDestroy() {
+        EventManager.OnBark -= GetBarkedAt;
+    }
 
     private void StartAnimating()
     {

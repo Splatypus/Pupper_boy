@@ -153,7 +153,7 @@ public class FenceGeneration : MonoBehaviour {
     public void AddPost() {
         GameObject temp = Instantiate(postObject, transform.position /*+ new Vector3(1.0f, 0, 1.0f)*/, transform.rotation, transform.parent);
         linkedPosts.Add(temp);
-        UnityEditor.PrefabUtility.DisconnectPrefabInstance(gameObject);
+        //UnityEditor.PrefabUtility.DisconnectPrefabInstance(gameObject); No longer used in 2018 forward
         temp.GetComponent<FenceGeneration>().OnCreate(gameObject, partStorage, postObject, lowHeight, highHeight,horizontalOffset, vertOffset, horizontalNum, vertNum, doesGenerateDigZones, firstOffset, secondOffset, firstYard, secondYard);
         UnityEditor.Selection.activeTransform = temp.transform; 
     }

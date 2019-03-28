@@ -18,8 +18,7 @@ public class Dialog2Editor : Editor {
         {
             window = EditorWindow.GetWindow<DialogEditorWindow>();
             window.SetupWindow(myDialog);
-            UnityEditor.PrefabUtility.DisconnectPrefabInstance(myDialog.gameObject);
-            //EditorUtility.SetDirty(target); //this doesnt work??
+            //UnityEditor.PrefabUtility.DisconnectPrefabInstance(myDialog.gameObject); //No longer used in 2018 forward
         }
     }
 }

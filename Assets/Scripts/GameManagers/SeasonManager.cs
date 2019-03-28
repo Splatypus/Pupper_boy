@@ -23,7 +23,6 @@ public class SeasonManager : MonoBehaviour {
     public Seasons GetSeason() {
         return currentSeason;
     }
-    //setting a season will trigger the event for it
     public void SetSeason(Seasons newSeason) {
         if (currentSeason == newSeason) {
             return;
@@ -36,12 +35,22 @@ public class SeasonManager : MonoBehaviour {
         //Load in the correct season
         StartCoroutine(LoadSceneAsync(sceneNames[(int)currentSeason]));
     }
+    public void SetSeason(int newSeason) {
+        if (newSeason < 0 || newSeason >= 4) {
+            return;
+        }
+        SetSeason((Seasons)newSeason);
+    }
+
+    //async call to load a scene aditively based on a given scene name
     IEnumerator LoadSceneAsync(string name) {
         AsyncOperation async = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
-        while (!async.isDone)
+        while (!async.isDone) {
             yield return null;
+        }
         OnSceneLoaded();
     }
+    
 
     //called whenever an async scene finishes loading
     public void OnSceneLoaded() {

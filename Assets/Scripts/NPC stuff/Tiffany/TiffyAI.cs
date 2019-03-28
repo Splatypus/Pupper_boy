@@ -24,6 +24,11 @@ public class TiffyAI : AIbase {
         EventManager.OnFenceDig += OnDoggoEntersYard;
     }
 
+    //remove eventmanager triggers
+    private void OnDestroy() {
+        EventManager.OnFenceDig -= OnDoggoEntersYard;
+    }
+
     //triggers the first time doggo enters tiffany's yard
     public void OnDoggoEntersYard(GameObject yard) {
         if (yard.GetComponent<DigZone>().enteringYard == DigZone.Yards.Tiffany) {
