@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1885266429782774900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1885266429782774901}
+  - component: {fileID: 1885266429782774666}
+  - component: {fileID: 1885266429782774664}
+  - component: {fileID: 1885266429782774667}
+  m_Layer: 0
+  m_Name: SnowCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1885266429782774901
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885266429782774900}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -154.1, y: -2, z: -342.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 0}
+--- !u!20 &1885266429782774666
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885266429782774900}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_projectionMatrixMode: 1
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_GateFitMode: 2
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 1
+  far clip plane: 31
+  field of view: 60
+  orthographic: 1
+  orthographic size: 64
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 6144
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 8400000, guid: 7413c4fb6bb27ba44a7af0b548bc3b43, type: 2}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 0
+  m_AllowMSAA: 0
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!114 &1885266429782774664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885266429782774900}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f276b2e9dc1108945a1ce2cf745aea14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  calculationEngine: {fileID: 7200000, guid: f070e72ba1652fa4da35965439443ab8, type: 3}
+  cameraInput: {fileID: 8400000, guid: 7413c4fb6bb27ba44a7af0b548bc3b43, type: 2}
+  texture:
+  - {fileID: 0}
+  - {fileID: 0}
+  SnowMaterial: {fileID: 2100000, guid: 8bb1d0fd776ea0b4c84fa004b34c4829, type: 2}
+  recoveryTime: 0.02
+  terrain: {fileID: 0}
+--- !u!114 &1885266429782774667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885266429782774900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29e4bd7992fa5ee4ea91dad60e4213fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  calculationEngine: {fileID: 7200000, guid: f070e72ba1652fa4da35965439443ab8, type: 3}
+  cameraInput: {fileID: 8400000, guid: 7ec9809acd60e574395ce7931b846d0d, type: 2}
+  texture:
+  - {fileID: 0}
+  - {fileID: 0}
+  SnowMaterial: {fileID: 2100000, guid: 94839a14f40fdb145ab09b479666392c, type: 2}
+  recoveryTime: 0.003

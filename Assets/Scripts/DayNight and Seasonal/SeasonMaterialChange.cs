@@ -43,7 +43,7 @@ public class SeasonMaterialChange : MonoBehaviour {
         }
 
         Material[] mats = target.materials;
-        mats[targetMaterial] = newMaterial ?? defaultMat;
+        mats[targetMaterial] = newMaterial != null ? newMaterial : defaultMat;
         target.materials = mats;
 
     }

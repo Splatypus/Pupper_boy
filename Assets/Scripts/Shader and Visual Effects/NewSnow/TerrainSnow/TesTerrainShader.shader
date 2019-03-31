@@ -109,16 +109,9 @@
 			float3 pixelLoc = (_CameraLocation - mul(unity_ObjectToWorld, v.vertex)) * _WorldToPixel;
 			float d = tex2Dlod(_DispTex, float4(1 - (pixelLoc.x / _CameraWidth + 0.5), (pixelLoc.z / _CameraWidth + 0.5), 0, 0)).r;
 
-			//if true, d = d, if false, d = 0
-			//this is to stop artifacting that results from texture wrapping
-			float halfWidth = _CameraWidth * 0.5;
-			d *= (pixelLoc.x >= (-halfWidth)) &&
-				(pixelLoc.x <= (halfWidth)) &&
-				(pixelLoc.z >= (-halfWidth)) &&
-				(pixelLoc.z <= (halfWidth));
-
 			//y position is the lower of the worldspace position of displaced snow and the snow max height
 			v.vertex.y = min(	_CameraLocation.y + 1 + _Range - _Range*d,	mul(unity_ObjectToWorld, v.vertex).y + _SnowDepth	) + 150;
+		
 		}
 
 		/**
@@ -130,8 +123,7 @@
 		float _TrampleRange;
 		sampler2D _TrampledTex;
 
-		struct Input
-		{
+		struct Input{
 			float2 uv_Control : TEXCOORD0;
 			float2 uv_Splat0 : TEXCOORD1;
 			float2 uv_Splat1 : TEXCOORD2;

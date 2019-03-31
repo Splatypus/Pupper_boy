@@ -21,6 +21,13 @@ void SnowPhysicsUpdate (uint3 id : SV_DispatchThreadID)
 	float depth = tex2Dlod(Input, float4(id.x/Width, id.y/Height, 0, 0)).r;
 
 	previousState = float4(max(previousState.r - ElapsedTime* RecoverySpeed, depth), previousState.gba);
+
+    //The edge percent of the texture is all zeroed. This helps reduce artifacting from sampling outside the texture.
+    previousState.r *= (id.x >= Width * 0.01) &&
+	    (id.x <= Width * 0.99) &&
+	    (id.y >= Height * 0.01) &&
+	    (id.y <= Height * 0.99);
+
 	Result[id.xy] = previousState;
 }
 

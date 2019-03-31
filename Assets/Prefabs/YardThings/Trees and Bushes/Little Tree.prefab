@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4157777690172026}
   - component: {fileID: 33533560785546322}
   - component: {fileID: 23045502942736068}
+  - component: {fileID: 6902240678186484622}
   m_Layer: 0
   m_Name: pCube14
   m_TagString: Untagged
@@ -77,6 +78,24 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &6902240678186484622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145447665540614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b552b30dad5f921459863042b7b0628e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  targetMaterial: 0
+  summer: {fileID: 0}
+  fall: {fileID: 2100000, guid: 65a7c298946f3b44da7b1b1ff6cd74e1, type: 2}
+  winter: {fileID: 0}
+  spring: {fileID: 0}
 --- !u!1 &1182726883243216
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,6 +107,7 @@ GameObject:
   - component: {fileID: 4384644207791296}
   - component: {fileID: 33371072819677694}
   - component: {fileID: 23019247714680932}
+  - component: {fileID: 144660477974479438}
   m_Layer: 0
   m_Name: pCube15
   m_TagString: Untagged
@@ -154,6 +174,24 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &144660477974479438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1182726883243216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b552b30dad5f921459863042b7b0628e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  targetMaterial: 0
+  summer: {fileID: 0}
+  fall: {fileID: 2100000, guid: 604f78e7acb950b41bf21b87c4c3a4be, type: 2}
+  winter: {fileID: 0}
+  spring: {fileID: 0}
 --- !u!1 &1227248555338700
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,6 +329,7 @@ GameObject:
   - component: {fileID: 4250019071027142}
   - component: {fileID: 33402860110903462}
   - component: {fileID: 23120597356484570}
+  - component: {fileID: 4731656869462339561}
   m_Layer: 0
   m_Name: pCube13
   m_TagString: Untagged
@@ -357,3 +396,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &4731656869462339561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339080301237592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b552b30dad5f921459863042b7b0628e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  targetMaterial: 0
+  summer: {fileID: 0}
+  fall: {fileID: 2100000, guid: 604f78e7acb950b41bf21b87c4c3a4be, type: 2}
+  winter: {fileID: 0}
+  spring: {fileID: 0}

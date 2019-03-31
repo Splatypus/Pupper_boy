@@ -75,8 +75,6 @@ public class DogControllerV2 : Controller {
         Cursor.visible = false;
 
         v = Vector3.zero;
-
-        
     }
 
     //move in fixed update since it changes velocity. In normal update it would sometimes feel like it had small delays.
