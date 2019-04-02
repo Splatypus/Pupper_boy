@@ -45,7 +45,7 @@ public class FenceUnlockManager : MonoBehaviour {
 
     //Enables all dig zones into (and out of) the designated yard
     public void EnableIntoYard(int y) {
-        Debug.Log("Enabling digzones into " + DigZone.yardNames[y]);
+        //Debug.Log("Enabling digzones into " + DigZone.yardNames[y]);
         foreach (DigZone d in allDigZones) {
             if ((int)d.enteringYard == y) {
                 d.GetComponent<Collider>().enabled = true;

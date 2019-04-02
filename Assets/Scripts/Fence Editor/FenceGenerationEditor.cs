@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(FenceGeneration))]
+[CustomEditor(typeof(FenceGeneration)), CanEditMultipleObjects]
 public class FenceGenerationEditor : Editor {
 
     public override void OnInspectorGUI()

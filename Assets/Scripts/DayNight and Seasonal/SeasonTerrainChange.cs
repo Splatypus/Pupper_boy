@@ -6,7 +6,14 @@ public class SeasonTerrainChange : MonoBehaviour
 {
     [Tooltip("Set to the terrain on this same object if left null")]
     public Terrain target;
-    public TerrainData summer, fall, winter, spring;
+    [Header("Terrain Data")]
+    public TerrainData summer;
+    public TerrainData fall, winter, spring;
+    [Header("Terrain Material")]
+    public Material winterSnowMat;
+    [Header("Skybox")]
+    public Material summerSky;
+    public Material fallSky, winterSky, springSky;
 
     private TerrainData defaultData;
 
@@ -26,14 +33,19 @@ public class SeasonTerrainChange : MonoBehaviour
         switch (s) {
             case SeasonManager.Seasons.SUMMER:
                 newData = summer;
+                target.materialType = Terrain.MaterialType.BuiltInStandard;
                 break;
             case SeasonManager.Seasons.FALL:
+                target.materialType = Terrain.MaterialType.BuiltInStandard;
                 newData = fall;
                 break;
             case SeasonManager.Seasons.WINTER:
+                target.materialType = Terrain.MaterialType.Custom;
+                target.materialTemplate = winterSnowMat;
                 newData = winter;
                 break;
             case SeasonManager.Seasons.SPRING:
+                target.materialType = Terrain.MaterialType.BuiltInStandard;
                 newData = spring;
                 break;
             default:
