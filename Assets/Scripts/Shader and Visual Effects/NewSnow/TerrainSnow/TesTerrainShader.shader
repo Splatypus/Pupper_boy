@@ -83,6 +83,11 @@
 			//Do not perform full tesselation on things that have a higher designated height than their current (pre-vertex shader) height
 			//desired height is the snowcam location, +1 (range starts 1 unit above camera) + camera range - displacement*range
 			//default height is just the worldspace location of the vert
+
+			//_Tess -= 1;
+			//_Tess *= !conditional
+			//_Tess += 1;
+			//TODO: Can replace the below branching statement. If the conditional is true, _Tess is set to 1, if false, it remains the same
 			if (	(_CameraLocation.y + 1 + _Range - _Range * d0) > (mul(unity_ObjectToWorld, v0.vertex).y + _SnowDepth) &&
 					(_CameraLocation.y + 1 + _Range - _Range * d1) > (mul(unity_ObjectToWorld, v1.vertex).y + _SnowDepth) &&
 					(_CameraLocation.y + 1 + _Range - _Range * d2) > (mul(unity_ObjectToWorld, v2.vertex).y + _SnowDepth) &&
@@ -146,6 +151,8 @@
 			half4 trampleC = tex2D(_TrampledTex, IN.uv_Splat0) * _TrampleColor;
 			float3 localPos = IN.worldPos - mul(unity_ObjectToWorld, float4(0, 0, 0, 1)).xyz; //local position is the difference between world position and the terrain's origin in world position
 			float scale = clamp((0 - localPos.y) / _TrampleRange, 0, 1); //how far down its trampled / trample distance
+
+			//pass vertexdata pre-movement from the vert shader to fragment, compare that to localPos to get the scale of trample color
 
 			o.Albedo = lerp(splatFinal, trampleC, scale);
         }
