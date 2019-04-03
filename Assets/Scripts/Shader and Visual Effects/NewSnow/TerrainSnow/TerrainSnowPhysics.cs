@@ -19,11 +19,14 @@ public class TerrainSnowPhysics : MonoBehaviour {
     public Texture getBuffer {
         get { return texture[(textureIndex + 1) % 2]; }
     }
-    //compute shader
-    private int physicsSimulationID;
     //material
     public Material SnowMaterial;
     public float recoveryTime;
+    public float depth;
+    public TerrainCollider cameraCollisionTerrain;
+
+    //compute shader
+    private int physicsSimulationID;
     //player movement tracking
     private GameObject player;
     private Vector3 initialPlayerPosition;
@@ -59,11 +62,14 @@ public class TerrainSnowPhysics : MonoBehaviour {
         if (player == null) {
             player = GameObject.FindGameObjectWithTag("Player");
         }
+        //depth and camera setting
+        cameraCollisionTerrain.transform.position += new Vector3(0, depth, 0);
         //find initial position and calculate the number of pixels per worldpsace unit
         Camera c = gameObject.GetComponent<Camera>();
         worldSpaceToPixelMult = c.targetTexture.width/(c.orthographicSize * 2) ;
         initialPlayerPosition = player.transform.position;
         //set snow shader variables
+        SnowMaterial.SetFloat("_SnowDepth", depth);
         SnowMaterial.SetFloat("_WorldToPixel", worldSpaceToPixelMult);
         SnowMaterial.SetFloat("_Range", c.farClipPlane - c.nearClipPlane);
         SnowMaterial.SetFloat("_CameraWidth", getSnowTexture.width);

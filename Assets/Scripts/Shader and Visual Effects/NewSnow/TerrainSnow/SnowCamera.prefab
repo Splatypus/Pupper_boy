@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1885266429782774901}
   - component: {fileID: 1885266429782774666}
-  - component: {fileID: 1885266429782774664}
   - component: {fileID: 1885266429782774667}
   m_Layer: 0
   m_Name: SnowCamera
@@ -26,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885266429782774900}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -154.1, y: -2, z: -342.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -65,7 +64,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 6144
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 7413c4fb6bb27ba44a7af0b548bc3b43, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 7ec9809acd60e574395ce7931b846d0d, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
@@ -75,26 +74,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &1885266429782774664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1885266429782774900}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f276b2e9dc1108945a1ce2cf745aea14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  calculationEngine: {fileID: 7200000, guid: f070e72ba1652fa4da35965439443ab8, type: 3}
-  cameraInput: {fileID: 8400000, guid: 7413c4fb6bb27ba44a7af0b548bc3b43, type: 2}
-  texture:
-  - {fileID: 0}
-  - {fileID: 0}
-  SnowMaterial: {fileID: 2100000, guid: 8bb1d0fd776ea0b4c84fa004b34c4829, type: 2}
-  recoveryTime: 0.02
-  terrain: {fileID: 0}
 --- !u!114 &1885266429782774667
 MonoBehaviour:
   m_ObjectHideFlags: 0

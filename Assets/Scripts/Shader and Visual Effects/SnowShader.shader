@@ -31,17 +31,11 @@
 		};
 
 
-		// #pragma instancing_options assumeuniformscaling
-		UNITY_INSTANCING_BUFFER_START(Props)
-			// put more per-instance properties here
-		UNITY_INSTANCING_BUFFER_END(Props)
-
-
+		half _Cutoff;
+		half _Strength;
 		half _Glossiness;
 		half _Metallic;
 		fixed4 _Color;
-		half _Cutoff;
-		half _Strength;
 		fixed4 _SnowColor;
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
