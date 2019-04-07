@@ -313,7 +313,7 @@ public class BlackieMiniGame2 : AIbase {
             CheckPower();
             return removed;
         }
-        Debug.Log("This error should never show. Fucking just kill me now if youre seeing this.");
+        Debug.Log("This error should never show.");
         return null;
     }
 
