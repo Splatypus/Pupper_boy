@@ -8,323 +8,193 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
-public class SaveManager : MonoBehaviour {
+public class SaveManager {
+    //statics
+    private readonly string SAVE_DATA_FILE = "SaveData";
+    private readonly string SAVE_META_FILE = "SaveDetails";
+    private readonly string FILE_EXTENSION = ".dog";
 
-    #region Variables
-    ////class containing all of the items to save
-    //[Serializable]
-    //public class SaveData {
-    //    //Save Distinction
-    //    public string nameOfSave;
-    //    //PlayerPos - (Probably Will Reset On Load)
-    //    public float charPosX;
-    //    public float charPosY;
-    //    public float charPosZ;
-    //
-    //    //Global save data
-    //    public int season; //0=summer, 1=fall, 2=winter, 3=spring
-    //
-    //
-    //
-    //    //Old Data Kept To Not Break References
-    //    public int blackieConversationNumber;
-    //}
+    //singleton instance
+    static SaveManager instance;
+    public static SaveManager getInstance() {
+        if (instance == null) {
+            instance = new SaveManager();
+        }
+        return instance;
+    }
 
-    //Continue Save
+    //General save data
     [Serializable]
-    public class ContinueSaveData {
-        public int saveSlot;
-        public bool[] saveSlotsFilled = new bool[3];
-    }
+    private class MetaSaveData {
+        public int recentFile;
+        public List<int> saveIDs;
+        public List<string> saveNames;
+        int saveIDcounter;
 
-    [Header("Global File Extension")]
-    [Tooltip("Global file extension for saves.")]
-    public string fileExtension = ".dog";
-
-    public static SaveManager Instance;
-
-    [Header("UI References")]
-
-    [Tooltip("The default UI prefab of a save slot.")]
-    public GameObject saveSlotBase;
-
-    [Tooltip("UI reference to create the save slots as children to.")]
-    public GameObject saveSlotHolder;
-
-    [Tooltip("UI references to the visual slots, created at runtime.")]
-    List<GameObject> saveSlots = new List<GameObject>();
-
-    [Header("Save Game Variables")]
-    [Tooltip("Maximum number of saves allowed to the player.")]
-    public int maxSaves = 3;
-
-    [Header("Player Variables")]
-    [Tooltip("Only used when in backyard.")]
-    public GameObject playerDoggo;
-
-    //Loaded data gets set here, then any changes are made here before saving this data
-    public static SaveData masterData = new SaveData();
-
-    #endregion
-
-    #region Initialization
-
-    void Awake() {
-        //singleton pattern but for gameobjects.
-        if (Instance == null) {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+        public MetaSaveData() {
+            recentFile = -1;
+            saveIDs = new List<int>();
+            saveNames = new List<string>();
+            saveIDcounter = 0;
         }
-        else if (Instance != this) {
-            Destroy(gameObject);
+        //adds a save slot of the given name. Returns the generated ID of that slot
+        public int AddSaveSlot(string name) {
+            saveIDcounter += 1;
+            saveIDs.Add(saveIDcounter);
+            saveNames.Add(name);
+            recentFile = saveIDcounter;
+            return saveIDcounter;
         }
-    }
-
-    public void CreateSlotUI() {
-        for (int i = 0; i < maxSaves; i++) {
-            GameObject newSlot = Instantiate(saveSlotBase, saveSlotHolder.gameObject.transform);
-            saveSlots.Add(newSlot);
-
-            newSlot.GetComponent<SlotSaveInfo>().slotNumber = i;
-
-            LoadSlotData(saveSlots[i], i);
-        }
-    }
-
-    void OnEnable() {
-        if (!playerDoggo) {
-            if (SceneManager.GetSceneByName("Backyard").isLoaded) {
-
-                InvokeRepeating("CheckPlayerLocation", 1, 1);
-            }
-            else {
-                InvokeRepeating("FindPlayerDoggo", 3, 3);
-            }
-        }
-    }
-
-    #endregion
-
-    #region Save Game Management
-    //Called On New Game
-    public void CreateNewSave(string saveName) {
-
-        print(saveName);
-        BinaryFormatter bf = new BinaryFormatter();
-
-        if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
-
-            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
-            ContinueSaveData continueData = new ContinueSaveData();
-            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
-            continueFile.Close();
-
-            int slotToFill = 0;
-
-            for (int i = 0; i < maxSaves; i++) {
-                if (continueData.saveSlotsFilled[i] == false) {
-                    slotToFill = i;
-                    break;
+        public void RemoveSaveSlot(int id) {
+            int idlocation = -1;
+            for (int i = 0; i < saveIDs.Count; i++) {
+                if (saveIDs[i] == id) {
+                    idlocation = i;
                 }
             }
-
-            continueData.saveSlot = slotToFill;
-            continueData.saveSlotsFilled[slotToFill] = true;
-
-            continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
-
-            bf.Serialize(continueFile, continueData);
-            continueFile.Close();
-
-            FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotToFill + fileExtension, FileMode.OpenOrCreate);
-
-            SaveData data = new SaveData();
-            data.nameOfSave = saveName;
-
-            bf.Serialize(file, data);
-            file.Close();
-
-        }
-        else {
-
-            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
-
-            ContinueSaveData continueData = new ContinueSaveData();
-
-            continueData.saveSlot = 0;
-            continueData.saveSlotsFilled[0] = true;
-            continueData.saveSlotsFilled[1] = false;
-            continueData.saveSlotsFilled[2] = false;
-
-            bf.Serialize(continueFile, continueData);
-            continueFile.Close();
-
-            FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + 0 + fileExtension, FileMode.OpenOrCreate);
-
-            SaveData data = new SaveData();
-            data.nameOfSave = saveName;
-
-            bf.Serialize(file, data);
-            file.Close();
-        }
-    }
-
-    //Used For Loading Of A Save
-    public void LoadGameFromSlot(int slotNumber) {
-
-        if (File.Exists(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension)) {
-
-            FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.Open);
-            BinaryFormatter bf = new BinaryFormatter();
-
-            masterData = (SaveData)bf.Deserialize(file);
-            file.Close();
-        }
-
-        Debug.Log("Loaded Game: " + masterData.nameOfSave);
-    }
-    public void LoadContinueGame() {
-
-        if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
-
-            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
-            BinaryFormatter bf = new BinaryFormatter();
-            ContinueSaveData continueData = new ContinueSaveData();
-
-            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
-            continueFile.Close();
-
-            LoadGameFromSlot(continueData.saveSlot);
-        }
-    }
-
-    //Used For Saving Of A Save
-    public void SaveGameToSlot(int slotNumber) {
-
-        FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.OpenOrCreate);
-        BinaryFormatter bf = new BinaryFormatter();
-
-        bf.Serialize(file, masterData);
-        file.Close();
-
-        Debug.Log("Saved Game: " + masterData.nameOfSave);
-        //Debug.Log("Saving a Save Does Nothing Yet");
-    }
-
-    //Check Eech Slot For Any Save
-    public bool CheckForAnySaves() {
-
-        if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
-
-            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
-
-            BinaryFormatter bf = new BinaryFormatter();
-            ContinueSaveData continueData = new ContinueSaveData();
-            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
-
-            for (int i = 0; i < maxSaves; i++) {
-
-                //print(continueData.saveSlotsFilled[i]);
-
-                if (continueData.saveSlotsFilled[i] == true) {
-                    continueFile.Close();
-                    return true;
-                }
-            }
-
-            continueFile.Close();
-            return false;
-        }
-        else {
-            return false;
-        }
-    }
-
-    //Loading Data For Save Games
-    void LoadSlotData(GameObject saveGameSlot, int slotNumber = 0) {
-
-        if (File.Exists(Application.persistentDataPath + "/Continue" + fileExtension)) {
-
-            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.Open);
-
-            BinaryFormatter bf = new BinaryFormatter();
-            ContinueSaveData continueData = new ContinueSaveData();
-            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
-            continueFile.Close();
-
-            if (continueData.saveSlotsFilled[slotNumber] == true) {
-
-                FileStream file = File.Open(Application.persistentDataPath + "/SaveFile" + slotNumber + fileExtension, FileMode.Open);
-                SaveData data = new SaveData();
-                data = (SaveData)bf.Deserialize(file);
-
-                saveGameSlot.GetComponentInChildren<Text>().text = data.nameOfSave;
-
-                file.Close();
-                print("Save Slot Exists: " + slotNumber);
-            }
-            else {
-                print("No Save Data In Slot: " + slotNumber);
-                saveGameSlot.GetComponentInChildren<Text>().text = "No Save In Slot";
-
+            if (idlocation >= 0) {
+                saveIDs.RemoveAt(idlocation);
+                saveNames.RemoveAt(idlocation);
             }
         }
-        else {
-            saveGameSlot.GetComponentInChildren<Text>().text = "No Save In Slot";
-        }
     }
+    MetaSaveData metaSaveData;
 
-    public void DeleteSave(int slotToDelete) {
+    //Loaded save data
+    [Serializable]
+    private class LoadedSaveData {
+        public int id;
+        public string name;
+        public List<string> keys;
+        public List<int> values;
 
-        if (File.Exists(Application.persistentDataPath + "/SaveFile" + slotToDelete + fileExtension)) {
+        public LoadedSaveData(int id, string name) {
+            this.id = id;
+            this.name = name;
+            keys = new List<string>();
+            values = new List<int>();
+        }
 
-            FileStream continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
-
-            BinaryFormatter bf = new BinaryFormatter();
-            ContinueSaveData continueData = new ContinueSaveData();
-            continueData = (ContinueSaveData)bf.Deserialize(continueFile);
-            continueFile.Close();
-
-            continueFile = File.Open(Application.persistentDataPath + "/Continue" + fileExtension, FileMode.OpenOrCreate);
-
-            continueData.saveSlotsFilled[slotToDelete] = false;
-            bf.Serialize(continueFile, continueData);
-
-            continueFile.Close();
-
-            if(continueData.saveSlotsFilled[0] == false && continueData.saveSlotsFilled[1] == false && continueData.saveSlotsFilled[2] == false) {
-                File.Delete(Application.persistentDataPath + "/Continue" + fileExtension);
+        public void ParseKeyValues(Dictionary<string, int> d) {
+            keys = new List<string>(d.Keys);
+            values = new List<int>(d.Values);
+        }
+        public Dictionary<string, int> MakeDictionary() {
+            Dictionary<string, int> d = new Dictionary<string, int>(keys.Count * 2);
+            for (int i = 0; i < keys.Count; i++) {
+                d.Add(keys[i], values[i]);
             }
+            return d;
+        }
+    }
+    LoadedSaveData loadedSaveData = null;
+    int currentOpenFile;
+    Dictionary<string, int> storedInts;
 
-            File.Delete(Application.persistentDataPath + "/SaveFile" + slotToDelete + fileExtension);
+    //constructor. Loads in general save data
+    private SaveManager() {
+        string dataPath = Path.Combine(Application.persistentDataPath, SAVE_META_FILE + FILE_EXTENSION);
+
+        if (File.Exists(dataPath)) { 
+            using (StreamReader reader = File.OpenText(dataPath)) {
+                string jsonString = reader.ReadToEnd();
+                metaSaveData = JsonUtility.FromJson<MetaSaveData>(jsonString);
+            }
+        } else {
+            metaSaveData = new MetaSaveData();
         }
 
-        LoadSlotData(saveSlots[slotToDelete], slotToDelete);
+        currentOpenFile = -1;
+
     }
 
+
+    #region public functions
+    //creates a new save file of the given name and no data loaded
+    public void CreateFile(string name) {
+        //add save slot
+        int id = metaSaveData.AddSaveSlot(name);
+        currentOpenFile = id;
+        SaveMeta();
+        //set up currently loaded data
+        loadedSaveData = new LoadedSaveData(id, name);
+        storedInts = new Dictionary<string, int>();
+        //create file
+        string path = Path.Combine(Application.persistentDataPath, SAVE_DATA_FILE + id + FILE_EXTENSION);
+        File.Create(path);
+    }
+
+    //deletes the file at the given index
+    public void DeleteFile(int ID) {
+        string path = Path.Combine(Application.persistentDataPath, SAVE_DATA_FILE + ID + FILE_EXTENSION);
+        if (File.Exists(path)) {
+            File.Delete(path);
+            metaSaveData.RemoveSaveSlot(ID);
+            SaveMeta();
+            return;
+        }
+        throw new FileNotFoundException();
+    }
+
+    //loads a file, setting the current JSON data to its contents
+    public void LoadFile(int index) {
+        string dataPath = Path.Combine(Application.persistentDataPath, SAVE_DATA_FILE + index + FILE_EXTENSION);
+
+        if (File.Exists(dataPath)) {
+            using (StreamReader reader = File.OpenText(dataPath)) {
+                string jsonString = reader.ReadToEnd();
+                loadedSaveData = JsonUtility.FromJson<LoadedSaveData>(jsonString);
+            }
+            storedInts = loadedSaveData.MakeDictionary();
+            currentOpenFile = index;
+            metaSaveData.recentFile = index;
+        }
+        throw new FileNotFoundException();
+    }
+
+    //saves the current JSON data
+    public void SaveFile() {
+        if (loadedSaveData == null) {
+            return;
+        }
+        //prep loadedSaveData
+        loadedSaveData.ParseKeyValues(storedInts);
+
+        //save json
+        string path = Path.Combine(Application.persistentDataPath, SAVE_DATA_FILE + currentOpenFile + FILE_EXTENSION);
+        string jsonString = JsonUtility.ToJson(loadedSaveData);
+        using (StreamWriter writer = File.CreateText(path)) {
+            writer.Write(jsonString);
+        }
+
+    }
+
+    //puts an string int pair into data. To save, call SaveFile afterward.
+    //replaces anything with that key if data already exists
+    public void PutInt(string key, int value) {
+        storedInts[key] = value;
+    }
+
+    //gets data from the currently loaded savefile. Returns null if nothing is stored at that key
+    public int GetInt(String key, int defaultValue) {
+        int result = defaultValue;
+        if (storedInts.TryGetValue(key, out result)) {
+            return result;
+        } else {
+            return defaultValue;
+        }
+    }
     #endregion
 
-    #region Data Management In Live Game
 
-    void CheckPlayerLocation() {
-        masterData.charPosX = playerDoggo.transform.position.x;
-        masterData.charPosY = playerDoggo.transform.position.y;
-        masterData.charPosZ = playerDoggo.transform.position.z;
-
-        print(playerDoggo.transform.position);
-    }
-
-    void FindPlayerDoggo() {
-        if (!playerDoggo) {
-            if (SceneManager.GetSceneByName("Backyard").isLoaded) {
-
-                playerDoggo = FindObjectOfType<PlayerDialog>().gameObject;
-
-                CancelInvoke();
-                //InvokeRepeating("CheckPlayerLocation", 1, 1);
-            }
+    #region private functions
+    private void SaveMeta() {
+        string path = Path.Combine(Application.persistentDataPath, SAVE_META_FILE + FILE_EXTENSION);
+        string jsonString = JsonUtility.ToJson(metaSaveData);
+        using (StreamWriter writer = File.CreateText(path)) {
+            writer.Write(jsonString);
         }
     }
-
     #endregion
+
 }

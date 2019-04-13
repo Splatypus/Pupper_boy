@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * UNUSED DUE TO NEW SAVEMANAGER CLASS
+ * 
+ * **/
+
 //class containing all of the items to save
 [Serializable]
 public class SaveData {

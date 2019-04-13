@@ -7,6 +7,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
+/*
+ * UNUSED DUE TO NEW SAVEMANAGER CLASS
+ * 
+ * **/
+
 public class Saving : MonoBehaviour {
 
     public static Saving Instance;
