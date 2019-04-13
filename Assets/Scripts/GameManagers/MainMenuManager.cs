@@ -1,69 +1,85 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour {
 
     //Save Manager Reference and Audio Settings Reference
+    SaveManager mySaveManager;
     [Header("References")]
-    public SaveManager mySaveManager;
+    public GameObject mainUI;
     public AudioSettingsManager audioSettingsRemote;
+    public GameObject saveSlotPrefab;
+    public GameObject saveSlotHolder;
+    List<GameObject> saveSlots;
 
     [Header("Buttons")]
     public Button[] myButtons;
     public Button newSaveCnt;
 
-    [Header("Background Sizes")]
-    public GameObject[] myBackgrounds;
-
     [Header("Save Information")]
     string newSaveName = "";
     public string newSaveNameGet { get { return newSaveName; } set { newSaveName = value; } }
 
+    [Header("Loading Screen")]
+    public int sceneToLoad = 1;
+    public GameObject loadingScreen;
+    public Text loadingText;
+
+
     // Use this for initialization
     void Start() {
 
-        audioSettingsRemote.RemoteStart();
-        mySaveManager.CreateSlotUI();
+        mySaveManager = SaveManager.getInstance();
+        saveSlots = new List<GameObject>();
 
+        audioSettingsRemote.RemoteStart();
+        CreateSlotUI();
         CheckButtonVisibility();
     }
 
-    void OnEnable() {
+    private void OnEnable() {
         CheckButtonVisibility();
     }
 
     void CheckButtonVisibility() {
-        if (mySaveManager.CheckForAnySaves()) {
+        //if last open id is asssigned, set up the continue button
+        if (SaveManager.getInstance().GetLastOpenID() > -1) {
             myButtons[0].gameObject.SetActive(true);
-            myButtons[2].gameObject.SetActive(true);
-
-            ChangeBackgroundSize(6);
-        }
-        else {
+        } else {
             myButtons[0].gameObject.SetActive(false);
+        }
+        //if we have saves available, set up load button
+        if (SaveManager.getInstance().GetNumberOfSaves() > 0) {
+            myButtons[2].gameObject.SetActive(true);
+        } else {
             myButtons[2].gameObject.SetActive(false);
-
-            ChangeBackgroundSize(4);
         }
     }
 
-    void ChangeBackgroundSize(int size) {
-        for(int i = 0; i < myBackgrounds.Length; i++) {
-            myBackgrounds[i].SetActive(false);
+    void CreateSlotUI() {
+        for (int i = 0; i < mySaveManager.GetNumberOfSaves(); i++) {
+            GameObject newSlot = Instantiate(saveSlotPrefab, saveSlotHolder.gameObject.transform);
+            KeyValuePair<int, string> saveInfo = mySaveManager.GetSlotInfoAtIndex(i);
+
+            newSlot.GetComponent<SlotSaveInfo>().FillInfo(saveInfo.Key, saveInfo.Value, this);
+
+            //saveSlots.Add(newSlot); //TODO: use this to properly display UI
         }
-        myBackgrounds[size].SetActive(true);
     }
+
 
     //Used to continue on last save
     public void Continue() {
-        mySaveManager.LoadContinueGame();
+        mySaveManager.LoadFile(mySaveManager.GetLastOpenID());
+        LoadSceneByIndex();
     }
 
     //Used For Creating a New Save
     public void CreateNewSaveGame() {
-        mySaveManager.CreateNewSave(newSaveName);
+        mySaveManager.CreateFile(newSaveName);
     }
 
     public void CheckSaveName() {
@@ -74,4 +90,40 @@ public class MainMenuManager : MonoBehaviour {
             newSaveCnt.interactable = false;
         }
     }
+
+    #region loading screen
+    public void LoadSceneByIndex() {
+        LoadSceneByIndex(sceneToLoad);
+    }
+    public void LoadSceneByIndex(int sceneIndex) {
+
+        loadingScreen.SetActive(true);
+        mainUI.SetActive(false);
+        StartCoroutine(DotLoading(0.4f));
+        StartCoroutine(LoadNewSceneAsync(sceneIndex));
+    }
+
+
+    IEnumerator DotLoading(float duration) {
+        int dots = 0;
+        while (true) {
+            yield return new WaitForSeconds(duration);
+            dots = dots == 3 ? 0 : dots + 1;
+
+            string text = "Loading";
+            for (int i = 0; i < dots; i++) {
+                text += ".";
+            }
+            loadingText.text = text;
+        }
+    }
+
+    IEnumerator LoadNewSceneAsync(int index) {
+        AsyncOperation async = SceneManager.LoadSceneAsync(index);
+        while (!async.isDone)
+            yield return null;
+        
+        StopCoroutine("DotLoading");
+    }
+    #endregion
 }

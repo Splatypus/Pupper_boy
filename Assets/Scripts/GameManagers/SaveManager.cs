@@ -29,6 +29,7 @@ public class SaveManager {
         public int recentFile;
         public List<int> saveIDs;
         public List<string> saveNames;
+        [SerializeField]
         int saveIDcounter;
 
         public MetaSaveData() {
@@ -108,6 +109,17 @@ public class SaveManager {
 
     }
 
+    #region gets/sets
+    public int GetLastOpenID() {
+        return metaSaveData.recentFile;
+    }
+    public int GetNumberOfSaves() {
+        return metaSaveData.saveIDs.Count;
+    }
+    public KeyValuePair<int, string> GetSlotInfoAtIndex(int index) {
+        return new KeyValuePair<int, string>(metaSaveData.saveIDs[index], metaSaveData.saveNames[index]);
+    }
+    #endregion
 
     #region public functions
     //creates a new save file of the given name and no data loaded
@@ -121,11 +133,20 @@ public class SaveManager {
         storedInts = new Dictionary<string, int>();
         //create file
         string path = Path.Combine(Application.persistentDataPath, SAVE_DATA_FILE + id + FILE_EXTENSION);
-        File.Create(path);
+        FileStream f = File.Create(path);
+        f.Close();
+
+        //and save it
+        SaveFile();
     }
 
     //deletes the file at the given index
     public void DeleteFile(int ID) {
+        //reset continue file if its deleted
+        if (metaSaveData.recentFile == ID) {
+            metaSaveData.recentFile = -1;
+        }
+        //delete file
         string path = Path.Combine(Application.persistentDataPath, SAVE_DATA_FILE + ID + FILE_EXTENSION);
         if (File.Exists(path)) {
             File.Delete(path);
@@ -137,8 +158,8 @@ public class SaveManager {
     }
 
     //loads a file, setting the current JSON data to its contents
-    public void LoadFile(int index) {
-        string dataPath = Path.Combine(Application.persistentDataPath, SAVE_DATA_FILE + index + FILE_EXTENSION);
+    public void LoadFile(int ID) {
+        string dataPath = Path.Combine(Application.persistentDataPath, SAVE_DATA_FILE + ID + FILE_EXTENSION);
 
         if (File.Exists(dataPath)) {
             using (StreamReader reader = File.OpenText(dataPath)) {
@@ -146,8 +167,10 @@ public class SaveManager {
                 loadedSaveData = JsonUtility.FromJson<LoadedSaveData>(jsonString);
             }
             storedInts = loadedSaveData.MakeDictionary();
-            currentOpenFile = index;
-            metaSaveData.recentFile = index;
+            currentOpenFile = ID;
+            metaSaveData.recentFile = ID;
+            
+            return;
         }
         throw new FileNotFoundException();
     }

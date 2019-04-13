@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class EscMenuManager : MonoBehaviour {
@@ -36,7 +37,7 @@ public class EscMenuManager : MonoBehaviour {
     }
 
     public void QuitToMM() {
-
+        AsyncOperation async = SceneManager.LoadSceneAsync(0);
     }
 
 }

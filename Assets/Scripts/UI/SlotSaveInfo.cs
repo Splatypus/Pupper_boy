@@ -2,19 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SlotSaveInfo : MonoBehaviour {
 
     [Tooltip("Save slot this UI element is tied to.")]
-    public int slotNumber;
+    public int idNumber;
+    public string fileName;
+    MainMenuManager manager;
 
     public void LoadGame() {
-        FindObjectOfType<SaveManager>().LoadGameFromSlot(slotNumber);
+        SaveManager.getInstance().LoadFile(idNumber);
 
-        SceneManager.LoadSceneAsync(1);
+        manager.LoadSceneByIndex();
     }
 
     public void DeleteSave() {
-        FindObjectOfType<SaveManager>().DeleteSave(slotNumber);
+        SaveManager.getInstance().DeleteFile(idNumber);
+        Destroy(gameObject);
+    }
+
+    public void FillInfo(int id, string name, MainMenuManager manager) {
+        this.idNumber = id;
+        this.fileName = name;
+        this.manager = manager;
+
+        GetComponentInChildren<Text>().text = name;
     }
 }
