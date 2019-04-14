@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SeasonManager : MonoBehaviour {
+    private readonly string SEASON_KEY = "Season";
 
     public static SeasonManager Instance;
     public enum Seasons { SUMMER, FALL, WINTER, SPRING }
@@ -19,16 +20,23 @@ public class SeasonManager : MonoBehaviour {
         }
     }
 
+    private void Start() {
+        InitialLoad();
+    }
+    //loads into the current season based on saved data
+    private void InitialLoad() {
+        SetSeason((Seasons)SaveManager.getInstance().GetInt(SEASON_KEY, 0));
+    }
+
     //get and set seasons
     public Seasons GetSeason() {
         return currentSeason;
     }
     public void SetSeason(Seasons newSeason) {
-        if (currentSeason == newSeason) {
-            return;
-        }
         //first, start unloading the old scene
-        SceneManager.UnloadSceneAsync(sceneNames[(int)currentSeason]);
+        if (SceneManager.GetSceneByName(sceneNames[(int)currentSeason]).isLoaded) {
+            SceneManager.UnloadSceneAsync(sceneNames[(int)currentSeason]);
+        }
         //change season and trigger events
         currentSeason = newSeason;
         EventManager.Instance.TriggerSeasonChange(currentSeason);
@@ -54,6 +62,7 @@ public class SeasonManager : MonoBehaviour {
 
     //called whenever an async scene finishes loading
     public void OnSceneLoaded() {
-
+        SaveManager.getInstance().PutInt(SEASON_KEY, (int)currentSeason);
+        SaveManager.getInstance().SaveFile();
     }
 }

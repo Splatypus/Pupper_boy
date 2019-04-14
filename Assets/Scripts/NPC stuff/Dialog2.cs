@@ -7,6 +7,7 @@ using UnityEditor;
 #endif
 
 public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
+    protected virtual string PROGRESSION_SAVE_KEY { get; set; } = "";
 
     //player references
     PlayerDialog pdialog;
@@ -41,13 +42,16 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         controlman = player.GetComponent<PlayerControllerManager>();
         pdialog = player.GetComponent<PlayerDialog>(); //find player dialog script on the player and set this to refrence it
-        //serialize this later
+
+        //find start node
         foreach (DialogNode n in nodes) {
             if (n is DialogNodeStart)
                 startNode = (DialogNodeStart)n;
         }
-        if (currentNode == null)
-            currentNode = startNode;
+
+        //attempt to load which node we left off on
+        LoadDialogProgress();
+           
     }
 
     public override void OnInteract() {
@@ -131,6 +135,27 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
     public virtual void OnEnd() {
         controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
         Camera.main.GetComponent<FreeCameraLook>().RestoreCamera(dynamicCameraTime);
+
+        SaveDialogProgress();
+    }
+
+    public virtual void LoadDialogProgress() {
+        //read from save... if nothing found, default to the start node
+        int loadedNode = SaveManager.getInstance().GetInt(PROGRESSION_SAVE_KEY, -1);
+        if (loadedNode == -1) {
+            currentNode = startNode;
+        } else {
+            currentNode = nodes[loadedNode];
+        }
+    }
+    public virtual void SaveDialogProgress() {
+        //Dont save anything unless the key is overridden
+        if (PROGRESSION_SAVE_KEY.Equals("")) {
+            return;
+        }
+        //save the location in dialog
+        SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+        SaveManager.getInstance().SaveFile();
     }
 
     //should be called to swap the current node. 

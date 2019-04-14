@@ -44,7 +44,7 @@ public class MainMenuManager : MonoBehaviour {
         CheckButtonVisibility();
     }
 
-    void CheckButtonVisibility() {
+    public void CheckButtonVisibility() {
         //if last open id is asssigned, set up the continue button
         if (SaveManager.getInstance().GetLastOpenID() > -1) {
             myButtons[0].gameObject.SetActive(true);

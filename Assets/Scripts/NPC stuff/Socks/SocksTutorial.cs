@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SocksTutorial : Dialog2 {
+    protected override string PROGRESSION_SAVE_KEY { get; set; } = "SocksSummerProgression";
+    private readonly string OBJECTIVE_COUNT_KEY = "SocksSummerObjectives";
 
     [Header("Objective Info")]
     public GameObject[] lookTargetLocations;
@@ -19,13 +21,17 @@ public class SocksTutorial : Dialog2 {
 
     new void Start() {
         base.Start();
-        StartCoroutine(AfterStart());
         customCameraLocation = cameraReference.getCamera();
+
+
+        objectiveCount = SaveManager.getInstance().GetInt(OBJECTIVE_COUNT_KEY, 0);
+        
+        StartCoroutine(AfterStart());
     }
     //Since other things are getting set up in start functions, this need to initiate dialog after that has already happened
     IEnumerator AfterStart() {
         yield return new WaitForEndOfFrame();
-        OnInteract();
+        TriggerInteractFromObjectiveCount();
     }
 
 
@@ -72,9 +78,28 @@ public class SocksTutorial : Dialog2 {
     //called whenever an objective is finished, such as looking at a thing or moving to the right spot
     public void ObjectiveComplete() {
         objectiveCount++;
+
+        //trigger new dialog if needed
+        TriggerInteractFromObjectiveCount();
+    }
+
+    //Triggers the OnInteract function based on what the current objective count is
+    public void TriggerInteractFromObjectiveCount() {
         if (objectiveCount <= 2 || objectiveCount == 5 || objectiveCount == 6 || objectiveCount == 7 || objectiveCount == 10 || objectiveCount == 11) { //looking at targets 3 and 4 do nothing, since 3,4,5 spawn all at once, same as spawns 8,9,10
+            
+            //save progress.
+            SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
+            SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+            SaveManager.getInstance().SaveFile();
+
             OnInteract();
         }
+    }
+
+    //remove auto-saving of dialog.
+    //sock's dialog will save after objectives are finished, since otherwise the forced OnInteract would cause desync
+    public override void SaveDialogProgress() {
+        
     }
 
     //finds the current fence manager and unlocks fences of the given type
