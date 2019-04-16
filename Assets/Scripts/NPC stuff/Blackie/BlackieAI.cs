@@ -51,7 +51,7 @@ public class BlackieAI : AIbase {
     //called when saved data is loaded
     void OnLoad() {
         //currentNode = nodes[Saving.Instance.data.blackieConversationNumber];
-        Debug.Log("Loaded to node index " + Saving.Instance.data.blackieConversationNumber);
+        //Debug.Log("Loaded to node index " + Saving.Instance.data.blackieConversationNumber);
     }
 
     //Writes this data to the save file, then saves
@@ -59,7 +59,7 @@ public class BlackieAI : AIbase {
         //this probably works right? Index should only ever be changed from the editor.
         //Saving.Instance.data.blackieConversationNumber = currentNode.index;
         //Saving.Instance.Save();
-        Debug.Log("Saving node index " + currentNode.index);
+        //Debug.Log("Saving node index " + currentNode.index);
     }
 
 }

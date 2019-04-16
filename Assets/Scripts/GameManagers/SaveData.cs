@@ -11,6 +11,7 @@ using UnityEngine;
 //class containing all of the items to save
 [Serializable]
 public class SaveData {
+    /*
     //Save Distinction
     public string nameOfSave;
     //PlayerPos - (Probably Will Reset On Load)
@@ -25,4 +26,5 @@ public class SaveData {
 
     //Old Data Kept To Not Break References
     public int blackieConversationNumber;
+    */
 }

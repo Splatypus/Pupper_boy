@@ -13,7 +13,7 @@ using UnityEngine.Events;
  * **/
 
 public class Saving : MonoBehaviour {
-
+    /*
     public static Saving Instance;
     public int FilelNum = 0;
     public bool ShouldLoad = false; //set to true if data should be loaded on scene load, false if it should not be
@@ -79,7 +79,7 @@ public class Saving : MonoBehaviour {
     public void AddCallback(UnityAction a) {
         callbacks.Enqueue(a);
     }
-
+    */
 }
 
 
