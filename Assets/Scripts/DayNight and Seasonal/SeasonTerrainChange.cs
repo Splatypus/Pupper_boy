@@ -19,7 +19,7 @@ public class SeasonTerrainChange : MonoBehaviour
     private Material defaultSkybox;
 
     // Use this for initialization
-    void Start() {
+    void Awake() {
         if (target == null)
             target = gameObject.GetComponent<Terrain>();
 

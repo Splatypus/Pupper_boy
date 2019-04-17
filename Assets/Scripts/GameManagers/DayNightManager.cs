@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class DayNightManager : MonoBehaviour {
+public class DayNightManager {
 
-    public static DayNightManager Instance; //Static reference to the current instance of this manager
+    public static DayNightManager instance;
+    public static DayNightManager Instance {
+        get {
+            if (instance == null) {
+                instance = new DayNightManager();
+            }
+            return instance;
+        }
+    }
     public enum Times { DAY, NIGHT };
     Times currentTime = Times.DAY;
 
@@ -15,15 +23,6 @@ public class DayNightManager : MonoBehaviour {
     }
     public bool IsDay() {
         return currentTime == Times.DAY;
-    }
-
-    //singleton pattern but for gameobjects.
-    void Awake() {
-        if (Instance == null) {
-            Instance = this;
-        } else if (Instance != this) {
-            Destroy(gameObject);
-        }
     }
 
     //turns time to the given time if it isnt already. 

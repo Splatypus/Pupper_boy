@@ -11,7 +11,7 @@ public class DayNightMusicChange : MonoBehaviour {
     public float duration;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         if (source == null)
             source = gameObject.GetComponent<AudioSource>();
 

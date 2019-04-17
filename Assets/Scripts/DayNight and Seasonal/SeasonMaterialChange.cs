@@ -12,7 +12,7 @@ public class SeasonMaterialChange : MonoBehaviour {
     private Material defaultMat;
 
     // Use this for initialization
-    void Start() {
+    void Awake() {
         //assign target mesh to our own if none are asssigned
         if (target == null)
             target = gameObject.GetComponent<MeshRenderer>();

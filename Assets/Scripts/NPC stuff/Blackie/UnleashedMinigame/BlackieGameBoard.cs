@@ -42,6 +42,16 @@ public class BlackieGameBoard {
         sourceNodes = new List<Piece>();
     }
 
+    #region get/sets
+    public int GetWidth() {
+        return board.GetLength(0);
+    }
+    public int GetHeight() {
+        return board.GetLength(1);
+    }
+
+    #endregion
+
     #region public functions
     /* Rotates a piece at position x, y by turnAmount (1 is a 90 degree turn)
      * returns true on a successful rotation
@@ -206,7 +216,6 @@ public class BlackieGameBoard {
         }
     }
     #endregion
-
 
 
     #region private functions

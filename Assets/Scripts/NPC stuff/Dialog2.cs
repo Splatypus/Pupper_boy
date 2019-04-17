@@ -7,7 +7,8 @@ using UnityEditor;
 #endif
 
 public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
-    protected virtual string PROGRESSION_SAVE_KEY { get; set; } = "";
+
+    protected virtual string PROGRESSION_SAVE_KEY { get { return ""; } } 
 
     //player references
     PlayerDialog pdialog;

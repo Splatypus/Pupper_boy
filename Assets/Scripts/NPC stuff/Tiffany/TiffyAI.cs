@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TiffyAI : AIbase {
+    protected override string PROGRESSION_SAVE_KEY { get { return "TiffanySummerProgression"; } }
+    readonly string STATE_KEY = "TiffanySummerState";
 
     Animator[] anim;
     public float moveDistance;

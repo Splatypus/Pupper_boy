@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
+/*
+ * UNUSED: SEE DIALOG2
+ * **/
+
 public class Dialog : InteractableObject {
 
-   
+   /*
     PlayerDialog pdialog;
     PlayerControllerManager controlman;
     List<List<string>> dialogTexts;
@@ -125,7 +129,7 @@ public class Dialog : InteractableObject {
         conversationNumber += 1;
         return true;
     }
-
+    */
 }
 
 
