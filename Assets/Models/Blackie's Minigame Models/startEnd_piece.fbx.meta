@@ -51,7 +51,27 @@ ModelImporter:
     4300010: pipe_endcap1
     4300012: straight_pipe
     4300014: puzzle_piece_end_base
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: brass_pipeEnds
+    second: {fileID: 2100000, guid: d4f0aa6b48528c742b2d78390075e573, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: inner_bulb
+    second: {fileID: 2100000, guid: c83552f443297634d86f3240e4fedc50, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: misc_stone
+    second: {fileID: 2100000, guid: 813d9178fca29e142bc95b92390bd1fb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plaster_puzzle_base_tex
+    second: {fileID: 2100000, guid: 24e3a8f7d2192ed488f07daad0078747, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

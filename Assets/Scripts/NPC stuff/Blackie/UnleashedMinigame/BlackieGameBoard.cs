@@ -18,10 +18,6 @@ ______ _            _    _      _      ___  ____       _ _____
 
 
 public class BlackieGameBoard {
-    //public
-    public delegate void OnVictory();
-    public event OnVictory OnVictoryEvent;
-
 
     //private
     GameSpace[,] board;
@@ -34,9 +30,12 @@ public class BlackieGameBoard {
     List<Piece> errors;
     int endNodesPowered;
 
-    //constructor
-    public BlackieGameBoard() {
+    //listener
+    IListener listener;
 
+    //constructor
+    public BlackieGameBoard(IListener listener) {
+        this.listener = listener;
         checkQueue = new Queue<Piece>();
         pieceList = new List<Piece>();
         sourceNodes = new List<Piece>();
@@ -166,54 +165,10 @@ public class BlackieGameBoard {
         for (int i = 0; i < width; i++) {
             line = data[i+1].Split('/');
             for (int j = 0; j < height; j++) {
-                //leave "xxx" spaces empty
-                if (line[j].Equals("xxx")) {
-                    board[i, j] = null;
-                    return;
-                }
-                //if in bounds, then fill it with gamespace
-                board[i, j] = new GameSpace();
-                //thats all we need if this is an empty space
-                if (line[j].Equals("...")) {
-                    return;
-                }
-
-                //if we get here, that means this is a real peice. Parse it and place it.
-                int rotation = CharToInt(line[j][1]);
-                Piece p = null;
-                switch (CharToInt(line[j][0])) {
-                    case 0:                                                 //empty piece
-                        p = new Piece(i, j);
-                        break;
-                    case 1:                                                 //start node
-                        p = new SourcePiece(i, j, CharToInt(line[j][3]) );
-                        sourceNodes.Add(p);
-                        break;
-                    case 2:                                                 //end node
-                        p = new EndPiece(i, j, CharToInt(line[j][3]) );
-                        endNodeCount += 1;
-                        break;
-                    case 3:                                                 //line
-                        p = new LinePiece(i, j);
-                        break;
-                    case 4:                                                 //elbow
-                        p = new ElbowPiece(i, j);
-                        break;
-                    case 5:                                                 //T piece
-                        p = new TPiece(i, j);
-                        break;
-                    case 6:                                                 //cross
-                        p = new CrossPiece(i, j);
-                        break;
-                    case 7:                                                 //bridge
-                        p = new BridgePiece(i, j);
-                        break;
-                }
-                p.SetRotation(CharToInt(line[j][2])); //p should never be null at this point
-                board[i, j].piece = p;
-                pieceList.Add(p);
+                LoadBoardSpace(i, j, line[j]);
             }
         }
+        listener.OnFileLoaded();
     }
     #endregion
 
@@ -249,7 +204,57 @@ public class BlackieGameBoard {
 
     //wins the game
     private void Victory() {
-        OnVictoryEvent?.Invoke();
+        listener.OnVictory();
+    }
+
+    //parses and loads a specific spot on the board
+    private void LoadBoardSpace(int x, int y, string data) {
+        //leave "xxx" spaces empty
+        if (data.StartsWith("x")) {
+            board[x, y] = null;
+            return;
+        }
+        //if in bounds, then fill it with gamespace
+        board[x, y] = new GameSpace();
+        //thats all we need if this is an empty space
+        if (data.StartsWith(".")) {
+            return;
+        }
+
+        //if we get here, that means this is a real peice. Parse it and place it.
+        int rotation = CharToInt(data[1]);
+        Piece p = null;
+        switch (CharToInt(data[0])) {
+            case 0:                                                 //empty piece
+                p = new Piece(x, y);
+                break;
+            case 1:                                                 //start node
+                p = new SourcePiece(x, y, CharToInt(data[3]));
+                sourceNodes.Add(p);
+                break;
+            case 2:                                                 //end node
+                p = new EndPiece(x, y, CharToInt(data[3]));
+                endNodeCount += 1;
+                break;
+            case 3:                                                 //line
+                p = new LinePiece(x, y);
+                break;
+            case 4:                                                 //elbow
+                p = new ElbowPiece(x, y);
+                break;
+            case 5:                                                 //T piece
+                p = new TPiece(x, y);
+                break;
+            case 6:                                                 //cross
+                p = new CrossPiece(x, y);
+                break;
+            case 7:                                                 //bridge
+                p = new BridgePiece(x, y);
+                break;
+        }
+        p.SetRotation(CharToInt(data[2])); //p should never be null at this point
+        board[x, y].piece = p;
+        pieceList.Add(p);
     }
 
     //turns an single char into an int. No promise for if you pass it anything besides the 0-9 chars
@@ -280,6 +285,10 @@ public class BlackieGameBoard {
         public Piece(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+
+        public float GetRotation() {
+            return rotation * 90f;
         }
 
         #region public function
@@ -588,4 +597,9 @@ public class BlackieGameBoard {
     }
 
     #endregion
+
+    public interface IListener {
+        void OnVictory();
+        void OnFileLoaded();
+    }
 }
