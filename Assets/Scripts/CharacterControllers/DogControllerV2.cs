@@ -8,7 +8,7 @@ using UnityEngine.UI; // for debug text
 public class DogControllerV2 : Controller {
 
     #region Component Variables
-    Rigidbody rigidBody;
+    CharacterController myController;
     Animator anim;
     Transform cam;
     PuppyPickup mouth;
@@ -64,7 +64,7 @@ public class DogControllerV2 : Controller {
 
 
     void Start () {
-        rigidBody = GetComponent<Rigidbody>();
+        myController = GetComponent<CharacterController>();
         cam = Camera.main.transform;
         mouth = GetComponentInChildren<PuppyPickup>();
         anim = GetComponentInChildren<Animator>();
@@ -233,8 +233,8 @@ public class DogControllerV2 : Controller {
             //if nothing is affecting velocity and have not jumped recently, then set it to 0. The time check is to make sure jumping allows you to leave the ground
             v.y = 0;
         }
-
-        rigidBody.velocity = v;
+        myController.Move(v);
+        //rigidBody.velocity = v;
 
         // Update animation controller with the amount that we are moving
         float animValue = Mathf.Sqrt(vertical*vertical + horizontal*horizontal);
@@ -264,7 +264,7 @@ public class DogControllerV2 : Controller {
     //digs through the given zone
     public void Dig(DigZone zone) {
         if (onGround > 0) {
-            rigidBody.velocity = Vector3.zero;
+            //rigidBody.velocity = Vector3.zero;
             //Run digging coroutine. This does the animation and movement and eveything
             StartCoroutine(StartZoneDig(zone));
         }

@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControllerManager : MonoBehaviour {
+public class PlayerControllerManager : MonoBehaviour
+{
 
     public enum Modes { Walking, Dialog, Flight, MovementLock };
     public Controller currentController;
+    public Controller controllerOverride;
     Controller[] scripts = new Controller[4];
 
-    public void Start() {
+    public void Start()
+    {
         //initial setting of all modes to their correct places
         scripts[(int)Modes.Walking] = gameObject.GetComponent<DogControllerV2>();
         scripts[(int)Modes.Dialog] = gameObject.GetComponent<PlayerDialog>();
@@ -16,36 +19,45 @@ public class PlayerControllerManager : MonoBehaviour {
         scripts[(int)Modes.MovementLock] = gameObject.GetComponent<NoMovementController>();
 
         //then disable all controller scripts except the default one (walking)
-        foreach (Controller c in scripts) {
+        foreach (Controller c in scripts)
+        {
             //c.OnDeactivated();
             c.enabled = false;
         }
-        currentController = scripts[(int)Modes.Walking];
-        currentController.enabled = true;
-
-        //scripts[(int)mode].OnActivated();
+        if (!controllerOverride)
+        {
+            currentController = scripts[(int)Modes.Walking];
+            currentController.enabled = true;
+        }
     }
 
     //disable the current mode, then change it to the new one and enable the new one
-    public void ChangeMode(Modes newMode) {
-        //call deactivation function and then disable the current controller
-        currentController.OnDeactivated();
-        currentController.enabled = false;
-        //call activation function and enable next controller
-        currentController = scripts[(int)newMode];
-        currentController.enabled = true;
-        currentController.OnActivated();
+    public void ChangeMode(Modes newMode)
+    {
+        if (!controllerOverride)
+        {
+            //call deactivation function and then disable the current controller
+            currentController.OnDeactivated();
+            currentController.enabled = false;
+            //call activation function and enable next controller
+            currentController = scripts[(int)newMode];
+            currentController.enabled = true;
+            currentController.OnActivated();
+        }
     }
 
     //disables the current mode. Activates a custom controller rather than a preset
-    public void ChangeMode(Controller newController) {
-        //call deactivation function and then disable the current controller
-        currentController.OnDeactivated();
-        currentController.enabled = false;
-        //call activation function and enable next controller
-        currentController = newController;
-        currentController.enabled = true;
-        currentController.OnActivated();
+    public void ChangeMode(Controller newController)
+    {
+        if (!controllerOverride)
+        {//call deactivation function and then disable the current controller
+            currentController.OnDeactivated();
+            currentController.enabled = false;
+            //call activation function and enable next controller
+            currentController = newController;
+            currentController.enabled = true;
+            currentController.OnActivated();
+        }
     }
 }
 
