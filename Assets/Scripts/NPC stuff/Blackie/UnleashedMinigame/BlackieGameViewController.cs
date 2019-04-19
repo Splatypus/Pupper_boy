@@ -61,51 +61,56 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
     void GenerateBase() {
         for (int x = 0; x < game.GetWidth(); x++) {
             for (int y = 0; y < game.GetHeight(); y++) {
-                if (game.GetSpace(x, y) != null) {
-                    //instantiate it in its spot, as a child to this gameObject, accounting for an x offset so that this gameobject is placed in the center of the x axis
-                    float xPosition = transform.position.x + baseDistance * (x - (game.GetWidth() - 1.0f) / 2.0f);
-                    float yPosition = transform.position.y;
-                    float zPosition = transform.position.z + baseDistance * (y + 1);
-                    bases.Add(Instantiate(basePrefab, new Vector3( xPosition, yPosition, zPosition), transform.rotation, transform));
+                GenerateBoardSpace(x, y);
+            }
+        }
+    }
 
-                    //then make a tile on top of it, if one is supposed to be here
-                    BlackieGameBoard.Piece p = game.GetPiece(x, y);
-                    if (p != null) {
-                        GameObject worldPiece;
-                        Quaternion rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + p.GetRotation(), 0);
-                        switch (p) {
-                            case BlackieGameBoard.SourcePiece sp:
-                                worldPiece = sourceTilePrefab; 
-                                break;
-                            case BlackieGameBoard.EndPiece endp:
-                                worldPiece = endTilePrefab;
-                                break;
-                            case BlackieGameBoard.LinePiece linep:
-                                worldPiece = lineTilePrefab;
-                                break;
-                            case BlackieGameBoard.ElbowPiece elp:
-                                worldPiece = elbowTilePrefab;
-                                break;
-                            case BlackieGameBoard.TPiece tp:
-                                worldPiece = tTilePrefab;
-                                break;
-                            case BlackieGameBoard.CrossPiece cp:
-                                worldPiece = crossTilePrefab;
-                                break;
-                            case BlackieGameBoard.BridgePiece bp:
-                                worldPiece = bridgeTilePrefab;
-                                break;
-                            default:  //default assume blank piece
-                                worldPiece = blankTilePrefab;
-                                break;
-                        }
-                        worldPiece = Instantiate(worldPiece, new Vector3(xPosition, yPosition + pieceHeight, zPosition), rotation, transform);
-                        pieces.Add(worldPiece);
+    void GenerateBoardSpace(int x, int y) {
+        if (game.GetSpace(x, y) != null) {
+            //instantiate it in its spot, as a child to this gameObject, accounting for an x offset so that this gameobject is placed in the center of the x axis
+            Vector3 placePosition = new Vector3(
+                                            transform.position.x + baseDistance * (x - (game.GetWidth() - 1.0f) / 2.0f),
+                                            transform.position.y,
+                                            transform.position.z + baseDistance * (game.GetHeight() - y + 0.5f)
+                                            );
 
+            bases.Add(Instantiate(basePrefab, placePosition, transform.rotation, transform));
 
-                        //TODO: apply rotation and immobile texture kinda thing
-                    }
+            //then make a tile on top of it, if one is supposed to be here
+            BlackieGameBoard.Piece p = game.GetPiece(x, y);
+            if (p != null) {
+                GameObject worldPiece;
+                Quaternion rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + p.GetRotation(), 0);
+                switch (p) {
+                    case BlackieGameBoard.SourcePiece sp:
+                        worldPiece = sourceTilePrefab;
+                        break;
+                    case BlackieGameBoard.EndPiece endp:
+                        worldPiece = endTilePrefab;
+                        break;
+                    case BlackieGameBoard.LinePiece linep:
+                        worldPiece = lineTilePrefab;
+                        break;
+                    case BlackieGameBoard.ElbowPiece elp:
+                        worldPiece = elbowTilePrefab;
+                        break;
+                    case BlackieGameBoard.TPiece tp:
+                        worldPiece = tTilePrefab;
+                        break;
+                    case BlackieGameBoard.CrossPiece cp:
+                        worldPiece = crossTilePrefab;
+                        break;
+                    case BlackieGameBoard.BridgePiece bp:
+                        worldPiece = bridgeTilePrefab;
+                        break;
+                    default:  //default assume blank piece
+                        worldPiece = blankTilePrefab;
+                        break;
                 }
+                worldPiece = Instantiate(worldPiece, placePosition + new Vector3(0, pieceHeight, 0), rotation, transform);
+                pieces.Add(worldPiece);
+                //TODO: apply rotation and immobile texture kinda thing
             }
         }
     }

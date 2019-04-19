@@ -165,7 +165,7 @@ public class BlackieGameBoard {
         for (int i = 0; i < width; i++) {
             line = data[i+1].Split('/');
             for (int j = 0; j < height; j++) {
-                LoadBoardSpace(i, j, line[j]);
+                LoadBoardSpace(j, i, line[j]);
             }
         }
         listener.OnFileLoaded();
