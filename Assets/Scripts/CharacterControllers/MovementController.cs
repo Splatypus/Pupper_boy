@@ -73,7 +73,7 @@ public class MovementController : Controller
             velocity.y = myController.isGrounded ? 0 : velocity.y;
 
             //Check For Jumping, Beginning Next Frame
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButton("Jump"))
             {
                 velocity = Vector3.zero;
                 jumping = true;
