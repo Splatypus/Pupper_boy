@@ -9,6 +9,7 @@ using UnityEditor;
 public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
     protected virtual string PROGRESSION_SAVE_KEY { get { return ""; } } 
+    protected virtual string PROGRESSION_NUM_SAVE_KEY { get { return ""; } }
 
     //player references
     PlayerDialog pdialog;
@@ -148,15 +149,21 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         } else {
             currentNode = nodes[loadedNode];
         }
+        //load progression num from save. If nothing founds, default to 0
+        progressionNum = SaveManager.getInstance().GetInt(PROGRESSION_NUM_SAVE_KEY, 0);
     }
     public virtual void SaveDialogProgress() {
-        //Dont save anything unless the key is overridden
-        if (PROGRESSION_SAVE_KEY.Equals("")) {
+        //if the key has been overriden, save
+        if (!PROGRESSION_SAVE_KEY.Equals("")) {
+            SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+        } else if (!PROGRESSION_NUM_SAVE_KEY.Equals("")) {
+            SaveManager.getInstance().PutInt(PROGRESSION_NUM_SAVE_KEY, progressionNum);
+        } else {
             return;
         }
-        //save the location in dialog
-        SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+        //save if we added anything to the save manager
         SaveManager.getInstance().SaveFile();
+
     }
 
     //should be called to swap the current node. 

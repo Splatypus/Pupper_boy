@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SocksTutorial : Dialog2 {
     protected override string PROGRESSION_SAVE_KEY { get { return "SocksSummerProgression";} }
+    protected override string PROGRESSION_NUM_SAVE_KEY { get { return "SocksSummerPN"; } }
     private readonly string OBJECTIVE_COUNT_KEY = "SocksSummerObjectives";
 
     [Header("Objective Info")]
@@ -99,11 +100,16 @@ public class SocksTutorial : Dialog2 {
     //remove auto-saving of dialog.
     //sock's dialog will save after objectives are finished, since otherwise the forced OnInteract would cause desync
     public override void SaveDialogProgress() {
+        //save progress after chatting after the last objective
         if (objectiveCount == 11) {
             objectiveCount++;
             SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
             SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
             SaveManager.getInstance().SaveFile();
+        }
+        //and then from now on treat dialog normally
+        else if (objectiveCount > 11) {
+            base.SaveDialogProgress();
         }
     }
 
