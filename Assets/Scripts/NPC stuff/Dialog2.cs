@@ -126,7 +126,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         
 
         //change player mode to dialog mode when they interact with this npc
-        controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);
+        controlman.ChangeMode(PlayerControllerManager.PlayerControllerMode.Dialog);
         pdialog.npcDialog = this;
         //Assign image and name
         pdialog.imageObject.sprite = image;
@@ -134,7 +134,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
     }
 
     public virtual void OnEnd() {
-        controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
+        controlman.ChangeMode(PlayerControllerManager.PlayerControllerMode.Walking);
         Camera.main.GetComponent<FreeCameraLook>().RestoreCamera(dynamicCameraTime);
 
         SaveDialogProgress();

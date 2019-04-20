@@ -53,7 +53,7 @@ public class SocksTutorial : Dialog2 {
     IEnumerator DisableMovementAtEndOfFrame() {
         yield return new WaitForEndOfFrame();
         PlayerControllerManager pcm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControllerManager>();
-        pcm.ChangeMode(PlayerControllerManager.Modes.MovementLock);
+        pcm.ChangeMode(PlayerControllerManager.PlayerControllerMode.MovementLock);
     }
     #endregion
     

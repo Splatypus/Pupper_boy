@@ -5,60 +5,113 @@ using UnityEngine;
 public class PlayerControllerManager : MonoBehaviour
 {
 
-    public enum Modes { Walking, Dialog, Flight, MovementLock };
-    public Controller currentController;
-    public Controller controllerOverride;
-    Controller[] scripts = new Controller[4];
+    public enum PlayerControllerMode { Walking, Dialog, Flight, MovementLock };
+    public PlayerControllerMode myCurrentMode;
 
-    public void Start()
+    private Controller currentController;
+    public Controller CurrentController
     {
-        //initial setting of all modes to their correct places
-        scripts[(int)Modes.Walking] = gameObject.GetComponent<DogControllerV2>();
-        scripts[(int)Modes.Dialog] = gameObject.GetComponent<PlayerDialog>();
-        scripts[(int)Modes.Flight] = gameObject.GetComponent<FlightMode>();
-        scripts[(int)Modes.MovementLock] = gameObject.GetComponent<NoMovementController>();
+        get => currentController;
+        set
+        {
+            myControllers.TryGetValue(myCurrentMode, out Controller outContr);
+            outContr.enabled = false;
+
+            currentController = value;
+
+            myControllers.TryGetValue(myCurrentMode, out outContr);
+            outContr.enabled = true;
+        }
+    }
+    private Controller outController;
+
+    private Dictionary<PlayerControllerMode, Controller> myControllers = new Dictionary<PlayerControllerMode, Controller>();
+    public Controller controllerOverride;
+
+
+    //Controller[] scripts = new Controller[4];
+
+    private void Start()
+    {
+        ///<summary>
+        ///Prevoius Use
+        /// </summary>
+        ///scripts[(int)PlayerControllerMode.Walking] = gameObject.GetComponent<DogControllerV2>();
+        ///scripts[(int)PlayerControllerMode.Dialog] = gameObject.GetComponent<PlayerDialog>();
+        ///scripts[(int)PlayerControllerMode.Flight] = gameObject.GetComponent<FlightMode>();
+        ///scripts[(int)PlayerControllerMode.MovementLock] = gameObject.GetComponent<NoMovementController>();
+        ///initial setting of all modes to their correct places
+
+        myControllers.Add(PlayerControllerMode.Walking, gameObject.GetComponent<MovementController>());
+        myControllers.Add(PlayerControllerMode.Dialog, gameObject.GetComponent<PlayerDialog>());
+        myControllers.Add(PlayerControllerMode.Flight, gameObject.GetComponent<FlightMode>());
+        myControllers.Add(PlayerControllerMode.MovementLock, gameObject.GetComponent<NoMovementController>());
+
+        //Get rid of Unused Controllers
+        Controller[] allControllers = GetComponents<Controller>();
+        foreach(Controller c in allControllers)
+        {
+            if (!myControllers.ContainsValue(c))
+            {
+                Destroy(c);
+            }
+        }
 
         //then disable all controller scripts except the default one (walking)
-        foreach (Controller c in scripts)
+        foreach (KeyValuePair<PlayerControllerMode, Controller> keyValuePair in myControllers)
         {
             //c.OnDeactivated();
-            c.enabled = false;
+            //c.enabled = false;
+
+            keyValuePair.Value.enabled = false;
         }
         if (!controllerOverride)
         {
-            currentController = scripts[(int)Modes.Walking];
-            currentController.enabled = true;
+            myControllers.TryGetValue(PlayerControllerMode.Walking, out outController);
+            CurrentController = outController;
+            CurrentController.enabled = true;
         }
     }
 
     //disable the current mode, then change it to the new one and enable the new one
-    public void ChangeMode(Modes newMode)
+    public void ChangeMode(PlayerControllerMode newMode)
     {
-        if (!controllerOverride)
-        {
-            //call deactivation function and then disable the current controller
-            currentController.OnDeactivated();
-            currentController.enabled = false;
-            //call activation function and enable next controller
-            currentController = scripts[(int)newMode];
-            currentController.enabled = true;
-            currentController.OnActivated();
-        }
-    }
+        myCurrentMode = newMode;
+        myControllers.TryGetValue(myCurrentMode, out outController);
+        CurrentController = outController;
 
-    //disables the current mode. Activates a custom controller rather than a preset
-    public void ChangeMode(Controller newController)
-    {
-        if (!controllerOverride)
-        {//call deactivation function and then disable the current controller
-            currentController.OnDeactivated();
-            currentController.enabled = false;
-            //call activation function and enable next controller
-            currentController = newController;
-            currentController.enabled = true;
-            currentController.OnActivated();
-        }
+
+      ///<summary>
+      ///Previous Use
+      ///</summary>
+      ///if (!controllerOverride)
+      /// {
+      ///     //call deactivation function and then disable the current controller
+      ///     currentController.OnDeactivated();
+      ///     currentController.enabled = false;
+      ///     //call activation function and enable next controller
+      ///     currentController = scripts[(int)newMode];
+      ///     currentController.enabled = true;
+      ///     currentController.OnActivated();
+      ///  }
     }
+    /// <summary>
+    /// Previous Use
+    /// </summary>
+    /// <param name="newController"></param>
+    ///disables the current mode. Activates a custom controller rather than a preset
+    ///public void ChangeMode(Controller newController)
+    ///{
+    ///    if (!controllerOverride)
+    ///    {//call deactivation function and then disable the current controller
+    ///        currentController.OnDeactivated();
+    ///        currentController.enabled = false;
+    ///        //call activation function and enable next controller
+    ///        currentController = newController;
+    ///        currentController.enabled = true;
+    ///        currentController.OnActivated();
+    ///    }
+    ///}
 }
 
 

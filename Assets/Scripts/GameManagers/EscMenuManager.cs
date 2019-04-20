@@ -25,7 +25,7 @@ public class EscMenuManager : MonoBehaviour {
     public void Hide() {
         gameObject.SetActive(false);
         settingsMenu.SetActive(false);
-        player.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Walking);
+        player.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.PlayerControllerMode.Walking);
     }
 
     public void ShowSettingsMenu() {

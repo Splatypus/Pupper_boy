@@ -47,7 +47,7 @@ public class FlightMode : Controller {
         //if (Input.GetKeyDown(KeyCode.F))
         if (Input.GetButtonDown("Fly"))
         {
-            gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Walking);
+            gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.PlayerControllerMode.Walking);
         }
     }
 

@@ -90,7 +90,7 @@ public class DogControllerV2 : Controller {
         //Opening Esc Menu should always be available
         if (Input.GetButtonDown("Cancel")) {
                 escMenu.Show();
-                gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Dialog); 
+                gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.PlayerControllerMode.Dialog); 
         }
 
         //dont do anything if digging, or in Esc Menu
@@ -116,7 +116,7 @@ public class DogControllerV2 : Controller {
 
             //flight mode
             if (hasFlight && Input.GetButtonDown("Fly")) {
-                gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Flight);
+                gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.PlayerControllerMode.Flight);
             }
 
             //turning scent on or off
