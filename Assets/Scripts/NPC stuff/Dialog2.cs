@@ -111,14 +111,13 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                     if (c is DialogNodeChoice) {
                         numChoices++;
                         if (((DialogNodeChoice)c).num == progressionNum) {
+                            progressionNum = 0;
                             ChangeNode(c);
                         }
                     }
                 }
                 if (numChoices == 0) {
                     ChangeNode(currentNode.connections[0]);
-                } else {
-                    progressionNum = 0; //reset progression num if its been used
                 }
             } else {
                 Debug.LogError("Start node placed with no out connection. Dialog bugging out.");
@@ -165,6 +164,13 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         SaveManager.getInstance().SaveFile();
 
     }
+    public virtual void ChangeAndSaveProgressionNum(int newNum) {
+        progressionNum = newNum;
+        if (!PROGRESSION_NUM_SAVE_KEY.Equals("")) {
+            SaveManager.getInstance().PutInt(PROGRESSION_NUM_SAVE_KEY, progressionNum);
+            SaveManager.getInstance().SaveFile();
+        }
+    }
 
     //should be called to swap the current node. 
     void ChangeNode(DialogNode node) {
@@ -188,7 +194,20 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                 functions[num].Invoke();
             }
             if(node.connections != null) {
-                ChangeNode(node.connections[0]);
+                //if there are choice nodes, decide which to take
+                int numChoices = 0; //number of choice nodes attached. If 0, then continue to the next node no matter what
+                foreach (DialogNode c in currentNode.connections) {
+                    if (c is DialogNodeChoice) {
+                        numChoices++;
+                        if (((DialogNodeChoice)c).num == progressionNum) {
+                            progressionNum = 0;
+                            ChangeNode(c);
+                        }
+                    }
+                }
+                if (numChoices == 0) {
+                    ChangeNode(currentNode.connections[0]);
+                }
             } else {
                 Debug.LogError("Function node placed with no out connection. Dialog bugging out.");
             }

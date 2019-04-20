@@ -139,7 +139,6 @@ public class DogControllerV2 : Controller {
     void Move()
     {
         // Get input from Unity's default input control system (Can this be called from fixed update? Might need to set these in update or somethin)
-        //Yes, the issue is that putting this in fixed update means at high fps you can have input start and end before the next fixed update, skipping input checks here. 
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
         jumpInput = Input.GetButtonDown("Jump");

@@ -24,9 +24,10 @@ public class SocksTutorial : Dialog2 {
         base.Start();
         customCameraLocation = cameraReference.getCamera();
 
-
         objectiveCount = SaveManager.getInstance().GetInt(OBJECTIVE_COUNT_KEY, 0);
-        
+
+        EventManager.OnTalk += OnMetTiffany;
+
         StartCoroutine(AfterStart());
     }
     //Since other things are getting set up in start functions, this need to initiate dialog after that has already happened
@@ -35,7 +36,9 @@ public class SocksTutorial : Dialog2 {
         TriggerInteractFromObjectiveCount();
     }
 
-
+    private void OnDestroy() {
+        EventManager.OnTalk -= OnMetTiffany;
+    }
 
     //points the camera at cameraFocusLocations[index]
     public void PointCamera(int index) {
@@ -79,18 +82,20 @@ public class SocksTutorial : Dialog2 {
     //called whenever an objective is finished, such as looking at a thing or moving to the right spot
     public void ObjectiveComplete() {
         objectiveCount++;
-
+        if (objectiveCount > 3)
+            progressionNum = 1;
         //trigger new dialog if needed
         TriggerInteractFromObjectiveCount();
     }
 
     //Triggers the OnInteract function based on what the current objective count is
-    public void TriggerInteractFromObjectiveCount() {
+   void TriggerInteractFromObjectiveCount() {
         if (objectiveCount <= 7) { //123 are looking at object, 456 are movement, 7 is retreiving an item
             
             //save progress.
             SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
             SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+            SaveManager.getInstance().PutInt(PROGRESSION_NUM_SAVE_KEY, progressionNum);
             SaveManager.getInstance().SaveFile();
 
             OnInteract();
@@ -118,14 +123,28 @@ public class SocksTutorial : Dialog2 {
         FenceUnlockManager.Instance.EnableIntoYard(y);
     }
 
+    //progresses dialog when tiffany is talked to
+    void OnMetTiffany(GameObject npc) {
+        if (npc.GetComponent<TiffyAI>()) {
+            EventManager.OnTalk -= OnMetTiffany;
+
+            ChangeAndSaveProgressionNum(1);
+        }
+    }
+
+    //sets the progression number to properly branch for the "whats new" dialog option
+    public void SetProgressionForWhatsNew() {
+        progressionNum = Random.Range(0, 6);
+    }
+
     //called when a player enters a zone theyre suppsoed to bring an item to. If they brought it, tell them to drop it, otherwise tell them to go get it
     public void PlayerEnteredItemZone(bool hasItem) {
         //if the player brought the item, we just set the dialog progression number so that they get a message telling them to drop it
         if (hasItem) {
-            progressionNum = 1;
+            progressionNum = 2;
         //if they didnt bring the item, similarly, set the progression number but this time to branch to dialog telling them to go get it
         } else {
-            progressionNum = 2;
+            progressionNum = 0;
         }
         //then open up dialog
         OnInteract();
