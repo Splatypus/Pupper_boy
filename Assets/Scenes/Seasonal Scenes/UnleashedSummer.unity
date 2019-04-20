@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1763559, g: 0.2207275, b: 0.30304796, a: 1}
+  m_IndirectSpecularColor: {r: 0.09906031, g: 0.31823266, b: 0.514453, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -395,7 +395,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66104529}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -32.306946, y: -7.389632, z: 59.09436}
+  m_LocalPosition: {x: -26.55, y: -1.256, z: 0.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
@@ -1091,7 +1091,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
-  m_RootOrder: 11
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &216888253
 GameObject:
@@ -2135,7 +2135,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 255957124}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -45.376938, y: -4.5996323, z: 20.554352}
+  m_LocalPosition: {x: 38.8, y: -0.03, z: -13.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
@@ -2574,7 +2574,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 312133598}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.6930542, y: -2.7196321, z: 32.06436}
+  m_LocalPosition: {x: -7.145, y: -8.263, z: 58.047}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
@@ -5091,28 +5091,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 740123831}
-        m_MethodName: SpawnMoveTarget
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 740123831}
-        m_MethodName: SpawnMoveTarget
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   - m_PersistentCalls:
@@ -5206,370 +5184,370 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   serializedNodes:
-  - x: -432
-    y: 192
+  - x: -225
+    y: 173
     width: 70
     height: 70
     text: 
     num: -1
     type: 4
-  - x: -347
-    y: 152
+  - x: -140
+    y: 133
     width: 200
     height: 150
     text: "DOGGO! \u2026 DOGGO! Hello? You in there kid!? C\u2019mon, wake up! Our
       humans are gonna be so mad if they find out I\u2026 "
     num: -1
     type: 0
-  - x: -138
-    y: 156
+  - x: 69
+    y: 137
     width: 200
     height: 150
     text: "Oh, you\u2019re awake! Good. How many toes am I holding up?\u201D"
     num: -1
     type: 0
-  - x: 714
-    y: 115
+  - x: 921
+    y: 96
     width: 80
     height: 70
     text: 
     num: 0
     type: 2
-  - x: 176
-    y: 333
+  - x: 383
+    y: 314
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -336
-    y: 362
+  - x: -129
+    y: 343
     width: 200
     height: 150
     text: "Alright, good, you passed my first test. Now\u2026. look at your doghouse!
       That one should be easy, I hope\u2026"
     num: -1
     type: 0
-  - x: -122
-    y: 387
+  - x: 85
+    y: 368
     width: 80
     height: 70
     text: 
     num: 0
     type: 2
-  - x: -36
-    y: 436
+  - x: 171
+    y: 417
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 58
-    y: 380
+  - x: 265
+    y: 361
     width: 200
     height: 150
     text: Great, you can look at your doghouse. Okay, one more. Do you see that gross
       pink bone of yours anywhere?
     num: -1
     type: 0
-  - x: 270
-    y: 385
+  - x: 477
+    y: 366
     width: 80
     height: 70
     text: 
     num: 0
     type: 2
-  - x: 355
-    y: 434
+  - x: 562
+    y: 415
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 707
-    y: 189
+  - x: 914
+    y: 170
     width: 80
     height: 70
     text: 
     num: 1
     type: 2
-  - x: -127
-    y: 448
+  - x: 80
+    y: 429
     width: 80
     height: 70
     text: 
     num: 2
     type: 2
-  - x: 268
-    y: 452
+  - x: 475
+    y: 433
     width: 80
     height: 70
     text: 
     num: 3
     type: 2
-  - x: 431
-    y: 369
+  - x: 638
+    y: 350
     width: 200
     height: 150
     text: 'Fantastic. You can still see, and have most of your memory intact, so probably
       no concussion? '
     num: -1
     type: 0
-  - x: 632
-    y: 363
+  - x: 839
+    y: 344
     width: 200
     height: 150
     text: "Let\u2019s test your coordination and make sure you still know how to walk
       and stuff."
     num: -1
     type: 0
-  - x: 183
-    y: 530
+  - x: 390
+    y: 511
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 936
-    y: 367
+  - x: 1143
+    y: 348
     width: 200
     height: 150
     text: See that tree over there? Walk to it and then come back to me.
     num: -1
     type: 0
-  - x: 846
-    y: 372
+  - x: 1053
+    y: 353
     width: 80
     height: 70
     text: 
     num: 4
     type: 2
-  - x: 845
-    y: 436
+  - x: 1052
+    y: 417
     width: 80
     height: 70
     text: 
     num: 5
     type: 2
-  - x: -267
-    y: 578
+  - x: -60
+    y: 559
     width: 200
     height: 150
     text: Good, good. Got to the tree in one piece. Alright, maybe go take  a walk
       to your doghouse, just to make sure you really remember where it is.
     num: -1
     type: 0
-  - x: -365
-    y: 579
+  - x: -158
+    y: 560
     width: 80
     height: 70
     text: 
     num: 6
     type: 2
-  - x: -374
-    y: 648
+  - x: -167
+    y: 629
     width: 80
     height: 70
     text: 
     num: 8
     type: 2
-  - x: -52
-    y: 632
+  - x: 155
+    y: 613
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 128
-    y: 577
+  - x: 335
+    y: 558
     width: 200
     height: 150
     text: "Making progress. One last movement test: Go walk to the bush next to our
       house. Y\u2019know\u2026 your favorite bush?"
     num: -1
     type: 0
-  - x: 36
-    y: 617
+  - x: 243
+    y: 598
     width: 80
     height: 70
     text: 
     num: 7
     type: 2
-  - x: 348
-    y: 630
+  - x: 555
+    y: 611
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 433
-    y: 577
+  - x: 640
+    y: 558
     width: 200
     height: 150
     text: 'Phew. Okay, you still have most of your memory, and muscle coordination.
       One last test... '
     num: -1
     type: 0
-  - x: 1252
-    y: 639
+  - x: 1459
+    y: 620
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 643
-    y: 619
+  - x: 850
+    y: 600
     width: 80
     height: 70
     text: 
     num: 9
     type: 2
-  - x: 743
-    y: 583
+  - x: 950
+    y: 564
     width: 200
     height: 150
     text: "Bring me back that gross pink bone toy of yours you looked at earlier.
       It\u2019s around here somewhere."
     num: -1
     type: 0
-  - x: 1042
-    y: 582
+  - x: 1249
+    y: 563
     width: 200
     height: 150
     text: Go ahead and pick it up or drop it by clicking. Bring it here!
     num: -1
     type: 0
-  - x: 945
-    y: 659
+  - x: 1152
+    y: 640
     width: 80
     height: 70
     text: 
     num: 10
     type: 2
-  - x: 947
-    y: 585
+  - x: 1154
+    y: 566
     width: 80
     height: 70
     text: 
     num: 11
     type: 2
-  - x: 1345
-    y: 540
+  - x: 1552
+    y: 521
     width: 180
     height: 70
     text: Yote that shit in
     num: 0
     type: 1
-  - x: 1345
-    y: 623
+  - x: 1552
+    y: 604
     width: 180
     height: 70
     text: Has Item
     num: 1
     type: 1
-  - x: 1357
-    y: 697
+  - x: 1564
+    y: 678
     width: 180
     height: 70
     text: Doesnt have
     num: 2
     type: 1
-  - x: 1561
-    y: 442
+  - x: 1768
+    y: 423
     width: 200
     height: 150
     text: "Looks like you\u2019re fine!"
     num: -1
     type: 0
-  - x: 1547
-    y: 589
+  - x: 1754
+    y: 570
     width: 200
     height: 150
     text: Sigh, dogs always have such a problem giving up the toy. Drop it, Doggo!
     num: -1
     type: 0
-  - x: 1604
-    y: 744
+  - x: 1811
+    y: 725
     width: 200
     height: 150
     text: "You\u2019ve made it so far, maybe that vase only hit a small part of your
       brain\u2026I mean, I believe in you! Go find your bone!"
     num: -1
     type: 0
-  - x: 1512
-    y: 790
+  - x: 1719
+    y: 771
     width: 80
     height: 70
     text: 
     num: 9
     type: 2
-  - x: 2486
-    y: 678
+  - x: 2693
+    y: 659
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 1803
-    y: 560
+  - x: 2010
+    y: 541
     width: 80
     height: 70
     text: 
     num: 12
     type: 2
-  - x: 1960
-    y: 624
+  - x: 2167
+    y: 605
     width: 200
     height: 150
     text: "Wait...What\u2019s that over there?"
     num: -1
     type: 0
-  - x: 2172
-    y: 665
+  - x: 2379
+    y: 646
     width: 80
     height: 70
     text: 
     num: 13
     type: 2
-  - x: 90
-    y: 140
+  - x: 297
+    y: 121
     width: 180
     height: 70
     text: None
     num: 0
     type: 1
-  - x: 89
-    y: 202
+  - x: 296
+    y: 183
     width: 180
     height: 70
     text: Four
     num: 1
     type: 1
-  - x: 88
-    y: 264
+  - x: 295
+    y: 245
     width: 180
     height: 70
     text: Im...not sure
     num: 2
     type: 1
-  - x: 295
-    y: 140
+  - x: 502
+    y: 121
     width: 200
     height: 150
     text: "This is worse than I thought\u2026 I didn\u2019t realize you were standing
       under the window when I- er, the wind, knocked that vase over."
     num: -1
     type: 0
-  - x: 500
-    y: 111
+  - x: 707
+    y: 92
     width: 200
     height: 150
     text: "I gotta make sure you\u2019re alright, kid. Okay, first thing\u2019s first,
       look at the birdbath for me. Do you remember what a birdbath is?"
     num: -1
     type: 0
-  - x: 2265
-    y: 623
+  - x: 2472
+    y: 604
     width: 200
     height: 150
     text: "Must be Tiffany, that show pomeranian. Looks like some birds are giving
@@ -5690,14 +5668,12 @@ MonoBehaviour:
   - {fileID: 1606856085}
   - {fileID: 742553031}
   - {fileID: 719016966}
-  lookTargetObject: {fileID: 1567439964151174, guid: 35d9c97321c1df841b4353b1504bea64,
+  lookTargetObject: {fileID: 1510400686856875019, guid: 35d9c97321c1df841b4353b1504bea64,
     type: 3}
   moveTargetLocations:
   - {fileID: 312133598}
   - {fileID: 66104529}
   - {fileID: 255957124}
-  - {fileID: 1775272010}
-  - {fileID: 866364171}
   moveTargetObject: {fileID: 1272110541259378, guid: 6f888f4356bb67548803e658492a4047,
     type: 3}
   itemTargetLocations:
@@ -10946,36 +10922,6 @@ Transform:
   m_Father: {fileID: 1059288943}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &866364171
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 866364172}
-  m_Layer: 2
-  m_Name: MoveTarget (4)
-  m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &866364172
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 866364171}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 66.83305, y: -1.3296318, z: 53.994354}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 980955683}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &869982280
 GameObject:
   m_ObjectHideFlags: 0
@@ -11538,8 +11484,6 @@ Transform:
   - {fileID: 312133599}
   - {fileID: 66104530}
   - {fileID: 255957125}
-  - {fileID: 1775272011}
-  - {fileID: 866364172}
   - {fileID: 211587281}
   - {fileID: 2007542682}
   m_Father: {fileID: 1310605133}
@@ -26509,36 +26453,6 @@ Transform:
   - {fileID: 772567544}
   m_Father: {fileID: 905634470}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1775272010
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1775272011}
-  m_Layer: 2
-  m_Name: MoveTarget (3)
-  m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1775272011
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775272010}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 37.583054, y: 1.9203682, z: -10.675659}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 980955683}
-  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1783848331
 GameObject:

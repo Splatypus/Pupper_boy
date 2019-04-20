@@ -86,7 +86,7 @@ public class SocksTutorial : Dialog2 {
 
     //Triggers the OnInteract function based on what the current objective count is
     public void TriggerInteractFromObjectiveCount() {
-        if (objectiveCount <= 2 || objectiveCount == 5 || objectiveCount == 6 || objectiveCount == 7 || objectiveCount == 10 || objectiveCount == 11) { //looking at targets 3 and 4 do nothing, since 3,4,5 spawn all at once, same as spawns 8,9,10
+        if (objectiveCount <= 7) { //123 are looking at object, 456 are movement, 7 is retreiving an item
             
             //save progress.
             SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
@@ -101,14 +101,14 @@ public class SocksTutorial : Dialog2 {
     //sock's dialog will save after objectives are finished, since otherwise the forced OnInteract would cause desync
     public override void SaveDialogProgress() {
         //save progress after chatting after the last objective
-        if (objectiveCount == 11) {
+        if (objectiveCount == 7) {
             objectiveCount++;
             SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
             SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
             SaveManager.getInstance().SaveFile();
         }
         //and then from now on treat dialog normally
-        else if (objectiveCount > 11) {
+        else if (objectiveCount > 7) {
             base.SaveDialogProgress();
         }
     }
