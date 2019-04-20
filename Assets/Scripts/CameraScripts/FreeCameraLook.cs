@@ -16,14 +16,14 @@ public class FreeCameraLook : MonoBehaviour {
     public Transform anchor;
     public GameObject LockCameraLocation;
 
-    [Header("Hidden Control Values")]
+    [Header("Control Values")]
     public LayerMask mask;
     public float maxDistance = 7.0f;
     public float minDistance = 0.2f;
     public float collisionPadding = 0.5f;
     public float turnSpeed = 1.5f;
-    public float tiltMax = 75f;
-    public float tiltMin = 45f;
+    public float angleMin = 15f;
+    public float angleMax = 80f;
     public bool controlLocked = false; //control of camera locks when npc stuff
 
     public float joypadXMultiplier = 2.0f;
@@ -95,9 +95,10 @@ public class FreeCameraLook : MonoBehaviour {
 
         //apply mouse movement
         float x = (Input.GetAxis("Mouse X") + Input.GetAxis("RightJoystickX") * joypadXMultiplier) * xSensitivity;
-        float y = (Input.GetAxis("Mouse Y") + Input.GetAxis("RightJoystickY") * joypadYMultiplier) * ySensitivity;
+        float y = (Input.GetAxis("Mouse Y") + Input.GetAxis("RightJoystickY") * joypadYMultiplier) * -ySensitivity;
         transform.RotateAround(anchorPosition, anchor.up, x);
-        transform.RotateAround(anchorPosition, transform.right, -y);
+        float angle = FindCameraAngle();
+        transform.RotateAround(anchorPosition, transform.right, ClampRotationAngle(angle, y, angleMin, angleMax));
 
 
         //find out how many units back the camera can be
@@ -112,7 +113,22 @@ public class FreeCameraLook : MonoBehaviour {
 
 
     }
-
+    //returns the angle in degress that the camera is above the xz plane of the anchor
+    private float FindCameraAngle() {
+        float height = transform.position.y - anchor.transform.position.y;
+        float distance = Mathf.Sqrt( Mathf.Pow(transform.position.x - anchor.transform.position.x, 2) + Mathf.Pow(transform.position.z - anchor.transform.position.z, 2) );
+        return Mathf.Atan(height / distance) * Mathf.Rad2Deg;
+    }
+    //clamps a rotation delta so that it doesnt move below or above a max value when applies to an angle
+    private float ClampRotationAngle(float angle, float delta, float min, float max) {
+        if (angle + delta < min) {
+            return min - angle;
+        }
+        if (angle + delta > max) {
+            return max - angle;
+        }
+        return delta;
+    }
     //moves the camera to the given position, facing lookat, over the duration given. Smooths movement and disables input.
     public void MoveToPosition(Vector3 location, Vector3 lookAt, float duration) {
         controlLocked = true;

@@ -11,7 +11,7 @@ public class ScentManager : MonoBehaviour {
     public float duration;
     public float maxDistance = 300;
     public List<ScentObject> scentObjects = new List<ScentObject>();
-    public bool isUnlocked = false; //has the player aquired this skill yet
+    //public bool isUnlocked = false; //has the player aquired this skill yet
 
     //internal variables
     Transform playerTransform;
@@ -84,16 +84,14 @@ public class ScentManager : MonoBehaviour {
 
     //if the effect is available to the player, toggle its enable/disable state
     public void ToggleEffect() {
-        if (isUnlocked) {
-            if (!isEnabled)
-                EnableEffect();
-            else
-                DisableEffect();
-        }
+        if (!isEnabled)
+            EnableEffect();
+        else
+            DisableEffect();
     }
     //Should be called when player input tries to enable scent mode. Check to make sure that its unlocked and not already enabled, then enables it if it can. Returns true if swap was made
     public bool InputEnable() {
-        if (isUnlocked && !isEnabled) {
+        if (!isEnabled) {
             EnableEffect();
             return true;
         }
@@ -101,7 +99,7 @@ public class ScentManager : MonoBehaviour {
     }
     //Same thing but for disabling the effect
     public bool InputDisable() {
-        if (isUnlocked && isEnabled) {
+        if (isEnabled) {
             DisableEffect();
             return true;
         }

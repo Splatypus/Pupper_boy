@@ -9,7 +9,7 @@ public class DayNightSpawn : MonoBehaviour {
     public bool isActiveAtNight = false;
 
     // Use this for initialization
-    void Start() {
+    void Awake() {
         DayNightManager dayNight = DayNightManager.Instance;
         //if its active at night, add activate to the night triggers and deactivate to day triggers. Otherwise do the reverse.
         if (isActiveAtNight) {

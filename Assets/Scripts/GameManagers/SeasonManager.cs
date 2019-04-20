@@ -20,11 +20,7 @@ public class SeasonManager : MonoBehaviour {
         }
     }
 
-    private void Start() {
-        InitialLoad();
-    }
-    //loads into the current season based on saved data
-    private void InitialLoad() {
+    void Start() {
         SetSeason((Seasons)SaveManager.getInstance().GetInt(SEASON_KEY, 0));
     }
 

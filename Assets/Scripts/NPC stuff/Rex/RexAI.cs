@@ -53,7 +53,7 @@ public class RexAI : AIbase {
 
     //unllocks scent mode
     public void UnlockScentMode() {
-        ScentManager.Instance.isUnlocked = true;
+        ScentManager.Instance.enabled = true;
         state = States.READYFORTOYS;
     }
 

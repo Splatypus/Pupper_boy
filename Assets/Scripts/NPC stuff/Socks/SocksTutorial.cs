@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SocksTutorial : Dialog2 {
-    protected override string PROGRESSION_SAVE_KEY { get; set; } = "SocksSummerProgression";
+    protected override string PROGRESSION_SAVE_KEY { get { return "SocksSummerProgression";} }
     private readonly string OBJECTIVE_COUNT_KEY = "SocksSummerObjectives";
 
     [Header("Objective Info")]
@@ -99,7 +99,12 @@ public class SocksTutorial : Dialog2 {
     //remove auto-saving of dialog.
     //sock's dialog will save after objectives are finished, since otherwise the forced OnInteract would cause desync
     public override void SaveDialogProgress() {
-        
+        if (objectiveCount == 11) {
+            objectiveCount++;
+            SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
+            SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+            SaveManager.getInstance().SaveFile();
+        }
     }
 
     //finds the current fence manager and unlocks fences of the given type

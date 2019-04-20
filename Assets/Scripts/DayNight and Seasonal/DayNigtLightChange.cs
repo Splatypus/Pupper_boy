@@ -14,7 +14,7 @@ public class DayNigtLightChange : MonoBehaviour {
     public float nightIntensity;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         if (lightSource == null)
             lightSource = gameObject.GetComponent<Light>();
 

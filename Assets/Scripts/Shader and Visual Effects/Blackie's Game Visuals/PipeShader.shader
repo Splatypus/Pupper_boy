@@ -9,12 +9,12 @@
 	}
 	SubShader
 	{
-		Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
+		Tags { "Queue" = "Geometry" "RenderType" = "Opaque" }
 		LOD 200
 
 		CGPROGRAM
 
-		#pragma surface surf Standard fullforwardshadows alpha:fade
+		#pragma surface surf Standard fullforwardshadows
 		#pragma target 3.0
 
 		struct Input
@@ -35,6 +35,7 @@
 			// Metallic and smoothness come from slider variables
 			o.Metallic = _Metallic;
 			o.Smoothness = _Glossiness;
+			o.Emission = o.Albedo;
 		}
 		
 		ENDCG

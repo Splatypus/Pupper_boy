@@ -12,7 +12,7 @@ public class DayNightMaterialChange : MonoBehaviour {
     public Material nightMat;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         if (target == null)
             target = gameObject.GetComponent<MeshRenderer>();
         if (dayMat == null)
