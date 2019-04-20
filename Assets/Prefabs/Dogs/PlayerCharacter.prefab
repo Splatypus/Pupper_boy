@@ -2008,7 +2008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7133a23e185ebc641919274702cfbde4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentController: {fileID: 0}
+  myCurrentMode: 0
   controllerOverride: {fileID: 0}
 --- !u!114 &757645671
 MonoBehaviour:
@@ -2022,6 +2022,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43772b75a310f9d4588382c808d0c436, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  movementSpeed: 10
+  jumpForce: 1.1
+  jumpBeginDuration: 0.22
+  jumpFloatDuration: 0.5
+  jumpFloatAmount: 0.4
 --- !u!114 &114157377081608610
 MonoBehaviour:
   m_ObjectHideFlags: 0
