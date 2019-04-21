@@ -22,7 +22,7 @@ public class SocksTutorial : Dialog2 {
 
     new void Start() {
         base.Start();
-        customCameraLocation = cameraReference.getCamera();
+        //customCameraLocation = cameraReference.getCamera();
 
         objectiveCount = SaveManager.getInstance().GetInt(OBJECTIVE_COUNT_KEY, 0);
 

@@ -38,7 +38,22 @@ ModelImporter:
     4300006: cross_pipe_endcap4
     4300008: puzzle_piece_cross_base
     4300010: cross_pipe
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: brass_pipeEnds
+    second: {fileID: 2100000, guid: cf3311413e7a1d74ba90fe1c75ee27dc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: misc_stone
+    second: {fileID: 2100000, guid: 8fac185523755c641a58b1dd5643f00b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: plaster_puzzle_base_tex
+    second: {fileID: 2100000, guid: 1a8a896362a5fe4468f69e3f16f8b850, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

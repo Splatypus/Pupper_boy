@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,9 +22,9 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
     public GameObject[] stonePrefabs;
 
     [Header("Materials")]
-    public Material[] powerColors;
-    public Material baseDefault;
-    public Material baseImmobile;
+    [SerializeField] PowerColor[] powerColors;
+    [SerializeField] Material baseDefault;
+    [SerializeField] Material baseImmobile;
 
     [Header("Build Variables")]
     public float baseDistance;
@@ -113,5 +114,13 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
                 //TODO: apply rotation and immobile texture kinda thing
             }
         }
+    }
+
+    //all the information regarding a color of power flow
+    [Serializable]
+    private class PowerColor {
+        public Color minColor;
+        public Color maxColor;
+        public Material material;
     }
 }

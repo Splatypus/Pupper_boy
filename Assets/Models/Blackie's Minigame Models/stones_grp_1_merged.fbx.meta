@@ -9,7 +9,12 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: stone_cluster1
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: misc_stone
+    second: {fileID: 2100000, guid: 8fac185523755c641a58b1dd5643f00b, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

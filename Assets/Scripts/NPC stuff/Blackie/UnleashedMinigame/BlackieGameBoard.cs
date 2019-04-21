@@ -275,11 +275,15 @@ public class BlackieGameBoard {
         protected int x, y; //position on the gamebaord
         protected int rotation; //which way "up" is facing (range of 0-3);
         public bool isLocked; //can the player move this piece?
+        protected int color; //the current color of this tile
         protected BlackieGameBoard game;
 
         //input data
         protected int inputColor;
         protected int inputSide;
+
+        //view object
+        public IPieceListener listener { protected get; set; }
 
         //constructor
         public Piece(int x, int y) {
@@ -287,8 +291,9 @@ public class BlackieGameBoard {
             this.y = y;
         }
 
-        public float GetRotation() {
-            return rotation * 90f;
+        //updates the view with color information
+        public virtual void UpdateView() {
+            listener?.ChangeColor(color);
         }
 
         #region public function
@@ -299,6 +304,10 @@ public class BlackieGameBoard {
         }
         public void SetRotation(int rotate) {
             rotation = MatchRange(rotate);
+        }
+        //returns rotation converted to worldspace
+        public float GetRotation() {
+            return rotation * 90f;
         }
         //resets input data
         public virtual void ResetInput() {
@@ -355,7 +364,7 @@ public class BlackieGameBoard {
 
     //A tile which generates "power"
     public class SourcePiece : Piece {
-        int color; //the color this tile supplies
+        
 
         public SourcePiece(int x, int y, int c) : base(x, y) {
             color = c;
@@ -385,7 +394,8 @@ public class BlackieGameBoard {
                 return;
             }
 
-            //if correct side and color, victory counter
+            //if correct side and color, victory counter and set its color
+            color = inputColor;
             game.endNodesPowered += 1;
         }
     }
@@ -401,14 +411,13 @@ public class BlackieGameBoard {
      
     */
     public class LinePiece : Piece {
-        int? color; //the color this tile has received
 
         public LinePiece(int x, int y) : base(x, y) { }
 
         //reset saved color info
         public override void ResetInput() {
             base.ResetInput();
-            color = null;
+            color = -1;
         }
 
         public override void ProcessInput() {
@@ -417,7 +426,7 @@ public class BlackieGameBoard {
                 return;
             }
             //if color is already assigned, this tile is a mistake
-            if (color != null) {
+            if (color != -1) {
                 game.errors.Add(this);
                 return;
             }
@@ -438,14 +447,13 @@ public class BlackieGameBoard {
           
     */
     public class ElbowPiece : Piece {
-        int? color; //the color this tile has received
 
         public ElbowPiece(int x, int y) : base(x, y) { }
 
         //reset saved color info
         public override void ResetInput() {
             base.ResetInput();
-            color = null;
+            color = -1;
         }
 
         public override void ProcessInput() {
@@ -454,7 +462,7 @@ public class BlackieGameBoard {
                 return;
             }
             //if color is already assigned, this tile is a mistake
-            if (color != null) {
+            if (color != -1) {
                 game.errors.Add(this);
                 return;
             }
@@ -475,14 +483,13 @@ public class BlackieGameBoard {
           
     */
     public class TPiece : Piece {
-        int? color; //the color this tile has received
 
         public TPiece(int x, int y) : base(x, y) { }
 
         //reset saved color info
         public override void ResetInput() {
             base.ResetInput();
-            color = null;
+            color = -1;
         }
 
         public override void ProcessInput() {
@@ -491,7 +498,7 @@ public class BlackieGameBoard {
                 return;
             }
             //if color is already assigned, this tile is a mistake
-            if (color != null) {
+            if (color != -1) {
                 game.errors.Add(this);
                 return;
             }
@@ -524,19 +531,18 @@ public class BlackieGameBoard {
           
     */
     public class CrossPiece : Piece {
-        int? color; //the color this tile has received
 
         public CrossPiece(int x, int y) : base(x, y) { }
 
         //reset saved color info
         public override void ResetInput() {
             base.ResetInput();
-            color = null;
+            color = -1;
         }
 
         public override void ProcessInput() {
             //if color is already assigned, this tile is a mistake
-            if (color != null) {
+            if (color != -1) {
                 game.errors.Add(this);
                 return;
             }
@@ -559,31 +565,30 @@ public class BlackieGameBoard {
           
     */
     public class BridgePiece : Piece {
-        int? verticalColor;
-        int? horizontalColor;
+        int horizontalColor;
 
         public BridgePiece(int x, int y) : base(x, y) { }
 
         //reset saved color info from both directions
         public override void ResetInput() {
             base.ResetInput();
-            verticalColor = null;
-            horizontalColor = null;
+            color = -1;
+            horizontalColor = -1;
         }
 
         public override void ProcessInput() {
             
             if (inputSide == 0 || inputSide == 2) {
                 //if the color in this direction is already assigned, this tile is a mistake
-                if (verticalColor != null) {
+                if (color != -1) {
                     game.errors.Add(this);
                     return;
                 }
-                verticalColor = inputColor;
+                color = inputColor;
 
             } else /*if inputSide is 1 or 3*/ {
                 //if the color in this direction is already assigned, this tile is a mistake
-                if (horizontalColor != null) {
+                if (horizontalColor != -1) {
                     game.errors.Add(this);
                     return;
                 }
@@ -594,12 +599,31 @@ public class BlackieGameBoard {
             SendInput(inputColor, MatchRange(inputSide + 2));
         }
 
+        //updates color like normal, but also attempts to update horizontal color if the right interface is attached
+        public override void UpdateView() {
+            ((IBridgePieceListener)listener)?.ChangeSecondaryColor(horizontalColor);
+            listener.ChangeColor(color);
+        }
+
     }
 
     #endregion
 
+    #region interfaces
+    //interface for gameboard callbacks
     public interface IListener {
         void OnVictory();
         void OnFileLoaded();
     }
+
+    //interface for pieces
+    public interface IPieceListener {
+         void ChangeColor(int newColor);
+    }
+
+    //special one for bridge pieces since they can have two possible colors
+    public interface IBridgePieceListener : IPieceListener {
+        void ChangeSecondaryColor(int newColor);
+    }
+    #endregion
 }
