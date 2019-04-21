@@ -4,31 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
-public class AudioSettingsManager : MonoBehaviour {
-
-    //Main AudioMixer
-    public AudioMixer masterMixer;
-
-    //The Sliders
+public class AudioSettingsManager : MonoBehaviour
+{
+    [Header("Slider References")]
     public Slider masterSlider;
     public Slider musicSlider;
     public Slider sfxSlider;
 
-    public void RemoteStart() {
+    public void RemoteStart()
+    {
         //mute music at the start to account for needed delay
-        masterMixer.SetFloat("musicVol", -60f);
+        //masterMixer.SetFloat("musicVol", -60f);
+        AudioSystem.ChangeMixerVolume("musicVol", -60f);
 
-        //Set references to self for the Sliders
-        masterSlider.GetComponent<PlayerPrefsManager>().myManager = this;
-        musicSlider.GetComponent<PlayerPrefsManager>().myManager = this;
-        sfxSlider.GetComponent<PlayerPrefsManager>().myManager = this;
-
-        ChangeMixerVolume("masterVol", PlayerPrefs.GetFloat("masterVol"));
-        ChangeMixerVolume("musicVol", PlayerPrefs.GetFloat("musicVol"));
-        ChangeMixerVolume("sfxVol", PlayerPrefs.GetFloat("sfxVol"));
-    }
-
-    public void ChangeMixerVolume(string mixKey, float value) {
-        masterMixer.SetFloat(mixKey, Mathf.Log10(value) * 33);
+        AudioSystem.ChangeMixerVolume("masterVol", PlayerPrefs.GetFloat("masterVol"));
+        AudioSystem.ChangeMixerVolume("musicVol", PlayerPrefs.GetFloat("musicVol"));
+        AudioSystem.ChangeMixerVolume("sfxVol", PlayerPrefs.GetFloat("sfxVol"));
     }
 }
