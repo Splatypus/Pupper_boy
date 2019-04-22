@@ -10,9 +10,7 @@ public class AudioManager : MonoBehaviour
     //Main AudioMixer
     public AudioMixer masterMixer;
     static AudioManager me;
-    public AudioClip adfewr;
-    public GameObject audioSourcePreFab;
-    public static GameObject audioSourcePreFabS;
+    //public AudioClip testClip;
 
     public static List<AudioSource> alllAudioSources = new List<AudioSource>();
 
@@ -42,32 +40,30 @@ public class AudioManager : MonoBehaviour
         AudioSystem.sfxGroup = masterMixer.FindMatchingGroups("SFX")[0];
         AudioSystem.ambientGroup = masterMixer.FindMatchingGroups("Ambient")[0];
 
-        audioSourcePreFabS = audioSourcePreFab;
-
-        Invoke("aklsdhjf", 1);
-        Invoke("aklsdhjf", 1.1f);
-        Invoke("aklsdhjf", 1.62f);
-        Invoke("aklsdhjf", 1.3f);
-        Invoke("aklsdhjf", 1.5f);
-        Invoke("aklsdhjf", 2.1f);
-        Invoke("aklsdhjf", 2);
-        Invoke("aklsdhjf", 4);
-        Invoke("aklsdhjf", 3.5f);
-
-        Invoke("aklsdhjf", 6);
-        Invoke("aklsdhjf", 6.1f);
-        Invoke("aklsdhjf", 6.62f);
-        Invoke("aklsdhjf", 6.3f);
-        Invoke("aklsdhjf", 6.5f);
-        Invoke("aklsdhjf", 6.1f);
-        Invoke("aklsdhjf", 6);
-        Invoke("aklsdhjf", 6);
-        Invoke("aklsdhjf", 6.5f);
+        //Invoke("TestPlay", 1);
+        //Invoke("TestPlay", 1.1f);
+        //Invoke("TestPlay", 1.62f);
+        //Invoke("TestPlay", 1.3f);
+        //Invoke("TestPlay", 1.5f);
+        //Invoke("TestPlay", 2.1f);
+        //Invoke("TestPlay", 2);
+        //Invoke("TestPlay", 4);
+        //Invoke("TestPlay", 3.5f);
+        //        TestPlay
+        //Invoke("TestPlay", 6);
+        //Invoke("TestPlay", 6.1f);
+        //Invoke("TestPlay", 6.62f);
+        //Invoke("TestPlay", 6.3f);
+        //Invoke("TestPlay", 6.5f);
+        //Invoke("TestPlay", 6.1f);
+        //Invoke("TestPlay", 6);
+        //Invoke("TestPlay", 6);
+        //Invoke("TestPlay", 6.5f);
     }
 
-    void aklsdhjf()
+    void TestPlay()
     {
-        AudioSystem.PlayAudioClip(adfewr, AudioSystem.sfxGroup);
+        //AudioSystem.PlayAudioClip(testClip, AudioSystem.sfxGroup);
     }
 
     public static AudioSource GetAudioSource()
