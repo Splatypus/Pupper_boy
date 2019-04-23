@@ -394,8 +394,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4360288439660549772}
+  - component: {fileID: 4759656651036017730}
   m_Layer: 0
-  m_Name: cross_piece_merged
+  m_Name: Cross Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -421,6 +422,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4759656651036017730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4360288439660317356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dea615efe343374ba95fdbef0746cc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseMesh: {fileID: 4360288439658124390}
+  pipeMesh: {fileID: 4360288439658124396}
+  stoneMesh: {fileID: 0}
+  particles: {fileID: 0}
 --- !u!1 &4360288439660317358
 GameObject:
   m_ObjectHideFlags: 0

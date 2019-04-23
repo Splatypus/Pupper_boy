@@ -222,7 +222,6 @@ public class BlackieGameBoard {
         }
 
         //if we get here, that means this is a real peice. Parse it and place it.
-        int rotation = CharToInt(data[1]);
         Piece p = null;
         switch (CharToInt(data[0])) {
             case 0:                                                 //empty piece
@@ -252,7 +251,9 @@ public class BlackieGameBoard {
                 p = new BridgePiece(x, y);
                 break;
         }
-        p.SetRotation(CharToInt(data[2])); //p should never be null at this point
+        //p should never be null at this point
+        p.SetRotation(CharToInt(data[1]));
+        p.isLocked = CharToInt(data[2]) == 1;
         board[x, y].piece = p;
         pieceList.Add(p);
     }

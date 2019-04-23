@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener 
 {
@@ -22,13 +23,15 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
     public GameObject[] stonePrefabs;
 
     [Header("Materials")]
-    [SerializeField] PowerColor[] powerColors;
+    public PowerColor[] powerColors;
+    public Material unpoweredColor;
     [SerializeField] Material baseDefault;
     [SerializeField] Material baseImmobile;
 
     [Header("Build Variables")]
     public float baseDistance;
     public float pieceHeight;
+    [Range(0, 1)] public float stoneSpawnChance;
 
     private BlackieGameBoard game;
 
@@ -109,16 +112,34 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
                         worldPiece = blankTilePrefab;
                         break;
                 }
+                //create this piece with its starting rotation
                 worldPiece = Instantiate(worldPiece, placePosition + new Vector3(0, pieceHeight, 0), rotation, transform);
+                GamePieceView pieceView = worldPiece.GetComponent<GamePieceView>();
+                //if its locked, change its base material to a darker mat
+                if (p.isLocked)
+                    pieceView.baseMesh.material = baseImmobile;
+                //then have a chance to add a set of stones at a random rotation
+                if (Random.Range(0.0f, 1.0f) <= stoneSpawnChance) {
+                    GameObject stone = Instantiate( stonePrefabs[Random.Range(0, stonePrefabs.Length - 1)], 
+                                                    worldPiece.transform.position, 
+                                                    Quaternion.Euler(0, 90 * Random.Range(0,3), 0),
+                                                    worldPiece.transform
+                                                    );
+                    pieceView.SetStone(stone);
+                }
+
+
+                //assign it for callbacks
+                p.listener = pieceView;
+                //add to list
                 pieces.Add(worldPiece);
-                //TODO: apply rotation and immobile texture kinda thing
             }
         }
     }
 
     //all the information regarding a color of power flow
     [Serializable]
-    private class PowerColor {
+    public class PowerColor {
         public Color minColor;
         public Color maxColor;
         public Material material;
