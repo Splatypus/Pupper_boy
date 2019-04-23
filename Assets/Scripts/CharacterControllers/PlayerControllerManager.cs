@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class PlayerControllerManager : MonoBehaviour {
 
-    public enum Modes { Walking, Dialog, Flight, MovementLock };
+    public enum Modes { Walking, Dialog, MovementLock };
     public Controller currentController;
-    Controller[] scripts = new Controller[4];
+    Controller[] scripts = new Controller[3];
 
     public void Start() {
         //initial setting of all modes to their correct places
-        scripts[(int)Modes.Walking] = gameObject.GetComponent<DogControllerV2>();
+        scripts[(int)Modes.Walking] = gameObject.GetComponent<DogController>();
         scripts[(int)Modes.Dialog] = gameObject.GetComponent<PlayerDialog>();
-        scripts[(int)Modes.Flight] = gameObject.GetComponent<FlightMode>();
         scripts[(int)Modes.MovementLock] = gameObject.GetComponent<NoMovementController>();
 
         //then disable all controller scripts except the default one (walking)

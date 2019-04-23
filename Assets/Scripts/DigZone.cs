@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DigZone : InteractableObject {
 
-    public DogControllerV2 playerController;
+    public DogController playerController;
 
     public DigZone other_side;
 
@@ -16,7 +16,7 @@ public class DigZone : InteractableObject {
     public Yards enteringYard;
 
     private void Start() {
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<DogControllerV2>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<DogController>();
     }
 
     //used to easily get the yard name from the enum
@@ -31,7 +31,7 @@ public class DigZone : InteractableObject {
 
     public override void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
-            other.GetComponent<DogControllerV2>().addObject(this);
+            other.GetComponent<DogController>().AddObject(this);
             playerController.DigZoneEnter();
         }
         
@@ -39,7 +39,7 @@ public class DigZone : InteractableObject {
 
     public override void OnTriggerExit(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
-            other.GetComponent<DogControllerV2>().removeObject(this);
+            other.GetComponent<DogController>().RemoveObject(this);
             playerController.DigZoneExit();
         }
     }

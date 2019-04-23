@@ -18,11 +18,11 @@ public class HoleDigZone : InteractableObject {
     bool isAnimating = false;
     int digCount = 0;
     Vector3 originalScale;
-    DogControllerV2 playerController;
+    DogController playerController;
 
     private void Start() {
         audioSource = gameObject.GetComponent<AudioSource>();
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<DogControllerV2>();
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<DogController>();
     }
 
     public override void OnInteract() {
@@ -110,7 +110,7 @@ public class HoleDigZone : InteractableObject {
             reward.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5.0f, 5.0f), 10.0f, Random.Range(-5.0f, 5.0f));
             reward.GetComponent<Collider>().enabled = false;
             gameObject.GetComponent<Collider>().enabled = false;
-            playerController.removeObject(this);
+            playerController.RemoveObject(this);
             StartCoroutine(EnableCollider(0.5f));
             StartCoroutine(ShrinkHoleOverTime(10.0f));
             //play spawn sound

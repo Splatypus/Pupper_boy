@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDig2 : MonoBehaviour {
-
+    /*
 
     [Header("Dig Movement Constants")]
     public float sec1_rot_speed = 1.0f;
@@ -170,4 +170,5 @@ public class PlayerDig2 : MonoBehaviour {
         }
 
     }
+    */
 }

@@ -9,7 +9,7 @@ public class EscMenuManager : MonoBehaviour {
     public GameObject player;
 
     void Start() {
-        FindObjectOfType<DogControllerV2>().escMenu = this;
+        FindObjectOfType<DogController>().escMenu = this;
         player = GameObject.FindGameObjectWithTag("Player");
         gameObject.SetActive(false);
         settingsMenu.GetComponentInChildren<AudioSettingsManager>().RemoteStart();

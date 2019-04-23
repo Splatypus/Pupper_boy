@@ -44,7 +44,7 @@ public class AIbase : Dialog2 {
 
     //destroys a gameobject and removes it from the player's mouth if its being held. Note that even if the object is not help, this function deltes it anyway
     public void DestoryObjectInMouth(GameObject toDestroy) {
-        PuppyPickup inMouth = Player.GetComponent<DogControllerV2>().ppickup;
+        PuppyPickup inMouth = Player.GetComponent<DogController>().ppickup;
         if (inMouth.itemInMouth != null && inMouth.itemInMouth == toDestroy) {
             inMouth.DropItem();
             inMouth.objectsInRange.Remove(toDestroy);

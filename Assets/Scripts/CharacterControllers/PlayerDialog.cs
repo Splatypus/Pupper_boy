@@ -35,7 +35,7 @@ public class PlayerDialog : Controller {
                 npcDialog.Next();
             }
         } else if (Input.GetButtonDown("Cancel")) {
-            gameObject.GetComponent<DogControllerV2>().escMenu.Hide();
+            gameObject.GetComponent<DogController>().escMenu.Hide();
         }
 	}
 
@@ -46,7 +46,6 @@ public class PlayerDialog : Controller {
         canvasGA.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        gameObject.GetComponent<Rigidbody>().drag = 5;
     }
 
     //ends dialog, closes window, and reverts controls to normal
@@ -60,8 +59,7 @@ public class PlayerDialog : Controller {
         for (int i = 0; i < buttons.Length; i++) {
             buttons[i].SetActive(false);
         }
-
-        gameObject.GetComponent<Rigidbody>().drag = 0;
+        
     }
 
     //sets the text in the active dialog box

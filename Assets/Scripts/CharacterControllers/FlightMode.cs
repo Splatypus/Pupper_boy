@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityStandardAssets.Characters.ThirdPerson;
 
 public class FlightMode : Controller {
-    
+    /*
     [SerializeField] private float speedOfFlight;
     [SerializeField] private float takeoffAngle;
     [SerializeField] private float tiltSensitivity;
@@ -128,4 +128,5 @@ public class FlightMode : Controller {
 
         anim.SetBool("isFlying", false);
     }
+    */
 }

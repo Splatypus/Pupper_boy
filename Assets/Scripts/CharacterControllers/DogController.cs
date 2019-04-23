@@ -5,10 +5,10 @@ using UnityEngine;
 
 using UnityEngine.UI; // for debug text
 
-public class DogControllerV2 : Controller {
+public class DogController : Controller {
 
     #region Component Variables
-    Rigidbody rigidBody;
+    CharacterController controller;
     Animator anim;
     Transform cam;
     PuppyPickup mouth;
@@ -16,7 +16,7 @@ public class DogControllerV2 : Controller {
 
     #region new world order movement variables
     public Vector3 v; //velocity
-    private float lastJumpTime = 0.0f;
+    [Header("Movement")]
     public float maxSpeed;
     public float sprintMultiplier;
     public float acceleration;
@@ -24,6 +24,7 @@ public class DogControllerV2 : Controller {
     public float inAirMult;
     public float gravity;
     public float maxFallSpeed;
+    public float hillSmoothingFactor;
     public float jumpForce;
     public float turnspeed = 5;
     public float freezeMovementAngle = 90.0f;
@@ -32,39 +33,33 @@ public class DogControllerV2 : Controller {
 
     Vector3 cam_right, cam_fwd;
 
-    float horizontal;
-    float vertical;
-    bool jumpInput;
-    int onGround = 0;
     public bool hasFlight = false;
 
-    //float m_speed;
-
     #region InteractionVariables
-    List<InteractableObject> inRangeOf = new List<InteractableObject>();
+    [Header("Interaction")]
     public PuppyPickup ppickup; //reference to the mouth script cuz sometimes u need that in ur life
+
+    List<InteractableObject> inRangeOf = new List<InteractableObject>();
     #endregion
 
     #region Digging
-    [SerializeField]
-    private AudioSource dig_sound;
+    [Header("Digging")]
+    [SerializeField] AudioSource dig_sound;
     public float rotateSpeed = 10.0f;
-    public float maxRotaionTime = 0.4f; 
+    public float maxRotaionTime = 0.4f;
 
     IconManager my_icon;
     TextFadeOut houseText;
     bool isDigging = false;
-    public int digZoneCount = 0; //how many dig zones the player is currently in
+    int digZoneCount = 0; //how many dig zones the player is currently in
     #endregion
-
-   
 
     [HideInInspector]
     public EscMenuManager escMenu;
 
 
-    void Start () {
-        rigidBody = GetComponent<Rigidbody>();
+    void Start() {
+        controller = GetComponent<CharacterController>();
         cam = Camera.main.transform;
         mouth = GetComponentInChildren<PuppyPickup>();
         anim = GetComponentInChildren<Animator>();
@@ -80,7 +75,7 @@ public class DogControllerV2 : Controller {
     //move in fixed update since it changes velocity. In normal update it would sometimes feel like it had small delays.
     void FixedUpdate() {
         if (!isDigging) {
-            //Move();
+            Move();
         }
     }
 
@@ -89,14 +84,14 @@ public class DogControllerV2 : Controller {
 
         //Opening Esc Menu should always be available
         if (Input.GetButtonDown("Cancel")) {
-                escMenu.Show();
-                gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Dialog); 
+            escMenu.Show();
+            gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Dialog);
         }
 
         //dont do anything if digging, or in Esc Menu
         if (!isDigging) {
 
-            Move();
+            //Move();
 
             //Handle interaction input
             if (Input.GetButtonDown("Dig") && inRangeOf.Count > 0) {
@@ -116,32 +111,30 @@ public class DogControllerV2 : Controller {
 
             //flight mode
             if (hasFlight && Input.GetButtonDown("Fly")) {
-                gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Flight);
+            //    gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Flight);
             }
 
-            //turning scent on or off
-            /*if (Input.GetButtonDown("Scent") || Input.GetButtonUp("Scent")) {
-                ScentManager.Instance.ToggleEffect();
-            }*/
+            //scent mode toggle
             if (Input.GetButtonDown("Scent")) {
                 ScentManager.Instance.InputEnable();
             } else if (Input.GetButtonUp("Scent")) {
                 ScentManager.Instance.InputDisable();
             }
-            
+
             if (Input.GetButtonDown("Interact")) {
                 mouth.DoInputAction();
             }
 
         }//end isdigging check
     }
-    
-    void Move()
-    {
-        // Get input from Unity's default input control system (Can this be called from fixed update? Might need to set these in update or somethin)
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
-        jumpInput = Input.GetButtonDown("Jump");
+
+    void Move() {
+        //grounded check before any movement
+        bool isGrounded = controller.isGrounded;
+        // Get input
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        bool jumpInput = Input.GetButton("Jump");
 
         // Get information about the camera relative to us
         cam_right = Vector3.ProjectOnPlane(cam.right, transform.up) * horizontal;
@@ -152,11 +145,11 @@ public class DogControllerV2 : Controller {
 
         //find accelerations and max speeds
         float a = acceleration; //acceleration for this frame
-        if (onGround == 0) {
+        if (!isGrounded) {
             a *= inAirMult;
         }
         float newMaxSpeed = maxSpeed;
-        if (Input.GetAxis("Sprint") > float.Epsilon) {
+        if (Input.GetAxis("Sprint") > 0.1f) {
             newMaxSpeed = maxSpeed * sprintMultiplier;
         }
         if (ScentManager.Instance.isEnabled) {
@@ -173,18 +166,18 @@ public class DogControllerV2 : Controller {
             angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
 
         //reduce the speed if your angle is too far off
-        if (angle > freezeMovementAngle && onGround > 0)
+        if (angle > freezeMovementAngle && isGrounded)
             newMaxSpeed = 0;
 
         //store vertical movement speed before messing with horizontal, since the entire vector is changed
-        float verticalSpeed = v.y;
-        v.y = 0;
+        float verticalSpeed = isGrounded? -hillSmoothingFactor/Time.deltaTime : v.y;
 
+        v.y = 0;
         //find horizontal movement based on input
-        if ((cam_right + cam_fwd).sqrMagnitude > Mathf.Epsilon) {
+        if (Mathf.Abs(horizontal) > Mathf.Epsilon || Mathf.Abs(vertical) > Mathf.Epsilon) {
             //in air
-            if (onGround == 0) {
-                v += moveDirection * a * Time.deltaTime;
+            if (!isGrounded) {
+                v += moveDirection * a * Time.fixedDeltaTime;
                 //if this acceleration pushes it over the max speed, cap it there instead
                 if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
                     v = v.normalized * maxSpeed;
@@ -193,77 +186,68 @@ public class DogControllerV2 : Controller {
 
             //acceleration only affects speed while on the ground. 
             else {
-                v = moveDirection * Mathf.Min(v.magnitude + a * Time.deltaTime, newMaxSpeed);
+                v = moveDirection * Mathf.Min(v.magnitude + a * Time.fixedDeltaTime, newMaxSpeed);
             }
-
-            //If acceleration affects velocity (drift doggo)
-            /*v += moveDirection * a * Time.deltaTime;
-            //if this acceleration pushes it over the max speed, cap it there instead
-            if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
-                v = v.normalized * maxSpeed;
-            }*/
-            }
+        }
         //no input
         else {
             //in air
-            if (onGround == 0) {
-                v = v.normalized * (v.magnitude - decceleration * Time.deltaTime);
+            if (!isGrounded) {
+                v = v.normalized * (v.magnitude - decceleration * Time.fixedDeltaTime);
             }
             //grouned
             else {
                 v = Vector3.zero;
             }
         }
-        
+
 
         v.y = verticalSpeed;//reset v.y after changes from horizontal movement
 
-        //then do the same thing for verticle speed, as long as doggo is in the air. Otherwise, set it to 0
-        if (onGround == 0) {
-            if (v.y - (gravity * Time.deltaTime) < -maxFallSpeed) {
-                v.y = -maxFallSpeed;
-            } else {
-                v.y -= gravity * Time.deltaTime;
-            }
-        } else if (jumpInput) { //jump if jump input
+        //then calculate verticle speed
+        //if grounded, vert speed is 0 unless jumping, if in air, calc gravity
+        if (isGrounded && jumpInput) {
             v.y = jumpForce;
-            lastJumpTime = Time.time;
-        } else if (Time.time > lastJumpTime + 0.2f && v.y < 0.0f) {
-            //if nothing is affecting velocity and have not jumped recently, then set it to 0. The time check is to make sure jumping allows you to leave the ground
-            v.y = 0;
+        } 
+        //gravity
+        if (v.y - (gravity * Time.fixedDeltaTime) < -maxFallSpeed) {
+            v.y = -maxFallSpeed;
+        } else {
+            v.y -= gravity * Time.fixedDeltaTime;
         }
 
-        rigidBody.velocity = v;
+        //set movement
+        controller.Move(v * Time.fixedDeltaTime);
 
         // Update animation controller with the amount that we are moving
-        float animValue = Mathf.Sqrt(vertical*vertical + horizontal*horizontal);
-        anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime);
+        float animValue = Mathf.Sqrt(vertical * vertical + horizontal * horizontal);
+        anim.SetFloat("Forward", animValue, 0.1f, Time.fixedDeltaTime);
+        anim.SetBool("onAir", !isGrounded);
 
         //set turnspeed
         float ts = turnspeed;
         //if doggo is in the air, he turns slower
-        if (onGround == 0) {
+        if (!isGrounded) {
             ts *= inAirMult;
         }
 
         // Update player rotation if there is movement in any direction
         if (horizontal != 0 || vertical != 0) {
             if (angle > Mathf.Epsilon)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * ts / angle * Time.deltaTime);
-        //If the cameralock button is pressed, then look towards the camera vector
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * ts / angle * Time.fixedDeltaTime);
+            //If the cameralock button is pressed, then look towards the camera vector
         } else if (Input.GetButton("CameraLock")) {
             //look vector directly through the doggo
             Quaternion newLookDirection = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.position - cam.transform.position, transform.up).normalized);
             angle = Quaternion.Angle(transform.rotation, newLookDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * ts / angle * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * ts / angle * Time.fixedDeltaTime);
         }
     }
 
     #region digging
     //digs through the given zone
     public void Dig(DigZone zone) {
-        if (onGround > 0) {
-            rigidBody.velocity = Vector3.zero;
+        if (controller.isGrounded) {
             //Run digging coroutine. This does the animation and movement and eveything
             StartCoroutine(StartZoneDig(zone));
         }
@@ -287,9 +271,9 @@ public class DogControllerV2 : Controller {
     }
 
     //moves the character to the next dig zone when digging
-    private void move_to_next_zone(DigZone digZone) {
+    private void Move_to_next_zone(DigZone digZone) {
         DigZone zone_to_go_to = digZone.other_side;
-        
+
 
         //find out how far to move. This is done by assuming that one dig zone is a plane with a normal pointing towards the other zone
         //this makes it easy to find the distance from the character to that plane and move the player that far
@@ -327,7 +311,7 @@ public class DogControllerV2 : Controller {
         anim.SetTrigger("Dig");
         yield return new WaitForSeconds(0.6f);
         dig_sound.Play();
-        move_to_next_zone(digZone);
+        Move_to_next_zone(digZone);
         anim.SetTrigger("Dig2");
         houseText.setText(digZone.other_side.GetYardName());
         //after the animation, restore movement
@@ -343,40 +327,24 @@ public class DogControllerV2 : Controller {
 
     #endregion
 
-    //called when touches ground
-    public void OnGroundEnter() {
-        onGround += 1;
-        if (onGround > 0) {
-            anim.SetBool("onAir", false);
-        }
-
-    }
-
-    //called when leaves ground
-    public void OnGroundExit() {
-        onGround -= 1;
-        if (onGround == 0) {
-            anim.SetBool("onAir", true);
-        }
-    }
 
     public override void OnDeactivated() {
-        //anim.SetFloat("Forward", 0.0f); //disable animations
+        anim.SetFloat("Forward", 0.0f); //disable animations
         //rigidBody.velocity = Vector3.zero; //and stop it from moving
         v = Vector3.zero;
     }
 
     public override void OnActivated() {
-        v = gameObject.GetComponent<Rigidbody>().velocity;
+        
     }
 
     //add object to things we can interact with
-    public void addObject(InteractableObject i) {
+    public void AddObject(InteractableObject i) {
         inRangeOf.Add(i);
     }
 
     //remove object from list
-    public void removeObject(InteractableObject i) {
+    public void RemoveObject(InteractableObject i) {
         inRangeOf.Remove(i);
     }
 

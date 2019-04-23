@@ -2,14 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GroundCheck : MonoBehaviour {
+/*
+ * UNUSED WITH CHARACTER CONTROLLER SYSTEM
+ * **/
 
-    public DogControllerV2 control;
+public class GroundCheck : MonoBehaviour {
+    /*
+    public DogController control;
 
 	// Use this for initialization
 	void Start () {
         if (control == null) {
-            control = GameObject.FindGameObjectWithTag("Player").GetComponent<DogControllerV2>();
+            control = GameObject.FindGameObjectWithTag("Player").GetComponent<DogController>();
         }
 	}
 
@@ -24,4 +28,5 @@ public class GroundCheck : MonoBehaviour {
         if (!other.isTrigger)
             control.OnGroundExit();
     }
+    */
 }
