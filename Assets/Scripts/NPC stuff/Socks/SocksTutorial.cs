@@ -134,7 +134,7 @@ public class SocksTutorial : Dialog2 {
 
     //sets the progression number to properly branch for the "whats new" dialog option
     public void SetProgressionForWhatsNew() {
-        progressionNum = Random.Range(0, 6);
+        progressionNum = Random.Range(0, 7);
     }
 
     //called when a player enters a zone theyre suppsoed to bring an item to. If they brought it, tell them to drop it, otherwise tell them to go get it

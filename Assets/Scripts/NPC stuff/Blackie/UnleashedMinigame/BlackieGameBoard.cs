@@ -276,7 +276,7 @@ public class BlackieGameBoard {
         protected int x, y; //position on the gamebaord
         protected int rotation; //which way "up" is facing (range of 0-3);
         public bool isLocked; //can the player move this piece?
-        protected int color; //the current color of this tile
+        public int color; //the current color of this tile
         protected BlackieGameBoard game;
 
         //input data

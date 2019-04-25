@@ -34,9 +34,9 @@ public class BubblesAI : AIbase {
     }
 
     //if soap is brought in range, destory it and progress quest
-    public override void ToyInRange(Interactable toy) {
+    public override void ToyInRange(BasicToy toy) {
         base.ToyInRange(toy);
-        if (toy.hasTag(Interactable.Tag.Soap)) {
+        if (toy.HasTag(BasicToy.Tag.Soap)) {
             DestoryObjectInMouth(toy.gameObject);
             if (state == States.NOBUBBLES) {
                 state = States.BUBBLES;

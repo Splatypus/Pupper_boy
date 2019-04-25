@@ -65,14 +65,8 @@ public class FreeCameraLook : MonoBehaviour {
             }
         }
 
-        //transform.position = cameraEnd;
-        //always look at the player if they have control
-        if (!controlLocked)
-            transform.LookAt(anchor);
-    }
 
-    //find which location the camera should be moving to
-    void FixedUpdate() {
+
         if (!controlLocked) {
 
             Vector3 truePosition = transform.position;
@@ -80,9 +74,15 @@ public class FreeCameraLook : MonoBehaviour {
             HandleRotationMovement(); //new position is calculated
             cameraGoal = transform.position; //save goal since the above function modifies transform.position. Position is later set to what it should be
             //smoothing
-            transform.position = Vector3.Lerp(truePosition, cameraGoal, 10.0f * Time.fixedDeltaTime);
-
+            transform.position = Vector3.Lerp(truePosition, cameraGoal, 10.0f * Time.deltaTime);
+            //keep camera looking at player
+            transform.LookAt(anchor);
         }
+    }
+
+    //find which location the camera should be moving to
+    void FixedUpdate() {
+        
     }
 
     void HandleRotationMovement() {

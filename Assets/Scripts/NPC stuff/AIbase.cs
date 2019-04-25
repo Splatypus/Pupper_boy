@@ -38,23 +38,22 @@ public class AIbase : Dialog2 {
     }
 
     //called when something with the toy interaction script on it is brought within range
-    public virtual void ToyInRange(Interactable toy) {
+    public virtual void ToyInRange(BasicToy toy) {
         
     }
 
     //destroys a gameobject and removes it from the player's mouth if its being held. Note that even if the object is not help, this function deltes it anyway
     public void DestoryObjectInMouth(GameObject toDestroy) {
-        PuppyPickup inMouth = Player.GetComponent<DogController>().ppickup;
+        PuppyPickup inMouth = Player.GetComponent<DogController>().mouth;
         if (inMouth.itemInMouth != null && inMouth.itemInMouth == toDestroy) {
             inMouth.DropItem();
-            inMouth.objectsInRange.Remove(toDestroy);
         }
         Destroy(toDestroy);
     }
 
     public override void OnTriggerEnter(Collider col) {
         base.OnTriggerEnter(col);
-        Interactable toyScript = col.GetComponent<Interactable>();
+        BasicToy toyScript = col.GetComponent<BasicToy>();
         //if this is the player, call OnInRange, if this is a toy, call ToyInRange
         if (col.gameObject.CompareTag("Player")) {
             OnInRange();

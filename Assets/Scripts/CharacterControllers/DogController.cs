@@ -11,7 +11,7 @@ public class DogController : Controller {
     CharacterController controller;
     Animator anim;
     Transform cam;
-    PuppyPickup mouth;
+    [HideInInspector] public PuppyPickup mouth;
     #endregion
 
     #region new world order movement variables
@@ -35,12 +35,7 @@ public class DogController : Controller {
 
     public bool hasFlight = false;
 
-    #region InteractionVariables
-    [Header("Interaction")]
-    public PuppyPickup ppickup; //reference to the mouth script cuz sometimes u need that in ur life
-
     List<InteractableObject> inRangeOf = new List<InteractableObject>();
-    #endregion
 
     #region Digging
     [Header("Digging")]
@@ -65,7 +60,6 @@ public class DogController : Controller {
         anim = GetComponentInChildren<Animator>();
         my_icon = GetComponentInChildren<IconManager>();
         houseText = FindObjectOfType<TextFadeOut>();
-        ppickup = GetComponentInChildren<PuppyPickup>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -75,7 +69,7 @@ public class DogController : Controller {
     //move in fixed update since it changes velocity. In normal update it would sometimes feel like it had small delays.
     void FixedUpdate() {
         if (!isDigging) {
-            Move();
+            //Move();
         }
     }
 
@@ -85,13 +79,13 @@ public class DogController : Controller {
         //Opening Esc Menu should always be available
         if (Input.GetButtonDown("Cancel")) {
             escMenu.Show();
-            gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Dialog);
+            gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.MovementLock);
         }
 
         //dont do anything if digging, or in Esc Menu
         if (!isDigging) {
 
-            //Move();
+            Move();
 
             //Handle interaction input
             if (Input.GetButtonDown("Dig") && inRangeOf.Count > 0) {
@@ -134,7 +128,7 @@ public class DogController : Controller {
         // Get input
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-        bool jumpInput = Input.GetButton("Jump");
+        bool jumpInput = Input.GetButtonDown("Jump");
 
         // Get information about the camera relative to us
         cam_right = Vector3.ProjectOnPlane(cam.right, transform.up) * horizontal;
@@ -177,7 +171,7 @@ public class DogController : Controller {
         if (Mathf.Abs(horizontal) > Mathf.Epsilon || Mathf.Abs(vertical) > Mathf.Epsilon) {
             //in air
             if (!isGrounded) {
-                v += moveDirection * a * Time.fixedDeltaTime;
+                v += moveDirection * a * Time.deltaTime;
                 //if this acceleration pushes it over the max speed, cap it there instead
                 if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
                     v = v.normalized * maxSpeed;
@@ -186,14 +180,14 @@ public class DogController : Controller {
 
             //acceleration only affects speed while on the ground. 
             else {
-                v = moveDirection * Mathf.Min(v.magnitude + a * Time.fixedDeltaTime, newMaxSpeed);
+                v = moveDirection * Mathf.Min(v.magnitude + a * Time.deltaTime, newMaxSpeed);
             }
         }
         //no input
         else {
             //in air
             if (!isGrounded) {
-                v = v.normalized * (v.magnitude - decceleration * Time.fixedDeltaTime);
+                v = v.normalized * (v.magnitude - decceleration * Time.deltaTime);
             }
             //grouned
             else {
@@ -210,18 +204,18 @@ public class DogController : Controller {
             v.y = jumpForce;
         } 
         //gravity
-        if (v.y - (gravity * Time.fixedDeltaTime) < -maxFallSpeed) {
+        if (v.y - (gravity * Time.deltaTime) < -maxFallSpeed) {
             v.y = -maxFallSpeed;
         } else {
-            v.y -= gravity * Time.fixedDeltaTime;
+            v.y -= gravity * Time.deltaTime;
         }
 
         //set movement
-        controller.Move(v * Time.fixedDeltaTime);
+        controller.Move(v * Time.deltaTime);
 
         // Update animation controller with the amount that we are moving
         float animValue = Mathf.Sqrt(vertical * vertical + horizontal * horizontal);
-        anim.SetFloat("Forward", animValue, 0.1f, Time.fixedDeltaTime);
+        anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime);
         anim.SetBool("onAir", !isGrounded);
 
         //set turnspeed
@@ -234,13 +228,13 @@ public class DogController : Controller {
         // Update player rotation if there is movement in any direction
         if (horizontal != 0 || vertical != 0) {
             if (angle > Mathf.Epsilon)
-                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * ts / angle * Time.fixedDeltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), (angle / 180.0f + 1.0f) * ts / angle * Time.deltaTime);
             //If the cameralock button is pressed, then look towards the camera vector
         } else if (Input.GetButton("CameraLock")) {
             //look vector directly through the doggo
             Quaternion newLookDirection = Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.position - cam.transform.position, transform.up).normalized);
             angle = Quaternion.Angle(transform.rotation, newLookDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * ts / angle * Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, newLookDirection, (angle / 180.0f + 1.0f) * ts / angle * Time.deltaTime);
         }
     }
 
@@ -295,9 +289,10 @@ public class DogController : Controller {
     //starts dig animation
     IEnumerator StartZoneDig(DigZone digZone) {
         isDigging = true;
-        if (ppickup.itemInMouth != null) {
-            ppickup.itemInMouth.SetActive(false);
-        }
+
+        //hide item in mouth to prevent weird collisions
+        mouth.itemInMouth?.SetActive(false);
+
         //rotate towards the fence
         float timeTaken = 0.0f;
         while (transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRotaionTime) {
@@ -317,9 +312,7 @@ public class DogController : Controller {
         //after the animation, restore movement
         yield return new WaitForSeconds(0.6f);
         isDigging = false;
-        if (ppickup.itemInMouth != null) {
-            ppickup.itemInMouth.SetActive(true);
-        }
+        mouth.itemInMouth?.SetActive(true);
 
         //and then run the event trigger letting things know we have reached the other side
         EventManager.Instance.TriggerOnFenceDig(digZone.other_side.gameObject);

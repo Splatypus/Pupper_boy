@@ -4,25 +4,27 @@ using UnityEngine;
 
 public class PuppyPickup : MonoBehaviour {
 
+    [Header("References")]
+    [SerializeField] public Transform mouth;                                   //location of the mouth to move items to
+    [SerializeField] private Transform butt;                                    //ass
+
+    [Header("Poopin")]
     public int num_food_for_poop = 2;
     public float time_for_poop = 10.0f;
     public GameObject poop_obj;
 
-    public int num_food_for_memes = 10;
-    int m_num_food = 0;
+    [Header("Object Pickup")]
+    public GameObject castOrigin;
+    public LayerMask mask;
+    public float radius;
+    [Range(-1,1)] public float minimumDotProductToFocus;
+    private GameObject focusedItem;
 
-    public GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
+    [HideInInspector] public GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
     private Vector3 prevPosition = new Vector3(0f, 0f, 0f);                     //when ball is let go, this is used to calculate it's momentum
-    [SerializeField] private Transform mouth;                                   //location of the mouth to move items to
-    [SerializeField] private Transform butt;                                    //ass
     [SerializeField] private AudioClip[] borks;
     [SerializeField] private AudioClip[] poops;
     private AudioSource m_audio_source;
-    private int bork_index = 0;
-
-    public List<GameObject> objectsInRange = new List<GameObject>();           //objects in pickup range
-    private BallLaunchV2 launcherInRange = null;                                //ball launcher that is in range (if one exists)
-    private FoodDispenser foodInRange = null;
 
     private IconManager iconManager;
 
@@ -36,89 +38,76 @@ public class PuppyPickup : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         //update prevPosition
-        if (itemInMouth != null)
+        if (itemInMouth != null) {
             prevPosition = itemInMouth.transform.position;
+        } else {
+            CheckForItems();
+        }
+    }
+
+    //casts a sphere to see if there are any items to pick up or push
+    void CheckForItems() {
+        //Consider using an overlap sphere centered on doggo instead to get a list of all nearby objects, then find the one with the bbest dot product with camera vector
+        Collider[] cols = Physics.OverlapSphere(castOrigin.transform.position, radius, mask);
+        float bestDot = -1;
+        Collider bestCol = null;
+        //find the collider within our overlapsphere which has the best dot product with the cameras forward vector (ie, the one we are looking at the most)
+        foreach (Collider c in cols) {
+            float cameraDotProduct = Vector3.Dot((c.transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward);
+            if (cameraDotProduct > bestDot && cameraDotProduct > minimumDotProductToFocus) {
+                bestDot = cameraDotProduct;
+                bestCol = c;
+            }
+        }
+        //if were now looking at a different object, change focus
+        if (focusedItem != bestCol?.gameObject) {
+            //if an item was focued, defocus it
+            if (focusedItem != null) {
+                focusedItem.GetComponent<IPickupItem>()?.OnDefocus();
+            }
+            //assign the new focused item
+            focusedItem = bestCol?.gameObject;
+            if (focusedItem != null) {
+                focusedItem.GetComponent<IPickupItem>()?.OnFocus();
+            }
+        }
     }
 
     //called when the picup button is pressed
     public void DoInputAction() {
-        //first, if there is an object in the dog's mouth, drop it or load it into a launcher
+        //first, if there is an object in the dog's mouth, drop it
         if (itemInMouth != null) {
-            //first check if we're in range of a ball launcher.  If so, load it
-            Interactable i = itemInMouth.GetComponent<Interactable>();
-            if (launcherInRange && i != null) //&& i.tagList.Contains(Interactable.Tag.Ball))
-            {
-                itemInMouth.transform.parent = null;
-                launcherInRange.LoadBall(itemInMouth);
-            }
-            //Otherwise, drop it
-            else {
-                DropItem();
-            }
-            itemInMouth = null;
-        } else if (foodInRange != null && foodInRange.CanEat()) {
-            foodInRange.EatFood();
-
-            // eat some goddamn food
-            m_num_food++;
-            if (m_num_food >= num_food_for_memes) {
-                //Debug.Log("ENTER MEME ZONE!!!!");
-                DogController flight = GetComponentInParent<DogController>();
-                flight.hasFlight = true;
-                iconManager.set_single_icon(Icons.Flight);
-                iconManager.set_single_bubble_active(true);
-                Invoke("dissable_bubble_icon", 2.0f);
-            }
-            if (m_num_food % num_food_for_poop == 0) {
-                Invoke("poop", time_for_poop);
-            }
-
-        }
-        //otherwise, see if there are objects in range and pick up the closest one
-        else if (objectsInRange.Count > 0) {
-            itemInMouth = ClosestObject();
+            DropItem();
+        } 
+        //otherwise, notify the focused item that were trying to pick it up
+        else if (focusedItem != null) {
             // do stuff with interactable object
-            Interactable interactable = itemInMouth.GetComponent<Interactable>();
-            if (interactable) {
-                interactable.onPickup();
-            }
-            itemInMouth.transform.parent = mouth;
-            itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
-            itemInMouth.GetComponent<Rigidbody>().useGravity = false;
+            IPickupItem interactable = focusedItem.GetComponent<IPickupItem>();
+            interactable?.OnPickup(this);
+            focusedItem.GetComponent<IPickupItem>()?.OnDefocus();
+            focusedItem = null;
+
         } else {
-            int prev_index = bork_index;
-            // bork
-            bork_index = Random.Range(0, borks.Length);
-
-            while (bork_index == prev_index) {
-                bork_index = Random.Range(0, borks.Length);
-            }
-
-            m_audio_source.clip = borks[bork_index];
+            //play a random bork audio clip
+            m_audio_source.clip = borks[Random.Range(0, borks.Length)];
             m_audio_source.Play();
 
             EventManager.Instance.TriggerOnBark(GameObject.FindGameObjectWithTag("Player"));
         }
     }
 
-    private void dissable_bubble_icon() {
+    private void Dissable_bubble_icon() {
         iconManager.set_single_bubble_active(false);
     }
 
+    //drops the current item
     public void DropItem() {
         itemInMouth.transform.parent = null;
-        itemInMouth.GetComponent<Rigidbody>().useGravity = true;
-        //calculate the momentum of the ball due to the dog's turning.
-        //If you don't it will always fall straight to the ground
-        itemInMouth.GetComponent<Rigidbody>().velocity = (itemInMouth.transform.position - prevPosition) / Time.deltaTime;
-
-        Interactable interactable = itemInMouth.GetComponent<Interactable>();
-        if (interactable) {
-            interactable.onDrop();
-        }
+        itemInMouth.GetComponent<IPickupItem>()?.OnDrop((itemInMouth.transform.position - prevPosition) / Time.deltaTime);
+        itemInMouth = null;
     }
 
-    public void poop() {
+    public void Poop() {
         //Debug.Log("poop!");
 
         Instantiate(poop_obj, butt.transform.position, butt.transform.rotation);
@@ -129,69 +118,22 @@ public class PuppyPickup : MonoBehaviour {
 
     private void LateUpdate() {
         if (itemInMouth != null) {
-            itemInMouth.transform.rotation = mouth.rotation;
-            itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
+            //itemInMouth.transform.rotation = mouth.rotation;
+            //itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
         }
 
     }
 
-    void OnTriggerEnter(Collider other) {
-        //if it's a pickup item, add it to the list
-        if (other.tag == "Pickup" && !objectsInRange.Contains(other.gameObject)) {
-            //Debug.Log("Object In");
-            objectsInRange.Add(other.gameObject);
-        }
-        //if it's a ball launcher, store it in launcherInRange
-        else if (other.tag == "Launcher") {
-            //Debug.Log("Launcher in range");
-            launcherInRange = other.GetComponent<BallLaunchV2>();
-        } else if (other.tag == "Food") {
-            foodInRange = other.GetComponent<FoodDispenser>();
-        }
-    }
 
-    private void OnTriggerExit(Collider other) {
-        //if it's a pickup item, remove it from the list
-        if (other.tag == "Pickup" && objectsInRange.Contains(other.gameObject)) {
-            //Debug.Log("Object Out");
-            objectsInRange.Remove(other.gameObject);
-        }
-        //if it's a ball launcher, set launcherInRange to null
-        else if (other.tag == "Launcher") {
-            //Debug.Log("Launcher out of range");
-            launcherInRange = null;
-        } else if (other.tag == "Food") {
-            foodInRange = null;
-        }
-    }
+    //interface for items that can be picked up
+    public interface IPickupItem {
 
+        void OnFocus();
+        void OnDefocus();
 
-    //OnCollisionExit is not called when a gameobject is destroyed while colliding. This means theyll never be removed from the list. This function simply cleans up all the destroyed list objects.
-    void RemoveDestroyed() {
-        //loop over list and add remove all instances of null
-        int numRemoved = 0;
-        for (int i = 0; i < objectsInRange.Count - numRemoved; i++) {
-            if (objectsInRange[i] == null) {
-                objectsInRange.RemoveAt(i);
-                numRemoved++;
-                i--;
-            }
-        }
-    }
+        void OnPickup(PuppyPickup source);
+        void OnDrop(Vector3 currentVelocity);
 
-    GameObject ClosestObject() {
-        RemoveDestroyed();
-        GameObject closest = null;
-        float minDist = Mathf.Infinity;
-        foreach (GameObject go in objectsInRange) {
-            float dist = (mouth.position - go.transform.position).magnitude;
-            if (dist < minDist) {
-                closest = go;
-                minDist = dist;
-            }
-        }
-
-        return closest;
     }
 
 }

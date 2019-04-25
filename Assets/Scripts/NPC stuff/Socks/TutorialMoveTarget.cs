@@ -7,7 +7,7 @@ public class TutorialMoveTarget : MonoBehaviour {
     public SocksTutorial owner;
     public float deathSequenceGravityMod = -4.0f;
     public bool requiresToy = false;
-    public Interactable.Tag requiredTag = Interactable.Tag.SocksQuestItem;
+    public BasicToy.Tag requiredTag = BasicToy.Tag.SocksQuestItem;
 
     public List<GameObject> objectsInside;
 
@@ -18,14 +18,14 @@ public class TutorialMoveTarget : MonoBehaviour {
 
     //starts the death of this objective (just a fade out for the particle system) and notifies socks that this point was reached
     public void OnTriggerEnter(Collider other) {
-        Interactable toy = other.GetComponent<Interactable>();
+        BasicToy toy = other.GetComponent<BasicToy>();
         //first check is just for the player reaching it
         if (other.CompareTag("Player")) {
             //if they need to bring a toy, then notify the socks to either tell them to bring the toy, or to drop it inside
             if (requiresToy) {
                 //if theyre carrying the toy, tell them to drop it, if not, tell them to go get it
                 GameObject carriedItem = other.gameObject.GetComponentInChildren<PuppyPickup>().itemInMouth;
-                owner.PlayerEnteredItemZone(carriedItem != null && carriedItem.GetComponent<Interactable>().tagList.Contains(requiredTag));
+                owner.PlayerEnteredItemZone(carriedItem != null && carriedItem.GetComponent<BasicToy>().tagList.Contains(requiredTag));
 
             //if they don't needa toy, then just inform socks that they've won
             } else {
@@ -45,7 +45,7 @@ public class TutorialMoveTarget : MonoBehaviour {
     }
 
     public void OnTriggerExit(Collider other) {
-        Interactable toy = other.GetComponent<Interactable>();
+        BasicToy toy = other.GetComponent<BasicToy>();
         //if this is a required toy, then stop watching for the player to drop it
         if (requiresToy && toy != null && toy.tagList.Contains(requiredTag)) {
             EventManager.OnItemDrop -= ItemWasDropped;

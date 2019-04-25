@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class PlayerControllerManager : MonoBehaviour {
 
-    public enum Modes { Walking, Dialog, MovementLock };
+    public enum Modes { Walking, Dialog, MovementLock, Dragging };
     public Controller currentController;
-    Controller[] scripts = new Controller[3];
+    Controller[] scripts = new Controller[4];
 
     public void Start() {
         //initial setting of all modes to their correct places
         scripts[(int)Modes.Walking] = gameObject.GetComponent<DogController>();
         scripts[(int)Modes.Dialog] = gameObject.GetComponent<PlayerDialog>();
         scripts[(int)Modes.MovementLock] = gameObject.GetComponent<NoMovementController>();
+        scripts[(int)Modes.Dragging] = gameObject.GetComponent<DraggingController>();
 
         //then disable all controller scripts except the default one (walking)
         foreach (Controller c in scripts) {
@@ -26,7 +27,7 @@ public class PlayerControllerManager : MonoBehaviour {
     }
 
     //disable the current mode, then change it to the new one and enable the new one
-    public void ChangeMode(Modes newMode) {
+    public Controller ChangeMode(Modes newMode) {
         //call deactivation function and then disable the current controller
         currentController.OnDeactivated();
         currentController.enabled = false;
@@ -34,6 +35,7 @@ public class PlayerControllerManager : MonoBehaviour {
         currentController = scripts[(int)newMode];
         currentController.enabled = true;
         currentController.OnActivated();
+        return currentController;
     }
 
     //disables the current mode. Activates a custom controller rather than a preset

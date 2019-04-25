@@ -132,6 +132,7 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
                 //assign it for callbacks
                 p.listener = pieceView;
                 //add to list
+                pieceView.ChangeColor(p.color);
                 pieces.Add(worldPiece);
             }
         }

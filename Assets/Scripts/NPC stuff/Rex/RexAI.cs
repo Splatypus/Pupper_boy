@@ -32,9 +32,9 @@ public class RexAI : AIbase {
     }
 
     //if you bring rex his toys, incriment his toy count and delete the toy
-    public override void ToyInRange(Interactable toy) {
+    public override void ToyInRange(BasicToy toy) {
         base.ToyInRange(toy);
-        if (toy.hasTag(Interactable.Tag.RexQuestItem) && state == States.READYFORTOYS) {
+        if (toy.HasTag(BasicToy.Tag.RexQuestItem) && state == States.READYFORTOYS) {
             toysCollected++;
             progressionNum = 2;
             if (toysCollected >= totalToys) {

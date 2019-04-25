@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldGamepiece : Interactable {
+//[deprecated] - Change from interactable to IPickupItem/Basic toy broke some things...
+//Since we have a new blackieminigame, this script will probably never be used
 
+public class WorldGamepiece : BasicToy {
+    
     Rigidbody rb;
     bool inZone;
     bool isHeld;
@@ -78,7 +81,7 @@ public class WorldGamepiece : Interactable {
         }
     }
 
-    public override void onPickup()
+    /*public override void OnPickup()
     {
         //if it is kinematic that means its been placed on the board
         if (rb.isKinematic)
@@ -88,11 +91,11 @@ public class WorldGamepiece : Interactable {
         }
         rb.isKinematic = false;
         //rb.detectCollisions = false;
-        base.onPickup();
+        base.OnPickup();
         isHeld = true;
         targeter.SetActive(checkShowTarget());
         
-    }
+    }*/
 
     //for when a short is caused and this piece needs to be yote into the air
     public void DoForcedRemove() {
@@ -100,9 +103,9 @@ public class WorldGamepiece : Interactable {
         rb.velocity = (new Vector3(Random.Range(-2.5f, 2.5f), 10.0f, Random.Range(-2.5f, 2.5f)));
     }
 
-    public override void onDrop()
+    /*public override void OnDrop()
     {
-        base.onDrop();
+        base.OnDrop();
         //if the targeter was showing that means we can place it, so drop it on the board rather than just wherever
         if (targeter.activeInHierarchy) {
             OnPlace();
@@ -112,7 +115,7 @@ public class WorldGamepiece : Interactable {
         targeter.SetActive(checkShowTarget());
         //respawn item?
         //rb.isKinematic = true;
-    }
+    }*/
 
     public void FancyDestroy() {
         StartCoroutine(DeathTimer());
