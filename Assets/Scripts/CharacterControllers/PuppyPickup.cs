@@ -116,14 +116,6 @@ public class PuppyPickup : MonoBehaviour {
         m_audio_source.Play();
     }
 
-    private void LateUpdate() {
-        if (itemInMouth != null) {
-            //itemInMouth.transform.rotation = mouth.rotation;
-            //itemInMouth.transform.localPosition = new Vector3(0f, 0f, 0f);
-        }
-
-    }
-
 
     //interface for items that can be picked up
     public interface IPickupItem {

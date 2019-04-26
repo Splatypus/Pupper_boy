@@ -10,9 +10,21 @@ public class BasicDraggable : MonoBehaviour, PuppyPickup.IPickupItem
     public float setMoveAmount; //if 0, free move
     public float setRotateAmount; //if 0, free rotate
 
+    public AnimationCurve dragLerpCurve;
+    public AnimationCurve rotateLerpCurve;
+
     [Header("Visual")]
     public MeshRenderer[] meshes;
 
+
+    //control functions
+    public virtual bool CanMove(bool isForward) {
+        return true;
+    }
+
+    public virtual bool CanRotate(bool isRight) {
+        return true;
+    }
 
     #region interface methods
     public void OnFocus() {
@@ -31,7 +43,7 @@ public class BasicDraggable : MonoBehaviour, PuppyPickup.IPickupItem
     public void OnPickup(PuppyPickup source) {
         source.itemInMouth = gameObject;
         DraggingController control = (DraggingController)GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Dragging);
-        control.draggedItem = this;
+        control.Init(this);
         GetComponent<Collider>().enabled = false;
     }
 

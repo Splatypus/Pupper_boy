@@ -10,24 +10,54 @@ public class DraggingController : Controller
     [HideInInspector] public PuppyPickup mouth;
     #endregion
 
-    public BasicDraggable draggedItem;
-
+    [HideInInspector] public BasicDraggable draggedItem;
     bool isMoving = false;
 
+    [Tooltip("When rotating to grab something, this is the speed in degrees per second that doggo moves")]
+    public float grabRotationSpeed;
+    public float grabStandDistance;
+
+    //start
     void Start() {
         controller = GetComponent<CharacterController>();
         anim = GetComponentInChildren<Animator>();
         mouth = GetComponentInChildren<PuppyPickup>();
     }
 
-    // Update is called once per frame
-    void Update(){
-        if (Input.GetButtonDown("Interact")) {
-            mouth.DoInputAction();
+    //if rotation is in set amounts, lock to one of those amounts at the start
+    public void Init(BasicDraggable d) {
+        draggedItem = d;
+        if (d.setRotateAmount == 0) {
+            StartCoroutine( InitialGrab(0.0f, grabRotationSpeed) );
+            return;
         }
 
-        if (!isMoving)
+        //find the angle to the dog
+        float angleToDog = Vector3.SignedAngle(Vector3.forward, transform.position - d.transform.position, Vector3.up) + 360.0f;
+        //find the closest multiple of setAngleAmount to that rotation
+        float goalAngle = (angleToDog + 0.5f * d.setRotateAmount);
+        goalAngle -= goalAngle % d.setRotateAmount;
+        //convert to -180:180 range
+        goalAngle = goalAngle%360.0f;
+        if (goalAngle > 180)
+            goalAngle -= 360;
+        
+        //find the difference between goal angle and angle to dog, and then rotate the dog by that amount
+        float amountToRotate = (goalAngle - angleToDog);
+        amountToRotate += amountToRotate > 180 ? -360 : (amountToRotate < -180 ? 360 : 0); //if above 180, subtract 360. If below -180, add 360
+        
+        StartCoroutine(InitialGrab(amountToRotate, grabRotationSpeed));
+    }
+
+    // Update is called once per frame
+    void Update(){
+
+        if (!isMoving) {
+            if (Input.GetButtonDown("Interact")) {
+                mouth.DoInputAction();
+            }
             DoMovement();
+        }
 
     }
 
@@ -35,15 +65,16 @@ public class DraggingController : Controller
         float horizontal = -Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
+        //Deal with set movement amount
         if (draggedItem.setMoveAmount > 0 && vertical != 0) {
-            isMoving = true;
             StartCoroutine(  Move(draggedItem.setMoveAmount / draggedItem.moveSpeed, draggedItem.setMoveAmount, vertical > 0)  );
 
+        //deal with set rotation amount
         } else if (draggedItem.setRotateAmount > 0 && horizontal != 0) {
-            isMoving = true;
             StartCoroutine(  Rotate(draggedItem.setRotateAmount / draggedItem.rotationSpeed, draggedItem.setRotateAmount, horizontal > 0)  );
 
-        } else {
+        //Otherwise normal dragging. this section should be looked at...
+        } else if (draggedItem.setMoveAmount == 0 || draggedItem.setRotateAmount == 0){
             //rotate
             float rotationAmount = horizontal * draggedItem.rotationSpeed * Time.deltaTime;
             transform.RotateAround(draggedItem.transform.position, Vector3.up, rotationAmount);
@@ -56,19 +87,81 @@ public class DraggingController : Controller
             Vector3 preMoveLocation = transform.position;
             controller.Move(v * Time.deltaTime);
             draggedItem.transform.position += transform.position - preMoveLocation;
-
-           
+            
         }
 
     }
 
+    IEnumerator InitialGrab(float rotateAroundAmount, float speed) {
+        isMoving = true;
+        float startTime = Time.time;
+
+        //rotation
+        Quaternion initialRotation = transform.rotation;
+        //Angle to dog is going to be the current angle rotated by rotateAroundAmount
+        float lookAngle = Vector3.SignedAngle(Vector3.forward, transform.position - draggedItem.transform.position, Vector3.up);
+        lookAngle += rotateAroundAmount;
+        //get the opposite angle for dog to object
+        lookAngle = (lookAngle + 540) % 360.0f;
+        Quaternion goalRotation = Quaternion.AngleAxis(lookAngle, Vector3.up);
+
+        //position
+        Vector3 initialPosition = transform.position;
+        Vector3 goalPosition = draggedItem.transform.position + (goalRotation * -Vector3.forward)  * grabStandDistance;
+        goalPosition.y = transform.position.y;
+
+        //how long this rotation should take based off the current speed
+        float time = Quaternion.Angle(transform.rotation, goalRotation) / speed;
+
+        //do the movement
+        while (Time.time < startTime + time) {
+            //transform.RotateAround(draggedItem.transform.position, Vector3.up, rotateAroundAmount / time * Time.deltaTime);
+            transform.position = Vector3.Lerp(initialPosition, goalPosition, (Time.time - startTime)/time);
+            transform.rotation = Quaternion.Lerp(initialRotation, goalRotation, (Time.time - startTime)/time);
+            yield return new WaitForEndOfFrame();
+        }
+        transform.position = goalPosition;
+        transform.rotation = goalRotation;
+        isMoving = false;
+    }
+
     IEnumerator Move(float time, float distance, bool isForward) {
-        yield return new WaitForSeconds(10);
+        isMoving = true;
+        //initial conditions
+        Vector3 initialPosition = transform.position;
+        Vector3 objectInitPos = draggedItem.transform.position;
+        Vector3 endPosition = transform.position + transform.forward * distance * (isForward?1:-1);
+        Vector3 objectEndPos = draggedItem.transform.position + transform.forward * distance * (isForward ? 1 : -1);
+        float startTime = Time.time;
+
+        //do the movement
+        while (Time.time < startTime + time) {
+            float t = draggedItem.dragLerpCurve.Evaluate((Time.time - startTime) / time);
+            transform.position = Vector3.Lerp(initialPosition, endPosition, t);
+            draggedItem.transform.position = Vector3.Lerp(objectInitPos, objectEndPos, t);
+            yield return new WaitForEndOfFrame();
+        }
+        transform.position = endPosition;
+        draggedItem.transform.position = objectEndPos;
+        
         isMoving = false;
     }
 
     IEnumerator Rotate(float time, float distance, bool isRight) {
-        yield return new WaitForSeconds(10);
+        isMoving = true;
+
+        //initial conditions
+        Quaternion initialObjectRotation = draggedItem.transform.rotation;
+        Quaternion endObjectRotation = draggedItem.transform.rotation * Quaternion.AngleAxis(distance * (isRight?1:-1), Vector3.up);
+        float startTime = Time.time;
+
+        while (Time.time < startTime + time) {
+            float t = draggedItem.rotateLerpCurve.Evaluate((Time.time - startTime) / time);
+            draggedItem.transform.rotation = Quaternion.LerpUnclamped(initialObjectRotation, endObjectRotation, t);
+            yield return new WaitForEndOfFrame();
+        }
+        draggedItem.transform.rotation = endObjectRotation;
+        
         isMoving = false;
     }
 
