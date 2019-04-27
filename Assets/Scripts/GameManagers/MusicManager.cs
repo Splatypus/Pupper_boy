@@ -62,6 +62,7 @@ public class MusicManager : MonoBehaviour {
         }
         //then in
         source.clip = song;
+        source.loop = false;
         source.Play();
         startTime = Time.time;
         while (Time.time < startTime + duration) {

@@ -143,7 +143,7 @@ public class DogController : Controller {
             a *= inAirMult;
         }
         float newMaxSpeed = maxSpeed;
-        if (Input.GetAxis("Sprint") > 0.1f) {
+        if (Input.GetAxis("Sprint") > 0.1f || true) {
             newMaxSpeed = maxSpeed * sprintMultiplier;
         }
         if (ScentManager.Instance.isEnabled) {

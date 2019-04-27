@@ -29,6 +29,19 @@ public class RexAI : AIbase {
         } else {
             Display(1);
         }
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null) {
+            GameObject toy = player.GetComponentInChildren<PuppyPickup>().itemInMouth;
+            if (toy != null && toy.GetComponent<BasicToy>().HasTag(BasicToy.Tag.RexQuestItem) && state == States.READYFORTOYS) {
+                toysCollected++;
+                progressionNum = 2;
+                if (toysCollected >= totalToys) {
+                    state = States.HAPPY;
+                    progressionNum = 3;
+                }
+                DestoryObjectInMouth(toy.gameObject);
+            }
+        }
     }
 
     //if you bring rex his toys, incriment his toy count and delete the toy

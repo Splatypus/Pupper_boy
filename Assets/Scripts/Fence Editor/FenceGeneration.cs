@@ -1,11 +1,11 @@
-﻿#if UNITY_EDITOR
+﻿
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteInEditMode]
 public class FenceGeneration : MonoBehaviour {
-
+#if UNITY_EDITOR
     #region variables
     [Header("Horizontal Objects")]
     public GameObject horizontalObject; //objects that are stretched horizontally between posts
@@ -237,5 +237,5 @@ public class FenceGeneration : MonoBehaviour {
         verticals = new List<GameObject>();
         horizontals = new List<GameObject>();
     }
-}
 #endif
+}

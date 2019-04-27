@@ -63,6 +63,20 @@ public class TiffyAI : AIbase {
         } else if (state == States.Happy) {
             Display(2);
         }
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null) {
+            GameObject toy = player.GetComponentInChildren<PuppyPickup>().itemInMouth;
+            if (toy != null && toy.GetComponent<BasicToy>().HasTag(BasicToy.Tag.TiffyQuestItem) && state == States.Rescued) {
+                DestoryObjectInMouth(toy);
+                state = States.Happy;
+                progressionNum = 1;
+                Display(2);
+                if (bandanaCollar != null && defaultCollar != null) {
+                    bandanaCollar.SetActive(true);
+                    defaultCollar.SetActive(false);
+                }
+            }
+        }
     }
 
     //called when a toy is brought in range. If its the bandana, progress the quest

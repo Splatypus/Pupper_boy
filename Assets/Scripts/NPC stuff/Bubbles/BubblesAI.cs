@@ -43,6 +43,16 @@ public class BubblesAI : AIbase {
             default:
                 break;
         }
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player != null) {
+            GameObject toy = player.GetComponentInChildren<PuppyPickup>().itemInMouth;
+            if (toy != null && toy.GetComponent<BasicToy>().HasTag(BasicToy.Tag.Soap) && state == States.NOBUBBLES) {
+                DestoryObjectInMouth(toy.gameObject);
+                state = States.BUBBLES;
+                Display(1);
+                ChangeAndSaveProgressionNum(1);
+            }
+        }
     }
 
     //if soap is brought in range, destory it and progress quest
@@ -83,5 +93,6 @@ public class BubblesAI : AIbase {
     //unlocks fences to designated area
     public void UnlockFences(int y) {
         FenceUnlockManager.Instance.EnableIntoYard(y);
+        FenceUnlockManager.Instance.EnableAll();
     }
 }
