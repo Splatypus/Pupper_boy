@@ -63,6 +63,8 @@ public class RexAI : AIbase {
             progressionNum = 0;
         } else if (toysCollected >= totalToys) {
             progressionNum = 3;
+        } else if (toysCollected > 0) {
+            progressionNum = 4;
         } else {
             progressionNum = 1;
         }

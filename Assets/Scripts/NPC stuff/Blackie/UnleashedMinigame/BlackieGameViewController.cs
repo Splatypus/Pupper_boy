@@ -24,7 +24,6 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
 
     [Header("Materials")]
     public PowerColor[] powerColors;
-    public Material unpoweredColor;
     [SerializeField] Material baseDefault;
     [SerializeField] Material baseImmobile;
 
@@ -33,7 +32,7 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
     public float pieceHeight;
     [Range(0, 1)] public float stoneSpawnChance;
 
-    private BlackieGameBoard game;
+    [HideInInspector] public BlackieGameBoard game { get; private set; }
 
     //runtime references
     private List<GameObject> bases;
@@ -50,7 +49,7 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
 
     #region listener functions
     public void OnVictory() {
-
+        print("You win!");
     }
     public void OnFileLoaded() {
         GenerateBase();
@@ -74,10 +73,12 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
         if (game.GetSpace(x, y) != null) {
             //instantiate it in its spot, as a child to this gameObject, accounting for an x offset so that this gameobject is placed in the center of the x axis
             Vector3 placePosition = new Vector3(
-                                            transform.position.x + baseDistance * (x - (game.GetWidth() - 1.0f) / 2.0f),
-                                            transform.position.y,
-                                            transform.position.z + baseDistance * (game.GetHeight() - y + 0.5f)
+                                            baseDistance * (x - (game.GetWidth() - 1.0f) / 2.0f),
+                                            0,
+                                            baseDistance * (y + 1.5f)
                                             );
+            placePosition = transform.rotation * placePosition;
+            placePosition += transform.position;
 
             bases.Add(Instantiate(basePrefab, placePosition, transform.rotation, transform));
 
@@ -122,7 +123,7 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
                 if (Random.Range(0.0f, 1.0f) <= stoneSpawnChance) {
                     GameObject stone = Instantiate( stonePrefabs[Random.Range(0, stonePrefabs.Length - 1)], 
                                                     worldPiece.transform.position, 
-                                                    Quaternion.Euler(0, 90 * Random.Range(0,3), 0),
+                                                    worldPiece.transform.rotation * Quaternion.Euler(0, 90 * Random.Range(0,3), 0),
                                                     worldPiece.transform
                                                     );
                     pieceView.SetStone(stone);
@@ -130,9 +131,9 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
 
 
                 //assign it for callbacks
-                p.listener = pieceView;
+                pieceView.boardView = this;
+                pieceView.AttachModel(p);
                 //add to list
-                pieceView.ChangeColor(p.color);
                 pieces.Add(worldPiece);
             }
         }

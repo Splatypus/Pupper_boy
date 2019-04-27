@@ -87,7 +87,8 @@ GameObject:
   m_Component:
   - component: {fileID: 952518516947908594}
   - component: {fileID: 7943885453156535615}
-  m_Layer: 0
+  - component: {fileID: 6756778146112064606}
+  m_Layer: 15
   m_Name: Blank Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +122,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dea615efe343374ba95fdbef0746cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 5
+  rotationSpeed: 150
+  setMoveAmount: 1.41
+  setRotateAmount: 90
+  dragLerpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rotateLerpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: -0.52272195
+      outSlope: -0.52272195
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.14583333
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2.8822117
+      outSlope: 2.8822117
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.10833335
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  meshes:
+  - {fileID: 952518516155017718}
+  boardView: {fileID: 0}
   baseMesh: {fileID: 952518516155017718}
   pipeMesh: {fileID: 0}
   stoneMesh: {fileID: 0}
   particles: {fileID: 0}
+--- !u!65 &6756778146112064606
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952518516947908589}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.41, y: 0.15, z: 1.41}
+  m_Center: {x: 0, y: 0.1, z: 0}

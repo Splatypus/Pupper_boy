@@ -1885,6 +1885,7 @@ GameObject:
   - component: {fileID: 757645667}
   - component: {fileID: 757645680}
   - component: {fileID: 5470524289028331210}
+  - component: {fileID: 4723813028362111957}
   - component: {fileID: 6082699871373563214}
   m_Layer: 11
   m_Name: PlayerCharacter
@@ -2309,6 +2310,46 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93a155bfe1f1e784b88377628148bf26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouth: {fileID: 0}
+  draggedItem: {fileID: 0}
+  grabRotationSpeed: 270
+  grabStandDistance: 2.3
+  grabLerpCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4723813028362111957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1316177682236608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f0b63ab1dd2304b9280eeb00015df6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!143 &6082699871373563214
