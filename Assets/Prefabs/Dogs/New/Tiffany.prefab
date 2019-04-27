@@ -1320,7 +1320,7 @@ GameObject:
   - component: {fileID: 4067587786481619833}
   - component: {fileID: 4067587785645763374}
   - component: {fileID: 4067587785645763369}
-  - component: {fileID: 4067587785645763368}
+  - component: {fileID: 1200515244576419392}
   m_Layer: 2
   m_Name: Tiffany
   m_TagString: Untagged
@@ -1335,7 +1335,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4067587785645763371}
-  m_LocalRotation: {x: -0, y: 0.9994496, z: -0, w: 0.033174586}
+  m_LocalRotation: {x: 0, y: 0.9994497, z: 0, w: 0.03317261}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 15.14419, y: 15.14418, z: 15.144186}
   m_Children:
@@ -1376,7 +1376,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.24
   m_Center: {x: 0, y: 0, z: -0.03}
---- !u!114 &4067587785645763368
+--- !u!114 &1200515244576419392
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1499,7 +1499,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4067587785645763368}
+      - m_Target: {fileID: 1200515244576419392}
         m_MethodName: UnlockFences
         m_Mode: 3
         m_Arguments:
@@ -1758,7 +1758,7 @@ MonoBehaviour:
   iconCanvas: {fileID: 4067587786207991867}
   moveDistance: 4
   walkTime: 1
-  birdCount: 5
+  birdCount: 15
   state: 0
   rewardSpawn: {fileID: 4067587786038260435}
   reward: {fileID: 1453747075105068, guid: 4fddd90104c5ab841b0f30dd83d1ce6d, type: 3}

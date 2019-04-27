@@ -32,7 +32,6 @@ public class SkyBoxChange : MonoBehaviour
     }
 
     public void OnSeasonChanged(SeasonManager.Seasons s) {
-        print("season changed to " + s);
         Material newSkyBox = null;
         switch (s) {
             case SeasonManager.Seasons.SUMMER:
@@ -65,7 +64,6 @@ public class SkyBoxChange : MonoBehaviour
     }
 
     public void OnNight() {
-        print("night");
         isDay = false;
         RenderSettings.skybox = (currentSeason.nightBox ?? defaultSkybox);
         RenderSettings.fogColor = nightFog;
