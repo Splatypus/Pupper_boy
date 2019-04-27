@@ -170,6 +170,7 @@ public class BlackieGameBoard {
         board = new GameSpace[width, height];
         pieceList.Clear();
         sourceNodes.Clear();
+        endNodeCount = 0;
 
         //loop through input file to fill grid
         for (int i = 0; i < width; i++) {
@@ -178,8 +179,9 @@ public class BlackieGameBoard {
                 LoadBoardSpace(j, height - 1 - i, line[j]);
             }
         }
-        CheckBoard();
         listener.OnFileLoaded();
+
+        CheckBoard();
     }
     #endregion
 
@@ -594,7 +596,7 @@ public class BlackieGameBoard {
           
     */
     public class BridgePiece : Piece {
-        int horizontalColor;
+        public int horizontalColor;
 
         public BridgePiece(int x, int y, BlackieGameBoard game) : base(x, y, game) { }
 
@@ -630,7 +632,7 @@ public class BlackieGameBoard {
 
         //updates color like normal, but also attempts to update horizontal color if the right interface is attached
         public override void UpdateView() {
-            ((IBridgePieceListener)listener)?.ChangeSecondaryColor(horizontalColor);
+            //((IBridgePieceListener)listener)?.ChangeSecondaryColor(horizontalColor);
             listener.ChangeColor(color);
         }
 

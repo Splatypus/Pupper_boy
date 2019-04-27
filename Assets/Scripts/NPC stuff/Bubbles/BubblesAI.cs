@@ -53,7 +53,7 @@ public class BubblesAI : AIbase {
             if (state == States.NOBUBBLES) {
                 state = States.BUBBLES;
                 Display(1);
-                progressionNum = 1;
+                ChangeAndSaveProgressionNum(1);
             }
         }
     }

@@ -50,6 +50,14 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
     #region listener functions
     public void OnVictory() {
         print("You win!");
+        progressionNum = 1;
+        OnInteract();
+        foreach (GameObject g in bases) {
+            Destroy(g);
+        }
+        foreach (GameObject g in pieces) {
+            Destroy(g);
+        }
     }
     public void OnFileLoaded() {
         GenerateBase();
@@ -62,6 +70,8 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
 
     //draws the base tiles
     void GenerateBase() {
+        bases.Clear();
+        pieces.Clear();
         for (int x = 0; x < game.GetWidth(); x++) {
             for (int y = 0; y < game.GetHeight(); y++) {
                 GenerateBoardSpace(x, y);
