@@ -75,6 +75,10 @@ public class BlackieGameBoard {
         if (GetPiece(x, y) == null || GetPiece(x, y).isLocked) {
             return false;
         }
+
+        //get direction in bound
+        direction = MatchRange(direction);
+
         int targetX = x;
         int targetY = y;
         switch (direction) {
@@ -101,6 +105,10 @@ public class BlackieGameBoard {
         Piece p = space.piece;
         space.piece = null;
         newSpace.piece = p;
+        p.x = targetX;
+        p.y = targetY;
+
+        CheckBoard();
 
         return true;
     }
@@ -111,6 +119,8 @@ public class BlackieGameBoard {
         if (GetPiece(x, y) == null || GetPiece(x, y).isLocked) {
             return false;
         }
+        //get direction in bound
+        direction = MatchRange(direction);
 
         int targetX = x;
         int targetY = y;
@@ -160,15 +170,18 @@ public class BlackieGameBoard {
         board = new GameSpace[width, height];
         pieceList.Clear();
         sourceNodes.Clear();
+        endNodeCount = 0;
 
         //loop through input file to fill grid
         for (int i = 0; i < width; i++) {
             line = data[i+1].Split('/');
             for (int j = 0; j < height; j++) {
-                LoadBoardSpace(j, i, line[j]);
+                LoadBoardSpace(j, height - 1 - i, line[j]);
             }
         }
         listener.OnFileLoaded();
+
+        CheckBoard();
     }
     #endregion
 
@@ -177,7 +190,11 @@ public class BlackieGameBoard {
     //checks the board for incorrect pieces, updates visuals, and checks for victory conditions
     protected void CheckBoard() {
         //reset components
-        errors.Clear();
+        if (errors == null) {
+            errors = new List<Piece>();
+        } else {
+            errors.Clear();
+        }
         endNodesPowered = 0;
         //first reset all pieces
         foreach (Piece p in pieceList) {
@@ -194,9 +211,14 @@ public class BlackieGameBoard {
             p.ProcessInput();
         }
 
+        //update the view
+        foreach (Piece p in pieceList) {
+            p.UpdateView();
+        }
+
         //if any pieces are preventing winning
-        if (errors.Count == 0 && endNodesPowered == endNodeCount) {
-            //TODO:Failure
+        if (errors.Count != 0 || endNodesPowered != endNodeCount) {
+            //TODO: do something with the error nodes
             return;
         }
         Victory();
@@ -225,30 +247,30 @@ public class BlackieGameBoard {
         Piece p = null;
         switch (CharToInt(data[0])) {
             case 0:                                                 //empty piece
-                p = new Piece(x, y);
+                p = new Piece(x, y, this);
                 break;
             case 1:                                                 //start node
-                p = new SourcePiece(x, y, CharToInt(data[3]));
+                p = new SourcePiece(x, y, this, CharToInt(data[3]));
                 sourceNodes.Add(p);
                 break;
             case 2:                                                 //end node
-                p = new EndPiece(x, y, CharToInt(data[3]));
+                p = new EndPiece(x, y, this, CharToInt(data[3]));
                 endNodeCount += 1;
                 break;
             case 3:                                                 //line
-                p = new LinePiece(x, y);
+                p = new LinePiece(x, y, this);
                 break;
             case 4:                                                 //elbow
-                p = new ElbowPiece(x, y);
+                p = new ElbowPiece(x, y, this);
                 break;
             case 5:                                                 //T piece
-                p = new TPiece(x, y);
+                p = new TPiece(x, y, this);
                 break;
             case 6:                                                 //cross
-                p = new CrossPiece(x, y);
+                p = new CrossPiece(x, y, this);
                 break;
             case 7:                                                 //bridge
-                p = new BridgePiece(x, y);
+                p = new BridgePiece(x, y, this);
                 break;
         }
         //p should never be null at this point
@@ -262,6 +284,11 @@ public class BlackieGameBoard {
     private int CharToInt(char c) {
         return c - '0';
     }
+
+    //moves an int into the 0-3 range
+    protected static int MatchRange(int num) {
+        return ((num % 4) + 4) % 4;
+    }
     #endregion
 
 
@@ -273,8 +300,9 @@ public class BlackieGameBoard {
 
     //A basic game piece. Can be placed on a gamespace, rotated, and moved
     public class Piece {
-        protected int x, y; //position on the gamebaord
-        protected int rotation; //which way "up" is facing (range of 0-3);
+        public int x { get; internal set; } //position on the gamebaord
+        public int y { get; internal set; }
+        public int rotation { get; protected set; } //which way "up" is facing (range of 0-3);
         public bool isLocked; //can the player move this piece?
         public int color; //the current color of this tile
         protected BlackieGameBoard game;
@@ -287,9 +315,10 @@ public class BlackieGameBoard {
         public IPieceListener listener { protected get; set; }
 
         //constructor
-        public Piece(int x, int y) {
+        public Piece(int x, int y, BlackieGameBoard game) {
             this.x = x;
             this.y = y;
+            this.game = game;
         }
 
         //updates the view with color information
@@ -301,10 +330,10 @@ public class BlackieGameBoard {
         //rotates the piece clockwise (negative amount will result in counter-clockwise rotation). 1 is a 90 degree turn
         public void Rotate(int amount) {
             rotation += amount;
-            rotation = MatchRange(rotation); //convert to 0-3 range
+            rotation = BlackieGameBoard.MatchRange(rotation); //convert to 0-3 range
         }
         public void SetRotation(int rotate) {
-            rotation = MatchRange(rotate);
+            rotation = BlackieGameBoard.MatchRange(rotate);
         }
         //returns rotation converted to worldspace
         public float GetRotation() {
@@ -312,7 +341,7 @@ public class BlackieGameBoard {
         }
         //resets input data
         public virtual void ResetInput() {
-            inputColor = -1;
+            inputColor = 0;
             inputSide = -1;
         }
         //process the input that was passed to us previously
@@ -351,13 +380,8 @@ public class BlackieGameBoard {
         //notifies this object that its receving input. 
         private void ReceiveInput(int color, int side) {
             inputColor = color;
-            inputSide = MatchRange(rotation - side); //adjust the input side to accound for rotation
+            inputSide = BlackieGameBoard.MatchRange(side-rotation); //adjust the input side to accound for rotation
             game.checkQueue.Enqueue(this);
-        }
-
-        //moves an int into the 0-3 range
-        protected int MatchRange(int num) {
-            return ((num % 4) + 4) % 4;
         }
         #endregion
 
@@ -367,7 +391,7 @@ public class BlackieGameBoard {
     public class SourcePiece : Piece {
         
 
-        public SourcePiece(int x, int y, int c) : base(x, y) {
+        public SourcePiece(int x, int y, BlackieGameBoard game, int c) : base(x, y, game) {
             color = c;
         }
 
@@ -379,10 +403,16 @@ public class BlackieGameBoard {
 
     //A tile which needs to be powered to win
     public class EndPiece : Piece {
-        int goalColor;
+        public int goalColor;
 
-        public EndPiece(int x, int y, int c) : base(x, y) {
+        public EndPiece(int x, int y, BlackieGameBoard game, int c) : base(x, y, game) {
             goalColor = c;
+        }
+
+        //reset saved color info
+        public override void ResetInput() {
+            base.ResetInput();
+            color = 0;
         }
 
         //requires power to be given of the correct color
@@ -413,12 +443,12 @@ public class BlackieGameBoard {
     */
     public class LinePiece : Piece {
 
-        public LinePiece(int x, int y) : base(x, y) { }
+        public LinePiece(int x, int y, BlackieGameBoard game) : base(x, y, game) { }
 
         //reset saved color info
         public override void ResetInput() {
             base.ResetInput();
-            color = -1;
+            color = 0;
         }
 
         public override void ProcessInput() {
@@ -427,12 +457,12 @@ public class BlackieGameBoard {
                 return;
             }
             //if color is already assigned, this tile is a mistake
-            if (color != -1) {
+            if (color != 0) {
                 game.errors.Add(this);
                 return;
             }
             //if we make it this far, send input to the opposite side of the tile, and set our color
-            SendInput(inputColor, MatchRange(inputSide + 2));
+            SendInput(inputColor, BlackieGameBoard.MatchRange(inputSide + 2));
             color = inputColor;
         }
     }
@@ -449,12 +479,12 @@ public class BlackieGameBoard {
     */
     public class ElbowPiece : Piece {
 
-        public ElbowPiece(int x, int y) : base(x, y) { }
+        public ElbowPiece(int x, int y, BlackieGameBoard game) : base(x, y, game) { }
 
         //reset saved color info
         public override void ResetInput() {
             base.ResetInput();
-            color = -1;
+            color = 0;
         }
 
         public override void ProcessInput() {
@@ -463,7 +493,7 @@ public class BlackieGameBoard {
                 return;
             }
             //if color is already assigned, this tile is a mistake
-            if (color != -1) {
+            if (color != 0) {
                 game.errors.Add(this);
                 return;
             }
@@ -485,12 +515,12 @@ public class BlackieGameBoard {
     */
     public class TPiece : Piece {
 
-        public TPiece(int x, int y) : base(x, y) { }
+        public TPiece(int x, int y, BlackieGameBoard game) : base(x, y, game) { }
 
         //reset saved color info
         public override void ResetInput() {
             base.ResetInput();
-            color = -1;
+            color = 0;
         }
 
         public override void ProcessInput() {
@@ -499,7 +529,7 @@ public class BlackieGameBoard {
                 return;
             }
             //if color is already assigned, this tile is a mistake
-            if (color != -1) {
+            if (color != 0) {
                 game.errors.Add(this);
                 return;
             }
@@ -533,24 +563,24 @@ public class BlackieGameBoard {
     */
     public class CrossPiece : Piece {
 
-        public CrossPiece(int x, int y) : base(x, y) { }
+        public CrossPiece(int x, int y, BlackieGameBoard game) : base(x, y, game) { }
 
         //reset saved color info
         public override void ResetInput() {
             base.ResetInput();
-            color = -1;
+            color = 0;
         }
 
         public override void ProcessInput() {
             //if color is already assigned, this tile is a mistake
-            if (color != -1) {
+            if (color != 0) {
                 game.errors.Add(this);
                 return;
             }
             //if we make it this far, send input to all other tiles
-            SendInput(inputColor, MatchRange(inputSide + 1));
-            SendInput(inputColor, MatchRange(inputSide + 2));
-            SendInput(inputColor, MatchRange(inputSide + 3));
+            SendInput(inputColor, BlackieGameBoard.MatchRange(inputSide + 1));
+            SendInput(inputColor, BlackieGameBoard.MatchRange(inputSide + 2));
+            SendInput(inputColor, BlackieGameBoard.MatchRange(inputSide + 3));
             color = inputColor;
         }
     }
@@ -566,22 +596,22 @@ public class BlackieGameBoard {
           
     */
     public class BridgePiece : Piece {
-        int horizontalColor;
+        public int horizontalColor;
 
-        public BridgePiece(int x, int y) : base(x, y) { }
+        public BridgePiece(int x, int y, BlackieGameBoard game) : base(x, y, game) { }
 
         //reset saved color info from both directions
         public override void ResetInput() {
             base.ResetInput();
-            color = -1;
-            horizontalColor = -1;
+            color = 0;
+            horizontalColor = 0;
         }
 
         public override void ProcessInput() {
             
             if (inputSide == 0 || inputSide == 2) {
                 //if the color in this direction is already assigned, this tile is a mistake
-                if (color != -1) {
+                if (color != 0) {
                     game.errors.Add(this);
                     return;
                 }
@@ -589,7 +619,7 @@ public class BlackieGameBoard {
 
             } else /*if inputSide is 1 or 3*/ {
                 //if the color in this direction is already assigned, this tile is a mistake
-                if (horizontalColor != -1) {
+                if (horizontalColor != 0) {
                     game.errors.Add(this);
                     return;
                 }
@@ -597,12 +627,12 @@ public class BlackieGameBoard {
             }
 
             //send input out the opposite side
-            SendInput(inputColor, MatchRange(inputSide + 2));
+            SendInput(inputColor, BlackieGameBoard.MatchRange(inputSide + 2));
         }
 
         //updates color like normal, but also attempts to update horizontal color if the right interface is attached
         public override void UpdateView() {
-            ((IBridgePieceListener)listener)?.ChangeSecondaryColor(horizontalColor);
+            //((IBridgePieceListener)listener)?.ChangeSecondaryColor(horizontalColor);
             listener.ChangeColor(color);
         }
 

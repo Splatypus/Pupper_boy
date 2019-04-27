@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PlayerControllerManager : MonoBehaviour {
 
-    public enum Modes { Walking, Dialog, MovementLock, Dragging };
+    public enum Modes { Walking, Dialog, MovementLock, Dragging, Pause };
     public Controller currentController;
-    Controller[] scripts = new Controller[4];
+    Controller[] scripts = new Controller[5];
 
     public void Start() {
         //initial setting of all modes to their correct places
@@ -14,6 +14,7 @@ public class PlayerControllerManager : MonoBehaviour {
         scripts[(int)Modes.Dialog] = gameObject.GetComponent<PlayerDialog>();
         scripts[(int)Modes.MovementLock] = gameObject.GetComponent<NoMovementController>();
         scripts[(int)Modes.Dragging] = gameObject.GetComponent<DraggingController>();
+        scripts[(int)Modes.Pause] = gameObject.GetComponent<PauseMenuController>();
 
         //then disable all controller scripts except the default one (walking)
         foreach (Controller c in scripts) {

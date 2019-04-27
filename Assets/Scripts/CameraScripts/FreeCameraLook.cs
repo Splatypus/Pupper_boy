@@ -175,7 +175,7 @@ public class FreeCameraLook : MonoBehaviour {
             //keeps the camera distance away from lookat point, at an angle slerping between target and start.
             transform.position = lookAt + ((Quaternion.Slerp(startAngle, targetAngle, scaledTime) * Vector3.forward).normalized * Mathf.Lerp(startDistance, targetDistance, scaledTime));
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, scaledTime);
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
         transform.position = lookAt + (targetAngle * Vector3.forward).normalized * targetDistance;
         transform.rotation = targetRotation;
@@ -195,7 +195,7 @@ public class FreeCameraLook : MonoBehaviour {
             //keeps the camera distance away from lookat point, at an angle slerping between target and start.
             transform.position = lookAt + ((Quaternion.Slerp(startAngle, targetAngle, scaledTime) * Vector3.forward).normalized * Mathf.Lerp(startDistance, targetDistance, scaledTime));
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, scaledTime);
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForEndOfFrame();
         }
         transform.position = lookAt + (targetAngle * Vector3.forward).normalized * targetDistance;
         transform.rotation = targetRotation;

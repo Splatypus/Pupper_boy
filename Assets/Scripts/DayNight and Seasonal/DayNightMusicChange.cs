@@ -27,6 +27,10 @@ public class DayNightMusicChange : MonoBehaviour {
         EventManager.OnNight += OnNight;
     }
 
+    private void Start() {
+        OnDay();
+    }
+
     private void OnDestroy() {
         EventManager.OnDay -= OnDay;
         EventManager.OnNight -= OnNight;

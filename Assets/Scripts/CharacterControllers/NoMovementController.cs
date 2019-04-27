@@ -16,17 +16,17 @@ public class NoMovementController : Controller {
 
     public override void OnActivated() {
         base.OnActivated();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        Camera.main.GetComponent<FreeCameraLook>().controlLocked = true;
+        //Cursor.lockState = CursorLockMode.None;
+        //Cursor.visible = true;
+       // Camera.main.GetComponent<FreeCameraLook>().controlLocked = true;
        //Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(Camera.main.transform.position, Camera.main.transform.position + Camera.main.transform.forward, 0.0f);
     }
 
     public override void OnDeactivated() {
         base.OnDeactivated();
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        Camera.main.GetComponent<FreeCameraLook>().controlLocked = false;
+       // Cursor.lockState = CursorLockMode.Locked;
+       // Cursor.visible = false;
+       // Camera.main.GetComponent<FreeCameraLook>().controlLocked = false;
     }
 }

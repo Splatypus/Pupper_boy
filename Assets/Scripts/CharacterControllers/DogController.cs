@@ -79,7 +79,7 @@ public class DogController : Controller {
         //Opening Esc Menu should always be available
         if (Input.GetButtonDown("Cancel")) {
             escMenu.Show();
-            gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.MovementLock);
+            gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Pause);
         }
 
         //dont do anything if digging, or in Esc Menu
@@ -291,7 +291,8 @@ public class DogController : Controller {
         isDigging = true;
 
         //hide item in mouth to prevent weird collisions
-        mouth.itemInMouth?.SetActive(false);
+        if(mouth.itemInMouth != null)
+            mouth.itemInMouth?.SetActive(false);
 
         //rotate towards the fence
         float timeTaken = 0.0f;
@@ -312,7 +313,8 @@ public class DogController : Controller {
         //after the animation, restore movement
         yield return new WaitForSeconds(0.6f);
         isDigging = false;
-        mouth.itemInMouth?.SetActive(true);
+        if(mouth.itemInMouth != null)
+            mouth.itemInMouth?.SetActive(true); //why doesnt the null operator work here????
 
         //and then run the event trigger letting things know we have reached the other side
         EventManager.Instance.TriggerOnFenceDig(digZone.other_side.gameObject);

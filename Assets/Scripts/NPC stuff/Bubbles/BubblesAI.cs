@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BubblesAI : AIbase {
-
+    protected override string PROGRESSION_SAVE_KEY { get { return "BubblesSummerProgression"; } }
+    protected override string PROGRESSION_NUM_SAVE_KEY { get { return "BubblesSummerPN"; } }
+    readonly string STATE_KEY = "BubblesSummerState";
 
     public GameObject rewardSpawn; //location at which the reward is spawned
     public GameObject reward;
@@ -18,6 +20,16 @@ public class BubblesAI : AIbase {
     new public void Start () {
         base.Start();	
 	}
+
+    public override void LoadDialogProgress() {
+        base.LoadDialogProgress();
+        state = (States)SaveManager.getInstance().GetInt(STATE_KEY, 0);
+    }
+
+    public override void SaveDialogProgress() {
+        SaveManager.getInstance().PutInt(STATE_KEY, (int)state);
+        base.SaveDialogProgress();
+    }
 
     //swap icon depending on state when player is in range
     public override void OnInRange() {
@@ -41,7 +53,7 @@ public class BubblesAI : AIbase {
             if (state == States.NOBUBBLES) {
                 state = States.BUBBLES;
                 Display(1);
-                progressionNum = 1;
+                ChangeAndSaveProgressionNum(1);
             }
         }
     }
@@ -62,9 +74,9 @@ public class BubblesAI : AIbase {
     //called by bubble machine when the game is finished
     public void FinishedGame(bool didWin) {
         if (didWin) {
-            progressionNum = 1;
+            ChangeAndSaveProgressionNum(1);
         } else {
-            progressionNum = 0;
+            ChangeAndSaveProgressionNum(0);
         }
     }
 

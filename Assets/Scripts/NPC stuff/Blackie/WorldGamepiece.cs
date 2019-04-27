@@ -12,7 +12,7 @@ public class WorldGamepiece : BasicToy {
     bool isHeld;
     public BlackieMiniGame2 gameSource;
     public GameObject targeter;
-    public List<MeshRenderer> meshes;
+    new public List<MeshRenderer> meshes;
     public MeshRenderer fixedPieceMesh; //this mesh changes color when this piece is a fixed piece.
     public MeshRenderer defaultColorMesh; //this mesh is used to display a set initial color, such as for goal nodes
     float distance;

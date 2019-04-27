@@ -13,6 +13,7 @@ public class MusicManager : MonoBehaviour {
     public static MusicManager Instance;
     public AudioClip defaultTheme;
     public AudioSource source;
+    public float timeBetweenLoops = 60.0f;
 
     bool isChanging = false; //lock for coroutine music changes
 
@@ -37,6 +38,16 @@ public class MusicManager : MonoBehaviour {
             source.clip = song;
         else
             StartCoroutine(FadeMusic(duration, song));
+
+        StartCoroutine(RepeatSongWithDelay());
+    }
+
+    IEnumerator RepeatSongWithDelay() {
+        while (source.isPlaying) {
+            yield return new WaitForSeconds(1.0f);
+        }
+        yield return new WaitForSeconds(timeBetweenLoops);
+        ChangeSong(1.0f, source.clip);
     }
 
     //actual call to fade the music out then back in as the new song

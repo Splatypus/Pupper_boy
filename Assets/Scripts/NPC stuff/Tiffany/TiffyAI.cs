@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TiffyAI : AIbase {
     protected override string PROGRESSION_SAVE_KEY { get { return "TiffanySummerProgression"; } }
+    protected override string PROGRESSION_NUM_SAVE_KEY { get { return "TiffanySummerPN"; } }
     readonly string STATE_KEY = "TiffanySummerState";
 
     Animator[] anim;
@@ -23,12 +24,27 @@ public class TiffyAI : AIbase {
     new public void Start() {
         base.Start();
         anim = GetComponentsInChildren<Animator>();
-        EventManager.OnFenceDig += OnDoggoEntersYard;
+
+        if (state == States.Hiding && progressionNum == 0) {
+            EventManager.OnFenceDig += OnDoggoEntersYard;
+        } else if (state == States.Rescued || state == States.Happy) {
+            StartCoroutine(WalkOut());
+        }
     }
 
     //remove eventmanager triggers
     private void OnDestroy() {
         EventManager.OnFenceDig -= OnDoggoEntersYard;
+    }
+
+    public override void LoadDialogProgress() {
+        base.LoadDialogProgress();
+        state = (States)SaveManager.getInstance().GetInt(STATE_KEY, 0);
+    }
+
+    public override void SaveDialogProgress() {
+        SaveManager.getInstance().PutInt(STATE_KEY, (int)state);
+        base.SaveDialogProgress();
     }
 
     //triggers the first time doggo enters tiffany's yard

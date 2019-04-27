@@ -16,6 +16,7 @@ public class DraggingController : Controller
     [Tooltip("When rotating to grab something, this is the speed in degrees per second that doggo moves")]
     public float grabRotationSpeed;
     public float grabStandDistance;
+    public AnimationCurve grabLerpCurve;
 
     //start
     void Start() {
@@ -33,7 +34,7 @@ public class DraggingController : Controller
         }
 
         //find the angle to the dog
-        float angleToDog = Vector3.SignedAngle(Vector3.forward, transform.position - d.transform.position, Vector3.up) + 360.0f;
+        float angleToDog = Vector3.SignedAngle(d.transform.forward, transform.position - d.transform.position, Vector3.up) + 360.0f;
         //find the closest multiple of setAngleAmount to that rotation
         float goalAngle = (angleToDog + 0.5f * d.setRotateAmount);
         goalAngle -= goalAngle % d.setRotateAmount;
@@ -65,16 +66,21 @@ public class DraggingController : Controller
         float horizontal = -Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
+
         //Deal with set movement amount
-        if (draggedItem.setMoveAmount > 0 && vertical != 0) {
-            StartCoroutine(  Move(draggedItem.setMoveAmount / draggedItem.moveSpeed, draggedItem.setMoveAmount, vertical > 0)  );
+        if (draggedItem.setMoveAmount > 0 && vertical != 0 ) {
+            if (draggedItem.CanMove(Vector3.SignedAngle(draggedItem.transform.forward, transform.forward * (vertical > 0 ? 1 : -1), Vector3.up))) {
+                StartCoroutine(Move(draggedItem.setMoveAmount / draggedItem.moveSpeed, draggedItem.setMoveAmount, vertical > 0));
+            }
 
-        //deal with set rotation amount
+            //deal with set rotation amount
         } else if (draggedItem.setRotateAmount > 0 && horizontal != 0) {
-            StartCoroutine(  Rotate(draggedItem.setRotateAmount / draggedItem.rotationSpeed, draggedItem.setRotateAmount, horizontal > 0)  );
+            if (draggedItem.CanRotate(horizontal > 0)) {
+                StartCoroutine(Rotate(draggedItem.setRotateAmount / draggedItem.rotationSpeed, draggedItem.setRotateAmount, horizontal > 0));
+            }
 
-        //Otherwise normal dragging. this section should be looked at...
-        } else if (draggedItem.setMoveAmount == 0 || draggedItem.setRotateAmount == 0){
+            //Otherwise normal dragging. this section should be looked at...
+        } else if (draggedItem.setMoveAmount == 0 || draggedItem.setRotateAmount == 0) {
             //rotate
             float rotationAmount = horizontal * draggedItem.rotationSpeed * Time.deltaTime;
             transform.RotateAround(draggedItem.transform.position, Vector3.up, rotationAmount);
@@ -87,7 +93,7 @@ public class DraggingController : Controller
             Vector3 preMoveLocation = transform.position;
             controller.Move(v * Time.deltaTime);
             draggedItem.transform.position += transform.position - preMoveLocation;
-            
+
         }
 
     }
@@ -99,15 +105,18 @@ public class DraggingController : Controller
         //rotation
         Quaternion initialRotation = transform.rotation;
         //Angle to dog is going to be the current angle rotated by rotateAroundAmount
-        float lookAngle = Vector3.SignedAngle(Vector3.forward, transform.position - draggedItem.transform.position, Vector3.up);
-        lookAngle += rotateAroundAmount;
+        float lookAngle = Vector3.SignedAngle(draggedItem.transform.forward, transform.position - draggedItem.transform.position, Vector3.up);
+        lookAngle += rotateAroundAmount + draggedItem.transform.rotation.eulerAngles.y;
         //get the opposite angle for dog to object
         lookAngle = (lookAngle + 540) % 360.0f;
         Quaternion goalRotation = Quaternion.AngleAxis(lookAngle, Vector3.up);
 
         //position
         Vector3 initialPosition = transform.position;
-        Vector3 goalPosition = draggedItem.transform.position + (goalRotation * -Vector3.forward)  * grabStandDistance;
+        Vector3 goalPosition =  draggedItem.transform.position 
+                                + Quaternion.AngleAxis(lookAngle - draggedItem.transform.rotation.eulerAngles.y, Vector3.up) 
+                                * -draggedItem.transform.forward  
+                                * grabStandDistance;
         goalPosition.y = transform.position.y;
 
         //how long this rotation should take based off the current speed
@@ -115,9 +124,10 @@ public class DraggingController : Controller
 
         //do the movement
         while (Time.time < startTime + time) {
+            float t = grabLerpCurve.Evaluate((Time.time - startTime) / time);
             //transform.RotateAround(draggedItem.transform.position, Vector3.up, rotateAroundAmount / time * Time.deltaTime);
-            transform.position = Vector3.Lerp(initialPosition, goalPosition, (Time.time - startTime)/time);
-            transform.rotation = Quaternion.Lerp(initialRotation, goalRotation, (Time.time - startTime)/time);
+            transform.position = Vector3.Lerp(initialPosition, goalPosition, t);
+            transform.rotation = Quaternion.Lerp(initialRotation, goalRotation, t);
             yield return new WaitForEndOfFrame();
         }
         transform.position = goalPosition;
@@ -145,6 +155,7 @@ public class DraggingController : Controller
         draggedItem.transform.position = objectEndPos;
         
         isMoving = false;
+        draggedItem.AfterMove( Vector3.SignedAngle(draggedItem.transform.forward, transform.forward * (isForward ? 1 : -1), Vector3.up) );
     }
 
     IEnumerator Rotate(float time, float distance, bool isRight) {
@@ -163,6 +174,7 @@ public class DraggingController : Controller
         draggedItem.transform.rotation = endObjectRotation;
         
         isMoving = false;
+        draggedItem.AfterRotate(isRight);
     }
 
 

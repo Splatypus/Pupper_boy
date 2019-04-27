@@ -4,10 +4,11 @@
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: lambert1
-  m_Shader: {fileID: 4800000, guid: 465fc6a8d0a517640adbd902da44671e, type: 3}
+  m_Shader: {fileID: 4800000, guid: aed2b47e09ca0354a88321459bdb1bc8, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -59,9 +60,13 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EdgeGlowCutoff: 0
+    - _EdgeGlowIntensity: 1.5
+    - _FocusAmount: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _IsFocused: 0
     - _Metallic: 0
     - _MinDark: 0.15
     - _Mode: 0
