@@ -2,7 +2,6 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-
 public class Tool_LoadSceneDropdown : MonoBehaviour {
 
     [MenuItem("Tools/Scene Loading/Load Title Screen &#t")]
