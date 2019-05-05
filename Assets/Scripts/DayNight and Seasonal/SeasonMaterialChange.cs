@@ -21,6 +21,10 @@ public class SeasonMaterialChange : MonoBehaviour {
         EventManager.OnSeasonChange += OnSeasonChanged;
     }
 
+    void OnDestroy() {
+        EventManager.OnSeasonChange -= OnSeasonChanged;
+    }
+
     // called when a season is changed
     void OnSeasonChanged(SeasonManager.Seasons s) {
         //assign material to the given material for the season we changed to. Defaults to the original material if none are given

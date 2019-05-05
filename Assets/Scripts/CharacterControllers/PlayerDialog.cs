@@ -2,24 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerDialog : Controller {
 
     //UI elements
-    public Text textObject;
+    public TMP_Text textObject;
     public Text nameTextObject;
     public Image imageObject;
     public GameObject[] buttons;
     public GameObject canvasGA;
 
     //displaying text
+    [Header("Displaying Text")]
+    [Tooltip("Rate at which text writes, in characters per second")]
     public float textSpeed;
+    [Tooltip("Time between each visual update")]
+    public float textUpdateTime;
     string textToShow;
     bool isAllShown;
 
 
     //reference to the current Dialog object this is interacting with. Set to null if there is none
-    public Dialog2 npcDialog = null;
+    [HideInInspector]public Dialog2 npcDialog = null;
 
 	// Update is called once per frame
 	void Update () {
@@ -93,13 +98,67 @@ public class PlayerDialog : Controller {
 
     //animates the text so that it appears one letter at a time
     IEnumerator AnimateText(string fullText) {
+        //initially set everything to invis
+        textObject.text = fullText;
+        textObject.ForceMeshUpdate();
+        int fullLength = textObject.textInfo.characterCount;
+        for (int i = 0; i < fullLength; i++) {
+            //textObject.textInfo.characterInfo[i].color.a = 0;
+            int matIndex = textObject.textInfo.characterInfo[i].materialReferenceIndex;
+            Color32[] vertColors = textObject.textInfo.meshInfo[matIndex].colors32;
+            int vertIndex = textObject.textInfo.characterInfo[i].vertexIndex;
+            vertColors[vertIndex + 0].a = 0;
+            vertColors[vertIndex + 1].a = 0;
+            vertColors[vertIndex + 2].a = 0;
+            vertColors[vertIndex + 3].a = 0;
+            textObject.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+        }
+
+        int previousIndex = 0;
+        float startTime = Time.time;
+        while (!isAllShown) {
+            int numToDisplay = (int)((Time.time - startTime) * textSpeed);
+            numToDisplay = Mathf.Min(fullLength, numToDisplay);
+            isAllShown = numToDisplay == fullLength;
+
+            for (int i = previousIndex; i < numToDisplay; i++) {
+                //textObject.textInfo.characterInfo[i].color.a = 255;
+                int matIndex = textObject.textInfo.characterInfo[i].materialReferenceIndex;
+                Color32[] vertColors = textObject.textInfo.meshInfo[matIndex].colors32;
+                int vertIndex = textObject.textInfo.characterInfo[i].vertexIndex;
+                vertColors[vertIndex + 0].a = 255;
+                vertColors[vertIndex + 1].a = 255;
+                vertColors[vertIndex + 2].a = 255;
+                vertColors[vertIndex + 3].a = 255;
+                textObject.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+            }
+
+            previousIndex = numToDisplay;
+            yield return new WaitForSeconds(textUpdateTime);
+        }
+
+        /*float startTime = Time.time;
+        char[] t = new char[fullText.Length];
+        while (!isAllShown) {
+            int numToDisplay = (int)((Time.time - startTime) * textSpeed);
+            numToDisplay = Mathf.Min(fullText.Length, numToDisplay);
+            isAllShown = numToDisplay == fullText.Length;
+
+            fullText.CopyTo(0, t, 0, numToDisplay);
+            textObject.text = new string(t);
+            yield return new WaitForSeconds(textUpdateTime);
+        }*/
+
+        /*
         string str = "";
         for (int i = 0; i < fullText.Length && !isAllShown; i++) {
             str += fullText[i];
             textObject.text = str;
-            yield return new WaitForSeconds(1.0f/textSpeed);
+            yield return new WaitForSeconds(textUpdateTime);
         }
+        textObject.text = fullText;
         isAllShown = true;
+        */
     }
 
 }
