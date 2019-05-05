@@ -125,7 +125,14 @@ public class BlackieGameGenerator : EditorWindow
 
                 for (int i = 0; i < int.Parse(ySize); i++)
                 {
-                    gameBoard[i, j] = StringToBoardPiece(line[i]);
+                    try
+                    {
+                        gameBoard[i, j] = StringToBoardPiece(line[i]);
+                    }
+                    catch
+                    {
+
+                    }
                 }
             }
         }
@@ -184,9 +191,17 @@ public class BlackieGameGenerator : EditorWindow
     //---------------------------------------------------------------------------
     BoardPiece StringToBoardPiece(string input)
     {
-        string firstChar = input.ToCharArray()[0].ToString();
-
+        string firstChar;
         int rotation = 0;
+
+        try
+        {
+            firstChar = input.ToCharArray()[0].ToString();
+        }
+        catch
+        {
+            firstChar = "x";
+        }
 
         if (firstChar == "x")
         {
@@ -288,9 +303,18 @@ public class BlackieGameGenerator : EditorWindow
     }
 
     //---------------------------------------------------------------------------
-    T[,] ResizeArray<T>(T[,] original, int cols, int rows)
+    BoardPiece[,] ResizeArray(BoardPiece[,] original, int cols, int rows)
     {
-        var newArray = new T[cols, rows];
+        var newArray = new BoardPiece[cols, rows];
+
+        for (int i = 0; i < newArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < newArray.GetLength(1); j++)
+            {
+                newArray[i, j] = new BoardPiece(BoardPieceType.LOCKED, 0);
+            }
+        }
+
         int minCols = Mathf.Min(cols, original.GetLength(0));
         int minRows = Mathf.Min(rows, original.GetLength(1));
         for (int i = 0; i < minCols; i++)
@@ -314,13 +338,11 @@ public class BlackieGameGenerator : EditorWindow
         int index = 0;
         while (index > files.Length)
         {
-            instance.allPuzzles[index] = files[index].Name;
+            instance.allPuzzles[index] = files[index].FullName;
             Debug.Log(files[index].Name);
 
             index++;
         }
-
-        Debug.Log("refreshed");
     }
 
 
@@ -407,9 +429,9 @@ public class BlackieGameGenerator : EditorWindow
         GUILayout.Space(10);
         GUILayout.BeginHorizontal(); //-----
 
-        tempPuzzleName = EditorGUILayout.TextField("Puzzle Name", tempPuzzleName,GUILayout.MinWidth(50));
+        tempPuzzleName = EditorGUILayout.TextField("Puzzle Name", tempPuzzleName);
 
-        //allPuzzlesIndex = EditorGUILayout.Popup("Puzzle", allPuzzlesIndex, allPuzzles, GUILayout.MinWidth(33));
+        //allPuzzlesIndex = EditorGUILayout.Popup(allPuzzlesIndex, allPuzzles);
 
         //Load \ Save \ Create Btn
         if (tempPuzzleName == currentPuzzleName)
@@ -461,8 +483,8 @@ public class BlackieGameGenerator : EditorWindow
 
         GUILayout.BeginHorizontal(); //-----
 
-        xSize = EditorGUILayout.TextField("X Size", xSize);
-        ySize = EditorGUILayout.TextField("Y Size", ySize);
+        xSize = EditorGUILayout.DelayedTextField("X Size", xSize);
+        ySize = EditorGUILayout.DelayedTextField("Y Size", ySize);
 
         GUILayout.EndHorizontal(); //-----
 
@@ -476,8 +498,8 @@ public class BlackieGameGenerator : EditorWindow
         int.TryParse(xSize, out xIntSize);
         int.TryParse(ySize, out yIntSize);
 
-        xIntSize = Mathf.Clamp(xIntSize, 0, maxBoardSize);
-        yIntSize = Mathf.Clamp(yIntSize, 0, maxBoardSize);
+        xIntSize = Mathf.Clamp(xIntSize, 2, maxBoardSize);
+        yIntSize = Mathf.Clamp(yIntSize, 2, maxBoardSize);
 
         xSize = xIntSize.ToString();
         ySize = yIntSize.ToString();
