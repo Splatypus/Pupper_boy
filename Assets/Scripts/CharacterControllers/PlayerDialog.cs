@@ -21,6 +21,7 @@ public class PlayerDialog : Controller {
     public float textUpdateTime;
     [Tooltip("The number of characters to fade in as text appears")]
     public float fadedCharacters;
+    public AnimationCurve fadeCurve;
     string textToShow;
     bool isAllShown;
 
@@ -125,35 +126,32 @@ public class PlayerDialog : Controller {
         textObject.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
         //over time, fill in text
-        int previousIndex = 0;
         float startTime = Time.time;
         while (!isAllShown) {
-            int numToDisplay = (int)((Time.time - startTime) * textSpeed);
-            numToDisplay = Mathf.Min(fullLength, numToDisplay);
-            isAllShown = numToDisplay == fullLength;
-
+            int rawNumToDisplay = (int)((Time.time - startTime) * textSpeed);
+            isAllShown = rawNumToDisplay >= fullLength + fadedCharacters; //make sure we go until all characters are faded in
+            int numToDisplay = Mathf.Min(fullLength, rawNumToDisplay);
+            
             //change character's alpha
-            for (int i = previousIndex; i < numToDisplay; i++) {
+            for (int i = 0; i < numToDisplay; i++) {
                 //Some characters are invisible. This simply skips over them as if they didnt exist.
                 if (!textObject.textInfo.characterInfo[i].isVisible) {
                     i++;
-                    numToDisplay++;
                 }
 
                 int matIndex = textObject.textInfo.characterInfo[i].materialReferenceIndex;
                 Color32[] vertColors = textObject.textInfo.meshInfo[matIndex].colors32;
                 int vertIndex = textObject.textInfo.characterInfo[i].vertexIndex;
                 //calculate alpha
-                //byte alpha = lerp between fadedCharacters behind being full alpha, and 0 behind being no alpha
-
-                vertColors[vertIndex + 0].a = 255;
-                vertColors[vertIndex + 1].a = 255;
-                vertColors[vertIndex + 2].a = 255;
-                vertColors[vertIndex + 3].a = 255;
+                float t = (i - (rawNumToDisplay - fadedCharacters)) / fadedCharacters;
+                byte alpha = (byte)Mathf.Lerp(255, 0, fadeCurve.Evaluate(t));
+                vertColors[vertIndex + 0].a = alpha;
+                vertColors[vertIndex + 1].a = alpha;
+                vertColors[vertIndex + 2].a = alpha;
+                vertColors[vertIndex + 3].a = alpha;
             }
             textObject.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-
-            //previousIndex = numToDisplay;
+            
             yield return new WaitForSeconds(textUpdateTime);
         }
 
