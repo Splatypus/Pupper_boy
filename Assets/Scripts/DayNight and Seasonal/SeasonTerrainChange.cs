@@ -23,6 +23,9 @@ public class SeasonTerrainChange : MonoBehaviour
         defaultData = target.terrainData;
         EventManager.OnSeasonChange += OnSeasonChanged;
     }
+    private void OnDestroy() {
+        EventManager.OnSeasonChange -= OnSeasonChanged;
+    }
 
     // called when a season is changed
     void OnSeasonChanged(SeasonManager.Seasons s) {

@@ -19,6 +19,9 @@ public class SeasonManager : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+    void OnDestroy() {
+        Instance = null;
+    }
 
     void Start() {
         SetSeason((Seasons)SaveManager.getInstance().GetInt(SEASON_KEY, 0));
