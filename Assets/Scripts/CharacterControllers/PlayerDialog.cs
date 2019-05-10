@@ -2,24 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerDialog : Controller {
 
     //UI elements
-    public Text textObject;
+    public TMP_Text textObject;
     public Text nameTextObject;
     public Image imageObject;
     public GameObject[] buttons;
     public GameObject canvasGA;
 
     //displaying text
+    [Header("Displaying Text")]
+    [Tooltip("Rate at which text writes, in characters per second")]
     public float textSpeed;
+    [Tooltip("Time between each visual update")]
+    public float textUpdateTime;
+    [Tooltip("The number of characters to fade in as text appears")]
+    public float fadedCharacters;
+    public AnimationCurve fadeCurve;
     string textToShow;
     bool isAllShown;
 
 
     //reference to the current Dialog object this is interacting with. Set to null if there is none
-    public Dialog2 npcDialog = null;
+    [HideInInspector]public Dialog2 npcDialog = null;
 
 	// Update is called once per frame
 	void Update () {
@@ -66,6 +74,7 @@ public class PlayerDialog : Controller {
     public void SetDialog(string text) {
         isAllShown = false;
         textToShow = text;
+
         StartCoroutine(AnimateText(text));
     }
 
@@ -93,13 +102,72 @@ public class PlayerDialog : Controller {
 
     //animates the text so that it appears one letter at a time
     IEnumerator AnimateText(string fullText) {
-        string str = "";
-        for (int i = 0; i < fullText.Length && !isAllShown; i++) {
-            str += fullText[i];
-            textObject.text = str;
-            yield return new WaitForSeconds(1.0f/textSpeed);
+        //workaround for a TextMesh Pro bug where if you set text you cant change vert details until the next frame
+        textObject.SetText("");
+        textObject.ForceMeshUpdate(true);
+        yield return new WaitForEndOfFrame();
+
+        //set text
+        textObject.SetText(fullText);
+        textObject.ForceMeshUpdate(true);
+
+        //initially set everything to invis
+        int fullLength = textObject.textInfo.characterCount;
+        for (int i = 0; i < fullLength; i++) {
+            //textObject.textInfo.characterInfo[i].color.a = 0;
+            int matIndex = textObject.textInfo.characterInfo[i].materialReferenceIndex;
+            Color32[] vertColors = textObject.textInfo.meshInfo[matIndex].colors32;
+            int vertIndex = textObject.textInfo.characterInfo[i].vertexIndex;
+            vertColors[vertIndex + 0].a = 0;
+            vertColors[vertIndex + 1].a = 0;
+            vertColors[vertIndex + 2].a = 0;
+            vertColors[vertIndex + 3].a = 0;
+        }                                          
+        textObject.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+        //over time, fill in text
+        float startTime = Time.time;
+        while (!isAllShown) {
+            int rawNumToDisplay = (int)((Time.time - startTime) * textSpeed);
+            isAllShown = rawNumToDisplay >= fullLength + fadedCharacters; //make sure we go until all characters are faded in
+            int numToDisplay = Mathf.Min(fullLength, rawNumToDisplay);
+            
+            //change character's alpha
+            for (int i = 0; i < numToDisplay; i++) {
+                //Some characters are invisible. This simply skips over them as if they didnt exist.
+                if (!textObject.textInfo.characterInfo[i].isVisible) {
+                    i++;
+                }
+
+                int matIndex = textObject.textInfo.characterInfo[i].materialReferenceIndex;
+                Color32[] vertColors = textObject.textInfo.meshInfo[matIndex].colors32;
+                int vertIndex = textObject.textInfo.characterInfo[i].vertexIndex;
+                //calculate alpha
+                float t = (i - (rawNumToDisplay - fadedCharacters)) / fadedCharacters;
+                byte alpha = (byte)Mathf.Lerp(255, 0, fadeCurve.Evaluate(t));
+                vertColors[vertIndex + 0].a = alpha;
+                vertColors[vertIndex + 1].a = alpha;
+                vertColors[vertIndex + 2].a = alpha;
+                vertColors[vertIndex + 3].a = alpha;
+            }
+            textObject.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+            
+            yield return new WaitForSeconds(textUpdateTime);
         }
-        isAllShown = true;
+
+        //when its all finished (or when a players skips the dialog scroll in), make sure everything is filled in
+        for (int i = 0; i < fullLength; i++) {
+            //textObject.textInfo.characterInfo[i].color.a = 0;
+            int matIndex = textObject.textInfo.characterInfo[i].materialReferenceIndex;
+            Color32[] vertColors = textObject.textInfo.meshInfo[matIndex].colors32;
+            int vertIndex = textObject.textInfo.characterInfo[i].vertexIndex;
+            vertColors[vertIndex + 0].a = 255;
+            vertColors[vertIndex + 1].a = 255;
+            vertColors[vertIndex + 2].a = 255;
+            vertColors[vertIndex + 3].a = 255;
+            textObject.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+        }
+        
     }
 
 }

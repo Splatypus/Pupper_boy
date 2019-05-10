@@ -10,16 +10,6 @@ public class DoggoDoghouse : AIbase {
     }
 
     public void ChangeTime() {
-        //swap times between day and night
-        /* Old version
-        DayNightManager manager = DayNightManager.Instance;
-        if (manager.currentTime == DayNightManager.Times.DAY) {
-            manager.SetTime(DayNightManager.Times.NIGHT);
-        } else {
-            manager.SetTime(DayNightManager.Times.DAY);
-        }*/
-
-        //New version using global triggers
         DayNightManager.Instance.SwapTime();
     }
 }

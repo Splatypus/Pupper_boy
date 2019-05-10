@@ -20,6 +20,9 @@ public class FenceUnlockManager : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+    void OnDestroy() {
+        Instance = null;
+    }
 
     // Use this for initialization
     void Start () {
