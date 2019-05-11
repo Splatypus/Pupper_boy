@@ -32,7 +32,7 @@ public class PlayerDialog : Controller {
 	// Update is called once per frame
 	void Update () {
         //if any key is pressed, display the full text of the current text box, or if it already is, then display next
-        if (Input.anyKeyDown && npcDialog != null) {
+        if (Input.GetButtonDown("Interact") && npcDialog != null) {
             //if all the text is not yet in the text box, put it all there
             if (!isAllShown) {
                 textObject.text = textToShow;
