@@ -9,16 +9,15 @@ public class DogController : Controller {
 
     #region Component Variables
     CharacterController controller;
+    PlayerControllerManager manager;
     Animator anim;
     Transform cam;
     [HideInInspector] public PuppyPickup mouth;
     #endregion
 
     #region new world order movement variables
-    public Vector3 v; //velocity
     [Header("Movement")]
     public float maxSpeed;
-    public float sprintMultiplier;
     public float acceleration;
     public float decceleration;
     public float inAirMult;
@@ -29,11 +28,17 @@ public class DogController : Controller {
     public float turnspeed = 5;
     public float freezeMovementAngle = 90.0f;
     public float SpeedMultScentMode = 0.5f;
+    [Header("Sprinting")]
+    public float sprintMultiplier;
+    public float sprintDelay;
+    public float sprintRampTime;
+    private float moveStartTime;
+
     #endregion
 
     Vector3 cam_right, cam_fwd;
 
-    public bool hasFlight = false;
+    //public bool hasFlight = false;
 
     List<InteractableObject> inRangeOf = new List<InteractableObject>();
 
@@ -54,6 +59,7 @@ public class DogController : Controller {
 
 
     void Start() {
+        manager = GetComponent<PlayerControllerManager>();
         controller = GetComponent<CharacterController>();
         cam = Camera.main.transform;
         mouth = GetComponentInChildren<PuppyPickup>();
@@ -63,14 +69,7 @@ public class DogController : Controller {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        v = Vector3.zero;
-    }
-
-    //move in fixed update since it changes velocity. In normal update it would sometimes feel like it had small delays.
-    void FixedUpdate() {
-        if (!isDigging) {
-            //Move();
-        }
+        manager.v = Vector3.zero;
     }
 
     // Update is called once per frame
@@ -103,11 +102,6 @@ public class DogController : Controller {
                 closest.OnInteract();
             }
 
-            //flight mode
-            if (hasFlight && Input.GetButtonDown("Fly")) {
-            //    gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Flight);
-            }
-
             //scent mode toggle
             if (Input.GetButtonDown("Scent")) {
                 ScentManager.Instance.InputEnable();
@@ -137,14 +131,22 @@ public class DogController : Controller {
         //^On PC builds this should be normalized, since axies cannot be between 0 and 1, but can both be 1. Meaning you need to prevent faster diagonal movement
         //on console, this should be non-normalized, since the stick gives values between 0 and 1, but cannot put both at 1, and you may want <1 values, such as moving the stick half way left
 
+        //Handle Sprinting
+        if (horizontal == 0 && vertical == 0) {
+            moveStartTime = Time.time;
+        }
+        if (Input.GetAxis("Sprint") > 0.1f) { //if sprinting key is held, jump to max sprint
+            moveStartTime = -(sprintDelay + sprintRampTime);
+        }
+
         //find accelerations and max speeds
         float a = acceleration; //acceleration for this frame
         if (!isGrounded) {
             a *= inAirMult;
         }
         float newMaxSpeed = maxSpeed;
-        if (Input.GetAxis("Sprint") > 0.1f || true) {
-            newMaxSpeed = maxSpeed * sprintMultiplier;
+        if(Time.time-moveStartTime > sprintDelay){
+            newMaxSpeed *= Mathf.Lerp(1, sprintMultiplier, ( Time.time-(moveStartTime+sprintDelay)) / sprintRampTime ); //adjust max speed to account for sprinting
         }
         if (ScentManager.Instance.isEnabled) {
             newMaxSpeed *= SpeedMultScentMode;
@@ -160,58 +162,60 @@ public class DogController : Controller {
             angle = Quaternion.Angle(transform.rotation, Quaternion.LookRotation(dir));
 
         //reduce the speed if your angle is too far off
-        if (angle > freezeMovementAngle && isGrounded)
+        if (angle > freezeMovementAngle && isGrounded) {
+            moveStartTime = Time.time;
             newMaxSpeed = 0;
+        }
 
         //store vertical movement speed before messing with horizontal, since the entire vector is changed
-        float verticalSpeed = isGrounded? -hillSmoothingFactor/Time.deltaTime : v.y;
+        float verticalSpeed = isGrounded? -hillSmoothingFactor/Time.deltaTime : manager.v.y;
 
-        v.y = 0;
+        manager.v.y = 0;
         //find horizontal movement based on input
         if (Mathf.Abs(horizontal) > Mathf.Epsilon || Mathf.Abs(vertical) > Mathf.Epsilon) {
             //in air
             if (!isGrounded) {
-                v += moveDirection * a * Time.deltaTime;
+                manager.v += moveDirection * a * Time.deltaTime;
                 //if this acceleration pushes it over the max speed, cap it there instead
-                if (v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
-                    v = v.normalized * maxSpeed;
+                if (manager.v.sqrMagnitude > newMaxSpeed * newMaxSpeed) {
+                    manager.v = manager.v.normalized * maxSpeed;
                 }
             }
 
             //acceleration only affects speed while on the ground. 
             else {
-                v = moveDirection * Mathf.Min(v.magnitude + a * Time.deltaTime, newMaxSpeed);
+                manager.v = moveDirection * Mathf.Min(manager.v.magnitude + a * Time.deltaTime, newMaxSpeed);
             }
         }
         //no input
         else {
             //in air
             if (!isGrounded) {
-                v = v.normalized * (v.magnitude - decceleration * Time.deltaTime);
+                manager.v = manager.v.normalized * (manager.v.magnitude - decceleration * Time.deltaTime);
             }
             //grouned
             else {
-                v = Vector3.zero;
+                manager.v = Vector3.zero;
             }
         }
 
 
-        v.y = verticalSpeed;//reset v.y after changes from horizontal movement
+        manager.v.y = verticalSpeed;//reset v.y after changes from horizontal movement
 
         //then calculate verticle speed
         //if grounded, vert speed is 0 unless jumping, if in air, calc gravity
         if (isGrounded && jumpInput) {
-            v.y = jumpForce;
+            manager.v.y = jumpForce;
         } 
         //gravity
-        if (v.y - (gravity * Time.deltaTime) < -maxFallSpeed) {
-            v.y = -maxFallSpeed;
+        if (manager.v.y - (gravity * Time.deltaTime) < -maxFallSpeed) {
+            manager.v.y = -maxFallSpeed;
         } else {
-            v.y -= gravity * Time.deltaTime;
+            manager.v.y -= gravity * Time.deltaTime;
         }
 
         //set movement
-        controller.Move(v * Time.deltaTime);
+        controller.Move(manager.v * Time.deltaTime);
 
         // Update animation controller with the amount that we are moving
         float animValue = Mathf.Sqrt(vertical * vertical + horizontal * horizontal);
@@ -326,7 +330,6 @@ public class DogController : Controller {
     public override void OnDeactivated() {
         anim.SetFloat("Forward", 0.0f); //disable animations
         //rigidBody.velocity = Vector3.zero; //and stop it from moving
-        v = Vector3.zero;
     }
 
     public override void OnActivated() {

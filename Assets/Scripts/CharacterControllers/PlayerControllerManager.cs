@@ -8,6 +8,9 @@ public class PlayerControllerManager : MonoBehaviour {
     public Controller currentController;
     Controller[] scripts = new Controller[5];
 
+    //velocity - shared between all control scripts
+    [HideInInspector] public Vector3 v;
+
     public void Start() {
         //initial setting of all modes to their correct places
         scripts[(int)Modes.Walking] = gameObject.GetComponent<DogController>();
