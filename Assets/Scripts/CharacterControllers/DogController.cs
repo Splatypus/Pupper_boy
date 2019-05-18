@@ -12,6 +12,7 @@ public class DogController : Controller {
     PlayerControllerManager manager;
     Animator anim;
     Transform cam;
+    FreeCameraLook cameraScript;
     [HideInInspector] public PuppyPickup mouth;
     #endregion
 
@@ -62,6 +63,7 @@ public class DogController : Controller {
         manager = GetComponent<PlayerControllerManager>();
         controller = GetComponent<CharacterController>();
         cam = Camera.main.transform;
+        cameraScript = Camera.main.GetComponent<FreeCameraLook>();
         mouth = GetComponentInChildren<PuppyPickup>();
         anim = GetComponentInChildren<Animator>();
         my_icon = GetComponentInChildren<IconManager>();
@@ -114,6 +116,11 @@ public class DogController : Controller {
             }
 
         }//end isdigging check
+
+        //move camera
+        float speed = Vector3.Dot(Vector3.ProjectOnPlane(manager.v, Vector3.up), cameraScript.transform.forward);
+        cameraScript.trueMaxDistance = Mathf.Lerp(cameraScript.trueMaxDistance, cameraScript.maxDistance + speed/5.0f, 8.0f * Time.deltaTime);
+ 
     }
 
     void Move() {
@@ -163,7 +170,7 @@ public class DogController : Controller {
 
         //reduce the speed if your angle is too far off
         if (angle > freezeMovementAngle && isGrounded) {
-            moveStartTime = Time.time;
+            moveStartTime = Time.time - sprintDelay;
             newMaxSpeed = 0;
         }
 

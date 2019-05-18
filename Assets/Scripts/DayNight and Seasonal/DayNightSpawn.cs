@@ -25,6 +25,16 @@ public class DayNightSpawn : MonoBehaviour {
         }
     }
 
+    private void OnDestroy() {
+        if (isActiveAtNight) {
+            EventManager.OnNight -= Activate;
+            EventManager.OnDay -= Deactivate;
+        } else {
+            EventManager.OnNight -= Deactivate;
+            EventManager.OnDay -= Activate;
+        }
+    }
+
     public void Activate() {
         gameObject.SetActive(true);
     }

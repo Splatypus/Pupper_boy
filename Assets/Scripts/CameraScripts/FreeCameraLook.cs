@@ -19,6 +19,7 @@ public class FreeCameraLook : MonoBehaviour {
     [Header("Control Values")]
     public LayerMask mask;
     public float maxDistance = 7.0f;
+    [HideInInspector]public float trueMaxDistance = 7.0f;
     public float minDistance = 0.2f;
     public float collisionPadding = 0.5f;
     public float turnSpeed = 1.5f;
@@ -35,8 +36,7 @@ public class FreeCameraLook : MonoBehaviour {
 
     private float lookAngle;
     private float tiltAngle;
-
-
+    
     Vector3 previousFrameLocation;
     Vector3 cameraGoal;
 
@@ -46,13 +46,10 @@ public class FreeCameraLook : MonoBehaviour {
         }
         previousFrameLocation = anchor.position;
         cameraGoal = transform.position;
-        
     }
 
     // Update is called once per frame
     void Update() {
-        //transform.position = Vector3.Lerp(cameraStart, cameraEnd, (Time.time - endTime) / (endTime - startTime));
-        //time-endtime is how long its been since the physics update finished. We take that amount of time, and consider how far that puts us into that update
 
         //Used to lock the camera to a set location. Useful for capturing promotional material
         if ((Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.L)) || (Input.GetKeyDown(KeyCode.LeftShift) && Input.GetKey(KeyCode.L))) {
@@ -69,12 +66,13 @@ public class FreeCameraLook : MonoBehaviour {
 
         if (!controlLocked) {
 
-            Vector3 truePosition = transform.position;
-            transform.position = cameraGoal; //camera end tracks where the camera wants to end up. Start is where it was at the start of the physics update
+        //    Vector3 truePosition = transform.position;
+        //    transform.position = cameraGoal; //camera end tracks where the camera wants to end up. Start is where it was at the start of the physics update
             HandleRotationMovement(); //new position is calculated
-            cameraGoal = transform.position; //save goal since the above function modifies transform.position. Position is later set to what it should be
+        //    cameraGoal = transform.position; //save goal since the above function modifies transform.position. Position is later set to what it should be
             //smoothing
-            transform.position = Vector3.Lerp(truePosition, cameraGoal, 20.0f * Time.deltaTime);
+        //    transform.position = Vector3.Lerp(truePosition, cameraGoal, 0.1f);
+
             //but keep it rotation locked despite that
             float angle = FindCameraAngle();
             transform.RotateAround(anchor.position, transform.right, ClampRotationAngle(angle, 0, angleMin, angleMax));
@@ -101,13 +99,13 @@ public class FreeCameraLook : MonoBehaviour {
 
         //find out how many units back the camera can be
         RaycastHit hit;
-        if (Physics.Raycast(anchorPosition, transform.position - anchorPosition, out hit, maxDistance, mask)) {
+        if (Physics.Raycast(anchorPosition, transform.position - anchorPosition, out hit, trueMaxDistance, mask)) {
             transform.position = anchorPosition + (transform.position - anchorPosition).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
         } else {
-            transform.position = anchorPosition + (transform.position - anchorPosition).normalized * maxDistance;
+            transform.position = anchorPosition + (transform.position - anchorPosition).normalized * trueMaxDistance;
         }
 
-        previousFrameLocation = anchor.position;
+        previousFrameLocation = anchorPosition;
 
 
     }
@@ -140,10 +138,10 @@ public class FreeCameraLook : MonoBehaviour {
 
     //smoothly moves the camera to it's closest valid location, then reenables input
     public void RestoreCamera(float duration) {
-        Vector3 targetPosition = anchor.position + (transform.position - anchor.position).normalized * maxDistance;
+        Vector3 targetPosition = anchor.position + (transform.position - anchor.position).normalized * trueMaxDistance;
         //raycast towards targetPosition and move it in if needed to avoid camera collision
         RaycastHit hit;
-        if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, maxDistance, mask)) {
+        if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, trueMaxDistance, mask)) {
             targetPosition = anchor.position + (transform.position - anchor.position).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
         }
 
