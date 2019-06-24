@@ -18,10 +18,9 @@ public class FreeCameraLook : MonoBehaviour {
 
     [Header("Control Values")]
     public LayerMask mask;
-    public float maxDistance = 7.0f;
-    [HideInInspector]public float trueMaxDistance = 7.0f;
+    public float maxDistance = 7.0f; //the base unmodified max distance for the camera
+    [HideInInspector]public float trueMaxDistance = 7.0f;  //the actual modified maximum distance for the camera
     public float minDistance = 0.2f;
-    public float collisionPadding = 0.5f;
     public float turnSpeed = 1.5f;
     public float angleMin = 15f;
     public float angleMax = 80f;
@@ -62,22 +61,18 @@ public class FreeCameraLook : MonoBehaviour {
             }
         }
 
-
-
         if (!controlLocked) {
-
-        //    Vector3 truePosition = transform.position;
-        //    transform.position = cameraGoal; //camera end tracks where the camera wants to end up. Start is where it was at the start of the physics update
+            
             HandleRotationMovement(); //new position is calculated
-        //    cameraGoal = transform.position; //save goal since the above function modifies transform.position. Position is later set to what it should be
-            //smoothing
-        //    transform.position = Vector3.Lerp(truePosition, cameraGoal, 0.1f);
 
             //but keep it rotation locked despite that
             float angle = FindCameraAngle();
             transform.RotateAround(anchor.position, transform.right, ClampRotationAngle(angle, 0, angleMin, angleMax));
             //keep camera looking at player
             transform.LookAt(anchor);
+
+            //move the camera in for collision
+            DoCameraCollision(anchor.position, minDistance, trueMaxDistance);
         }
     }
 
@@ -96,18 +91,40 @@ public class FreeCameraLook : MonoBehaviour {
         float angle = FindCameraAngle();
         transform.RotateAround(anchorPosition, transform.right, ClampRotationAngle(angle, y, angleMin, angleMax));
 
-
-        //find out how many units back the camera can be
-        RaycastHit hit;
-        if (Physics.Raycast(anchorPosition, transform.position - anchorPosition, out hit, trueMaxDistance, mask)) {
-            transform.position = anchorPosition + (transform.position - anchorPosition).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
-        } else {
-            transform.position = anchorPosition + (transform.position - anchorPosition).normalized * trueMaxDistance;
-        }
-
         previousFrameLocation = anchorPosition;
 
+    }
+    public void DoCameraCollision(Vector3 target,float minDis, float maxDis) {
+        //find out how many units back the camera can be
+        float newDistance = maxDis;
+        Camera mainCamera = Camera.main;
+        //Vector that when added to a position gets the worldspace coordinates of each camera corner if the camera were moved to that position
+        Vector3[] cornerPoints = {
+            mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.nearClipPlane)) - transform.position,
+            mainCamera.ViewportToWorldPoint(new Vector3(1, 0, mainCamera.nearClipPlane)) - transform.position,
+            mainCamera.ViewportToWorldPoint(new Vector3(0, 1, mainCamera.nearClipPlane)) - transform.position,
+            mainCamera.ViewportToWorldPoint(new Vector3(1, 1, mainCamera.nearClipPlane)) - transform.position     
+        };
 
+        foreach (Vector3 v in cornerPoints) {
+            Debug.Assert(cornerPoints[0].x != 0);
+            Debug.Assert(cornerPoints[0].x != cornerPoints[1].x);
+            RaycastHit hit;
+            //raycast backwards from target points
+            if (Physics.Raycast( target + v + -transform.forward * mainCamera.nearClipPlane, -transform.forward, out hit, maxDis, mask) ) {
+                //if that distance is smaller than our current target distance, set it to that instead
+                newDistance = Mathf.Min(newDistance, hit.distance);
+            }
+        }
+        //do no go below the minimum distance
+        newDistance = Mathf.Max(newDistance, minDis);
+
+        //set the camera
+        float currentDistance = Vector3.Distance(transform.position, target);
+        if (currentDistance < newDistance) {
+            newDistance = Mathf.Min(currentDistance + 10.0f * Time.deltaTime, newDistance);
+        }
+        transform.position = target + (transform.position - target).normalized * newDistance;
     }
     //returns the angle in degress that the camera is above the xz plane of the anchor
     private float FindCameraAngle() {
@@ -125,39 +142,27 @@ public class FreeCameraLook : MonoBehaviour {
         }
         return delta;
     }
+
+
     //moves the camera to the given position, facing lookat, over the duration given. Smooths movement and disables input.
-    public void MoveToPosition(Vector3 location, Vector3 lookAt, float duration) {
-        controlLocked = true;
-        StartCoroutine(Pan(location, lookAt, duration));
-    }
-    //same as above but includes an action thats called once the camera arives at the designated location
-    public void MoveToPosition(Vector3 location, Vector3 lookAt, float duration, System.Action OnComplete) {
+    public void MoveToPosition(Vector3 location, Vector3 lookAt, float duration, System.Action OnComplete = null) {
         controlLocked = true;
         StartCoroutine(Pan(location, lookAt, duration, OnComplete));
     }
-
     //smoothly moves the camera to it's closest valid location, then reenables input
     public void RestoreCamera(float duration) {
-        Vector3 targetPosition = anchor.position + (transform.position - anchor.position).normalized * trueMaxDistance;
+        Vector3 targetPosition = anchor.position + (transform.position - anchor.position).normalized * maxDistance;
         //raycast towards targetPosition and move it in if needed to avoid camera collision
         RaycastHit hit;
         if (Physics.Raycast(anchor.position, transform.position - anchor.position, out hit, trueMaxDistance, mask)) {
-            targetPosition = anchor.position + (transform.position - anchor.position).normalized * Mathf.Max(hit.distance - collisionPadding, minDistance);
+            targetPosition = anchor.position + (transform.position - anchor.position).normalized * Mathf.Max(hit.distance, minDistance);
         }
 
         //start a pan coroutine to move camera, and an unlock control one to return control to the player as that ends
-        StartCoroutine(Pan(targetPosition, anchor.position, duration));
-        StartCoroutine(UnlockControl(duration));
+        StartCoroutine(Pan(targetPosition, anchor.position, duration, () => controlLocked = false));
     }
-
-    //unlocks control after the given amount of time
-    IEnumerator UnlockControl(float time) {
-        yield return new WaitForSeconds(time);
-        controlLocked = false;
-    }
-
     //takes in a location and a spot to look at, and a duration. Pans to location, looking towards lookAt over the given duration
-    IEnumerator Pan(Vector3 location, Vector3 lookAt, float duration) {
+    IEnumerator Pan(Vector3 location, Vector3 lookAt, float duration, System.Action OnComplete = null) {
         float startTime = Time.time;
         Quaternion startRotation = transform.rotation;
         Quaternion targetRotation = Quaternion.LookRotation(lookAt - location);
@@ -171,32 +176,13 @@ public class FreeCameraLook : MonoBehaviour {
             //keeps the camera distance away from lookat point, at an angle slerping between target and start.
             transform.position = lookAt + ((Quaternion.Slerp(startAngle, targetAngle, scaledTime) * Vector3.forward).normalized * Mathf.Lerp(startDistance, targetDistance, scaledTime));
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, scaledTime);
+            DoCameraCollision(lookAt, 0, Vector3.Distance(transform.position, lookAt));
             yield return new WaitForEndOfFrame();
         }
         transform.position = lookAt + (targetAngle * Vector3.forward).normalized * targetDistance;
         transform.rotation = targetRotation;
         cameraGoal = transform.position;
-    }
-    IEnumerator Pan(Vector3 location, Vector3 lookAt, float duration, System.Action OnComplete) {
-        float startTime = Time.time;
-        Quaternion startRotation = transform.rotation;
-        Quaternion targetRotation = Quaternion.LookRotation(lookAt - location);
-        float startDistance = Vector3.Distance(lookAt, transform.position);
-        float targetDistance = Vector3.Distance(lookAt, location);
-        Quaternion startAngle = Quaternion.LookRotation(transform.position - lookAt);
-        Quaternion targetAngle = Quaternion.LookRotation(location - lookAt);
-
-        while (Time.time < startTime + duration) {
-            float scaledTime = (Time.time - startTime) / duration;
-            //keeps the camera distance away from lookat point, at an angle slerping between target and start.
-            transform.position = lookAt + ((Quaternion.Slerp(startAngle, targetAngle, scaledTime) * Vector3.forward).normalized * Mathf.Lerp(startDistance, targetDistance, scaledTime));
-            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, scaledTime);
-            yield return new WaitForEndOfFrame();
-        }
-        transform.position = lookAt + (targetAngle * Vector3.forward).normalized * targetDistance;
-        transform.rotation = targetRotation;
-        cameraGoal = transform.position;
-        OnComplete();
+        OnComplete?.Invoke();
     }
 
 
