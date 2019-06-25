@@ -62,8 +62,8 @@ public class DogController : Controller {
     void Start() {
         manager = GetComponent<PlayerControllerManager>();
         controller = GetComponent<CharacterController>();
-        cam = Camera.main.transform;
         cameraScript = Camera.main.GetComponent<FreeCameraLook>();
+        cam = cameraScript.phantomCamera.transform; //Camera.main.transform;
         mouth = GetComponentInChildren<PuppyPickup>();
         anim = GetComponentInChildren<Animator>();
         my_icon = GetComponentInChildren<IconManager>();
