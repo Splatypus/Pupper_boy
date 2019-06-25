@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BubblesAI : AIbase {
-    protected override string PROGRESSION_SAVE_KEY { get { return "BubblesSummerProgression"; } }
+    protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "BubblesSummerProgression"; } }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "BubblesSummerPN"; } }
     readonly string STATE_KEY = "BubblesSummerState";
 
