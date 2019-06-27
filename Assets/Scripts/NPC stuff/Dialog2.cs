@@ -7,9 +7,11 @@ using UnityEditor;
 #endif
 
 public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
-
-    protected virtual string PROGRESSION_SAVE_KEY { get { return ""; } } 
+    //These must be overriden by child classes for them to save. 
+    //For example: If you set a string to return for DIALOG_POROGRESS_SAVE_KEY, then dialog progress will save automatically for that NPC
+    protected virtual string DIALOG_PROGRESS_SAVE_KEY { get { return ""; } } 
     protected virtual string PROGRESSION_NUM_SAVE_KEY { get { return ""; } }
+    protected virtual string CHARACTER_STATE_SAVE_KEY { get { return ""; } }
 
     //player references
     PlayerDialog pdialog;
@@ -33,6 +35,8 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
     public DialogNode currentNode = null;
     [Header("Dialog Info")]
     public int progressionNum;
+
+    protected int characterState = 0;
 
     //EditorInfo
     public List<DialogNode> nodes;
@@ -142,7 +146,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
     public virtual void LoadDialogProgress() {
         //read from save... if nothing found, default to the start node
-        int loadedNode = SaveManager.getInstance().GetInt(PROGRESSION_SAVE_KEY, -1);
+        int loadedNode = SaveManager.getInstance().GetInt(DIALOG_PROGRESS_SAVE_KEY, -1);
         if (loadedNode == -1) {
             currentNode = startNode;
         } else {
@@ -150,18 +154,26 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         }
         //load progression num from save. If nothing founds, default to 0
         progressionNum = SaveManager.getInstance().GetInt(PROGRESSION_NUM_SAVE_KEY, 0);
+        characterState = SaveManager.getInstance().GetInt(CHARACTER_STATE_SAVE_KEY, 0);
     }
     public virtual void SaveDialogProgress() {
+        bool wasChanged = false;
         //if the key has been overriden, save
-        if (!PROGRESSION_SAVE_KEY.Equals("")) {
-            SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
-        } else if (!PROGRESSION_NUM_SAVE_KEY.Equals("")) {
+        if (!DIALOG_PROGRESS_SAVE_KEY.Equals("")) {
+            SaveManager.getInstance().PutInt(DIALOG_PROGRESS_SAVE_KEY, currentNode.index);
+            wasChanged = true;
+        }
+        if (!PROGRESSION_NUM_SAVE_KEY.Equals("")) {
             SaveManager.getInstance().PutInt(PROGRESSION_NUM_SAVE_KEY, progressionNum);
-        } else {
-            return;
+            wasChanged = true;
+        }
+        if (!CHARACTER_STATE_SAVE_KEY.Equals("")) {
+            SaveManager.getInstance().PutInt(CHARACTER_STATE_SAVE_KEY, characterState);
+            wasChanged = true;
         }
         //save if we added anything to the save manager
-        SaveManager.getInstance().SaveFile();
+        if(wasChanged)
+            SaveManager.getInstance().SaveFile();
 
     }
     public virtual void ChangeAndSaveProgressionNum(int newNum) {

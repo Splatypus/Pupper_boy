@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SocksTutorial : Dialog2 {
-    protected override string PROGRESSION_SAVE_KEY { get { return "SocksSummerProgression";} }
+    protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "SocksSummerProgression";} }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "SocksSummerPN"; } }
-    private readonly string OBJECTIVE_COUNT_KEY = "SocksSummerObjectives";
+    protected override string CHARACTER_STATE_SAVE_KEY {get { return "SocksSummerObjectives"; } }
 
     [Header("Objective Info")]
     public GameObject[] lookTargetLocations;
@@ -14,7 +14,6 @@ public class SocksTutorial : Dialog2 {
     public GameObject moveTargetObject;
     public GameObject[] itemTargetLocations;
     public GameObject itemTargetObject;
-    public int objectiveCount = 0;
 
     [Header("CameraStuff")]
     public InSceneCameraReference cameraReference;
@@ -24,8 +23,6 @@ public class SocksTutorial : Dialog2 {
         base.Start();
         //customCameraLocation = cameraReference.getCamera();
 
-        objectiveCount = SaveManager.getInstance().GetInt(OBJECTIVE_COUNT_KEY, 0);
-
         EventManager.OnTalk += OnMetTiffany;
 
         StartCoroutine(AfterStart());
@@ -33,7 +30,7 @@ public class SocksTutorial : Dialog2 {
     //Since other things are getting set up in start functions, this need to initiate dialog after that has already happened
     IEnumerator AfterStart() {
         yield return new WaitForEndOfFrame();
-        TriggerInteractFromObjectiveCount();
+        TriggerInteractFromcharacterState();
     }
 
     private void OnDestroy() {
@@ -81,20 +78,20 @@ public class SocksTutorial : Dialog2 {
 
     //called whenever an objective is finished, such as looking at a thing or moving to the right spot
     public void ObjectiveComplete() {
-        objectiveCount++;
-        if (objectiveCount > 3)
+        characterState++;
+        if (characterState > 3)
             progressionNum = 1;
         //trigger new dialog if needed
-        TriggerInteractFromObjectiveCount();
+        TriggerInteractFromcharacterState();
     }
 
     //Triggers the OnInteract function based on what the current objective count is
-   void TriggerInteractFromObjectiveCount() {
-        if (objectiveCount <= 7) { //123 are looking at object, 456 are movement, 7 is retreiving an item
+   void TriggerInteractFromcharacterState() {
+        if (characterState <= 7) { //123 are looking at object, 456 are movement, 7 is retreiving an item
             
             //save progress.
-            SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
-            SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+            SaveManager.getInstance().PutInt(CHARACTER_STATE_SAVE_KEY, characterState);
+            SaveManager.getInstance().PutInt(DIALOG_PROGRESS_SAVE_KEY, currentNode.index);
             SaveManager.getInstance().PutInt(PROGRESSION_NUM_SAVE_KEY, progressionNum);
             SaveManager.getInstance().SaveFile();
 
@@ -106,14 +103,14 @@ public class SocksTutorial : Dialog2 {
     //sock's dialog will save after objectives are finished, since otherwise the forced OnInteract would cause desync
     public override void SaveDialogProgress() {
         //save progress after chatting after the last objective
-        if (objectiveCount == 7) {
-            objectiveCount++;
-            SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
-            SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+        if (characterState == 7) {
+            characterState++;
+            SaveManager.getInstance().PutInt(CHARACTER_STATE_SAVE_KEY, characterState);
+            SaveManager.getInstance().PutInt(DIALOG_PROGRESS_SAVE_KEY, currentNode.index);
             SaveManager.getInstance().SaveFile();
         }
         //and then from now on treat dialog normally
-        else if (objectiveCount > 7) {
+        else if (characterState > 7) {
             base.SaveDialogProgress();
         }
     }
