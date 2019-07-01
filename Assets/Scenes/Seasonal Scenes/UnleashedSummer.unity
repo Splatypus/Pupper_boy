@@ -324,7 +324,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &94001598
 GameObject:
@@ -878,7 +878,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &218121091
 GameObject:
@@ -1458,7 +1458,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &266267335
 GameObject:
@@ -1488,7 +1488,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &266532551
 GameObject:
@@ -1740,7 +1740,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &342415970
 GameObject:
@@ -1870,6 +1870,26 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2007542681}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &415462142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415462141}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ec2cd0b12a56c4aa6a7a34444d7fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 0}
+  dotCutoff: 0.92
+  lookTimeNeeded: 2
+  targetObject: {fileID: 415462141}
+  multiSceneKey: 
+  shinyShader: {fileID: 4800000, guid: 4ac3acd58dd3a614e85c42f1fc65251c, type: 3}
+  startColor: {r: 1, g: 1, b: 1, a: 0}
+  endColor: {r: 0, g: 0, b: 1, a: 0}
 --- !u!1 &415871484
 GameObject:
   m_ObjectHideFlags: 0
@@ -7876,6 +7896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 719016967}
+  - component: {fileID: 719016968}
   m_Layer: 2
   m_Name: LookTarget (2)
   m_TagString: Untagged
@@ -7895,8 +7916,28 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &719016968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719016966}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ec2cd0b12a56c4aa6a7a34444d7fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 0}
+  dotCutoff: 0.92
+  lookTimeNeeded: 2
+  targetObject: {fileID: 0}
+  multiSceneKey: BirdBath
+  shinyShader: {fileID: 4800000, guid: 4ac3acd58dd3a614e85c42f1fc65251c, type: 3}
+  startColor: {r: 1, g: 1, b: 1, a: 0}
+  endColor: {r: 0, g: 0, b: 1, a: 0}
 --- !u!4 &723561948 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4896925786210180, guid: 0f2d842b3fe88484785ee86e96eedc1f,
@@ -8196,370 +8237,370 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   serializedNodes:
-  - x: -330
-    y: 76
+  - x: 100
+    y: 204
     width: 70
     height: 70
     text: 
     num: -1
     type: 4
-  - x: -245
-    y: 36
+  - x: 185
+    y: 164
     width: 200
     height: 150
     text: "DOGGO! \u2026 DOGGO! Hello? You in there kid!? C\u2019mon, wake up! Our
       humans are gonna be so mad if they find out I\u2026 "
     num: -1
     type: 0
-  - x: -36
-    y: 40
+  - x: 394
+    y: 168
     width: 200
     height: 150
     text: "Oh, you\u2019re awake! Good. How many toes am I holding up?"
     num: -1
     type: 0
-  - x: 1084
-    y: -10
+  - x: 1514
+    y: 118
     width: 80
     height: 70
     text: 
     num: 0
     type: 2
-  - x: 278
-    y: 217
+  - x: 708
+    y: 345
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -234
-    y: 246
+  - x: 196
+    y: 374
     width: 200
     height: 150
     text: "Alright, good, you passed my first test. Now\u2026. look at your doghouse!
       That one should be easy, I hope\u2026"
     num: -1
     type: 0
-  - x: -20
-    y: 271
+  - x: 410
+    y: 399
     width: 80
     height: 70
     text: 
     num: 0
     type: 2
-  - x: 66
-    y: 320
+  - x: 496
+    y: 448
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 160
-    y: 264
+  - x: 590
+    y: 392
     width: 200
     height: 150
-    text: Great, you can look at your doghouse. Okay, one more. Do you see that gross
-      pink bone of yours anywhere?
+    text: Great, you can look at your doghouse. Okay, one more. Find the birdbard.
+      You remember what a birdbath is right?
     num: -1
     type: 0
-  - x: 372
-    y: 269
+  - x: 802
+    y: 397
     width: 80
     height: 70
     text: 
     num: 0
     type: 2
-  - x: 457
-    y: 318
+  - x: 887
+    y: 446
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 1175
-    y: -21
+  - x: 1605
+    y: 107
     width: 80
     height: 70
     text: 
     num: 1
     type: 2
-  - x: -25
-    y: 332
+  - x: 405
+    y: 460
     width: 80
     height: 70
     text: 
     num: 2
     type: 2
-  - x: 370
-    y: 336
+  - x: 800
+    y: 464
     width: 80
     height: 70
     text: 
     num: 3
     type: 2
-  - x: 533
-    y: 253
+  - x: 963
+    y: 381
     width: 200
     height: 150
     text: 'Fantastic. You can still see, and have most of your memory intact, so probably
       no concussion? '
     num: -1
     type: 0
-  - x: 733
-    y: 254
+  - x: 1163
+    y: 382
     width: 200
     height: 150
     text: "Let\u2019s test your coordination and make sure you still know how to walk
       and stuff."
     num: -1
     type: 0
-  - x: 1277
-    y: 304
+  - x: 1707
+    y: 432
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 1038
-    y: 251
+  - x: 1468
+    y: 379
     width: 200
     height: 150
     text: See that tree over there? Walk to it and then come back to me.
     num: -1
     type: 0
-  - x: 948
-    y: 256
+  - x: 1378
+    y: 384
     width: 80
     height: 70
     text: 
     num: 4
     type: 2
-  - x: 947
-    y: 320
+  - x: 1377
+    y: 448
     width: 80
     height: 70
     text: 
     num: 5
     type: 2
-  - x: -437
-    y: 441
+  - x: -7
+    y: 569
     width: 200
     height: 150
     text: Good, good. Got to the tree in one piece. Alright, maybe go take a walk
       to your doghouse, just to make sure you really remember where it is.
     num: -1
     type: 0
-  - x: -524
-    y: 410
+  - x: -94
+    y: 538
     width: 80
     height: 70
     text: 
     num: 6
     type: 2
-  - x: -529
-    y: 481
+  - x: -99
+    y: 609
     width: 80
     height: 70
     text: 
     num: 8
     type: 2
-  - x: -230
-    y: 496
+  - x: 200
+    y: 624
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 19
-    y: 452
+  - x: 449
+    y: 580
     width: 200
     height: 150
     text: "Making progress. One last movement test: Go walk to the bush next to our
       house. Y\u2019know\u2026 your favorite bush?"
     num: -1
     type: 0
-  - x: -66
-    y: 489
+  - x: 364
+    y: 617
     width: 80
     height: 70
     text: 
     num: 7
     type: 2
-  - x: 235
-    y: 508
+  - x: 665
+    y: 636
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 445
-    y: 423
+  - x: 875
+    y: 551
     width: 200
     height: 150
     text: 'Phew. Okay, you still have most of your memory, and muscle coordination.
       One last test... '
     num: -1
     type: 0
-  - x: 1354
-    y: 523
+  - x: 1784
+    y: 651
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 667
-    y: 448
+  - x: 1097
+    y: 576
     width: 80
     height: 70
     text: 
     num: 9
     type: 2
-  - x: 779
-    y: 423
+  - x: 1209
+    y: 551
     width: 200
     height: 150
     text: "Bring me back that gross pink bone toy of yours you looked at earlier.
       It\u2019s around here somewhere."
     num: -1
     type: 0
-  - x: 1104
-    y: 424
+  - x: 1534
+    y: 552
     width: 200
     height: 150
     text: Go ahead and pick it up or drop it by clicking. Bring it here!
     num: -1
     type: 0
-  - x: 1001
-    y: 491
+  - x: 1431
+    y: 619
     width: 80
     height: 70
     text: 
     num: 10
     type: 2
-  - x: 1007
-    y: 427
+  - x: 1437
+    y: 555
     width: 80
     height: 70
     text: 
     num: 11
     type: 2
-  - x: 1620
-    y: 513
+  - x: 2050
+    y: 641
     width: 180
     height: 70
     text: Yote that shit in
     num: 1
     type: 1
-  - x: 1458
-    y: 378
+  - x: 1888
+    y: 506
     width: 180
     height: 70
     text: Has Item
     num: 2
     type: 1
-  - x: 1401
-    y: 669
+  - x: 1831
+    y: 797
     width: 180
     height: 70
     text: Doesnt have
     num: 0
     type: 1
-  - x: 1841
-    y: 470
+  - x: 2271
+    y: 598
     width: 200
     height: 150
     text: "Looks like you\u2019re fine!"
     num: -1
     type: 0
-  - x: 1648
-    y: 341
+  - x: 2078
+    y: 469
     width: 200
     height: 150
     text: Sigh, dogs always have such a problem giving up the toy. Drop it, Doggo!
     num: -1
     type: 0
-  - x: 1686
-    y: 626
+  - x: 2116
+    y: 754
     width: 200
     height: 150
     text: "You\u2019ve made it so far, maybe that vase only hit a small part of your
       brain\u2026I mean, I believe in you! Go find your bone!"
     num: -1
     type: 0
-  - x: 1601
-    y: 665
+  - x: 2031
+    y: 793
     width: 80
     height: 70
     text: 
     num: 9
     type: 2
-  - x: 2250
-    y: 174
+  - x: 2680
+    y: 302
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 1909
-    y: 305
+  - x: 2339
+    y: 433
     width: 80
     height: 70
     text: 
     num: 12
     type: 2
-  - x: 1662
-    y: -64
+  - x: 2092
+    y: 64
     width: 200
     height: 150
     text: "Wait...What\u2019s that over there?"
     num: -1
     type: 0
-  - x: 1875
-    y: -21
+  - x: 2305
+    y: 107
     width: 80
     height: 70
     text: 
     num: 13
     type: 2
-  - x: 192
-    y: 24
+  - x: 622
+    y: 152
     width: 180
     height: 70
     text: None
     num: 0
     type: 1
-  - x: 191
-    y: 86
+  - x: 621
+    y: 214
     width: 180
     height: 70
     text: Four
     num: 1
     type: 1
-  - x: 190
-    y: 148
+  - x: 620
+    y: 276
     width: 180
     height: 70
     text: I'm...not sure
     num: 2
     type: 1
-  - x: 397
-    y: 24
+  - x: 827
+    y: 152
     width: 200
     height: 150
     text: "This is worse than I thought\u2026 I didn\u2019t realize you were standing
       under the window when I- er, the wind, knocked that vase over."
     num: -1
     type: 0
-  - x: 602
-    y: -5
+  - x: 1024
+    y: 69
     width: 200
     height: 150
     text: "I gotta make sure you\u2019re alright, kid. Okay, first thing\u2019s first,
-      look at the birdbath for me. Do you remember what a birdbath is?"
+      see if you can spot that gross pink bone of yours. See it anywhere?"
     num: -1
     type: 0
-  - x: 1975
-    y: -63
+  - x: 2405
+    y: 65
     width: 200
     height: 150
     text: "Must be Tiffany, that show pomeranian. Looks like some birds are giving
@@ -8567,95 +8608,95 @@ MonoBehaviour:
       over the yard\u2026\r\n"
     num: -1
     type: 0
-  - x: 1241
-    y: 242
+  - x: 1671
+    y: 370
     width: 180
     height: 70
     text: talking to socks
     num: 0
     type: 1
-  - x: 1254
-    y: 350
+  - x: 1684
+    y: 478
     width: 180
     height: 70
     text: objective done
     num: 1
     type: 1
-  - x: 1512
-    y: 193
+  - x: 1942
+    y: 321
     width: 200
     height: 150
     text: "Feeling okay, Doggo? Come on, I know you can do it\u2026 Just get to that
       tree!"
     num: -1
     type: 0
-  - x: -233
-    y: 540
+  - x: 197
+    y: 668
     width: 180
     height: 70
     text: talking
     num: 0
     type: 1
-  - x: -230
-    y: 435
+  - x: 200
+    y: 563
     width: 180
     height: 70
     text: objective done
     num: 1
     type: 1
-  - x: -208
-    y: 614
+  - x: 222
+    y: 742
     width: 200
     height: 150
     text: "Hmm, maybe you\u2019re not doing so good? Just walk on over to your doghouse.
       Its right there!"
     num: -1
     type: 0
-  - x: 1429
-    y: 232
+  - x: 1859
+    y: 360
     width: 80
     height: 70
     text: 
     num: 4
     type: 2
-  - x: 221
-    y: 552
+  - x: 651
+    y: 680
     width: 180
     height: 70
     text: talking
     num: 0
     type: 1
-  - x: 222
-    y: 453
+  - x: 652
+    y: 581
     width: 180
     height: 70
     text: objective done
     num: 1
     type: 1
-  - x: 225
-    y: 626
+  - x: 655
+    y: 754
     width: 200
     height: 150
     text: "If you don\u2019t remember this, it\u2019s all over. Find the bush, young
       grasshopper\u2026"
     num: -1
     type: 0
-  - x: 2507
-    y: 117
+  - x: 2937
+    y: 245
     width: 200
     height: 150
     text: "Wait...What\u2019s that over there?"
     num: -1
     type: 0
-  - x: 2382
-    y: 185
+  - x: 2812
+    y: 313
     width: 80
     height: 70
     text: 
     num: 12
     type: 2
-  - x: 2718
-    y: 112
+  - x: 3148
+    y: 240
     width: 200
     height: 150
     text: "Must be Tiffany, that show pomeranian. Looks like some birds are giving
@@ -8663,338 +8704,338 @@ MonoBehaviour:
       over the yard\u2026"
     num: -1
     type: 0
-  - x: 2327
-    y: 119
+  - x: 2757
+    y: 247
     width: 180
     height: 70
     text: deflaut
     num: 0
     type: 1
-  - x: 2149
-    y: 306
+  - x: 2579
+    y: 434
     width: 180
     height: 70
     text: Has talked to tif
     num: 1
     type: 1
-  - x: 2530
-    y: 341
+  - x: 2960
+    y: 469
     width: 200
     height: 150
     text: "You\u2019ve returned? But why?"
     num: -1
     type: 0
-  - x: 3381
-    y: 120
+  - x: 3811
+    y: 248
     width: 180
     height: 70
     text: Learn anything?
     num: 2
     type: 1
-  - x: 2713
-    y: 631
+  - x: 3143
+    y: 759
     width: 180
     height: 70
     text: Whats new?
     num: 1
     type: 1
-  - x: 2667
-    y: 840
+  - x: 3097
+    y: 968
     width: 180
     height: 70
     text: Nevermind
     num: 0
     type: 1
-  - x: 2645
-    y: 1066
+  - x: 3075
+    y: 1194
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 3635
-    y: 81
+  - x: 4065
+    y: 209
     width: 200
     height: 150
     text: Ah, yes, my intel. Well, who do you want to know about?
     num: -1
     type: 0
-  - x: 3891
-    y: -137
+  - x: 4321
+    y: -9
     width: 180
     height: 70
     text: Tiffany
     num: 0
     type: 1
-  - x: 3878
-    y: 13
+  - x: 4308
+    y: 141
     width: 180
     height: 70
     text: Bubbles
     num: 1
     type: 1
-  - x: 3868
-    y: 146
+  - x: 4298
+    y: 274
     width: 180
     height: 70
     text: Rex
     num: 2
     type: 1
-  - x: 3867
-    y: 290
+  - x: 4297
+    y: 418
     width: 180
     height: 70
     text: Blackie
     num: 3
     type: 1
-  - x: 3889
-    y: 437
+  - x: 4319
+    y: 565
     width: 180
     height: 70
     text: Seabiscuit
     num: 4
     type: 1
-  - x: 4077
-    y: -177
+  - x: 4507
+    y: -49
     width: 200
     height: 150
     text: "Yes, the showdog. She seems to live with one of those high energy type
       couples. They cart her around to places, doll her up in these silly accessories\u2026"
     num: -1
     type: 0
-  - x: 4280
-    y: -176
+  - x: 4710
+    y: -48
     width: 200
     height: 150
     text: "Her yard is filled with shiny collars, bows, hats, you name it. No wonder
       those birds keep bothering her\u2026"
     num: -1
     type: 0
-  - x: 4282
-    y: -32
+  - x: 4712
+    y: 96
     width: 200
     height: 150
     text: "Ah, the one with the bubble machine. Well, obviously she loves her bubble
       machine, but it\u2019s difficult to say if she cares about anything else."
     num: -1
     type: 0
-  - x: 4283
-    y: 109
+  - x: 4713
+    y: 237
     width: 200
     height: 150
     text: "Right, the angry one. I haven\u2019t gotten much on him yet, aside from
       the fact he seems to have lost something."
     num: -1
     type: 0
-  - x: 4286
-    y: 396
+  - x: 4716
+    y: 524
     width: 200
     height: 150
     text: "Ah, the racer. Or, former racer? He doesn\u2019t seem to want to do much
       else aside from lay on the ground."
     num: -1
     type: 0
-  - x: 4069
-    y: 254
+  - x: 4499
+    y: 382
     width: 200
     height: 150
     text: "Yes, the tinkerer. There are so many children\u2019s toys in his yard,
       so he must live with a family. "
     num: -1
     type: 0
-  - x: 4279
-    y: 254
+  - x: 4709
+    y: 382
     width: 200
     height: 150
     text: "Other than that though, I haven\u2019t been able to gather much. His yard
       is booby trapped for cats,so I\u2019ll have to figure out a way past his defenses."
     num: -1
     type: 0
-  - x: 2652
-    y: 909
+  - x: 3082
+    y: 1037
     width: 200
     height: 150
     text: "...Alright then. So typical of a dog, to forget why it even bothered me
       in the first place\u2026"
     num: -1
     type: 0
-  - x: 2896
-    y: 629
+  - x: 3326
+    y: 757
     width: 80
     height: 70
     text: 
     num: 14
     type: 2
-  - x: 3046
-    y: 298
+  - x: 3476
+    y: 426
     width: 180
     height: 70
     text: 
     num: 0
     type: 1
-  - x: 3023
-    y: 432
+  - x: 3453
+    y: 560
     width: 180
     height: 70
     text: 
     num: 1
     type: 1
-  - x: 3045
-    y: 665
+  - x: 3475
+    y: 793
     width: 180
     height: 70
     text: 
     num: 3
     type: 1
-  - x: 3041
-    y: 579
+  - x: 3471
+    y: 707
     width: 180
     height: 70
     text: 
     num: 2
     type: 1
-  - x: 3060
-    y: 755
+  - x: 3490
+    y: 883
     width: 180
     height: 70
     text: 
     num: 4
     type: 1
-  - x: 3072
-    y: 842
+  - x: 3502
+    y: 970
     width: 180
     height: 70
     text: 
     num: 5
     type: 1
-  - x: 3241
-    y: 260
+  - x: 3671
+    y: 388
     width: 200
     height: 150
     text: "Grooming myself, sleeping\u2026 grooming myself more\u2026 A cat\u2019s
       work never ceases\u2026"
     num: -1
     type: 0
-  - x: 3254
-    y: 402
+  - x: 3684
+    y: 530
     width: 200
     height: 150
     text: Sometimes, I imagine myself as a jungle cat, alone in an Amazon forest.
     num: -1
     type: 0
-  - x: 3457
-    y: 397
+  - x: 3887
+    y: 525
     width: 200
     height: 150
     text: "But then you always wake me up, and the dream is gone, and I am once again
       trapped in an eternal suburbia\u2026 "
     num: -1
     type: 0
-  - x: 3659
-    y: 400
+  - x: 4089
+    y: 528
     width: 200
     height: 150
     text: "What? Well, I guess I don\u2019t mind the food bowl always being filled\u2026"
     num: -1
     type: 0
-  - x: 3261
-    y: 545
+  - x: 3691
+    y: 673
     width: 200
     height: 150
     text: "You know, they say cats have a natural sense of knowing things. What things,
       you ask? Well, I can\u2019t tell you that, now can I?"
     num: -1
     type: 0
-  - x: 3469
-    y: 623
+  - x: 3899
+    y: 751
     width: 200
     height: 150
     text: The food dish is always filled, but do you ever wonder where it comes from?
     num: -1
     type: 0
-  - x: 3264
-    y: 710
+  - x: 3694
+    y: 838
     width: 200
     height: 150
     text: "Hmm. Not very much is new with me, lately. I\u2019m considering taking
       a nap, though."
     num: -1
     type: 0
-  - x: 3046
-    y: 986
+  - x: 3476
+    y: 1114
     width: 180
     height: 70
     text: 
     num: 6
     type: 1
-  - x: 3460
-    y: 807
+  - x: 3890
+    y: 935
     width: 200
     height: 150
     text: "I had a dream the other night I was catching tuna in space, so that was
       pretty exciting\u2026"
     num: -1
     type: 0
-  - x: 3256
-    y: 934
+  - x: 3686
+    y: 1062
     width: 200
     height: 150
     text: "Sometimes I wonder about what\u2019s happening in our old neighborhood.
       Maybe that chihuahua finally escaped and is going to conquer the world at last."
     num: -1
     type: 0
-  - x: 3461
-    y: 948
+  - x: 3891
+    y: 1076
     width: 200
     height: 150
     text: "Or not. I guess it doesn\u2019t matter much, we live here now\u2026"
     num: -1
     type: 0
-  - x: -291
-    y: 656
+  - x: 139
+    y: 784
     width: 80
     height: 70
     text: 
     num: 8
     type: 2
-  - x: 4504
-    y: 718
+  - x: 4934
+    y: 846
     width: 200
     height: 150
     text: Anything else I can help you with?
     num: -1
     type: 0
-  - x: 4067
-    y: 1026
+  - x: 4497
+    y: 1154
     width: 180
     height: 70
     text: No thanks
     num: 0
     type: 1
-  - x: 3542
-    y: 1213
+  - x: 3972
+    y: 1341
     width: 200
     height: 150
     text: See ya around!
     num: -1
     type: 0
-  - x: 815
-    y: -14
+  - x: 1245
+    y: 114
     width: 200
     height: 150
     text: Use the mouse to look around.
     num: -1
     type: 0
-  - x: 738
-    y: 120
+  - x: 1168
+    y: 248
     width: 200
     height: 150
     text: Use W, A, S, and D keys to walk. You can interact with other characters
       with F.
     num: -1
     type: 0
-  - x: 2215
-    y: -91
+  - x: 2645
+    y: 37
     width: 200
     height: 150
     text: Walk up to a fence and press F to dig under it.
@@ -9265,12 +9306,10 @@ MonoBehaviour:
     inIndex: 109
   - outIndex: 109
     inIndex: 41
-  lookTargetLocations:
-  - {fileID: 1606856085}
+  lookTargets:
+  - {fileID: 415462141}
   - {fileID: 742553031}
   - {fileID: 719016966}
-  lookTargetObject: {fileID: 1510400686856875019, guid: 35d9c97321c1df841b4353b1504bea64,
-    type: 3}
   moveTargetLocations:
   - {fileID: 312133598}
   - {fileID: 66104529}
@@ -9297,6 +9336,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 742553032}
+  - component: {fileID: 742553033}
   m_Layer: 2
   m_Name: LookTarget (1)
   m_TagString: Untagged
@@ -9316,8 +9356,28 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 980955683}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &742553033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 742553031}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ec2cd0b12a56c4aa6a7a34444d7fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 0}
+  dotCutoff: 0.92
+  lookTimeNeeded: 2
+  targetObject: {fileID: 0}
+  multiSceneKey: DogHouse
+  shinyShader: {fileID: 4800000, guid: 4ac3acd58dd3a614e85c42f1fc65251c, type: 3}
+  startColor: {r: 1, g: 1, b: 1, a: 0}
+  endColor: {r: 0, g: 0, b: 1, a: 0}
 --- !u!1 &744165100
 GameObject:
   m_ObjectHideFlags: 0
@@ -15043,7 +15103,6 @@ Transform:
   m_Children:
   - {fileID: 740123829}
   - {fileID: 1925515260}
-  - {fileID: 1606856086}
   - {fileID: 742553032}
   - {fileID: 719016967}
   - {fileID: 312133599}
@@ -24163,36 +24222,6 @@ Transform:
   m_Father: {fileID: 1687601242}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1606856085
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1606856086}
-  m_Layer: 2
-  m_Name: LookTarget
-  m_TagString: Untagged
-  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1606856086
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1606856085}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 51.3, y: 5.466, z: 13.9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 980955683}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1612166953
 GameObject:
   m_ObjectHideFlags: 0
@@ -26381,7 +26410,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4781535565290840, guid: 8b749fce098f640a2be9168cdb023d45, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4781535565290840, guid: 8b749fce098f640a2be9168cdb023d45, type: 3}
       propertyPath: m_LocalScale.x
@@ -29316,7 +29345,6 @@ MonoBehaviour:
   moveDistance: 4
   walkTime: 1
   birdCount: 13
-  state: 0
   rewardSpawn: {fileID: 441565897}
   reward: {fileID: 1453747075105068, guid: 4fddd90104c5ab841b0f30dd83d1ce6d, type: 3}
   bandanaCollar: {fileID: 100000, guid: af9b23ca03b40b643be125ec2f9bcdc9, type: 3}

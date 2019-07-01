@@ -8,8 +8,7 @@ public class SocksTutorial : Dialog2 {
     protected override string CHARACTER_STATE_SAVE_KEY {get { return "SocksSummerObjectives"; } }
 
     [Header("Objective Info")]
-    public GameObject[] lookTargetLocations;
-    public GameObject lookTargetObject;
+    public GameObject[] lookTargets;
     public GameObject[] moveTargetLocations;
     public GameObject moveTargetObject;
     public GameObject[] itemTargetLocations;
@@ -60,8 +59,9 @@ public class SocksTutorial : Dialog2 {
     
     //summons a look target at the location designated by the index in the location list
     public void SpawnLookTarget(int index) {
-        GameObject o = Instantiate(lookTargetObject, lookTargetLocations[index].transform.position, lookTargetLocations[index].transform.rotation);
-        o.GetComponent<TutorialLookTarget>().owner = this;
+        TutorialLookTarget t = lookTargets[index].GetComponent<TutorialLookTarget>();
+        t.enabled = true;
+        t.owner = this;
     }
 
     //summons a move target at the location designated by the index in the location list
