@@ -17,7 +17,11 @@ public class AIbase : Dialog2 {
     }
 
     //Triggers when the player enters the range
-    public virtual void OnInRange() {
+    public virtual void OnInRange(GameObject player) {
+        BasicToy toy = player.GetComponent<DogController>().mouth.itemInMouth.GetComponent<BasicToy>();
+        if (toy != null) {
+            ToyInRange(toy);
+        }
     }
     //Trigger when the player leaves range
     public virtual void OnExitRange() {
@@ -42,7 +46,17 @@ public class AIbase : Dialog2 {
         
     }
 
-    //destroys a gameobject and removes it from the player's mouth if its being held. Note that even if the object is not help, this function deltes it anyway
+    public GameObject GetCarriedItem() {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        return GetCarriedItem(player);
+    }
+    public GameObject GetCarriedItem(GameObject player) {
+        if (player != null) {
+            return player.GetComponentInChildren<PuppyPickup>().itemInMouth;
+        }
+        return null;
+    }
+    //destroys a gameobject and removes it from the player's mouth if its being held. Note that even if the object is not held, this function deltes it anyway
     public void DestoryObjectInMouth(GameObject toDestroy) {
         PuppyPickup inMouth = Player.GetComponent<DogController>().mouth;
         if (inMouth.itemInMouth != null && inMouth.itemInMouth == toDestroy) {
@@ -50,15 +64,15 @@ public class AIbase : Dialog2 {
         }
         Destroy(toDestroy);
     }
+    public void ConsumeCarriedItem() {
+        DestoryObjectInMouth(GetCarriedItem());
+    }
 
     public override void OnTriggerEnter(Collider col) {
         base.OnTriggerEnter(col);
-        BasicToy toyScript = col.GetComponent<BasicToy>();
         //if this is the player, call OnInRange, if this is a toy, call ToyInRange
         if (col.gameObject.CompareTag("Player")) {
-            OnInRange();
-        } else if (toyScript != null) {
-            ToyInRange(toyScript);
+            OnInRange(col.gameObject);
         }
     }
 

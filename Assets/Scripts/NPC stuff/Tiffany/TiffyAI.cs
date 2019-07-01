@@ -34,7 +34,8 @@ public class TiffyAI : AIbase {
     }
 
     //remove eventmanager triggers
-    private void OnDestroy() {
+    new void OnDestroy() {
+        base.OnDestroy();
         EventManager.OnFenceDig -= OnDoggoEntersYard;
     }
 
@@ -47,27 +48,13 @@ public class TiffyAI : AIbase {
         }
     }
 
-    public override void OnInRange() {
+    public override void OnInRange(GameObject player) {
         if (characterState == HIDING) {
             Display(0);
         } else if (characterState == RESCUED) {
             Display(1);
         } else if (characterState == HAPPY) {
             Display(2);
-        }
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null) {
-            GameObject toy = player.GetComponentInChildren<PuppyPickup>().itemInMouth;
-            if (toy != null && toy.GetComponent<BasicToy>().HasTag(BasicToy.Tag.TiffyQuestItem) && characterState == RESCUED) {
-                DestoryObjectInMouth(toy);
-                characterState = HAPPY;
-                progressionNum = 1;
-                Display(2);
-                if (bandanaCollar != null && defaultCollar != null) {
-                    bandanaCollar.SetActive(true);
-                    defaultCollar.SetActive(false);
-                }
-            }
         }
     }
 
@@ -76,14 +63,16 @@ public class TiffyAI : AIbase {
         base.ToyInRange(toy);
         //check to make sure the quest characterState and toy tag are correct. If so, delete the bandana and do her stuff
         if (toy.HasTag(BasicToy.Tag.TiffyQuestItem) && characterState == RESCUED) {
-            DestoryObjectInMouth(toy.gameObject);
-            characterState = HAPPY;
             progressionNum = 1;
-            Display(2);
-            if (bandanaCollar != null && defaultCollar != null) {
-                bandanaCollar.SetActive(true);
-                defaultCollar.SetActive(false);
-            }
+        }
+    }
+
+    public void AfterItemTaken() {
+        characterState = HAPPY;
+        Display(2);
+        if (bandanaCollar != null && defaultCollar != null) {
+            bandanaCollar.SetActive(true);
+            defaultCollar.SetActive(false);
         }
     }
 

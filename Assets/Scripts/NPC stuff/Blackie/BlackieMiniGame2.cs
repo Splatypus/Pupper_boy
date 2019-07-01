@@ -453,8 +453,8 @@ public class BlackieMiniGame2 : AIbase {
     }
 
     //display icon if in range
-    public override void OnInRange() {
-        base.OnInRange();
+    public override void OnInRange(GameObject player) {
+        base.OnInRange(player);
         Display(0);
     }
 

@@ -4,179 +4,331 @@ using UnityEngine;
 
 public class BirdMovement : MonoBehaviour {
 
-    GameObject Dog;
-    enum BirdState {Wander, FlyAway, FlyDown, BathMode};
+    // state enum stuff
+    public enum BirdState { Wander, FlyAway, FlyWander, FlyDown, BathMode, AttackWander};
+    public BirdState curState = BirdState.Wander;
 
-    // bird will wander then if you get close will fly away, then later come back
-    // and chill on the bird bath
-    public bool wander_on_land = false;
+    #region Wander Info
+    // private vars
+    int numWanderHops = 0;
 
-    [Header("Wander Stats")]
-    public float time_per_hop;
-    public float hop_force;
-    public float wander_circle_center_dist;
-    public float wander_circle_radius;
-    public float dist_start_flight;
+    // public vars
+    public float WanderHopForce;
+    public float WanderMaxAngleChange;
+    public int WanderNumHopsToTurnAround;
+    [SerializeField] private PhysicMaterial moveMat;
+    [SerializeField] private PhysicMaterial waitMat;
+    public float randomStartupTimeMax = 1.0f;
+    #endregion
 
-    [Header("Flight Stats")]
-    public float flight_height_target;
-    public float flight_speed;
-    public Vector3 flight_vector;
-    public float flight_wait_delay;
+    #region Flight Start Info
+    [Header("Flight Start Variables")]
+    public float DogDistanceUntilFlight;
+    public float borkDistanceUntilFlight;
+    public float flightStartVelocity; //upwards velocity
+    public float acceleration;
+    public float accelerationRange;
+    private float startHeight;
+    #endregion
 
-    [Header("Fly Down")]
-    public Transform bird_bath_pos;
+    #region Flight Wander
+    [Header("Flight Wander Variables")]
+    public float heightToStartFlightWander = 30.0f;
+    private Vector3 airPosDest;
+    #endregion
 
-    [Header("Bath stats")]
-    public float dist_for_bath_runaway;
+    #region Flight Land
+    [Header("Flight Landing Variables")]
+    public Transform landingDest;
+    public BirdState landingState = BirdState.Wander;
+    #endregion
 
-    private Animator m_animator;
+    #region Attack Wander
+    [Header("Attack Wander Variables")]
+    public Transform[] attackWanderWaypoints;
+    private int attackWanderWaypointIndex = 0;
+    #endregion
 
-    BirdState m_state;
-    float time_in_state = 0.0f;
+
+    // private variables
+    Animator anim;
     Rigidbody rb;
-	// Use this for initialization
-	void Start () {
+    BoxCollider col;
+    GameObject player;
+    Vector3 desiredRight;
+
+    float originalDrag;
+
+    private void Start()
+    {
+        anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
-        Dog = GameObject.FindGameObjectWithTag("Player");
-        flight_vector.Normalize();
+        col = GetComponent<BoxCollider>();
+        player = GameObject.FindGameObjectWithTag("Player");
 
-        m_animator = GetComponent<Animator>();
+        if(curState == BirdState.AttackWander)
+        {
+            StartAtack();
+        }
 
-        // animation state is wander/hop
+        if(curState == BirdState.Wander)
+        {
+            //anim.StopPlayback();
+            anim.enabled = false;
+            Invoke("StartAnimating", Random.Range(0.0f, randomStartupTimeMax));
+        }
 
+        EventManager.OnBark += GetBarkedAt;
+    }
+    //remove eventmanager trigger
+    private void OnDestroy() {
+        EventManager.OnBark -= GetBarkedAt;
     }
 
-	// Update is called once per frame
-	void Update () {
-        UpdateState();
-        MoveBird();
-    }
-
-    void UpdateState()
+    private void StartAnimating()
     {
-        // if there is no dog, just wander
-        if (!Dog)
-        {
-            Dog = GameObject.FindGameObjectWithTag("Player");
-            m_state = BirdState.Wander;
-        }
-        
-
-        float dist_to_dog = (Dog.transform.position - transform.position).magnitude;
-
-        if (m_state == BirdState.Wander && dist_to_dog < dist_start_flight)
-        {
-            if (m_state != BirdState.FlyAway)
-                time_in_state = 0.0f;
-            m_state = BirdState.FlyAway;
-            // animation state is flying
-            m_animator.SetBool("flying", true);
-        }
-        if ((m_state == BirdState.BathMode || m_state == BirdState.FlyDown) && dist_to_dog < dist_for_bath_runaway)
-        {
-            m_state = BirdState.FlyAway;
-            // animation state is flying (is there an issue if we go from fly->fly?)
-            m_animator.SetBool("flying", true);
-        }
-
+        anim.enabled = true;
     }
 
-    void MoveBird()
+    float t = 0.0f;
+    private void Update()
     {
-        switch(m_state)
+        // PLACEHOLDER
+        //transform.right = desiredRight;
+        if(curState == BirdState.FlyWander || curState == BirdState.AttackWander)
         {
-            case BirdState.Wander:
-                //WanderMove();
-                break;
-            case BirdState.FlyAway:
-                FlyAway();
-                break;
-            case BirdState.FlyDown:
-                FlyDown();
-                break;
-            case BirdState.BathMode:
-                UpdateState();
-                break;
-        }
-    }
-
-    void hop_forward()
-    {
-        if(m_state == BirdState.Wander)
-        {
-            Vector3 wander_circle_center = transform.right * -1 * wander_circle_center_dist;
-            Vector2 circle_pos = ((Vector3)Random.insideUnitCircle.normalized * wander_circle_radius);
-            Vector3 wander_dest = wander_circle_center + new Vector3(circle_pos.x, 0, circle_pos.y);
-
-            transform.right = -wander_dest.normalized;
-            rb.AddForce(wander_dest.normalized * hop_force);
-        }
-    }
-
-
-    void WanderMove()
-    {
-        UpdateState();
-        if (time_in_state > time_per_hop)
-        {
-            time_in_state = 0.0f;
-
-            // find a direction to hop in
-            Vector3 wander_circle_center = transform.right * -1 * wander_circle_center_dist;
-            Vector2 circle_pos = ((Vector3)Random.insideUnitCircle.normalized * wander_circle_radius);
-            Vector3 wander_dest = wander_circle_center + new Vector3(circle_pos.x, 0, circle_pos.y);
-
-            transform.right = -wander_dest.normalized;
-            rb.AddForce(wander_dest.normalized * hop_force);
-        }
-        else
-        {
-            time_in_state += Time.deltaTime;
-        }
-    }
-
-    void FlyAway()
-    {
-        if(transform.position.y > flight_height_target)
-        {
-            // wait then fly down
-            Invoke("StartFlyDown", flight_wait_delay);
-        }
-
-        rb.velocity = flight_vector * flight_speed;
-        transform.right = -flight_vector;
-    }
-
-    void FlyDown()
-    {
-        rb.velocity = (bird_bath_pos.position - transform.position).normalized * flight_speed;
-        transform.right = -rb.velocity.normalized;
-        if ((bird_bath_pos.position - transform.position).magnitude < 0.1f)
-        {
-            if(wander_on_land)
+            if (Vector3.Distance(transform.right, desiredRight) > float.Epsilon)
             {
-                rb.useGravity = true;
-                m_state = BirdState.Wander;
+                //print("doing lerp t = " + t);
+                t += Time.deltaTime;
+                transform.right = Vector3.Lerp(transform.right, desiredRight, t / 50);
             }
             else
-                m_state = BirdState.BathMode;
+            {
+                t = 0.0f;
+            }
+        }
 
-            rb.velocity = Vector3.zero;
-            transform.position = bird_bath_pos.position;
-            transform.rotation = bird_bath_pos.rotation;
-            rb.angularVelocity = Vector3.zero;
-            // set animation state to sitting on birdbath
-            // can also do some stuff with getting him to play in the bath
-            m_animator.SetBool("flying", false);
+        // when wandering all we have to do is watch out for the dog, movement is controlled by animation events
+        if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.BathMode || curState == BirdState.AttackWander) &&
+            Vector3.Distance(transform.position, player.transform.position) < DogDistanceUntilFlight)
+        {
+            StartFlight();
+        }
+        else if(curState == BirdState.FlyAway && transform.position.y - startHeight >= heightToStartFlightWander)
+        {
+            // We have reached our goal height, so now enter into a holding pattern until we are able to land
+            StartFlightWander();
+        }
+        else if (curState == BirdState.FlyWander && Vector3.Distance(transform.position, airPosDest) < 0.5f)
+        {
+            StartFlyDown();
+        }
+        else if (curState == BirdState.FlyDown && Vector3.Distance(transform.position, landingDest.position) < 0.1f)
+        {
+            FinishFlight();
+        }
+        //else if(curState == BirdState.AttackWander &&
+        //        Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.3f)
+        else if(curState == BirdState.AttackWander)
+        {
+            if(Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) < 0.3f)
+                NextAttackWaypoint();
+
+            if(Vector3.Distance(transform.position, attackWanderWaypoints[attackWanderWaypointIndex].position) > 50f)
+            {
+                transform.position = attackWanderWaypoints[attackWanderWaypointIndex].position;
+                NextAttackWaypoint();
+            }
         }
     }
 
-    void StartFlyDown()
-    {
-        m_state = BirdState.FlyDown;
-        rb.velocity = Vector3.zero;
-        rb.useGravity = false;
-        transform.position = new Vector3(transform.position.x, flight_height_target, transform.position.z);
+    public void GetBarkedAt(GameObject p){
+        Vector3 bark_pos = p.transform.position;
+        if( (curState == BirdState.Wander || curState == BirdState.FlyDown || curState == BirdState.AttackWander) &&
+            Vector3.Distance(transform.position, player.transform.position) < borkDistanceUntilFlight){
+            StartFlight();
+        }
     }
+
+    public virtual void StartFlight()
+    {
+        // set behavior state
+        curState = BirdState.FlyAway;
+
+        // set up animation
+        anim.SetBool("flying", true);
+
+        // turn bird away from player
+        /// project the vector from player to bird onto bird's up vector
+        Vector3 birdPlayerVec = transform.position - player.transform.position;
+        birdPlayerVec = Vector3.ProjectOnPlane(birdPlayerVec, transform.up);
+
+        /// make the bird look in this direction
+        //transform.right = -birdPlayerVec.normalized;
+        
+
+        // start flying away
+        /// turn off gravity and collider so that we fly up and don't hit things
+        /// maybe don't turn off collier?
+        rb.useGravity = false;
+        originalDrag = rb.drag;
+        rb.drag = 0.0f;
+        col.enabled = false;
+        
+        //Vector3 actualFlightVelocity = (Vector3.up + birdPlayerVec.normalized * 0.5f).normalized * flightStartVelocity;
+        rb.velocity = birdPlayerVec * 0.5f;
+        StartCoroutine(RampSpeedOverTime(flightStartVelocity, acceleration, accelerationRange));
+
+        transform.right = -Vector3.ProjectOnPlane(birdPlayerVec * 0.5f, transform.up).normalized;
+
+        startHeight = transform.position.y;
+    }
+
+    private void StartAtack()
+    {
+        anim.SetBool("flying", true);
+
+        // find best box to start me out on
+        float minDist = float.MaxValue;
+        for(int i = 0; i < attackWanderWaypoints.Length; ++i)
+        {
+            float dist = Vector3.Distance(attackWanderWaypoints[i].position, transform.position);
+            if (dist < minDist)
+            {
+                attackWanderWaypointIndex = i;
+                minDist = dist;
+            }
+        }
+
+        transform.position = attackWanderWaypoints[attackWanderWaypointIndex].position;
+        /*
+        attackWanderWaypointIndex++;
+
+        Vector3 line = (attackWanderWaypoints[attackWanderWaypointIndex].position - transform.position).normalized;
+        transform.right = -line;
+        */
+
+        NextAttackWaypoint();
+        // start flying
+        rb.useGravity = false;
+        col.enabled = false;
+        //rb.velocity = line * flightStartVelocity.magnitude;
+    }
+
+    private void StartFlightWander() {
+        // change state
+        curState = BirdState.FlyWander;
+
+        if (landingDest != null) {
+            // Fix velocity to be in holding
+            airPosDest = landingDest.position;
+            airPosDest.y = transform.position.y;
+            /// set up velocity to move us to airPosDest
+            rb.velocity = (airPosDest - transform.position).normalized * flightStartVelocity;
+
+            // rotate the bird
+            //transform.right = -(airPosDest - transform.position).normalized;
+            desiredRight = -(airPosDest - transform.position).normalized;
+        } else {
+            //if we have no landing dest, just go straight and set up a fade out routine
+            rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
+            StartCoroutine(DeathSequence(5.0f, 5.0f));
+        }
+    }
+
+    private void StartFlyDown()
+    {
+        curState = BirdState.FlyDown;
+
+        rb.velocity = (landingDest.position - transform.position).normalized * flightStartVelocity;
+        //transform.right = -landingDest.forward;
+        desiredRight = -landingDest.forward;
+    }
+
+    private void FinishFlight()
+    {
+        transform.position = landingDest.position;
+
+        col.enabled = true;
+        rb.useGravity = true;
+        rb.drag = originalDrag;
+
+        curState = landingState;
+        anim.SetBool("flying", false);
+    }
+
+    private void NextAttackWaypoint()
+    {
+        // update index
+        attackWanderWaypointIndex++;
+        attackWanderWaypointIndex = attackWanderWaypointIndex % attackWanderWaypoints.Length;
+
+        // update velocity
+        Vector3 line = (attackWanderWaypoints[attackWanderWaypointIndex].position - transform.position).normalized;
+        //transform.right = -line;
+        // try this to stop flipping?
+        //transform.right = -Vector3.ProjectOnPlane(line, Vector3.up);
+        desiredRight = -Vector3.ProjectOnPlane(line, Vector3.up);
+        rb.velocity = line * flightStartVelocity;
+
+        
+    }
+
+    //Ramps up speed to maxSpeed at the acceleration rate
+    IEnumerator RampSpeedOverTime(float maxSpeed, float acc, float accRange) {
+        float newAcc = Random.Range(acc - accRange, acc + accRange);
+        while (rb.velocity.y < maxSpeed) {
+            rb.velocity += new Vector3(0.0f, newAcc * Time.fixedDeltaTime, 0.0f);
+            yield return new WaitForFixedUpdate();
+        }
+    }
+
+    //Sets a delay and then fades the bird out of existance afterward
+    IEnumerator DeathSequence(float delay, float fadeTime) {
+        yield return new WaitForSeconds(delay);
+        Vector3 startScale = gameObject.transform.localScale;
+        float startTime = Time.time;
+        while (startTime + fadeTime > Time.time) {
+            gameObject.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, (Time.time - startTime) / fadeTime);
+            yield return new WaitForFixedUpdate();
+        }
+        EventManager.OnBark -= GetBarkedAt;
+        Destroy(gameObject);
+    }
+
+    #region Animation Events
+    void have_friction()
+    {
+        if (curState == BirdState.Wander)
+            col.material = waitMat;
+    }
+
+    void small_hop_forward()
+    {
+        if (curState == BirdState.Wander)
+            rb.AddForce(transform.right * -WanderHopForce);
+    }
+    
+    void hop_forward()
+    {
+        if (curState == BirdState.Wander)
+        {
+            col.material = moveMat;
+            if (numWanderHops >= WanderNumHopsToTurnAround)
+            {
+                transform.right = -transform.right;
+                numWanderHops = 0;
+            }
+            else
+            {
+                transform.Rotate(transform.up, Random.Range(-WanderMaxAngleChange, WanderMaxAngleChange));
+            }
+
+            rb.AddForce(transform.right * -WanderHopForce);
+            numWanderHops++;
+        }
+
+    }
+#endregion
 }

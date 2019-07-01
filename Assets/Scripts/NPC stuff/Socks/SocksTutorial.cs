@@ -6,6 +6,8 @@ public class SocksTutorial : Dialog2 {
     protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "SocksSummerProgression";} }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "SocksSummerPN"; } }
     protected override string CHARACTER_STATE_SAVE_KEY {get { return "SocksSummerObjectives"; } }
+    readonly int FINISHED_TUTORIAL = 7;
+    readonly int MET_TIFFANY = 8;
 
     [Header("Objective Info")]
     public GameObject[] lookTargets;
@@ -22,7 +24,9 @@ public class SocksTutorial : Dialog2 {
         base.Start();
         //customCameraLocation = cameraReference.getCamera();
 
-        EventManager.OnTalk += OnMetTiffany;
+        if (characterState != MET_TIFFANY) {
+            EventManager.OnTalk += OnMetTiffany;
+        }
 
         StartCoroutine(AfterStart());
     }
@@ -32,7 +36,8 @@ public class SocksTutorial : Dialog2 {
         TriggerInteractFromcharacterState();
     }
 
-    private void OnDestroy() {
+    new void OnDestroy() {
+        base.OnDestroy();
         EventManager.OnTalk -= OnMetTiffany;
     }
 
@@ -122,10 +127,12 @@ public class SocksTutorial : Dialog2 {
 
     //progresses dialog when tiffany is talked to
     void OnMetTiffany(GameObject npc) {
-        if (npc.GetComponent<TiffyAI>()) {
+        if (npc.GetComponent<TiffyAI>() && characterState > FINISHED_TUTORIAL) {
             EventManager.OnTalk -= OnMetTiffany;
 
-            ChangeAndSaveProgressionNum(1);
+            characterState = MET_TIFFANY;
+            progressionNum = 1;
+            SaveDialogProgress();
         }
     }
 
