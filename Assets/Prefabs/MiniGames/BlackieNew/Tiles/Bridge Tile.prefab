@@ -505,8 +505,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.41, y: 0.15, z: 1.41}
-  m_Center: {x: 0, y: 0.1, z: 0}
+  m_Size: {x: 1.41, y: 0.1, z: 1.41}
+  m_Center: {x: 0, y: 0.05, z: 0}
 --- !u!1 &3341645280845483181
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,6 +740,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PowerParticles
       objectReference: {fileID: 0}
+    - target: {fileID: 1216837263643355355, guid: 2e6925ab808e132488411ca68d5bdfb0,
+        type: 3}
+      propertyPath: ShapeModule.m_Mesh
+      value: 
+      objectReference: {fileID: 4300008, guid: 6d354f826149879419699bc59e0541fa, type: 3}
     - target: {fileID: 1216837263643355353, guid: 2e6925ab808e132488411ca68d5bdfb0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -795,11 +800,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1216837263643355355, guid: 2e6925ab808e132488411ca68d5bdfb0,
-        type: 3}
-      propertyPath: ShapeModule.m_Mesh
-      value: 
-      objectReference: {fileID: 4300008, guid: 6d354f826149879419699bc59e0541fa, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e6925ab808e132488411ca68d5bdfb0, type: 3}
 --- !u!4 &1282414019914801614 stripped
@@ -826,6 +826,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PowerParticles
       objectReference: {fileID: 0}
+    - target: {fileID: 1216837263643355355, guid: 2e6925ab808e132488411ca68d5bdfb0,
+        type: 3}
+      propertyPath: ShapeModule.m_Mesh
+      value: 
+      objectReference: {fileID: 4300002, guid: 6d354f826149879419699bc59e0541fa, type: 3}
     - target: {fileID: 1216837263643355353, guid: 2e6925ab808e132488411ca68d5bdfb0,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -881,11 +886,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1216837263643355355, guid: 2e6925ab808e132488411ca68d5bdfb0,
-        type: 3}
-      propertyPath: ShapeModule.m_Mesh
-      value: 
-      objectReference: {fileID: 4300002, guid: 6d354f826149879419699bc59e0541fa, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e6925ab808e132488411ca68d5bdfb0, type: 3}
 --- !u!4 &6434466529154441603 stripped
