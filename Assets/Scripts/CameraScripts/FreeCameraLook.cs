@@ -113,7 +113,6 @@ public class FreeCameraLook : MonoBehaviour {
         };
 
         foreach (Vector3 v in cornerPoints) {
-            Debug.Assert(cornerPoints[0].x != 0);
             Debug.Assert(cornerPoints[0].x != cornerPoints[1].x);
             RaycastHit hit;
             //raycast backwards from target points

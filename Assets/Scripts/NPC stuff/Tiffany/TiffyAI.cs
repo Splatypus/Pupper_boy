@@ -49,6 +49,7 @@ public class TiffyAI : AIbase {
     }
 
     public override void OnInRange(GameObject player) {
+        base.OnInRange(player);
         if (characterState == HIDING) {
             Display(0);
         } else if (characterState == RESCUED) {

@@ -25,6 +25,7 @@ public class RexAI : AIbase {
 
     //icons to display if in range of player
     public override void OnInRange(GameObject player) {
+        base.OnInRange(player);
         //happy when all toys are collected. Grumpy during the day, sad at night
         if (toysCollected >= totalToys) {
             Display(2);

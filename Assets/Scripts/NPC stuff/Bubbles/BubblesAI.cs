@@ -24,6 +24,7 @@ public class BubblesAI : AIbase {
 
     //swap icon depending on state when player is in range
     public override void OnInRange(GameObject player) {
+        base.OnInRange(player);
         switch (characterState) {
             case NOBUBBLES:
                 Display(0);
