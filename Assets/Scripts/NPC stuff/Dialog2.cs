@@ -69,23 +69,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         //notify the event manager that someone talked to an NPC
         EventManager.Instance.TriggerOnTalk(gameObject);
 
-        //set camera position
-        if (useAutomaticPlacement) {
-            //make two vectors pointing away from the plane created by the two dogs talking. Then move the camera to the closer of the two.
-            Vector3 midpoint = Vector3.Lerp(pdialog.transform.position, transform.position, 0.5f);
-            Vector3 position1 = midpoint + Vector3.Cross(transform.position - pdialog.transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
-            Vector3 position2 = midpoint + Vector3.Cross(pdialog.transform.position - transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
-
-            Vector3 cameraPosition = Vector3.zero;
-            if (Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position))
-                cameraPosition = position1;
-            else
-                cameraPosition = position2;
-            //Vector3 cameraPosition = Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position) ? position1 : position2;
-            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(cameraPosition, midpoint, dynamicCameraTime);
-        } else { //if custom placement is enabled, then move to the set location and face the same direction
-            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(customCameraLocation.transform.position, customCameraLocation.transform.position + customCameraLocation.transform.forward, dynamicCameraTime);
-        }
+        SetCameraPosition();
 
         //set up dialog nodes
         if (currentNode is DialogNodeBreak) {
@@ -139,9 +123,32 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
     public virtual void OnEnd() {
         controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
-        Camera.main.GetComponent<FreeCameraLook>().RestoreCamera(dynamicCameraTime);
+        RestoreCameraPosition();
 
         SaveDialogProgress();
+    }
+
+    public virtual void SetCameraPosition() {
+        //set camera position
+        if (useAutomaticPlacement) {
+            //make two vectors pointing away from the plane created by the two dogs talking. Then move the camera to the closer of the two.
+            Vector3 midpoint = Vector3.Lerp(pdialog.transform.position, transform.position, 0.5f);
+            Vector3 position1 = midpoint + Vector3.Cross(transform.position - pdialog.transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+            Vector3 position2 = midpoint + Vector3.Cross(pdialog.transform.position - transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+
+            Vector3 cameraPosition = Vector3.zero;
+            if (Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position))
+                cameraPosition = position1;
+            else
+                cameraPosition = position2;
+            //Vector3 cameraPosition = Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position) ? position1 : position2;
+            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(cameraPosition, midpoint, dynamicCameraTime);
+        } else { //if custom placement is enabled, then move to the set location and face the same direction
+            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(customCameraLocation.transform.position, customCameraLocation.transform.position + customCameraLocation.transform.forward, dynamicCameraTime);
+        }
+    }
+    public virtual void RestoreCameraPosition() {
+        Camera.main.GetComponent<FreeCameraLook>().RestoreCamera(dynamicCameraTime);
     }
 
     public virtual void LoadDialogProgress() {

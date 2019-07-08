@@ -17,10 +17,12 @@ public class PuppyPickup : MonoBehaviour {
     public GameObject castOrigin;
     public LayerMask mask;
     public float radius;
+    public float secondCastForwardDistance = 0.25f;
+    public float secondCastRadius = 1.5f;
     [Range(-1,1)] public float minimumDotProductToFocus;
     private GameObject focusedItem;
 
-    [HideInInspector] public GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
+    [HideInInspector] public GameObject itemInMouth;                                      //reference to item currently in the dog's mouth
     private Vector3 prevPosition = new Vector3(0f, 0f, 0f);                     //when ball is let go, this is used to calculate it's momentum
     [SerializeField] private AudioClip[] borks;
     [SerializeField] private AudioClip[] poops;
@@ -32,6 +34,7 @@ public class PuppyPickup : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        itemInMouth = null;
         cam = Camera.main;
         m_audio_source = GetComponent<AudioSource>();
         iconManager = GetComponentInChildren<IconManager>();
@@ -65,6 +68,19 @@ public class PuppyPickup : MonoBehaviour {
                 bestCol = c;
             }
         }
+        //if no item is being looked at, do a second check in front of doggo
+        if (bestCol == null) {
+            cols = Physics.OverlapSphere(transform.position + transform.forward * secondCastForwardDistance, secondCastRadius, mask);
+            float bestDistance = float.MaxValue;
+            foreach (Collider c in cols) {
+                float dis = Vector3.Distance(transform.position, c.transform.position);
+                if ( dis < bestDistance) {
+                    bestCol = c;
+                    bestDistance = dis;
+                }
+            }
+        }
+
         //if were now looking at a different object, change focus
         if (focusedItem != bestCol?.gameObject) {
             //if an item was focued, defocus it

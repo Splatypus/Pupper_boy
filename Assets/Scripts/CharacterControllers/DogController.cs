@@ -89,19 +89,28 @@ public class DogController : Controller {
             Move();
 
             //Handle interaction input
-            if (Input.GetButtonDown("Dig") && inRangeOf.Count > 0) {
+            if (Input.GetButtonDown("Dig")) {
+                //if something is close by to interact with, do that
+                if (inRangeOf.Count > 0) {
+                    //interact with the closest object
+                    InteractableObject closest = inRangeOf[0];
+                    float shortDis = Vector3.Distance(transform.position, closest.transform.position);
+                    foreach (InteractableObject i in inRangeOf) {
+                        float dis = Vector3.Distance(transform.position, i.transform.position);
+                        if (dis < shortDis) {
+                            shortDis = dis;
+                            closest = i;
+                        }
+                    }
+                    closest.OnInteract();
 
-                //interact with the closest object
-                InteractableObject closest = inRangeOf[0];
-                float shortDis = Vector3.Distance(transform.position, closest.transform.position);
-                foreach (InteractableObject i in inRangeOf) {
-                    float dis = Vector3.Distance(transform.position, i.transform.position);
-                    if (dis < shortDis) {
-                        shortDis = dis;
-                        closest = i;
+                //if nothing is close by to interact with, check the mouth instead
+                } else if (mouth.itemInMouth != null) {
+                    ItemDialog dialog = mouth.itemInMouth.GetComponent<ItemDialog>();
+                    if (dialog != null) {
+                        dialog.OnInteract();
                     }
                 }
-                closest.OnInteract();
             }
 
             //scent mode toggle
@@ -114,7 +123,7 @@ public class DogController : Controller {
             if (Input.GetButtonDown("Interact")) {
                 mouth.DoInputAction();
             }
-
+            
         }//end isdigging check
 
         //move camera
