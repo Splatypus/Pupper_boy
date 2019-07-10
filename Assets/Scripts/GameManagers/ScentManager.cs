@@ -39,16 +39,24 @@ public class ScentManager : MonoBehaviour {
     }
 
     void Update() {
-
         //enable or disable scent objects
         float t = (Time.time - startTime) / duration;
-        if (t <= 1.0f) {//if t is greater than 1, the effect isnt running, so don't bother running anything
+        if (t <= 1.0f) {    //if t is greater than 1, the effect isnt running, so don't bother running anything
+            //First update the effect variables with new frame information
+            Camera.main.CalculateFrustumCorners(new Rect(0, 0, 1, 1), Camera.main.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, points);
+            for (int i = 0; i < 4; i++) {
+                points[i] = transform.localToWorldMatrix * points[i];
+            }
+            mat.SetVector("_CameraPosition", transform.position);
+            mat.SetVector("_DoggoPosition", playerTransform.position);
+            mat.SetFloat("_GameTime", Time.time);
+            mat.SetMatrix("_ViewFrustum", (new Matrix4x4(points[0], points[1], points[2], points[3])).transpose);
+
+            //then actually toggle active
             if (!isEnabled)
                 t = (1 - t);
             t = Mathf.Pow(t, 2.7f);
-            //then actually toggle active
             foreach (ScentObject g in scentObjects) {
-                //TODO: Fix this null check to actually remove the object when it should
                 if (isEnabled && g != null && !g.isActive && Vector3.Distance(g.transform.position, playerTransform.position) < t * maxDistance) {
                     g.StartScent();
                 } else if (!isEnabled && g != null && g.isActive && Vector3.Distance(g.transform.position, playerTransform.position) > t * maxDistance) {
@@ -57,29 +65,13 @@ public class ScentManager : MonoBehaviour {
             }
         } else if (!isEnabled && shaderActive) {//the animation is no longer running in this case, so if this variable is true, toggle it
             shaderActive = false;
-            mat.SetFloat("_RunRingPass", 0.0f); //set the shader to 0 so that it saves processing stuff
+            mat.SetFloat("_RunRingPass", 0); //set the shader to 0 so that it saves processing stuff
         }
     }
 
     void OnRenderImage(RenderTexture source, RenderTexture destination) {
-        //if the effect is running, send the needed info to the shader
-        if (startTime + duration > Time.time) {
-            mat.SetVector("_CameraPosition", transform.position);
-            mat.SetVector("_DoggoPosition", playerTransform.position);
-            mat.SetFloat("_GameTime", Time.time);
-
-            //set up camera frustum
-            Camera.main.CalculateFrustumCorners(new Rect(0, 0, 1, 1), Camera.main.farClipPlane, Camera.MonoOrStereoscopicEye.Mono, points);
-            for (int i = 0; i < 4; i++) {
-                points[i] = transform.localToWorldMatrix * points[i];
-                Debug.DrawRay(transform.position, points[i], Color.blue);
-            }
-            mat.SetMatrix("_ViewFrustum", (new Matrix4x4(points[0], points[1], points[2], points[3])).transpose);
-        }
-
+        //mat is the material which contains the shader to apply to the rendered framge
         Graphics.Blit(source, destination, mat);
-        //mat is the material which contains the shader
-        //we are passing the destination RenderTexture to
     }
 
     //if the effect is available to the player, toggle its enable/disable state
@@ -110,30 +102,28 @@ public class ScentManager : MonoBehaviour {
     public void EnableEffect() {
         isEnabled = true;
         shaderActive = true;
-        mat.SetFloat("_RunRingPass", 1); //run outward pass
+        mat.SetFloat("_RunRingPass", 1);
 
         if (startTime + duration < Time.time) {
             startTime = Time.time;
-            mat.SetFloat("_StartingTime", startTime); //set start time normally if it completed animation
         } else {
             startTime = Time.time + Time.time - startTime - duration;
-            mat.SetFloat("_StartingTime", startTime);
         }
+        mat.SetFloat("_StartingTime", startTime);
     }
 
     //starts shrinking the effect
     public void DisableEffect() {
         isEnabled = false;
-        mat.SetFloat("_RunRingPass", 2);  //run inward pass
+        mat.SetFloat("_RunRingPass", 2); //run inward pass
 
         if (startTime + duration < Time.time) {
             startTime = Time.time;
-            mat.SetFloat("_StartingTime", startTime); //set start time normally if it completed animation
         } 
         else {
             startTime = Time.time + Time.time - startTime - duration;
-            mat.SetFloat("_StartingTime", startTime);
         }
+        mat.SetFloat("_StartingTime", startTime);
     }
 
 }

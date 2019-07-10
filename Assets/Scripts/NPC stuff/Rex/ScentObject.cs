@@ -27,6 +27,10 @@ public class ScentObject : MonoBehaviour {
             EndScent(); 
     }
 
+    private void OnDestroy() {
+        ScentManager.Instance.scentObjects.Remove(this);
+    }
+
     //called when inside scent detection range
     public virtual void StartScent() {
         gameObject.SetActive(true);
