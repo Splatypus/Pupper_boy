@@ -26,7 +26,7 @@ public class ScreenEffects : MonoBehaviour {
     void OnRenderImage(RenderTexture source, RenderTexture destination) {
         //run the postprocessing effect if active
         if (AreEffectsActive()) {
-            Graphics.Blit(source, destination, mat);
+            //Graphics.Blit(source, destination, mat);
         }
     }
     

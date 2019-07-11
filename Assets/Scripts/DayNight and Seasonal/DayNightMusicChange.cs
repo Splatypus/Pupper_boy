@@ -7,6 +7,7 @@ public class DayNightMusicChange : MonoBehaviour {
 
     public AudioClip dayTheme;
     public AudioClip nightTheme;
+    public float nightVolume;
     public AudioSource source;
     public float duration;
 
