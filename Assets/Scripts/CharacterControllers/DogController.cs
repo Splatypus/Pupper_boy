@@ -235,7 +235,7 @@ public class DogController : Controller {
 
         // Update animation controller with the amount that we are moving
         float animValue = Mathf.Sqrt(vertical * vertical + horizontal * horizontal);
-        anim.SetFloat("Forward", animValue, 0.1f, Time.deltaTime);
+        anim.SetFloat("Forward", animValue, 1.0f, Time.deltaTime);
         anim.SetBool("onAir", !isGrounded);
 
         //set turnspeed
