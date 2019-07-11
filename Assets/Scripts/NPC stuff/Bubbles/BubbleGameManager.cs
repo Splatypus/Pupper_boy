@@ -9,7 +9,7 @@ public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
     [Header("Setup")]
     public Text canvasTimeField; //reference to the text box that displays time. Must be set
     public Text scoreText;
-    public GameObject[] objectives;
+    public Objective[] objectives;
     public int numberOfActiveObjectives;
     public GameObject bubble_particle_system;
     public BubblesAI bubblesRef;
@@ -24,10 +24,6 @@ public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
     int score = 0;
     float startTime;
 
-
-    //[SerializeField] List<int> highscores = new List<int>(); //Sorted where highest score is at position [9] and lowest is at [0]
-    //public int maxHighScores = 10;
-
     
 
     // Use this for initialization
@@ -39,8 +35,8 @@ public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
         bubble_particle_system.SetActive(false);
         //Disable objectives to start
         for (int i = 0; i < objectives.Length; i++) {
-            objectives[i].GetComponent<Objective>().SetUp(this, i);
-            objectives[i].SetActive(false);
+            objectives[i].SetUp(this, i);
+            objectives[i].SetIsVisible(false);
         }
         //set up objective list
         activeObjectives = new List<int>(numberOfActiveObjectives);
@@ -75,7 +71,7 @@ public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
             //activate objectives
             for (int i = 0; i < numberOfActiveObjectives; i++) {
                 activeObjectives[i] = SelectObjective();
-                objectives[activeObjectives[i]].SetActive(true);
+                objectives[activeObjectives[i]].SetIsVisible(true);
             }
         }
     }
@@ -99,16 +95,8 @@ public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
         bubble_particle_system.SetActive(false);
         //disable objectives
         for (int i = 0; i < objectives.Length; i++) {
-            objectives[i].SetActive(false);
+            objectives[i].SetIsVisible(false);
         }
-        /*//if a new high score has been set, update the list of high scores
-        if (highscores.Count < maxHighScores) {
-            highscores.Add(score);
-            highscores.Sort();
-        } else if (highscores.Count > 0 && score > highscores[0]) {
-            highscores[0] = score;
-            highscores.Sort();
-        }*/
         if (score >= rewardScore) {
             bubblesRef.FinishedGame(score >= rewardScore);
         }
@@ -141,11 +129,11 @@ public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
     //deactivates the objective index and selects a new one to activate
     public void NewObjective(int index) {
         int i = SelectObjective();
-        objectives[i].SetActive(true);
+        objectives[i].SetIsVisible(true);
         //change the activeObjectives array to reflect that i is now active, rather than whatever we had before
         for (int j = 0; j < numberOfActiveObjectives; j++) {
             if (activeObjectives[j] == index) {
-                objectives[activeObjectives[j]].SetActive(false);
+                objectives[activeObjectives[j]].SetIsVisible(false);
                 activeObjectives[j] = i;
             }
         }

@@ -148,6 +148,13 @@ public class FreeCameraLook : MonoBehaviour {
         return delta;
     }
 
+    public void CenterCamera() {
+        phantomCamera.position = anchor.position + (-anchor.forward * 2 + anchor.up).normalized * maxDistance;
+        phantomCamera.LookAt(anchor.transform.position);
+        transform.position = phantomCamera.transform.position;
+        transform.rotation = phantomCamera.transform.rotation;
+    }
+
 
     //moves the camera to the given position, facing lookat, over the duration given. Smooths movement and disables input.
     public void MoveToPosition(Vector3 location, Vector3 lookAt, float duration, System.Action OnComplete = null) {

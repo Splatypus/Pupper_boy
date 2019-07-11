@@ -24,7 +24,10 @@ public class InteractableObject : MonoBehaviour {
 
     protected void OnDestroy() {
         if (isInRange) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<DogController>().RemoveObject(this);
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null) {
+                player.GetComponent<DogController>()?.RemoveObject(this);
+            }
         }
     }
 

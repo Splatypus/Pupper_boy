@@ -35,6 +35,12 @@ public class MusicManager : MonoBehaviour {
         source = gameObject.GetComponent<AudioSource>();
 	}
 
+    //changes the volume of the music player
+    public void ChangeVolume(float newVolume) {
+        source.volume = newVolume;
+
+    }
+
     //changes the song to the given audioclip over the given duration
     public void ChangeSong(float duration, AudioClip song) {
         if (isChanging)

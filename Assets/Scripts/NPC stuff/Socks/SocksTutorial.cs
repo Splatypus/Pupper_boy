@@ -27,6 +27,9 @@ public class SocksTutorial : Dialog2 {
         if (characterState != MET_TIFFANY) {
             EventManager.OnTalk += OnMetTiffany;
         }
+        if (characterState == 0) {
+            MakeScreenBlack();
+        }
 
         StartCoroutine(AfterStart());
     }
@@ -154,7 +157,13 @@ public class SocksTutorial : Dialog2 {
         OnInteract();
     }
 
-   
+    public void MakeScreenBlack() {
+        ScreenEffects.GetInstance().SetFadeAmount(1.0f);
+    }
+
+    public void BrightenScreen(float duration) {
+        ScreenEffects.GetInstance().ReverseFade(duration);
+    }
 
 
 }

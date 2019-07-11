@@ -9,8 +9,8 @@ public class BubblesAI : AIbase {
     const int NOBUBBLES = 0;
     const int BUBBLES = 1;
     const int END = 2;
-
-
+    
+    public GameObject playerStartPosition;
     public GameObject rewardSpawn; //location at which the reward is spawned
     public GameObject reward;
     public GameObject reward2;
@@ -19,8 +19,11 @@ public class BubblesAI : AIbase {
 
     // Use this for initialization
     new public void Start () {
-        base.Start();	
-	}
+        base.Start();
+        if (progressionNum == 2) {
+            progressionNum = 0; //if we somehow saved this number while a game was in progress, reset it to 0
+        }
+    }
 
     //swap icon depending on state when player is in range
     public override void OnInRange(GameObject player) {
@@ -57,9 +60,21 @@ public class BubblesAI : AIbase {
     public void SecondReward() {
         Instantiate(reward2, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
     }
+    //fades the screen and moves the player into the right position for the game
+    public void PrepareDoggoPosition() {
+        ScreenEffects.GetInstance().FadeToBlack(1.0f, () => {
+            Player.transform.position = playerStartPosition.transform.position;
+            Player.transform.rotation = playerStartPosition.transform.rotation;
+            Camera.main.GetComponent<FreeCameraLook>().CenterCamera();
+            ScreenEffects.GetInstance().ReverseFade(1.0f);
+        });
+    }
     //function to start the game.
     public void StartGame(int scoreToWin) {
         bubbleGameRef.GameStartForReward(scoreToWin);
+        progressionNum = 2; //indicates game is in progress.
+        //unlock camera control when we got to start the game.
+        Camera.main.GetComponent<FreeCameraLook>().controlLocked = false;
     }
 
     //called by bubble machine when the game is finished

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScreenEffects : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class ScreenEffects : MonoBehaviour {
     }
 
     public Material mat;
+
+    public Image imageRenderer;
 
     //screen fade effect
     float fadePercent = 0.0f;
@@ -23,13 +26,6 @@ public class ScreenEffects : MonoBehaviour {
         mat.SetFloat("_FadePercent", fadePercent);
     }
 
-    void OnRenderImage(RenderTexture source, RenderTexture destination) {
-        //run the postprocessing effect if active
-        if (AreEffectsActive()) {
-            //Graphics.Blit(source, destination, mat);
-        }
-    }
-    
     public bool AreEffectsActive() {
         return fadePercent > 0.0f;
     }
@@ -40,25 +36,50 @@ public class ScreenEffects : MonoBehaviour {
     }
     //fades the entire screen to the given color over the given duration. Calls onComplete when finsihed
     public void StartFade(float duration, Color color, System.Action onComplete = null) {
-        StartCoroutine(ProgressFade(duration, true));
+        StopAllCoroutines();
+        imageRenderer.color = color;
+        StartCoroutine(ProgressFade(duration, true, onComplete));
     }
     //reverses any current fade effect on the screen, returning it to normal over the given duration. Calls onComplete when finished
-    public void ReverseFade(float duration, Event onComplete = null) {
+    public void ReverseFade(float duration, System.Action onComplete = null) {
+        StopAllCoroutines();
+        StartCoroutine(ProgressFade(duration, false, onComplete));
     }
 
-    public IEnumerator ProgressFade(float duration, bool isIncreaing, System.Action onComplete = null) {
+    public void SetFadeAmount(float newFadeAmount) {
+        StopAllCoroutines();
+        fadePercent = newFadeAmount;
+        imageRenderer.color = new Color(imageRenderer.color.r,
+                                        imageRenderer.color.g,
+                                        imageRenderer.color.b,
+                                        fadePercent);
+        imageRenderer.gameObject.SetActive(fadePercent > 0.0f);
+    }
+
+    public IEnumerator ProgressFade(float duration, bool isIncreasing, System.Action onComplete = null) {
+        duration *= isIncreasing ? 1 - fadePercent : fadePercent; //shorten duration if already partially faded
+        imageRenderer.gameObject.SetActive(true);
         float startTime = Time.time;
         float initialPercent = fadePercent;
         while (Time.time <= startTime + duration) {
             //lerp fade percent to 100 or 0 based on if were fading in or out, and the percentage of the duration we've completed
-            fadePercent = Mathf.Lerp(initialPercent, isIncreaing ? 100.0f : 0.0f, (Time.time - startTime) / duration);
-            mat.SetFloat("_FadePercent", fadePercent);
+            fadePercent = Mathf.Lerp(initialPercent, isIncreasing ? 1.0f : 0.0f, (Time.time - startTime) / duration);
+            imageRenderer.color = new Color(imageRenderer.color.r,
+                                        imageRenderer.color.g,
+                                        imageRenderer.color.b,
+                                        fadePercent); //mat.SetFloat("_FadePercent", fadePercent);
             //yield for next frame
             yield return new WaitForEndOfFrame();
         }
         //set it at the end to make sure we get an exact value
-        fadePercent = isIncreaing ? 100.0f : 0.0f;
-        mat.SetFloat("_FadePercent", fadePercent);
+        fadePercent = isIncreasing ? 1.0f : 0.0f;
+        imageRenderer.color = new Color(imageRenderer.color.r,
+                                        imageRenderer.color.g,
+                                        imageRenderer.color.b,
+                                        fadePercent);//mat.SetFloat("_FadePercent", fadePercent);
+        if (!isIncreasing) {
+            imageRenderer.gameObject.SetActive(false);
+        }
         onComplete?.Invoke();
     }
 

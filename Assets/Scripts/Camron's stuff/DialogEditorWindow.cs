@@ -70,6 +70,12 @@ public class DialogEditorWindow : EditorWindow {
 
     private void OnDisable(){
         UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty();
+        PrefabUtility.RecordPrefabInstancePropertyModifications(connectedDialog);
+
+        UnityEditor.Experimental.SceneManagement.PrefabStage prefabStage = UnityEditor.Experimental.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage();
+        if (prefabStage != null) {
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(prefabStage.scene);
+        }
     }
 
     void OnGUI(){
