@@ -69,10 +69,12 @@ public class FreeCameraLook : MonoBehaviour {
         if (!controlLocked) {
             
             HandleRotationMovement(); //new position is calculated
-
+            cameraGoal = transform.position; //save goal since the above function modifies transform.position. Position is later set to what it should be
+            //smoothing
+            transform.position = Vector3.Lerp(truePosition, cameraGoal, 10.0f * Time.deltaTime);
             //but keep it rotation locked despite that
             float angle = FindCameraAngle();
-            phantomCamera.RotateAround(anchor.position, phantomCamera.right, ClampRotationAngle(angle, 0, angleMin, angleMax));
+            transform.RotateAround(anchor.position, transform.right, ClampRotationAngle(angle, 0, angleMin, angleMax));
             //keep camera looking at player
             phantomCamera.LookAt(anchor);
 

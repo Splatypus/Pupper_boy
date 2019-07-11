@@ -104,6 +104,8 @@ public class PlayerDialog : Controller {
     //animates the text so that it appears one letter at a time
     IEnumerator AnimateText(string fullText) {
         //workaround for a TextMesh Pro bug where if you set text you cant change vert details until the next frame
+        textObject.SetText("");
+        textObject.ForceMeshUpdate(true);
         yield return new WaitForEndOfFrame();
 
         //set text
