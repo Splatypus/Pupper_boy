@@ -1,0 +1,260 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3676808389660179395
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3676808389659813859}
+  - component: {fileID: 3676808389660179405}
+  - component: {fileID: 3676808389660179394}
+  m_Layer: 2
+  m_Name: Chip_Prefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3676808389659813859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676808389660179395}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 8560040474684706443}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3676808389660179405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676808389660179395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e72fe79d4925fa14386148b85387709c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Blackie
+  image: {fileID: 21300000, guid: a7701b9b30ac3724185e9d714bbb2277, type: 3}
+  useAutomaticPlacement: 1
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
+  customCameraLocation: {fileID: 0}
+  progressionNum: 0
+  functions: []
+  serializedNodes:
+  - x: 188
+    y: 428
+    width: 70
+    height: 70
+    text: 
+    num: -1
+    type: 4
+  - x: 288
+    y: 385
+    width: 200
+    height: 150
+    text: "Hey! Hi! Hi! My name is Blackie! I\u2019m the neighborhood tinkerer. I
+      like to build stuff."
+    num: -1
+    type: 0
+  - x: 1312
+    y: 615
+    width: 70
+    height: 40
+    text: 
+    num: -1
+    type: 3
+  - x: 498
+    y: 385
+    width: 200
+    height: 150
+    text: "My owners (and the other dogs) think I have big dreams, but I don\u2019t
+      have dreams! I have plans! And blueprints!"
+    num: -1
+    type: 0
+  - x: 707
+    y: 386
+    width: 200
+    height: 150
+    text: "So anyway, my latest project is an airship, because it\u2019s time that
+      dogs everywhere take to the skies! And I was bored."
+    num: -1
+    type: 0
+  - x: 917
+    y: 386
+    width: 200
+    height: 150
+    text: 'The idea''s pretty simple... I just need you to wire up some of the mechanisms
+      for the airship. '
+    num: -1
+    type: 0
+  - x: 1150
+    y: 381
+    width: 200
+    height: 150
+    text: Talk to this cube next to me to get started. You can click to drag pieces
+      around, just like picking up a toy!
+    num: -1
+    type: 0
+  - x: 1367
+    y: 383
+    width: 200
+    height: 150
+    text: The goal is to connect the glowing light bulbs to the unlit ones!
+    num: -1
+    type: 0
+  serializedConnections:
+  - outIndex: 0
+    inIndex: 1
+  - outIndex: 1
+    inIndex: 3
+  - outIndex: 3
+    inIndex: 4
+  - outIndex: 4
+    inIndex: 5
+  - outIndex: 5
+    inIndex: 6
+  - outIndex: 6
+    inIndex: 7
+  - outIndex: 7
+    inIndex: 2
+  - outIndex: 2
+    inIndex: 1
+--- !u!135 &3676808389660179394
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3676808389660179395}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.77
+  m_Center: {x: 0, y: 0, z: 0.88}
+--- !u!33 &5365916675412930983
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560040474684674729}
+  m_Mesh: {fileID: 4300002, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+--- !u!65 &783441687371366177
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560040474684674777}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7980442, y: 1.587822, z: 1.7044356}
+  m_Center: {x: -0.00026450047, y: 0.7924131, z: 0.17345218}
+--- !u!1001 &8560040474684576783
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3676808389659813859}
+    m_Modifications:
+    - target: {fileID: 100004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_Name
+      value: Chip_rigModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7511a294290d0f74b89ca400438b2b55, type: 2}
+    - target: {fileID: 13700000, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: ec55b8361e41a4d45ba84a00684d2d89, type: 2}
+    - target: {fileID: 13700000, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dce4ba66e17df342a2cd4fe80f17e3e, type: 2}
+    - target: {fileID: 13700002, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a87421e525440bf499b6269c2e962da6, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c8f8063889463ac4e9445aa7f5658ec1, type: 3}
+--- !u!4 &8560040474684706443 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400004, guid: c8f8063889463ac4e9445aa7f5658ec1,
+    type: 3}
+  m_PrefabInstance: {fileID: 8560040474684576783}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8560040474684674729 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100006, guid: c8f8063889463ac4e9445aa7f5658ec1,
+    type: 3}
+  m_PrefabInstance: {fileID: 8560040474684576783}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8560040474684674777 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100054, guid: c8f8063889463ac4e9445aa7f5658ec1,
+    type: 3}
+  m_PrefabInstance: {fileID: 8560040474684576783}
+  m_PrefabAsset: {fileID: 0}
