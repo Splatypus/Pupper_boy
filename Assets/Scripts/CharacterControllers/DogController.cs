@@ -48,10 +48,12 @@ public class DogController : Controller {
     [SerializeField] AudioSource dig_sound;
     public float rotateSpeed = 10.0f;
     public float maxRotaionTime = 0.4f;
+    public float distanceAddedToDig = 1.5f;
 
     IconManager my_icon;
     TextFadeOut houseText;
     bool isDigging = false;
+    DigZone currentDiggingZone;
     int digZoneCount = 0; //how many dig zones the player is currently in
     #endregion
 
@@ -70,6 +72,7 @@ public class DogController : Controller {
         houseText = FindObjectOfType<TextFadeOut>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        currentDiggingZone = null;
 
         manager.v = Vector3.zero;
     }
@@ -104,7 +107,7 @@ public class DogController : Controller {
                     }
                     closest.OnInteract();
 
-                //if nothing is close by to interact with, check the mouth instead
+                    //if nothing is close by to interact with, check the mouth instead
                 } else if (mouth.itemInMouth != null) {
                     ItemDialog dialog = mouth.itemInMouth.GetComponent<ItemDialog>();
                     if (dialog != null) {
@@ -123,13 +126,13 @@ public class DogController : Controller {
             if (Input.GetButtonDown("Interact")) {
                 mouth.DoInputAction();
             }
-            
+
         }//end isdigging check
 
         //move camera
         float speed = Vector3.Dot(Vector3.ProjectOnPlane(manager.v, Vector3.up), cameraScript.transform.forward);
-        cameraScript.trueMaxDistance = Mathf.Lerp(cameraScript.trueMaxDistance, cameraScript.maxDistance + speed/5.0f, 8.0f * Time.deltaTime);
- 
+        cameraScript.trueMaxDistance = Mathf.Lerp(cameraScript.trueMaxDistance, cameraScript.maxDistance + speed / 5.0f, 8.0f * Time.deltaTime);
+
     }
 
     void Move() {
@@ -161,8 +164,8 @@ public class DogController : Controller {
             a *= inAirMult;
         }
         float newMaxSpeed = maxSpeed;
-        if(Time.time-moveStartTime > sprintDelay){
-            newMaxSpeed *= Mathf.Lerp(1, sprintMultiplier, ( Time.time-(moveStartTime+sprintDelay)) / sprintRampTime ); //adjust max speed to account for sprinting
+        if (Time.time - moveStartTime > sprintDelay) {
+            newMaxSpeed *= Mathf.Lerp(1, sprintMultiplier, (Time.time - (moveStartTime + sprintDelay)) / sprintRampTime); //adjust max speed to account for sprinting
         }
         if (ScentManager.Instance.isEnabled) {
             newMaxSpeed *= SpeedMultScentMode;
@@ -184,7 +187,7 @@ public class DogController : Controller {
         }
 
         //store vertical movement speed before messing with horizontal, since the entire vector is changed
-        float verticalSpeed = isGrounded? -hillSmoothingFactor/Time.deltaTime : manager.v.y;
+        float verticalSpeed = isGrounded ? -hillSmoothingFactor / Time.deltaTime : manager.v.y;
 
         manager.v.y = 0;
         //find horizontal movement based on input
@@ -222,7 +225,7 @@ public class DogController : Controller {
         //if grounded, vert speed is 0 unless jumping, if in air, calc gravity
         if (isGrounded && jumpInput) {
             manager.v.y = jumpForce;
-        } 
+        }
         //gravity
         if (manager.v.y - (gravity * Time.deltaTime) < -maxFallSpeed) {
             manager.v.y = -maxFallSpeed;
@@ -234,8 +237,8 @@ public class DogController : Controller {
         controller.Move(manager.v * Time.deltaTime);
 
         // Update animation controller with the amount that we are moving
-        float animValue = Mathf.Sqrt(vertical * vertical + horizontal * horizontal);
-        anim.SetFloat("Forward", animValue, 1.0f, Time.deltaTime);
+        float animValue = new Vector2(manager.v.x, manager.v.z).magnitude / maxSpeed;
+        anim.SetFloat("Forward", animValue);
         anim.SetBool("onAir", !isGrounded);
 
         //set turnspeed
@@ -294,7 +297,7 @@ public class DogController : Controller {
         float dist_to_move;
         Vector3 plane = (digZone.transform.position - zone_to_go_to.transform.position).normalized;
         Vector3 toPlayer = transform.position - zone_to_go_to.transform.position;
-        dist_to_move = Vector3.Dot(plane, toPlayer);
+        dist_to_move = Vector3.Dot(plane, toPlayer) + distanceAddedToDig;
         //check terrain to that we dont teleport a dog into the ground. 
         Vector3 targetLocation = transform.position + ((zone_to_go_to.transform.position - digZone.transform.position).normalized * dist_to_move);
         int groundMask = 1 << 8;
@@ -308,10 +311,11 @@ public class DogController : Controller {
 
     //starts dig animation
     IEnumerator StartZoneDig(DigZone digZone) {
+        currentDiggingZone = digZone;
         isDigging = true;
 
         //hide item in mouth to prevent weird collisions
-        if(mouth.itemInMouth != null)
+        if (mouth.itemInMouth != null)
             mouth.itemInMouth?.SetActive(false);
 
         //rotate towards the fence
@@ -324,24 +328,37 @@ public class DogController : Controller {
             yield return new WaitForFixedUpdate();
         }
         //dig under it
-        anim.SetTrigger("Dig");
-        yield return new WaitForSeconds(0.6f);
-        dig_sound.Play();
-        Move_to_next_zone(digZone);
-        anim.SetTrigger("Dig2");
-        houseText.setText(digZone.other_side.GetYardName());
-        //after the animation, restore movement
-        yield return new WaitForSeconds(0.6f);
-        isDigging = false;
-        if(mouth.itemInMouth != null)
-            mouth.itemInMouth?.SetActive(true); //why doesnt the null operator work here????
+        anim.SetTrigger("digIsPressed");
+        anim.SetBool("diggingUnder", true);
+        
+    }
 
+    public void PlayDigSound() {
+        dig_sound.Play();
+    }
+
+    //called after the animation to dig under the fence is finished
+    public void AfterDugDown() {
+
+        Move_to_next_zone(currentDiggingZone);
+        houseText.setText(currentDiggingZone.other_side.GetYardName());
+        
+    }
+
+    //called by the animation when the dig finishes
+    public void FinishDig() {
+        isDigging = false;
+        anim.SetBool("diggingUnder", false);
+        if (mouth.itemInMouth != null)
+            mouth.itemInMouth.SetActive(true);
+        
         //and then run the event trigger letting things know we have reached the other side
-        EventManager.Instance.TriggerOnFenceDig(digZone.other_side.gameObject);
+        EventManager.Instance.TriggerOnFenceDig(currentDiggingZone.other_side.gameObject);
+        currentDiggingZone = null;
     }
 
     #endregion
-
+    
 
     public override void OnDeactivated() {
         anim.SetFloat("Forward", 0.0f); //disable animations
