@@ -6,7 +6,9 @@ using UnityEngine.Events;
 public class DayNightMusicChange : MonoBehaviour {
 
     public AudioClip dayTheme;
+    public float dayVolume;
     public AudioClip nightTheme;
+    public float nightVolume;
     public AudioSource source;
     public float duration;
 
@@ -38,9 +40,11 @@ public class DayNightMusicChange : MonoBehaviour {
 
     //functions to call when it becomes day or night. Changes the theme to the correct one
     public void OnDay() {
+        MusicManager.Instance.ChangeVolume(dayVolume);
         MusicManager.Instance.ChangeSong(duration, dayTheme);
     }
     public void OnNight() {
+        MusicManager.Instance.ChangeVolume(nightVolume);
         MusicManager.Instance.ChangeSong(duration, nightTheme);
     }
 }

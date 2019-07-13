@@ -32,10 +32,10 @@ public class PlayerDialog : Controller {
 	// Update is called once per frame
 	void Update () {
         //if any key is pressed, display the full text of the current text box, or if it already is, then display next
-        if (Input.anyKeyDown && npcDialog != null) {
+        if (Input.GetButtonDown("Interact") && npcDialog != null) {
             //if all the text is not yet in the text box, put it all there
             if (!isAllShown) {
-                textObject.text = textToShow;
+                //textObject.text = textToShow;
                 isAllShown = true;
                 //if it is allready all in the textbox, go on to the next stuff, but only if dialog options are not available
             } else if (!buttons[0].activeInHierarchy) {
@@ -61,6 +61,7 @@ public class PlayerDialog : Controller {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         textToShow = "";
+        textObject.SetText("");
         isAllShown = false;
         npcDialog = null;
         canvasGA.SetActive(false);
@@ -103,8 +104,6 @@ public class PlayerDialog : Controller {
     //animates the text so that it appears one letter at a time
     IEnumerator AnimateText(string fullText) {
         //workaround for a TextMesh Pro bug where if you set text you cant change vert details until the next frame
-        textObject.SetText("");
-        textObject.ForceMeshUpdate(true);
         yield return new WaitForEndOfFrame();
 
         //set text

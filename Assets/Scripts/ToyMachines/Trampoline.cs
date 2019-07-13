@@ -19,7 +19,7 @@ public class Trampoline : MonoBehaviour {
         Rigidbody rb = other.GetComponent<Rigidbody>();
         if (other.CompareTag("Player")) {
             //if the player collides with this while moving downward, bounce them
-            DogController control = other.GetComponent<DogController>();
+            PlayerControllerManager control = other.GetComponent<PlayerControllerManager>();
             if (control.v.y < -1.0f) {
                 control.v = new Vector3(control.v.x, bounceAmount, control.v.z);
                 audioSource.Play();

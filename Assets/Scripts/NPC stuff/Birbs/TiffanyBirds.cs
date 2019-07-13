@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TiffanyBirds : BirdMovementV2 {
+public class TiffanyBirds : BirdMovement {
 
     public TiffyAI tiffanyReference;
 

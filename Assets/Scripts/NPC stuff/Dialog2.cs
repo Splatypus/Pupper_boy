@@ -7,9 +7,11 @@ using UnityEditor;
 #endif
 
 public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
-
-    protected virtual string PROGRESSION_SAVE_KEY { get { return ""; } } 
+    //These must be overriden by child classes for them to save. 
+    //For example: If you set a string to return for DIALOG_POROGRESS_SAVE_KEY, then dialog progress will save automatically for that NPC
+    protected virtual string DIALOG_PROGRESS_SAVE_KEY { get { return ""; } } 
     protected virtual string PROGRESSION_NUM_SAVE_KEY { get { return ""; } }
+    protected virtual string CHARACTER_STATE_SAVE_KEY { get { return ""; } }
 
     //player references
     PlayerDialog pdialog;
@@ -33,6 +35,8 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
     public DialogNode currentNode = null;
     [Header("Dialog Info")]
     public int progressionNum;
+
+    protected int characterState = 0;
 
     //EditorInfo
     public List<DialogNode> nodes;
@@ -65,23 +69,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         //notify the event manager that someone talked to an NPC
         EventManager.Instance.TriggerOnTalk(gameObject);
 
-        //set camera position
-        if (useAutomaticPlacement) {
-            //make two vectors pointing away from the plane created by the two dogs talking. Then move the camera to the closer of the two.
-            Vector3 midpoint = Vector3.Lerp(pdialog.transform.position, transform.position, 0.5f);
-            Vector3 position1 = midpoint + Vector3.Cross(transform.position - pdialog.transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
-            Vector3 position2 = midpoint + Vector3.Cross(pdialog.transform.position - transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
-
-            Vector3 cameraPosition = Vector3.zero;
-            if (Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position))
-                cameraPosition = position1;
-            else
-                cameraPosition = position2;
-            //Vector3 cameraPosition = Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position) ? position1 : position2;
-            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(cameraPosition, midpoint, dynamicCameraTime);
-        } else { //if custom placement is enabled, then move to the set location and face the same direction
-            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(customCameraLocation.transform.position, customCameraLocation.transform.position + customCameraLocation.transform.forward, dynamicCameraTime);
-        }
+        SetCameraPosition();
 
         //set up dialog nodes
         if (currentNode is DialogNodeBreak) {
@@ -135,14 +123,37 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
 
     public virtual void OnEnd() {
         controlman.ChangeMode(PlayerControllerManager.Modes.Walking);
-        Camera.main.GetComponent<FreeCameraLook>().RestoreCamera(dynamicCameraTime);
+        RestoreCameraPosition();
 
         SaveDialogProgress();
     }
 
+    public virtual void SetCameraPosition() {
+        //set camera position
+        if (useAutomaticPlacement) {
+            //make two vectors pointing away from the plane created by the two dogs talking. Then move the camera to the closer of the two.
+            Vector3 midpoint = Vector3.Lerp(pdialog.transform.position, transform.position, 0.5f);
+            Vector3 position1 = midpoint + Vector3.Cross(transform.position - pdialog.transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+            Vector3 position2 = midpoint + Vector3.Cross(pdialog.transform.position - transform.position, Vector3.up).normalized * dynamicCameraDistance + Vector3.up * dynamicCameraHeight;
+
+            Vector3 cameraPosition = Vector3.zero;
+            if (Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position))
+                cameraPosition = position1;
+            else
+                cameraPosition = position2;
+            //Vector3 cameraPosition = Vector3.Distance(position1, Camera.main.transform.position) < Vector3.Distance(position2, Camera.main.transform.position) ? position1 : position2;
+            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(cameraPosition, midpoint, dynamicCameraTime);
+        } else { //if custom placement is enabled, then move to the set location and face the same direction
+            Camera.main.GetComponent<FreeCameraLook>().MoveToPosition(customCameraLocation.transform.position, customCameraLocation.transform.position + customCameraLocation.transform.forward, dynamicCameraTime);
+        }
+    }
+    public virtual void RestoreCameraPosition() {
+        Camera.main.GetComponent<FreeCameraLook>().RestoreCamera(dynamicCameraTime);
+    }
+
     public virtual void LoadDialogProgress() {
         //read from save... if nothing found, default to the start node
-        int loadedNode = SaveManager.getInstance().GetInt(PROGRESSION_SAVE_KEY, -1);
+        int loadedNode = SaveManager.getInstance().GetInt(DIALOG_PROGRESS_SAVE_KEY, -1);
         if (loadedNode == -1) {
             currentNode = startNode;
         } else {
@@ -150,18 +161,26 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         }
         //load progression num from save. If nothing founds, default to 0
         progressionNum = SaveManager.getInstance().GetInt(PROGRESSION_NUM_SAVE_KEY, 0);
+        characterState = SaveManager.getInstance().GetInt(CHARACTER_STATE_SAVE_KEY, 0);
     }
     public virtual void SaveDialogProgress() {
+        bool wasChanged = false;
         //if the key has been overriden, save
-        if (!PROGRESSION_SAVE_KEY.Equals("")) {
-            SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
-        } else if (!PROGRESSION_NUM_SAVE_KEY.Equals("")) {
+        if (!DIALOG_PROGRESS_SAVE_KEY.Equals("")) {
+            SaveManager.getInstance().PutInt(DIALOG_PROGRESS_SAVE_KEY, currentNode.index);
+            wasChanged = true;
+        }
+        if (!PROGRESSION_NUM_SAVE_KEY.Equals("")) {
             SaveManager.getInstance().PutInt(PROGRESSION_NUM_SAVE_KEY, progressionNum);
-        } else {
-            return;
+            wasChanged = true;
+        }
+        if (!CHARACTER_STATE_SAVE_KEY.Equals("")) {
+            SaveManager.getInstance().PutInt(CHARACTER_STATE_SAVE_KEY, characterState);
+            wasChanged = true;
         }
         //save if we added anything to the save manager
-        SaveManager.getInstance().SaveFile();
+        if(wasChanged)
+            SaveManager.getInstance().SaveFile();
 
     }
     public virtual void ChangeAndSaveProgressionNum(int newNum) {
@@ -190,8 +209,10 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         } else if (node is DialogNodeFunction) {  //function
             //Run the function specified by the given number. If the number is out of bounds of the function array, dont run anything. Then procede to the next node if it exists.
             int num = ((DialogNodeFunction)node).functionNum;
-            if ( num < functions.Count && num >= 0) {
+            if (num < functions.Count && num >= 0) {
                 functions[num].Invoke();
+            } else {
+                Debug.LogError("Function Number out of bounds");
             }
             if(node.connections != null) {
                 //if there are choice nodes, decide which to take
@@ -202,10 +223,11 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                         if (((DialogNodeChoice)c).num == progressionNum) {
                             progressionNum = 0;
                             ChangeNode(c);
+                            return;
                         }
                     }
                 }
-                if (numChoices == 0) {
+                if (numChoices == 0) { 
                     ChangeNode(currentNode.connections[0]);
                 }
             } else {

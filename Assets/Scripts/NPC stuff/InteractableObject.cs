@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class InteractableObject : MonoBehaviour {
 
+    bool isInRange = false;
 
     //when a player enters, they can now interact with the object
     public virtual void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
             other.GetComponent<DogController>().AddObject(this);
+            isInRange = true;
         }
     }
 
@@ -16,9 +18,20 @@ public class InteractableObject : MonoBehaviour {
     public virtual void OnTriggerExit(Collider other) {
         if (other.gameObject.CompareTag("Player")) {
             other.GetComponent<DogController>().RemoveObject(this);
+            isInRange = false;
         }
     }
-    
+
+    protected void OnDestroy() {
+        if (isInRange) {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player != null) {
+                player.GetComponent<DogController>()?.RemoveObject(this);
+            }
+        }
+    }
+
+
     //overridable interact function
     public virtual void OnInteract() {
 

@@ -12,7 +12,7 @@ public class DigZone : InteractableObject {
 
     
     public enum Yards { Seabiscuit, Bubbles, Tiffany, Home, Rex, Creek, Blackie }
-    public static string[] yardNames = { "Seabiscuit's Yard", "Bubbles' Yard", "Tiffany's Yard", "Home", "Rex's Domain", "Cherry Creek", "Blackie's Workshop" };
+    public static string[] yardNames = { "Seabiscuit's Yard", "Bubbles' Yard", "Tiffany's Yard", "Home", "Rex's Domain", "Cherry Creek", "Chip's Workshop" };
     public Yards enteringYard;
 
     private void Start() {

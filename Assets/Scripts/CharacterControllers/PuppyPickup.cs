@@ -17,20 +17,25 @@ public class PuppyPickup : MonoBehaviour {
     public GameObject castOrigin;
     public LayerMask mask;
     public float radius;
+    public float secondCastForwardDistance = 0.25f;
+    public float secondCastRadius = 1.5f;
     [Range(-1,1)] public float minimumDotProductToFocus;
     private GameObject focusedItem;
 
-    [HideInInspector] public GameObject itemInMouth = null;                                      //reference to item currently in the dog's mouth
+    [HideInInspector] public GameObject itemInMouth;                                      //reference to item currently in the dog's mouth
     private Vector3 prevPosition = new Vector3(0f, 0f, 0f);                     //when ball is let go, this is used to calculate it's momentum
     [SerializeField] private AudioClip[] borks;
     [SerializeField] private AudioClip[] poops;
     private AudioSource m_audio_source;
 
     private IconManager iconManager;
+    private Camera cam;
 
 
     // Use this for initialization
     void Start() {
+        itemInMouth = null;
+        cam = Camera.main;
         m_audio_source = GetComponent<AudioSource>();
         iconManager = GetComponentInChildren<IconManager>();
     }
@@ -53,12 +58,29 @@ public class PuppyPickup : MonoBehaviour {
         Collider bestCol = null;
         //find the collider within our overlapsphere which has the best dot product with the cameras forward vector (ie, the one we are looking at the most)
         foreach (Collider c in cols) {
-            float cameraDotProduct = Vector3.Dot((c.transform.position - Camera.main.transform.position).normalized, Camera.main.transform.forward);
+            float cameraDotProduct = Vector3.Dot((c.transform.position - cam.transform.position).normalized, cam.transform.forward);
+            //if the object is between doggo and the camera, weight it slight less. 
+            if (Vector3.Distance(castOrigin.transform.position, cam.transform.position) > Vector3.Distance(c.transform.position, cam.transform.position)) {
+                cameraDotProduct *= 0.975f;
+            }
             if (cameraDotProduct > bestDot && cameraDotProduct > minimumDotProductToFocus) {
                 bestDot = cameraDotProduct;
                 bestCol = c;
             }
         }
+        //if no item is being looked at, do a second check in front of doggo
+        if (bestCol == null) {
+            cols = Physics.OverlapSphere(transform.position + transform.forward * secondCastForwardDistance, secondCastRadius, mask);
+            float bestDistance = float.MaxValue;
+            foreach (Collider c in cols) {
+                float dis = Vector3.Distance(transform.position, c.transform.position);
+                if ( dis < bestDistance) {
+                    bestCol = c;
+                    bestDistance = dis;
+                }
+            }
+        }
+
         //if were now looking at a different object, change focus
         if (focusedItem != bestCol?.gameObject) {
             //if an item was focued, defocus it

@@ -18,6 +18,7 @@ public class Dialog2Editor : Editor {
         {
             window = EditorWindow.GetWindow<DialogEditorWindow>();
             window.SetupWindow(myDialog);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(myDialog.gameObject);
             //UnityEditor.PrefabUtility.DisconnectPrefabInstance(myDialog.gameObject); //No longer used in 2018 forward
         }
     }

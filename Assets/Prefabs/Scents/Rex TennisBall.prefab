@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 54191936369480456}
   - component: {fileID: 114423862011240250}
   - component: {fileID: 82940606552280920}
+  - component: {fileID: 760749019886266240}
   m_Layer: 15
   m_Name: Rex TennisBall
   m_TagString: Pickup
@@ -27,9 +28,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127781938538048}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 245.39, y: 1.668, z: 321.78}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.023652162, y: 0.023652181, z: 0.023652155}
   m_Children:
   - {fileID: 4061864759673868}
   - {fileID: 4799247976046606}
@@ -58,7 +59,7 @@ Rigidbody:
   m_GameObject: {fileID: 1127781938538048}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -180,6 +181,56 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &760749019886266240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1127781938538048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b210edfee16ad64492b9a3870ef6137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Tennis Ball
+  image: {fileID: 21300000, guid: ca56b6d4d1e9aae43a9e65adbf5313d4, type: 3}
+  useAutomaticPlacement: 1
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
+  customCameraLocation: {fileID: 0}
+  progressionNum: 0
+  functions: []
+  serializedNodes:
+  - x: 814
+    y: 506
+    width: 70
+    height: 70
+    text: 
+    num: -1
+    type: 4
+  - x: 1028
+    y: 522
+    width: 200
+    height: 150
+    text: An old worn out tennis ball. It probably belongs to Rex.
+    num: -1
+    type: 0
+  - x: 1082
+    y: 693
+    width: 70
+    height: 40
+    text: 
+    num: -1
+    type: 3
+  serializedConnections:
+  - outIndex: 0
+    inIndex: 1
+  - outIndex: 1
+    inIndex: 2
+  - outIndex: 2
+    inIndex: 1
 --- !u!1 &1214840984635926
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +243,7 @@ GameObject:
   - component: {fileID: 198719146102440620}
   - component: {fileID: 199976114631265274}
   - component: {fileID: 114891631675873340}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ScentParticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4892,7 +4943,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 1
-  colorParent: 1
+  layer: 9
+  effectedObjects:
+  - {fileID: 1545877719897912}
 --- !u!1 &1454367750230430
 GameObject:
   m_ObjectHideFlags: 0

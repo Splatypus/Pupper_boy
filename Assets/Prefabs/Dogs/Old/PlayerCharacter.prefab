@@ -2243,6 +2243,14 @@ MonoBehaviour:
   - {fileID: 0}
   canvasGA: {fileID: 0}
   textSpeed: 30
+  textUpdateTime: 0
+  fadedCharacters: 0
+  fadeCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   npcDialog: {fileID: 0}
 --- !u!114 &114828746374877680
 MonoBehaviour:
@@ -2257,6 +2265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentController: {fileID: 0}
+  v: {x: 0, y: 0, z: 0}
 --- !u!114 &757645667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2270,9 +2279,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouth: {fileID: 0}
-  v: {x: 0, y: 0, z: 0}
   maxSpeed: 12
-  sprintMultiplier: 1.5
   acceleration: 70
   decceleration: 10
   inAirMult: 0.5
@@ -2283,7 +2290,9 @@ MonoBehaviour:
   turnspeed: 360
   freezeMovementAngle: 90
   SpeedMultScentMode: 0.35
-  hasFlight: 0
+  sprintMultiplier: 1.5
+  sprintDelay: 0
+  sprintRampTime: 0
   dig_sound: {fileID: 82635878072831038}
   rotateSpeed: 360
   maxRotaionTime: 0.4

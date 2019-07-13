@@ -8,8 +8,8 @@ public class JukeBox : AIbase {
     public AudioClip originalTheme;
     public float fadeDuration;
 
-    public override void OnInRange() {
-        base.OnInRange();
+    public override void OnInRange(GameObject player) {
+        base.OnInRange(player);
         Display(0);
     }
 

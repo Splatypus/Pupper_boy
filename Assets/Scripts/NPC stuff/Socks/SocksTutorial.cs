@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SocksTutorial : Dialog2 {
-    protected override string PROGRESSION_SAVE_KEY { get { return "SocksSummerProgression";} }
+    protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "SocksSummerProgression";} }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "SocksSummerPN"; } }
-    private readonly string OBJECTIVE_COUNT_KEY = "SocksSummerObjectives";
+    protected override string CHARACTER_STATE_SAVE_KEY {get { return "SocksSummerObjectives"; } }
+    readonly int FINISHED_TUTORIAL = 7;
+    readonly int MET_TIFFANY = 8;
 
     [Header("Objective Info")]
-    public GameObject[] lookTargetLocations;
-    public GameObject lookTargetObject;
+    public GameObject[] lookTargets;
     public GameObject[] moveTargetLocations;
     public GameObject moveTargetObject;
     public GameObject[] itemTargetLocations;
     public GameObject itemTargetObject;
-    public int objectiveCount = 0;
 
     [Header("CameraStuff")]
     public InSceneCameraReference cameraReference;
@@ -24,19 +24,23 @@ public class SocksTutorial : Dialog2 {
         base.Start();
         //customCameraLocation = cameraReference.getCamera();
 
-        objectiveCount = SaveManager.getInstance().GetInt(OBJECTIVE_COUNT_KEY, 0);
-
-        EventManager.OnTalk += OnMetTiffany;
+        if (characterState != MET_TIFFANY) {
+            EventManager.OnTalk += OnMetTiffany;
+        }
+        if (characterState == 0) {
+            MakeScreenBlack();
+        }
 
         StartCoroutine(AfterStart());
     }
     //Since other things are getting set up in start functions, this need to initiate dialog after that has already happened
     IEnumerator AfterStart() {
         yield return new WaitForEndOfFrame();
-        TriggerInteractFromObjectiveCount();
+        TriggerInteractFromcharacterState();
     }
 
-    private void OnDestroy() {
+    new void OnDestroy() {
+        base.OnDestroy();
         EventManager.OnTalk -= OnMetTiffany;
     }
 
@@ -60,11 +64,16 @@ public class SocksTutorial : Dialog2 {
         pcm.ChangeMode(PlayerControllerManager.Modes.MovementLock);
     }
     #endregion
-    
+
+    public void SummonPopup(string text) {
+        TutorialManager.Instance.EnableWithText(text);
+    }
+
     //summons a look target at the location designated by the index in the location list
     public void SpawnLookTarget(int index) {
-        GameObject o = Instantiate(lookTargetObject, lookTargetLocations[index].transform.position, lookTargetLocations[index].transform.rotation);
-        o.GetComponent<TutorialLookTarget>().owner = this;
+        TutorialLookTarget t = lookTargets[index].GetComponent<TutorialLookTarget>();
+        t.enabled = true;
+        t.owner = this;
     }
 
     //summons a move target at the location designated by the index in the location list
@@ -81,20 +90,21 @@ public class SocksTutorial : Dialog2 {
 
     //called whenever an objective is finished, such as looking at a thing or moving to the right spot
     public void ObjectiveComplete() {
-        objectiveCount++;
-        if (objectiveCount > 3)
+        characterState++;
+        if (characterState > 3)
             progressionNum = 1;
         //trigger new dialog if needed
-        TriggerInteractFromObjectiveCount();
+        TriggerInteractFromcharacterState();
+        TutorialManager.Instance.DisableTutorial();
     }
 
     //Triggers the OnInteract function based on what the current objective count is
-   void TriggerInteractFromObjectiveCount() {
-        if (objectiveCount <= 7) { //123 are looking at object, 456 are movement, 7 is retreiving an item
+    void TriggerInteractFromcharacterState() {
+        if (characterState <= 7) { //123 are looking at object, 456 are movement, 7 is retreiving an item
             
             //save progress.
-            SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
-            SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+            SaveManager.getInstance().PutInt(CHARACTER_STATE_SAVE_KEY, characterState);
+            SaveManager.getInstance().PutInt(DIALOG_PROGRESS_SAVE_KEY, currentNode.index);
             SaveManager.getInstance().PutInt(PROGRESSION_NUM_SAVE_KEY, progressionNum);
             SaveManager.getInstance().SaveFile();
 
@@ -106,14 +116,14 @@ public class SocksTutorial : Dialog2 {
     //sock's dialog will save after objectives are finished, since otherwise the forced OnInteract would cause desync
     public override void SaveDialogProgress() {
         //save progress after chatting after the last objective
-        if (objectiveCount == 7) {
-            objectiveCount++;
-            SaveManager.getInstance().PutInt(OBJECTIVE_COUNT_KEY, objectiveCount);
-            SaveManager.getInstance().PutInt(PROGRESSION_SAVE_KEY, currentNode.index);
+        if (characterState == 7) {
+            characterState++;
+            SaveManager.getInstance().PutInt(CHARACTER_STATE_SAVE_KEY, characterState);
+            SaveManager.getInstance().PutInt(DIALOG_PROGRESS_SAVE_KEY, currentNode.index);
             SaveManager.getInstance().SaveFile();
         }
         //and then from now on treat dialog normally
-        else if (objectiveCount > 7) {
+        else if (characterState > 7) {
             base.SaveDialogProgress();
         }
     }
@@ -125,10 +135,12 @@ public class SocksTutorial : Dialog2 {
 
     //progresses dialog when tiffany is talked to
     void OnMetTiffany(GameObject npc) {
-        if (npc.GetComponent<TiffyAI>()) {
+        if (npc.GetComponent<TiffyAI>() && characterState > FINISHED_TUTORIAL) {
             EventManager.OnTalk -= OnMetTiffany;
 
-            ChangeAndSaveProgressionNum(1);
+            characterState = MET_TIFFANY;
+            progressionNum = 1;
+            SaveDialogProgress();
         }
     }
 
@@ -150,7 +162,13 @@ public class SocksTutorial : Dialog2 {
         OnInteract();
     }
 
-   
+    public void MakeScreenBlack() {
+        ScreenEffects.GetInstance().SetFadeAmount(1.0f);
+    }
+
+    public void BrightenScreen(float duration) {
+        ScreenEffects.GetInstance().ReverseFade(duration);
+    }
 
 
 }

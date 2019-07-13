@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TiffyAI : AIbase {
-    protected override string PROGRESSION_SAVE_KEY { get { return "TiffanySummerProgression"; } }
+    protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "TiffanySummerProgression"; } }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "TiffanySummerPN"; } }
-    readonly string STATE_KEY = "TiffanySummerState";
+    protected override string CHARACTER_STATE_SAVE_KEY { get { return "TiffanySummerState"; } }
+    int FIRST_MET = 0;
+    int HIDING = 1;
+    int RESCUED = 2;
+    int HAPPY = 3;
 
     Animator[] anim;
     public float moveDistance;
     public float walkTime;
     public float birdCount;
-
-    public enum States { Hiding, Rescued, Happy }; //this is used instead of the standard quest number variable because why not
-    public States state = States.Hiding;
 
     public GameObject rewardSpawn; //location to spawn reward
     public GameObject reward; //what to spawn
@@ -25,73 +26,54 @@ public class TiffyAI : AIbase {
         base.Start();
         anim = GetComponentsInChildren<Animator>();
 
-        if (state == States.Hiding && progressionNum == 0) {
+        if (characterState == FIRST_MET) {
             EventManager.OnFenceDig += OnDoggoEntersYard;
-        } else if (state == States.Rescued || state == States.Happy) {
+        } else if (characterState == RESCUED || characterState == HAPPY) {
             StartCoroutine(WalkOut());
         }
     }
 
     //remove eventmanager triggers
-    private void OnDestroy() {
+    new void OnDestroy() {
+        base.OnDestroy();
         EventManager.OnFenceDig -= OnDoggoEntersYard;
-    }
-
-    public override void LoadDialogProgress() {
-        base.LoadDialogProgress();
-        state = (States)SaveManager.getInstance().GetInt(STATE_KEY, 0);
-    }
-
-    public override void SaveDialogProgress() {
-        SaveManager.getInstance().PutInt(STATE_KEY, (int)state);
-        base.SaveDialogProgress();
     }
 
     //triggers the first time doggo enters tiffany's yard
     public void OnDoggoEntersYard(GameObject yard) {
         if (yard.GetComponent<DigZone>().enteringYard == DigZone.Yards.Tiffany) {
             EventManager.OnFenceDig -= OnDoggoEntersYard;
+            characterState = HIDING;
             OnInteract();
         }
     }
 
-    public override void OnInRange() {
-        if (state == States.Hiding) {
+    public override void OnInRange(GameObject player) {
+        base.OnInRange(player);
+        if (characterState == HIDING) {
             Display(0);
-        } else if (state == States.Rescued) {
+        } else if (characterState == RESCUED) {
             Display(1);
-        } else if (state == States.Happy) {
+        } else if (characterState == HAPPY) {
             Display(2);
-        }
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player != null) {
-            GameObject toy = player.GetComponentInChildren<PuppyPickup>().itemInMouth;
-            if (toy != null && toy.GetComponent<BasicToy>().HasTag(BasicToy.Tag.TiffyQuestItem) && state == States.Rescued) {
-                DestoryObjectInMouth(toy);
-                state = States.Happy;
-                progressionNum = 1;
-                Display(2);
-                if (bandanaCollar != null && defaultCollar != null) {
-                    bandanaCollar.SetActive(true);
-                    defaultCollar.SetActive(false);
-                }
-            }
         }
     }
 
     //called when a toy is brought in range. If its the bandana, progress the quest
     public override void ToyInRange(BasicToy toy) {
         base.ToyInRange(toy);
-        //check to make sure the quest state and toy tag are correct. If so, delete the bandana and do her stuff
-        if (toy.HasTag(BasicToy.Tag.TiffyQuestItem) && state == States.Rescued) {
-            DestoryObjectInMouth(toy.gameObject);
-            state = States.Happy;
+        //check to make sure the quest characterState and toy tag are correct. If so, delete the bandana and do her stuff
+        if (toy.HasTag(BasicToy.Tag.TiffyQuestItem) && characterState == RESCUED) {
             progressionNum = 1;
-            Display(2);
-            if (bandanaCollar != null && defaultCollar != null) {
-                bandanaCollar.SetActive(true);
-                defaultCollar.SetActive(false);
-            }
+        }
+    }
+
+    public void AfterItemTaken() {
+        characterState = HAPPY;
+        Display(2);
+        if (bandanaCollar != null && defaultCollar != null) {
+            bandanaCollar.SetActive(true);
+            defaultCollar.SetActive(false);
         }
     }
 
@@ -100,7 +82,7 @@ public class TiffyAI : AIbase {
     }
 
     public void Saved() {
-        state = States.Rescued;
+        characterState = RESCUED;
         progressionNum = 1; //go to the next dialog set
         Display(1);
         StartCoroutine(WalkOut());
@@ -131,7 +113,7 @@ public class TiffyAI : AIbase {
    
     //called when a bird is scared off. If shes hiding, check if all birds have been spooked away, then trigger actions if they have
     public void BirdScared() {
-        if (state == States.Hiding) {
+        if (characterState == HIDING) {
             birdCount--;
             if (birdCount == 0) {
                 Saved();

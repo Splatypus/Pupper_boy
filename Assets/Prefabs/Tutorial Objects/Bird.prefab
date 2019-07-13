@@ -570,7 +570,7 @@ Rigidbody:
   m_GameObject: {fileID: 1933331517793608}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 10
   m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -619,6 +619,7 @@ MonoBehaviour:
   landingState: 0
   attackWanderWaypoints: []
   tiffanyReference: {fileID: 0}
+  flyAwaySound: {fileID: 8300000, guid: 6e6eb7b09e12b994cb6d6feb99ba3a9e, type: 3}
 --- !u!82 &2847542589125266146
 AudioSource:
   m_ObjectHideFlags: 0

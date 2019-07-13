@@ -43,8 +43,6 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
     {
         base.Start();
         game = new BlackieGameBoard(this);
-        bases = new List<GameObject>();
-        pieces = new List<GameObject>();
     }
 
     #region listener functions
@@ -65,6 +63,21 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
     #endregion
 
     public void LoadFile(int index) {
+        //clear bases
+        if (bases != null) {
+            for (int i = 0; i < bases.Count; i++) {
+                Destroy(bases[i]);
+            }
+        }
+        bases = new List<GameObject>();
+        //clear pieces
+        if (pieces != null) {
+            for (int i = 0; i < pieces.Count; i++) {
+                Destroy(pieces[i]);
+            }
+        }
+        pieces = new List<GameObject>();
+
         game.LoadBoard(files[index]);
     }
 

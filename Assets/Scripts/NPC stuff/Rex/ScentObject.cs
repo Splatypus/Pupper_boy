@@ -7,17 +7,18 @@ using UnityEngine;
 public class ScentObject : MonoBehaviour {
 
     public bool isActive = true; //is it doing scent stuff
-    public bool colorParent = false; //should the parent object remain colored for this?
+    public int layer = 9;
+    public GameObject[] effectedObjects;
 
-    int returnLayer; //the layer in which the parent object originally existed
+    int[] returnLayers; //the layer in which the parent object originally existed
 
     // Use this for initialization
     void Start() {
         ScentManager.Instance.scentObjects.Add(this);
-        gameObject.layer = 9;
+        returnLayers = new int[effectedObjects.Length];
         //reserve the layer that the parent is in so we know what to reset to
-        if (colorParent) {
-            returnLayer = transform.parent.gameObject.layer;
+        for (int i = 0; i < effectedObjects.Length; i++) {
+            returnLayers[i] = effectedObjects[i].layer;
         }
         //enable or disable depending on if scent is active
         if (ScentManager.Instance.isEnabled)
@@ -26,13 +27,17 @@ public class ScentObject : MonoBehaviour {
             EndScent(); 
     }
 
+    private void OnDestroy() {
+        ScentManager.Instance.scentObjects.Remove(this);
+    }
+
     //called when inside scent detection range
     public virtual void StartScent() {
         gameObject.SetActive(true);
         isActive = true;
 
-        if (colorParent) {
-            RecursiveLayerChange(transform.parent.gameObject, 9);
+        for (int i = 0; i < effectedObjects.Length; i++) {
+            effectedObjects[i].layer = layer;
         }
     }
 
@@ -41,16 +46,8 @@ public class ScentObject : MonoBehaviour {
         gameObject.SetActive(false);
         isActive = false;
 
-        if (colorParent) {
-            RecursiveLayerChange(transform.parent.gameObject, returnLayer);
-        }
-    }
-
-    //changes the layer of each child of an object
-    void RecursiveLayerChange(GameObject g, int layer) {
-        g.layer = layer;
-        foreach (Transform t in g.transform) {
-            RecursiveLayerChange(t.gameObject, layer);
+        for (int i = 0; i < effectedObjects.Length; i++) {
+            effectedObjects[i].layer = returnLayers[i];
         }
     }
 }

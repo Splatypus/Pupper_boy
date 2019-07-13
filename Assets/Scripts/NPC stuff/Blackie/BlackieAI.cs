@@ -16,7 +16,7 @@ public class BlackieAI : AIbase {
     }
 
     //icons to display if in range of player
-    public override void OnInRange() {
+    public override void OnInRange(GameObject player) {
         if (!hasDoneReward)
             Display(0);
         else
