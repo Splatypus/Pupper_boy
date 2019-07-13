@@ -31,13 +31,20 @@ public class DayNigtLightChange : MonoBehaviour {
 
     }
 
+    private void OnDestroy() {
+        EventManager.OnDay -= OnDay;
+        EventManager.OnNight -= OnNight;
+    }
+
     //called when we enter either day or night
     public void OnDay() {
+        lightSource = gameObject.GetComponent<Light>(); //reference is reset since it was deleting itself for some reason on reload
         lightSource.color = dayColor;
         lightSource.transform.rotation = Quaternion.Euler(dayRotation);
         lightSource.intensity = dayIntensity;
     }
     public void OnNight() {
+        lightSource = gameObject.GetComponent<Light>();
         lightSource.color = nightColor;
         lightSource.transform.rotation = Quaternion.Euler(nightRotation);
         lightSource.intensity = nightIntensity;
