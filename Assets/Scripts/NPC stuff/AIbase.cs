@@ -16,6 +16,12 @@ public class AIbase : Dialog2 {
         EndDisplay();
     }
 
+    public override void OnEnd() {
+        base.OnEnd();
+        //since the player is in range on ending dialog, trigger this again
+        OnInRange(Player);
+    }
+
     //Triggers when the player enters the range
     public virtual void OnInRange(GameObject player) {
         BasicToy toy = player.GetComponent<DogController>().mouth.itemInMouth?.GetComponent<BasicToy>();

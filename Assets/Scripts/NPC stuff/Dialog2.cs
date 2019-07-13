@@ -209,8 +209,10 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         } else if (node is DialogNodeFunction) {  //function
             //Run the function specified by the given number. If the number is out of bounds of the function array, dont run anything. Then procede to the next node if it exists.
             int num = ((DialogNodeFunction)node).functionNum;
-            if ( num < functions.Count && num >= 0) {
+            if (num < functions.Count && num >= 0) {
                 functions[num].Invoke();
+            } else {
+                Debug.LogError("Function Number out of bounds");
             }
             if(node.connections != null) {
                 //if there are choice nodes, decide which to take
@@ -221,10 +223,11 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
                         if (((DialogNodeChoice)c).num == progressionNum) {
                             progressionNum = 0;
                             ChangeNode(c);
+                            return;
                         }
                     }
                 }
-                if (numChoices == 0) {
+                if (numChoices == 0) { 
                     ChangeNode(currentNode.connections[0]);
                 }
             } else {

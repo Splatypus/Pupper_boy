@@ -6,9 +6,10 @@ public class BubblesAI : AIbase {
     protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "BubblesSummerProgression"; } }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "BubblesSummerPN"; } }
     protected override string CHARACTER_STATE_SAVE_KEY { get { return "BubblesSummerState"; } }
-    const int NOBUBBLES = 0;
-    const int BUBBLES = 1;
-    const int END = 2;
+    const int START = 0;
+    const int FIRST_REWARD_GIVEN = 1;
+    const int BUBBLES = 2;
+    const int END = 3;
     
     public GameObject playerStartPosition;
     public GameObject rewardSpawn; //location at which the reward is spawned
@@ -23,16 +24,21 @@ public class BubblesAI : AIbase {
         if (progressionNum == 2) {
             progressionNum = 0; //if we somehow saved this number while a game was in progress, reset it to 0
         }
+        //if bubbles has given the bandana out, but tiffany has not yet taken it, then spawn it
+        if (characterState == FIRST_REWARD_GIVEN && SaveManager.getInstance().GetInt("TiffanySummerState", 0) != 3) {
+            FirstReward();
+        }
     }
 
     //swap icon depending on state when player is in range
     public override void OnInRange(GameObject player) {
         base.OnInRange(player);
         switch (characterState) {
-            case NOBUBBLES:
+            case FIRST_REWARD_GIVEN:
                 Display(0);
                 break;
             case BUBBLES:
+            case START:
                 Display(1);
                 break;
             default:
@@ -43,7 +49,7 @@ public class BubblesAI : AIbase {
     //if soap is brought in range, destory it and progress quest
     public override void ToyInRange(BasicToy toy) {
         base.ToyInRange(toy);
-        if (toy.HasTag(BasicToy.Tag.Soap) && characterState == NOBUBBLES) {
+        if (toy.HasTag(BasicToy.Tag.Soap) && characterState == FIRST_REWARD_GIVEN) {
             progressionNum = 1;
         }
     }

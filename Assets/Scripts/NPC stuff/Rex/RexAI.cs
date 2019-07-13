@@ -48,6 +48,8 @@ public class RexAI : AIbase {
         if (toysCollected >= totalToys) {
             characterState = HAPPY;
             progressionNum = 3;
+        } else {
+            progressionNum = 4;
         }
     }
 
@@ -67,6 +69,10 @@ public class RexAI : AIbase {
 
     //sets progression number to 0 if its day, 1 if its night
     public void SetProgressionNum() {
+        //if something else has set this, then we let that take precidence.
+        if (progressionNum != 0) {
+            return;
+        }
         if (DayNightManager.Instance.IsDay()) {
             progressionNum = 0;
         } else if (toysCollected >= totalToys) {

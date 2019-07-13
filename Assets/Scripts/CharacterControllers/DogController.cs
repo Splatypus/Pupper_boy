@@ -79,7 +79,7 @@ public class DogController : Controller {
 
     // Update is called once per frame
     void Update() {
-
+        
         //Opening Esc Menu should always be available
         if (Input.GetButtonDown("Cancel")) {
             escMenu.Show();
