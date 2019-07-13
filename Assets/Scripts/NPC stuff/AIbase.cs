@@ -70,8 +70,14 @@ public class AIbase : Dialog2 {
         }
         Destroy(toDestroy);
     }
+    //destroys the item currently being carried by doggo
     public void ConsumeCarriedItem() {
         DestoryObjectInMouth(GetCarriedItem());
+    }
+
+    //generates a random reply by setting progression num
+    public void SetRandomProgressionNum(int max) {
+        progressionNum = Random.Range(0, max);
     }
 
     public override void OnTriggerEnter(Collider col) {
