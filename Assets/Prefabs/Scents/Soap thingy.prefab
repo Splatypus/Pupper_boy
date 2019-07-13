@@ -4790,6 +4790,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 952615334142641710}
     m_Modifications:
+    - target: {fileID: 1512133973018754, guid: 74c91bbf343c52b4c97c0797efc497a9, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 4458543348967134, guid: 74c91bbf343c52b4c97c0797efc497a9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4836,9 +4840,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114597560501264642, guid: 74c91bbf343c52b4c97c0797efc497a9,
         type: 3}
+      propertyPath: effectedObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114597560501264642, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 3}
       propertyPath: colorParent
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114597560501264642, guid: 74c91bbf343c52b4c97c0797efc497a9,
+        type: 3}
+      propertyPath: effectedObjects.Array.data[0]
+      value: 
+      objectReference: {fileID: 952615333271852782}
     - target: {fileID: 198424500346547988, guid: 74c91bbf343c52b4c97c0797efc497a9,
         type: 3}
       propertyPath: ShapeModule.type
@@ -6107,6 +6121,12 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 9500000, guid: e633b5f767ace30479544e3893a7e244, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e633b5f767ace30479544e3893a7e244, type: 3}
+--- !u!1 &952615333271852782 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100012, guid: e633b5f767ace30479544e3893a7e244,
+    type: 3}
+  m_PrefabInstance: {fileID: 952615333271949378}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &952615333272079054 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400012, guid: e633b5f767ace30479544e3893a7e244,

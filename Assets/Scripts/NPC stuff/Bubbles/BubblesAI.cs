@@ -60,6 +60,7 @@ public class BubblesAI : AIbase {
 
     //methods to spawn rewards. Called from dialog editor graph thing
     public void FirstReward() {
+        characterState = FIRST_REWARD_GIVEN;
         Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
     }
 
