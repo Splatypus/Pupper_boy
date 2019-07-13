@@ -13,6 +13,9 @@ public class CrossSceneReferences
         }
         return instance;
     }
+    public static void Reset() {
+        instance = null;
+    }
 
     Dictionary<string, GameObject> references = new Dictionary<string, GameObject>();
 

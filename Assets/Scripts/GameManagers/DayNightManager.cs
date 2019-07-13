@@ -17,6 +17,10 @@ public class DayNightManager {
     public enum Times { DAY, NIGHT };
     Times currentTime = Times.DAY;
 
+    public static void Reset() {
+        instance = null;
+    }
+
     //gets
     public Times GetTime() {
         return currentTime;

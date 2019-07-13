@@ -63,12 +63,18 @@ public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener
     #endregion
 
     public void LoadFile(int index) {
-        for (int i = 0; i < bases.Count; i++) {
-            Destroy(bases[i]);
+        //clear bases
+        if (bases != null) {
+            for (int i = 0; i < bases.Count; i++) {
+                Destroy(bases[i]);
+            }
         }
         bases = new List<GameObject>();
-        for (int i = 0; i < pieces.Count; i++) {
-            Destroy(pieces[i]);
+        //clear pieces
+        if (pieces != null) {
+            for (int i = 0; i < pieces.Count; i++) {
+                Destroy(pieces[i]);
+            }
         }
         pieces = new List<GameObject>();
 

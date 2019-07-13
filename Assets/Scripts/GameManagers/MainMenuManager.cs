@@ -38,6 +38,10 @@ public class MainMenuManager : MonoBehaviour {
         audioSettingsRemote.RemoteStart();
         CreateSlotUI();
         CheckButtonVisibility();
+
+        //reset static classes
+        DayNightManager.Reset();
+        CrossSceneReferences.Reset();
     }
 
     private void OnEnable() {

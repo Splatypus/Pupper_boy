@@ -5,16 +5,16 @@ using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour {
 
-    public static TutorialManager instance;
+    public static TutorialManager Instance;
 
     public GameObject popup;
     Text text;
 
     public void Awake() {
-        if (instance != null) {
+        if (Instance != null) {
             Destroy(gameObject);
         } else {
-            instance = this;
+            Instance = this;
         }
     }
 

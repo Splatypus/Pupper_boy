@@ -64,7 +64,11 @@ public class SocksTutorial : Dialog2 {
         pcm.ChangeMode(PlayerControllerManager.Modes.MovementLock);
     }
     #endregion
-    
+
+    public void SummonPopup(string text) {
+        TutorialManager.Instance.EnableWithText(text);
+    }
+
     //summons a look target at the location designated by the index in the location list
     public void SpawnLookTarget(int index) {
         TutorialLookTarget t = lookTargets[index].GetComponent<TutorialLookTarget>();
@@ -91,10 +95,11 @@ public class SocksTutorial : Dialog2 {
             progressionNum = 1;
         //trigger new dialog if needed
         TriggerInteractFromcharacterState();
+        TutorialManager.Instance.DisableTutorial();
     }
 
     //Triggers the OnInteract function based on what the current objective count is
-   void TriggerInteractFromcharacterState() {
+    void TriggerInteractFromcharacterState() {
         if (characterState <= 7) { //123 are looking at object, 456 are movement, 7 is retreiving an item
             
             //save progress.
