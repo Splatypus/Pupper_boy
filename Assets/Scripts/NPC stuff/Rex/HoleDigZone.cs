@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class HoleDigZone : InteractableObject {
 
+    [Header("Hole Properties")]
     public GameObject holePrefab;
-    public GameObject reward;
     public GameObject IconCanvas;
     public GameObject ParticleObject;
     public int totalDigCount = 3; //how many times this needs to be dug
-    public AudioClip digSound;
+
+    [Header("Reward Properties")]
+    public GameObject reward;
     public AudioClip toySpawnSound;
+    public Vector3 lowerSpawnVelocityBounds;
+    public Vector3 upperSpawnVelocityBounds;
 
     AudioSource audioSource;
     bool inRange = false;
@@ -28,8 +32,6 @@ public class HoleDigZone : InteractableObject {
     public override void OnInteract() {
         if ((scentActive || digCount > 0) && !isAnimating) {//only run OnInteract if visible
             digCount++;
-            audioSource.clip = digSound;
-            audioSource.Play();
             if (digCount == 1) {
                 //instantiate the hole and then grow its size
                 holePrefab = Instantiate(holePrefab, transform);
@@ -40,6 +42,9 @@ public class HoleDigZone : InteractableObject {
             }
             //increase hole size
             StartCoroutine(GrowHole(1.0f));
+
+            //tell the controller what to do
+            playerController.StartItemDig();
         }
     }
 
@@ -96,6 +101,20 @@ public class HoleDigZone : InteractableObject {
         EnableIcon();
     }
 
+    //called when the hole is fully dug. Deletes it and spawns anything that was dug up
+    void FinishHole() {
+        reward = Instantiate(reward, transform.position, transform.rotation);
+        reward.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5.0f, 5.0f), 10.0f, Random.Range(-5.0f, 5.0f));
+        reward.GetComponent<Collider>().enabled = false;
+        gameObject.GetComponent<Collider>().enabled = false;
+        playerController.RemoveObject(this);
+        StartCoroutine(EnableCollider(0.5f));
+        StartCoroutine(ShrinkHoleOverTime(10.0f));
+        //play spawn sound
+        audioSource.clip = toySpawnSound;
+        audioSource.Play();
+    }
+
     IEnumerator GrowHole(float duration) {
         StartAnim();
         float startTime = Time.time;
@@ -106,16 +125,7 @@ public class HoleDigZone : InteractableObject {
         StopAnim();
         //then check to see if the hole reached its full size
         if (digCount >= totalDigCount) {
-            reward = Instantiate(reward, transform.position, transform.rotation);
-            reward.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5.0f, 5.0f), 10.0f, Random.Range(-5.0f, 5.0f));
-            reward.GetComponent<Collider>().enabled = false;
-            gameObject.GetComponent<Collider>().enabled = false;
-            playerController.RemoveObject(this);
-            StartCoroutine(EnableCollider(0.5f));
-            StartCoroutine(ShrinkHoleOverTime(10.0f));
-            //play spawn sound
-            audioSource.clip = toySpawnSound;
-            audioSource.Play();
+            FinishHole();
         }
     }
 

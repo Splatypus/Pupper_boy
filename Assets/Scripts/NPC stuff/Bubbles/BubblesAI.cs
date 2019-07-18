@@ -6,10 +6,10 @@ public class BubblesAI : AIbase {
     protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "BubblesSummerProgression"; } }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "BubblesSummerPN"; } }
     protected override string CHARACTER_STATE_SAVE_KEY { get { return "BubblesSummerState"; } }
-    const int START = 0;
-    const int FIRST_REWARD_GIVEN = 1;
-    const int BUBBLES = 2;
-    const int END = 3;
+    public const int START = 0;
+    public const int FIRST_REWARD_GIVEN = 1;
+    public const int BUBBLES = 2;
+    public const int END = 3;
     
     public GameObject playerStartPosition;
     public GameObject rewardSpawn; //location at which the reward is spawned
@@ -60,6 +60,7 @@ public class BubblesAI : AIbase {
 
     //methods to spawn rewards. Called from dialog editor graph thing
     public void FirstReward() {
+        characterState = FIRST_REWARD_GIVEN;
         Instantiate(reward, rewardSpawn.transform.position, rewardSpawn.transform.rotation);
     }
 

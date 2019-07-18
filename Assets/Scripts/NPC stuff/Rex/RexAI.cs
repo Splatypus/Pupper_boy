@@ -21,6 +21,18 @@ public class RexAI : AIbase {
         base.Start();
         EventManager.OnDay += SetProgressionNum;
         EventManager.OnNight += SetProgressionNum;
+
+        //if we should have spawned the soap, and bubbles has not yet received it.
+        if (characterState == HAPPY && SaveManager.getInstance().GetInt("BubblesSummerState", 0) >= BubblesAI.BUBBLES) {
+            SpawnReward();
+        }
+
+    }
+
+    new public void OnDestroy() {
+        base.OnDestroy();
+        EventManager.OnDay -= SetProgressionNum;
+        EventManager.OnNight -= SetProgressionNum;
     }
 
     //icons to display if in range of player
