@@ -193,6 +193,14 @@ public class FreeCameraLook : MonoBehaviour {
             //keeps the camera distance away from lookat point, at an angle slerping between target and start.
             transform.position = lookAt + ((Quaternion.Slerp(startAngle, targetAngle, scaledTime) * Vector3.forward).normalized * Mathf.Lerp(startDistance, targetDistance, scaledTime));
             transform.rotation = Quaternion.Slerp(startRotation, targetRotation, scaledTime);
+            //keep the camera from tilting sideways
+            transform.rotation = Quaternion.LookRotation(
+                transform.forward, 
+                Vector3.Cross(
+                    transform.forward, 
+                    new Vector3(transform.right.x, 0, transform.right.z)
+                    )
+                );
                 //DoCameraCollision(lookAt, 0, Vector3.Distance(transform.position, lookAt)); If we decide we need this, it needs a couple of bugs fixed. Camera seems to randomly zoom.
             yield return new WaitForEndOfFrame();
         }
