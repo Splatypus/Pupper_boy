@@ -357,6 +357,15 @@ public class DogController : Controller {
         currentDiggingZone = null;
     }
 
+
+
+    //###ITEM DIGGING###
+    public void StartItemDig() {
+        isDigging = true;
+        anim.SetTrigger("disIsPressed");
+        anim.SetBool("diggingUnder", false);
+    }
+
     #endregion
     
 
