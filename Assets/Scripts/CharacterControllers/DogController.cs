@@ -53,6 +53,7 @@ public class DogController : Controller {
 
     [Header("Holes")]
     public float holeForwardDistance = 0.4f;
+    public float outHoleBackDistance = -0.58f;
     public int digsToComplete = 4;
     public Vector3 holeMaxSize;
     public float digDuration;
@@ -319,6 +320,11 @@ public class DogController : Controller {
         }
 
         transform.position = targetLocation;
+
+
+        //and spawn a hole there to dig out of
+        HoleSizeChange hole = SpawnHole(outHoleBackDistance);
+        hole.Expand(holeMaxSize, digDuration * digsToComplete, () => hole.Decay(holeDecayTime));
     }
 
     //starts dig animation
@@ -343,27 +349,29 @@ public class DogController : Controller {
         anim.SetTrigger("digIsPressed");
         anim.SetBool("diggingUnder", true);
 
-        SpawnHole();
-
+        activeHole = SpawnHole(holeForwardDistance);
     }
 
-    //creates a hole in front of the player alligned to the ground, and sets activeHole to it
-    public void SpawnHole() {
+    //creates a hole in front of the player alligned to the ground, and returns it
+    public HoleSizeChange SpawnHole(float distance) {
         //spawn the hole
         RaycastHit hit;
-        if (Physics.Raycast(transform.position + Vector3.up * 5.0f + transform.forward * holeForwardDistance, //raycast from 5 units above player, and the desired forward distance
+        if (Physics.Raycast(transform.position + Vector3.up * 5.0f + transform.forward * distance, //raycast from 5 units above player, and the desired forward distance
                             Vector3.down, //raycast downward
                             out hit,
                             10.0f,
                             1 << 8  //collide only with the ground
                             )) {
-            activeHole = Instantiate(
+            HoleSizeChange hole = Instantiate(
                 digHolePrefab,   //spawn a hole
                 hit.point,      //at the raycast location
                 Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.forward, hit.normal), hit.normal)      //facing the same direction as doggo, but the up vector alligned to ground normals
             ).GetComponent<HoleSizeChange>();
-            activeHole.SetSize(Vector3.zero);
+            hole.SetSize(Vector3.zero);
+
+            return hole;
         }
+        return null;
     }
 
     //plays a digging sound effect
