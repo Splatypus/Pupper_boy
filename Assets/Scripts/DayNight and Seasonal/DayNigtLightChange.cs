@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class DayNigtLightChange : MonoBehaviour {
 
     public Light lightSource;
-    public Color dayColor;
+    Color dayColor;
     public Color nightColor;
     public Vector3 dayRotation;
     public Vector3 nightRotation;
@@ -17,6 +17,7 @@ public class DayNigtLightChange : MonoBehaviour {
 	void Awake () {
         if (lightSource == null)
             lightSource = gameObject.GetComponent<Light>();
+        dayColor = lightSource.color;
 
         //set initial day night setting
         DayNightManager dayNight = DayNightManager.Instance;
