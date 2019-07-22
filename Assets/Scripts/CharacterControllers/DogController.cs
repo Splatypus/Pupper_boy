@@ -54,18 +54,18 @@ public class DogController : Controller {
     [Header("Holes")]
     public float holeForwardDistance = 0.4f;
     public float outHoleBackDistance = -0.58f;
-    public int digsToComplete = 4;
-    public Vector3 holeMaxSize;
     public float digDuration;
-    public float holeDecayTime = 15.0f;
 
     //hidden
-    [HideInInspector] HoleSizeChange activeHole;
-    IconManager my_icon;
-    TextFadeOut houseText;
+    //dig related
+    [HideInInspector] public HoleSizeChange activeHole;
     bool isDigging = false;
     DigZone currentDiggingZone;
+    [HideInInspector] public System.Action digCallback = null;
     int digZoneCount = 0; //how many dig zones the player is currently in
+    //ui related
+    IconManager my_icon;
+    TextFadeOut houseText;
     #endregion
 
     //misc variables
@@ -324,7 +324,7 @@ public class DogController : Controller {
 
         //and spawn a hole there to dig out of
         HoleSizeChange hole = SpawnHole(outHoleBackDistance);
-        hole.Expand(holeMaxSize, digDuration * digsToComplete, () => hole.Decay(holeDecayTime));
+        hole.Expand(hole.maxSize, digDuration * 2, () => hole.Decay());
     }
 
     //starts dig animation
@@ -354,6 +354,9 @@ public class DogController : Controller {
 
     //creates a hole in front of the player alligned to the ground, and returns it
     public HoleSizeChange SpawnHole(float distance) {
+        return SpawnHole(distance, digHolePrefab);
+    }
+    public HoleSizeChange SpawnHole(float distance, GameObject prefab) {
         //spawn the hole
         RaycastHit hit;
         if (Physics.Raycast(transform.position + Vector3.up * 5.0f + transform.forward * distance, //raycast from 5 units above player, and the desired forward distance
@@ -363,7 +366,7 @@ public class DogController : Controller {
                             1 << 8  //collide only with the ground
                             )) {
             HoleSizeChange hole = Instantiate(
-                digHolePrefab,   //spawn a hole
+                prefab,   //spawn a hole
                 hit.point,      //at the raycast location
                 Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.forward, hit.normal), hit.normal)      //facing the same direction as doggo, but the up vector alligned to ground normals
             ).GetComponent<HoleSizeChange>();
@@ -389,7 +392,14 @@ public class DogController : Controller {
         if (activeHole == null) {
             return;
         }
-        activeHole.Expand(holeMaxSize * percentDug, digDuration);
+        activeHole.Expand(percentDug, digDuration);
+    }
+
+    //called after the initial dig animation
+    public void AfterDugObject() {
+        digCallback?.Invoke();
+        activeHole.Decay();
+        activeHole = null;
     }
 
     //called after the animation to dig under the fence is finished
@@ -410,8 +420,6 @@ public class DogController : Controller {
         //and then run the event trigger letting things know we have reached the other side
         EventManager.Instance.TriggerOnFenceDig(currentDiggingZone.other_side.gameObject);
         currentDiggingZone = null;
-        activeHole.Decay(holeDecayTime);
-        activeHole = null;
     }
    
     #endregion
@@ -419,8 +427,11 @@ public class DogController : Controller {
     #region item digging
     public void StartItemDig() {
         isDigging = true;
-        anim.SetTrigger("disIsPressed");
+        anim.SetTrigger("digIsPressed");
         anim.SetBool("diggingUnder", false);
+    }
+    public void FinishItemDig() {
+        isDigging = false;
     }
     #endregion
 

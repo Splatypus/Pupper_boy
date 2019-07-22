@@ -13,16 +13,20 @@ public class DoggoAnimationReceiver : MonoBehaviour
         
     }
 
+    public void AfterDugObject() {
+        movementController.AfterDugObject();
+    }
+
     public void AfterDugDown() {
         movementController.AfterDugDown();
     }
 
-    public void PlayDigSound() {
-        movementController.PlayDigSound();
-    }
-
     public void FinishDig() {
         movementController.FinishDig();
+    }
+
+    public void PlayDigSound() {
+        movementController.PlayDigSound();
     }
 
     public void SpewDirt() {
