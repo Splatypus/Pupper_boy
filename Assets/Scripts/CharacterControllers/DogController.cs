@@ -14,7 +14,13 @@ public class DogController : Controller {
     Transform cam;
     FreeCameraLook cameraScript;
     [HideInInspector] public PuppyPickup mouth;
+    [HideInInspector] public EscMenuManager escMenu;
     #endregion
+
+    [Header("References")]
+    public ParticleSystem digParticles;
+    public ParticleSystem[] shakeParticles;
+    public GameObject digHolePrefab;
 
     #region new world order movement variables
     [Header("Movement")]
@@ -37,11 +43,6 @@ public class DogController : Controller {
 
     #endregion
 
-    Vector3 cam_right, cam_fwd;
-
-    //public bool hasFlight = false;
-
-    List<InteractableObject> inRangeOf = new List<InteractableObject>();
 
     #region Digging
     [Header("Digging")]
@@ -49,16 +50,30 @@ public class DogController : Controller {
     public float rotateSpeed = 10.0f;
     public float maxRotaionTime = 0.4f;
     public float distanceAddedToDig = 1.5f;
+    public int digParticleCount = 10;
+    public int shakeParticleCount = 3;
 
-    IconManager my_icon;
-    TextFadeOut houseText;
+    [Header("Holes")]
+    public float holeForwardDistance = 0.4f;
+    public float outHoleBackDistance = -0.58f;
+    public float digDuration;
+
+    //hidden
+    //dig related
+    [HideInInspector] public HoleSizeChange activeHole;
     bool isDigging = false;
     DigZone currentDiggingZone;
+    [HideInInspector] public System.Action digCallback = null;
     int digZoneCount = 0; //how many dig zones the player is currently in
+    //ui related
+    IconManager my_icon;
+    TextFadeOut houseText;
     #endregion
 
-    [HideInInspector]
-    public EscMenuManager escMenu;
+    //misc variables
+    Vector3 cam_right, cam_fwd;
+    List<InteractableObject> inRangeOf = new List<InteractableObject>();
+
 
 
     void Start() {
@@ -261,11 +276,12 @@ public class DogController : Controller {
         }
     }
 
-    #region digging
+    #region fence digging
     //digs through the given zone
     public void Dig(DigZone zone) {
         if (controller.isGrounded) {
             //Run digging coroutine. This does the animation and movement and eveything
+            anim.SetFloat("Forward", 0);
             StartCoroutine(StartZoneDig(zone));
         }
     }
@@ -307,6 +323,11 @@ public class DogController : Controller {
         }
 
         transform.position = targetLocation;
+
+
+        //and spawn a hole there to dig out of
+        HoleSizeChange hole = SpawnHole(outHoleBackDistance);
+        hole.Expand(hole.maxSize, digDuration * 2, () => hole.Decay());
     }
 
     //starts dig animation
@@ -321,7 +342,7 @@ public class DogController : Controller {
         //rotate towards the fence
         float timeTaken = 0.0f;
         while (transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRotaionTime) {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation,
+            transform.rotation = Quaternion.RotateTowards(  transform.rotation,
                                                             Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position),
                                                             rotateSpeed * Time.fixedDeltaTime);
             timeTaken += Time.fixedDeltaTime;
@@ -330,11 +351,63 @@ public class DogController : Controller {
         //dig under it
         anim.SetTrigger("digIsPressed");
         anim.SetBool("diggingUnder", true);
-        
+
+        activeHole = SpawnHole(holeForwardDistance);
     }
 
+    //creates a hole in front of the player alligned to the ground, and returns it
+    public HoleSizeChange SpawnHole(float distance) {
+        return SpawnHole(distance, digHolePrefab);
+    }
+    public HoleSizeChange SpawnHole(float distance, GameObject prefab) {
+        //spawn the hole
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.up * 5.0f + transform.forward * distance, //raycast from 5 units above player, and the desired forward distance
+                            Vector3.down, //raycast downward
+                            out hit,
+                            10.0f,
+                            1 << 8  //collide only with the ground
+                            )) {
+            HoleSizeChange hole = Instantiate(
+                prefab,   //spawn a hole
+                hit.point,      //at the raycast location
+                Quaternion.LookRotation(Vector3.ProjectOnPlane(transform.forward, hit.normal), hit.normal)      //facing the same direction as doggo, but the up vector alligned to ground normals
+            ).GetComponent<HoleSizeChange>();
+            hole.SetSize(Vector3.zero);
+
+            return hole;
+        }
+        return null;
+    }
+
+    //plays a digging sound effect
     public void PlayDigSound() {
         dig_sound.Play();
+    }
+
+    //emits a burst from the digging particle system
+    public void SpewDirt() {
+        digParticles.Emit(digParticleCount);
+    }
+
+    //emits a burst from the shaking particle system
+    public void ShakeDirt() {
+        for (int i = 0; i < shakeParticles.Length; i++) {
+            shakeParticles[i].Emit(shakeParticleCount);
+        }
+    }
+
+    //if an active hole is set, tells it to expand to a specified percent
+    public void ExpandHole(float percentDug) {
+        if (activeHole == null) {
+            return;
+        }
+        activeHole.Expand(percentDug, digDuration);
+    }
+
+    //called after the initial dig animation
+    public void AfterDugObject() {
+        digCallback?.Invoke();
     }
 
     //called after the animation to dig under the fence is finished
@@ -355,19 +428,24 @@ public class DogController : Controller {
         //and then run the event trigger letting things know we have reached the other side
         EventManager.Instance.TriggerOnFenceDig(currentDiggingZone.other_side.gameObject);
         currentDiggingZone = null;
+
+        activeHole.Decay();
+        activeHole = null;
     }
+   
+    #endregion
 
-
-
-    //###ITEM DIGGING###
+    #region item digging
     public void StartItemDig() {
         isDigging = true;
-        anim.SetTrigger("disIsPressed");
+        anim.SetTrigger("digIsPressed");
         anim.SetBool("diggingUnder", false);
     }
-
+    public void FinishItemDig() {
+        isDigging = false;
+    }
     #endregion
-    
+
 
     public override void OnDeactivated() {
         anim.SetFloat("Forward", 0.0f); //disable animations

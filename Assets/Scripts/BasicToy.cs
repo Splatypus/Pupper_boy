@@ -13,7 +13,7 @@ public class BasicToy : MonoBehaviour, PuppyPickup.IPickupItem {
     [Header("Visual")]
     public MeshRenderer[] meshes;
 
-    public enum Tag {Ball, Smell, TiffyQuestItem, Soap, RexQuestItem, SocksQuestItem};
+    public enum Tag {Ball, Smell, TiffyQuestItem, Soap, RexQuestItem, SocksQuestItem, Shiny};
     [Header("Misc")]
     public List<Tag> tagList = new List<Tag>();
 

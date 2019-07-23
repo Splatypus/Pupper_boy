@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InteractableObject : MonoBehaviour {
 
-    bool isInRange = false;
+    protected bool isInRange = false;
 
     //when a player enters, they can now interact with the object
     public virtual void OnTriggerEnter(Collider other) {

@@ -15,6 +15,11 @@ public class GamePieceView : BasicDraggable, BlackieGameBoard.IPieceListener
 
     int oldColor = -1;
 
+    void Start() {
+        //all pieces should move based on board constraints.
+        setMoveAmount = boardView.baseDistance;
+    }
+
     #region listener interface
     public virtual void ChangeColor(int newColor) {
 

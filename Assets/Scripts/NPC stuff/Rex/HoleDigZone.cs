@@ -8,20 +8,19 @@ public class HoleDigZone : InteractableObject {
     public GameObject holePrefab;
     public GameObject IconCanvas;
     public GameObject ParticleObject;
-    public int totalDigCount = 3; //how many times this needs to be dug
+    public Vector3 finalSize = new Vector3(1.3f, 1.0f, 1.3f);
+    public float digAmountNeeded = 1.0f;
 
     [Header("Reward Properties")]
     public GameObject reward;
     public AudioClip toySpawnSound;
-    public Vector3 lowerSpawnVelocityBounds;
-    public Vector3 upperSpawnVelocityBounds;
+    public Vector3 lowerSpawnVelocityBounds = new Vector3(-5.0f, 8.0f, -5.0f);
+    public Vector3 upperSpawnVelocityBounds = new Vector3(5.0f, 10.0f, 5.0f);
 
     AudioSource audioSource;
-    bool inRange = false;
     bool scentActive = false;
     bool isAnimating = false;
-    int digCount = 0;
-    Vector3 originalScale;
+    HoleSizeChange holeInstance;
     DogController playerController;
 
     private void Start() {
@@ -30,44 +29,42 @@ public class HoleDigZone : InteractableObject {
     }
 
     public override void OnInteract() {
-        if ((scentActive || digCount > 0) && !isAnimating) {//only run OnInteract if visible
-            digCount++;
-            if (digCount == 1) {
-                //instantiate the hole and then grow its size
-                holePrefab = Instantiate(holePrefab, transform);
-                holePrefab.layer = 9;
-                originalScale = holePrefab.transform.localScale;
-                holePrefab.transform.localScale = Vector3.zero;
-                StartCoroutine(GrowHole(1.0f));
+        if ((scentActive || holeInstance != null) && !isAnimating) {//only run OnInteract if visible
+            if (holeInstance == null) {
+                //if this is the first time attempting to dig this hole, spawn a model for it
+                holeInstance = playerController.SpawnHole(playerController.holeForwardDistance, holePrefab);
+                holeInstance.maxAmountDug = digAmountNeeded;
+                holeInstance.maxSize = finalSize;
             }
-            //increase hole size
-            StartCoroutine(GrowHole(1.0f));
-
             //tell the controller what to do
+            playerController.activeHole = holeInstance;
             playerController.StartItemDig();
+
+            playerController.digCallback = StopDig;
         }
     }
 
     //checks to see if Icon can be enabled and does so
     public void EnableIcon() {
-        if (inRange && (scentActive || digCount > 0) && !isAnimating) {
+        if (isInRange && (scentActive || holeInstance != null) && !isAnimating) {
             IconCanvas.SetActive(true);
         }
+    }
+    public void DisableIcon() {
+        IconCanvas.SetActive(false);
     }
 
     //enable icons if in range when scent hits
     public void OnScent() {
         scentActive = true;
-        if (inRange) {
-            EnableIcon();
-        }
+        EnableIcon();
     }
 
     //disable icons if not dug yet when scent ends
     public void OnScentEnd() {
         scentActive = false;
-        if (digCount == 0) {
-            IconCanvas.SetActive(false);
+        if (holeInstance == null) {
+            DisableIcon();
         }
     }
 
@@ -75,8 +72,6 @@ public class HoleDigZone : InteractableObject {
     public override void OnTriggerEnter(Collider col) {
         base.OnTriggerEnter(col);
         if (col.gameObject.CompareTag("Player")) {
-            //only run of this object is visible
-            inRange = true;
             EnableIcon();
         }
     }
@@ -84,70 +79,59 @@ public class HoleDigZone : InteractableObject {
     public override void OnTriggerExit(Collider col) {
         base.OnTriggerExit(col);
         if (col.gameObject.CompareTag("Player")) {
-            inRange = false;
-            IconCanvas.SetActive(false);
+            DisableIcon();
         }
     }
 
     //called when size animations are started
-    void StartAnim() {
+    void StartDig() {
         isAnimating = true;
         IconCanvas.SetActive(false);
     }
 
     //called when size animations finish
-    void StopAnim() {
+    void StopDig() {
+        //reset callback
+        playerController.digCallback = null;
+
+        //let doggo move again
+        playerController.FinishItemDig();
+
         isAnimating = false;
         EnableIcon();
-    }
 
-    //called when the hole is fully dug. Deletes it and spawns anything that was dug up
-    void FinishHole() {
-        reward = Instantiate(reward, transform.position, transform.rotation);
-        reward.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-5.0f, 5.0f), 10.0f, Random.Range(-5.0f, 5.0f));
-        reward.GetComponent<Collider>().enabled = false;
-        gameObject.GetComponent<Collider>().enabled = false;
-        playerController.RemoveObject(this);
-        StartCoroutine(EnableCollider(0.5f));
-        StartCoroutine(ShrinkHoleOverTime(10.0f));
-        //play spawn sound
-        audioSource.clip = toySpawnSound;
-        audioSource.Play();
-    }
-
-    IEnumerator GrowHole(float duration) {
-        StartAnim();
-        float startTime = Time.time;
-        while (startTime + duration > Time.time) {
-            holePrefab.transform.localScale = Vector3.Lerp(originalScale * (digCount - 1) / totalDigCount, originalScale * digCount / totalDigCount, (Time.time - startTime) / duration);
-            yield return new WaitForEndOfFrame();
-        }
-        StopAnim();
-        //then check to see if the hole reached its full size
-        if (digCount >= totalDigCount) {
+        if (holeInstance.getPercentDug() >= 1.0f) {
             FinishHole();
         }
     }
 
+    //called when the hole is fully dug. Deletes it and spawns anything that was dug up
+    void FinishHole() {
+        //pop reward out of the ground
+        reward = Instantiate(reward, transform.position, transform.rotation);
+        reward.GetComponent<Rigidbody>().velocity = new Vector3(
+                                                            Random.Range(lowerSpawnVelocityBounds.x, upperSpawnVelocityBounds.y), 
+                                                            Random.Range(lowerSpawnVelocityBounds.y, upperSpawnVelocityBounds.y),
+                                                            Random.Range(lowerSpawnVelocityBounds.z, upperSpawnVelocityBounds.z));
+        //reward.GetComponent<Collider>().enabled = false;
+        gameObject.GetComponent<Collider>().enabled = false;
+        DisableIcon();
+        //remove hole
+        playerController.RemoveObject(this);
+        StartCoroutine(EnableCollider(0.5f));
+        holeInstance.Decay();
+        //play spawn sound
+        audioSource.clip = toySpawnSound;
+        audioSource.Play();
+        //stop scent stuff
+        ParticleObject.GetComponent<ParticleSystem>().Stop();
+        ScentManager.Instance.scentObjects.Remove(ParticleObject.GetComponentInChildren<HoleDigZoneScent>());
+    }
+
+    //enables the collider on the item that was spawned, then deletes self
     IEnumerator EnableCollider(float delay) {
         yield return new WaitForSeconds(delay);
         reward.GetComponent<Collider>().enabled = true;
-    }
-
-    //changes the size of the hole over a given duration to zero, then deletes it
-    IEnumerator ShrinkHoleOverTime(float duration) {
-        //start animation, disable particles
-        StartAnim();
-        ParticleObject.GetComponent<ParticleSystem>().Stop();
-        //shrink hole over time
-        float startTime = Time.time;
-        while (startTime + duration > Time.time) {
-            holePrefab.transform.localScale = originalScale * (1 - ((Time.time - startTime) / duration));
-            yield return new WaitForEndOfFrame();
-        }
-        ScentManager.Instance.scentObjects.Remove(ParticleObject.GetComponentInChildren<HoleDigZoneScent>());
-        //wait for particle system to finish before destroying this
-        yield return new WaitForSeconds(Mathf.Max(ParticleObject.GetComponent<ParticleSystem>().main.startLifetime.constant - duration, 0.0f));
         Destroy(gameObject);
     }
 }

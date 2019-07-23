@@ -66,7 +66,7 @@ Shader "LowPolyWater/WaterShaded" {
 
 		half3 worldSpaceVertex = mul(unity_ObjectToWorld, (v.vertex)).xyz;
 
-		//add waves effects in shader rather than on CPU cuz were not dumb like that... unless calculating normal is an issue
+		//add waves effects in shader rather than on CPU cuz were not dumb like that...
 		v.vertex.y += sin(_Time.y * _WaveSpeed + (worldSpaceVertex.x * worldSpaceVertex.z)) * _WaveHeight;
 
 		half3	offsets = half3(0, 0, 0);
@@ -122,22 +122,23 @@ Shader "LowPolyWater/WaterShaded" {
 		}
 		else // point or spot light
 		{
-			float3 vertexToLightSource =
-				_WorldSpaceLightPos0.xyz - input.posWorld.xyz;
+			float3 vertexToLightSource = _WorldSpaceLightPos0.xyz - input.posWorld.xyz;
 			float distance = length(vertexToLightSource);
 			attenuation = 1.0 / distance; // linear attenuation 
 			lightDirection = normalize(vertexToLightSource);
 		}
 
-		float3 ambientLighting =
-			UNITY_LIGHTMODEL_AMBIENT.rgb * _BaseColor.rgb;
+		float3 ambientLighting = UNITY_LIGHTMODEL_AMBIENT.rgb * _BaseColor.rgb;
 
-		float3 diffuseReflection =
-			attenuation * _LightColor0.rgb * _BaseColor.rgb
-			* max(0.0, dot(normalDirection, lightDirection));
+		float3 diffuseReflection =	attenuation * 
+									//_LightColor0.rgb * 
+									_BaseColor.rgb * 
+									max(0.0, dot(normalDirection, lightDirection));
 
-		float3 specularReflection = attenuation * _LightColor0.rgb  * _SpecColor.rgb * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), _Shininess)
-				* (dot(normalDirection, lightDirection) > 0.0); //keep value if light is on right side, otherwise zero it
+		float3 specularReflection =	attenuation * 
+									_LightColor0.rgb  *
+									_SpecColor.rgb * 
+									pow(  max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), _Shininess) * (dot(normalDirection, lightDirection) > 0.0); //keep value if light is on right side, otherwise zero it
 
 		return half4(ambientLighting + diffuseReflection + specularReflection, 1.0);
 	}
@@ -165,7 +166,6 @@ Shader "LowPolyWater/WaterShaded" {
 		
 		return baseColor;
 	}
-
 	ENDCG
 
 

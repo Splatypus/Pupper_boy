@@ -37,7 +37,7 @@
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
             // Albedo comes from a texture tinted by color
-			float highlight_value = _IsFocused * _FocusAmount * (sin(_Time.y*5)/1.5 +2) + 1;
+			float highlight_value = _IsFocused * _FocusAmount * (sin(_Time.y*5)*1.5 + 2) + 1;
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color * highlight_value;
 			o.Emission = c;
             o.Albedo = c.rgb;
