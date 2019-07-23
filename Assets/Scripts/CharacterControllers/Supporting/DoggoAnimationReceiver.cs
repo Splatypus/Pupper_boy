@@ -33,6 +33,10 @@ public class DoggoAnimationReceiver : MonoBehaviour
         movementController.SpewDirt();
     }
 
+    public void ShakeDirt() {
+        movementController.ShakeDirt();
+    }
+
     public void ExpandHole(float percentDug) {
         movementController.ExpandHole(percentDug);
     }

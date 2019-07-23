@@ -19,6 +19,7 @@ public class DogController : Controller {
 
     [Header("References")]
     public ParticleSystem digParticles;
+    public ParticleSystem[] shakeParticles;
     public GameObject digHolePrefab;
 
     #region new world order movement variables
@@ -50,6 +51,7 @@ public class DogController : Controller {
     public float maxRotaionTime = 0.4f;
     public float distanceAddedToDig = 1.5f;
     public int digParticleCount = 10;
+    public int shakeParticleCount = 3;
 
     [Header("Holes")]
     public float holeForwardDistance = 0.4f;
@@ -279,6 +281,7 @@ public class DogController : Controller {
     public void Dig(DigZone zone) {
         if (controller.isGrounded) {
             //Run digging coroutine. This does the animation and movement and eveything
+            anim.SetFloat("Forward", 0);
             StartCoroutine(StartZoneDig(zone));
         }
     }
@@ -387,6 +390,13 @@ public class DogController : Controller {
         digParticles.Emit(digParticleCount);
     }
 
+    //emits a burst from the shaking particle system
+    public void ShakeDirt() {
+        for (int i = 0; i < shakeParticles.Length; i++) {
+            shakeParticles[i].Emit(shakeParticleCount);
+        }
+    }
+
     //if an active hole is set, tells it to expand to a specified percent
     public void ExpandHole(float percentDug) {
         if (activeHole == null) {
@@ -398,8 +408,6 @@ public class DogController : Controller {
     //called after the initial dig animation
     public void AfterDugObject() {
         digCallback?.Invoke();
-        activeHole.Decay();
-        activeHole = null;
     }
 
     //called after the animation to dig under the fence is finished
@@ -420,6 +428,9 @@ public class DogController : Controller {
         //and then run the event trigger letting things know we have reached the other side
         EventManager.Instance.TriggerOnFenceDig(currentDiggingZone.other_side.gameObject);
         currentDiggingZone = null;
+
+        activeHole.Decay();
+        activeHole = null;
     }
    
     #endregion
