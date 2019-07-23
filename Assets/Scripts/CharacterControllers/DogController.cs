@@ -342,7 +342,7 @@ public class DogController : Controller {
         //rotate towards the fence
         float timeTaken = 0.0f;
         while (transform.rotation != Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position) && timeTaken < maxRotaionTime) {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation,
+            transform.rotation = Quaternion.RotateTowards(  transform.rotation,
                                                             Quaternion.LookRotation(digZone.other_side.transform.position - digZone.transform.position),
                                                             rotateSpeed * Time.fixedDeltaTime);
             timeTaken += Time.fixedDeltaTime;
