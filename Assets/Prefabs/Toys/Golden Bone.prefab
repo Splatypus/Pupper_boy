@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 54069598564394666}
   - component: {fileID: 114904858507822718}
   - component: {fileID: 82789961470304638}
+  - component: {fileID: 7438612441058815941}
   m_Layer: 15
   m_Name: Golden Bone
   m_TagString: Pickup
@@ -188,6 +189,56 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &7438612441058815941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573242260750698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b210edfee16ad64492b9a3870ef6137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Golden Bone
+  image: {fileID: 21300000, guid: ca56b6d4d1e9aae43a9e65adbf5313d4, type: 3}
+  useAutomaticPlacement: 1
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
+  customCameraLocation: {fileID: 0}
+  progressionNum: 0
+  functions: []
+  serializedNodes:
+  - x: 1020
+    y: 472
+    width: 70
+    height: 70
+    text: 
+    num: -1
+    type: 4
+  - x: 1168
+    y: 440
+    width: 200
+    height: 150
+    text: A shiny golden bone! Amazing!
+    num: -1
+    type: 0
+  - x: 1242
+    y: 612
+    width: 70
+    height: 40
+    text: 
+    num: -1
+    type: 3
+  serializedConnections:
+  - outIndex: 0
+    inIndex: 1
+  - outIndex: 1
+    inIndex: 2
+  - outIndex: 2
+    inIndex: 1
 --- !u!1 &1640676055005366
 GameObject:
   m_ObjectHideFlags: 0
