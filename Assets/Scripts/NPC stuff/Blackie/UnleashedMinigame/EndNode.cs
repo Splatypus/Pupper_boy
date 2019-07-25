@@ -24,4 +24,6 @@ public class EndNode : GamePieceView
         }
         colorMesh.material.color = boardView.powerColors[ep.goalColor].maxColor;
     }
+
+    
 }
