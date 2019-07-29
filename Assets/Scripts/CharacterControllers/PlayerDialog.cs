@@ -8,7 +8,7 @@ public class PlayerDialog : Controller {
 
     //UI elements
     public TMP_Text textObject;
-    public Text nameTextObject;
+    public TMP_Text nameTextObject;
     public Image imageObject;
     public GameObject[] buttons;
     public GameObject canvasGA;

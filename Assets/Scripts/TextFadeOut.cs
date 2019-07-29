@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TextFadeOut : MonoBehaviour
 {
 
-    Text text;
+    TMP_Text text;
     [SerializeField] private float timeUntilFadeStarts = 1.0f;
     [SerializeField] private float timeToFadeOut = 1.0f;
     [SerializeField] private float timeToFadeIn = 0.25f;
@@ -14,7 +15,7 @@ public class TextFadeOut : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        text = GetComponent<Text>();
+        text = GetComponent<TMP_Text>();
         Color c = text.color;
         c.a = 0;
         text.color = c;
