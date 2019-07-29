@@ -10,6 +10,7 @@ public class HoleSizeChange : MonoBehaviour {
     public float decayWait = 5.0f;
     public float decayTime = 15.0f;
     [Tooltip("Scaled with objects y size")]public float decayMoveDis = 2.0f;
+    public GameObject snowImpact;
 
 
     public float getPercentDug() {
@@ -41,6 +42,7 @@ public class HoleSizeChange : MonoBehaviour {
         Decay(decayTime);
     }
     public void Decay(float duration, bool destroyAtEnd = true, System.Action onComplete = null) {
+        snowImpact?.SetActive(false);
         StartCoroutine(ShrinkHole(duration, destroyAtEnd, onComplete));
     }
 
