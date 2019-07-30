@@ -14,7 +14,7 @@ public class SlotSaveInfo : MonoBehaviour {
     public void LoadGame() {
         SaveManager.getInstance().LoadFile(idNumber);
 
-        manager.LoadSceneByIndex();
+        manager.LoadScene();
     }
 
     public void DeleteSave() {

@@ -11,7 +11,9 @@ public class NoMovementController : Controller {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if (Input.GetButtonDown("Cancel")) {
+            gameObject.GetComponent<DogController>().escMenu.Show();
+        }
 	}
 
     public override void OnActivated() {

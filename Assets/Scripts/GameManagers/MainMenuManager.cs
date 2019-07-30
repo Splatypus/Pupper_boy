@@ -24,7 +24,7 @@ public class MainMenuManager : MonoBehaviour {
     public string newSaveNameGet { get { return newSaveName; } set { newSaveName = value; } }
 
     [Header("Loading Screen")]
-    public int sceneToLoad = 1;
+    public string sceneToLoad = "UnleashedBackyard";
     public GameObject loadingScreen;
     public Text loadingText;
 
@@ -78,7 +78,7 @@ public class MainMenuManager : MonoBehaviour {
     //Used to continue on last save
     public void Continue() {
         mySaveManager.LoadFile(mySaveManager.GetLastOpenID());
-        LoadSceneByIndex();
+        LoadScene(sceneToLoad);
     }
 
     //Used For Creating a New Save
@@ -95,16 +95,27 @@ public class MainMenuManager : MonoBehaviour {
         }
     }
 
-    #region loading screen
-    public void LoadSceneByIndex() {
-        LoadSceneByIndex(sceneToLoad);
-    }
-    public void LoadSceneByIndex(int sceneIndex) {
+    public void Quit() {
 
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+
+    #else
+		Application.Quit();
+
+    #endif
+
+    }
+
+    #region loading screen
+    public void LoadScene() {
+        LoadScene(sceneToLoad);
+    }
+    public void LoadScene(string sceneName) {
         loadingScreen.SetActive(true);
         mainUI.SetActive(false);
         StartCoroutine(DotLoading(0.4f));
-        StartCoroutine(LoadNewSceneAsync(sceneIndex));
+        StartCoroutine(LoadNewSceneAsync(sceneName));
     }
 
 
@@ -122,8 +133,8 @@ public class MainMenuManager : MonoBehaviour {
         }
     }
 
-    IEnumerator LoadNewSceneAsync(int index) {
-        AsyncOperation async = SceneManager.LoadSceneAsync(index);
+    IEnumerator LoadNewSceneAsync(string name) {
+        AsyncOperation async = SceneManager.LoadSceneAsync(name);
         while (!async.isDone)
             yield return null;
         

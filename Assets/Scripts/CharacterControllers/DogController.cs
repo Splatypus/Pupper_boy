@@ -98,7 +98,6 @@ public class DogController : Controller {
         //Opening Esc Menu should always be available
         if (Input.GetButtonDown("Cancel")) {
             escMenu.Show();
-            gameObject.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Pause);
         }
 
         //dont do anything if digging, or in Esc Menu

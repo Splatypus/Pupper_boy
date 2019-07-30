@@ -8,6 +8,8 @@ public class EscMenuManager : MonoBehaviour {
     public GameObject settingsMenu;
     public GameObject player;
 
+    PlayerControllerManager.Modes savedMode;
+
     void Start() {
         FindObjectOfType<DogController>().escMenu = this;
         player = GameObject.FindGameObjectWithTag("Player");
@@ -20,12 +22,14 @@ public class EscMenuManager : MonoBehaviour {
 
     public void Show() {
         gameObject.SetActive(true);
+        savedMode = player.GetComponent<PlayerControllerManager>().currentMode;
+        player.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Pause);
     }
 
     public void Hide() {
         gameObject.SetActive(false);
         settingsMenu.SetActive(false);
-        player.GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Walking);
+        player.GetComponent<PlayerControllerManager>().ChangeMode(savedMode);
     }
 
     public void ShowSettingsMenu() {
@@ -37,7 +41,7 @@ public class EscMenuManager : MonoBehaviour {
     }
 
     public void QuitToMM() {
-        AsyncOperation async = SceneManager.LoadSceneAsync(0);
+        AsyncOperation async = SceneManager.LoadSceneAsync("DankAssTitleScreen");
     }
 
 }

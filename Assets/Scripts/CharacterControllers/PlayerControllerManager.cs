@@ -10,6 +10,7 @@ public class PlayerControllerManager : MonoBehaviour {
 
     //velocity - shared between all control scripts
     [HideInInspector] public Vector3 v;
+    [HideInInspector] public Modes currentMode;
 
     public void Start() {
         //initial setting of all modes to their correct places
@@ -32,6 +33,7 @@ public class PlayerControllerManager : MonoBehaviour {
 
     //disable the current mode, then change it to the new one and enable the new one
     public Controller ChangeMode(Modes newMode) {
+        currentMode = newMode;
         //call deactivation function and then disable the current controller
         currentController.OnDeactivated();
         currentController.enabled = false;

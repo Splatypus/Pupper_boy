@@ -42,8 +42,6 @@ public class PlayerDialog : Controller {
                 isAllShown = false;
                 npcDialog.Next();
             }
-        } else if (Input.GetButtonDown("Cancel")) {
-            gameObject.GetComponent<DogController>().escMenu.Hide();
         }
 	}
 
