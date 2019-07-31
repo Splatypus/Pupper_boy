@@ -140,7 +140,7 @@ Shader "LowPolyWater/WaterShaded" {
 									_SpecColor.rgb * 
 									pow(  max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)), _Shininess) * (dot(normalDirection, lightDirection) > 0.0); //keep value if light is on right side, otherwise zero it
 
-		return half4(ambientLighting + diffuseReflection + specularReflection, 1.0);
+		return half4(ambientLighting + diffuseReflection /*+ specularReflection*/, 1.0);
 	}
 
 	half4 frag(v2f i) : SV_Target{
