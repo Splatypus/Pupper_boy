@@ -37,7 +37,7 @@ public class EscMenuManager : MonoBehaviour {
     }
 
     public void QuitGame() {
-       
+        Application.Quit();
     }
 
     public void QuitToMM() {

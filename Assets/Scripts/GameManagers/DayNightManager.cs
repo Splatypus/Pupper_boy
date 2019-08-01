@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 public class DayNightManager {
+    public static string DAY_SAVE_KEY = "dayNight";
 
     public static DayNightManager instance;
     public static DayNightManager Instance {
@@ -14,8 +15,24 @@ public class DayNightManager {
             return instance;
         }
     }
+    private DayNightManager() {}
+
     public enum Times { DAY, NIGHT };
     Times currentTime = Times.DAY;
+
+    //loads in data
+    public void LoadData() {
+        //loading daytime
+        int loadedTime = SaveManager.getInstance().GetInt(DAY_SAVE_KEY, 0);
+        currentTime = (Times)loadedTime;
+        if (loadedTime == 0) {
+            EventManager.Instance.TriggerOnDay();
+        }
+        //loading nighttime
+        else {
+            EventManager.Instance.TriggerOnNight();
+        }
+    }
 
     public static void Reset() {
         instance = null;
@@ -41,6 +58,8 @@ public class DayNightManager {
         } else if (t == Times.NIGHT) {
             EventManager.Instance.TriggerOnNight();
         }
+        //set the time change to be saved
+        SaveManager.getInstance().PutInt(DAY_SAVE_KEY, (int)t);
     }
 
     //changes from night to day or day to night

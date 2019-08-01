@@ -9,28 +9,14 @@ public class DayNightMusicChange : MonoBehaviour {
     public float dayVolume;
     public AudioClip nightTheme;
     public float nightVolume;
-    public AudioSource source;
     public float duration;
 
 	// Use this for initialization
 	void Awake () {
-        if (source == null)
-            source = gameObject.GetComponent<AudioSource>();
-
-        //set initial states
-        DayNightManager dayNight = DayNightManager.Instance;
-        if (dayNight.IsDay()) {
-            source.clip = dayTheme;
-        } else {
-            source.clip = nightTheme;
-        }
+        
         //set up triggers
         EventManager.OnDay += OnDay;
         EventManager.OnNight += OnNight;
-    }
-
-    private void Start() {
-        OnDay();
     }
 
     private void OnDestroy() {

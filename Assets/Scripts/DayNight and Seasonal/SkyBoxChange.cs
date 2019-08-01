@@ -59,13 +59,13 @@ public class SkyBoxChange : MonoBehaviour
 
     public void OnDay() {
         isDay = true;
-        RenderSettings.skybox = (currentSeason.dayBox ?? defaultSkybox);
+        RenderSettings.skybox = (currentSeason?.dayBox ?? defaultSkybox);
         RenderSettings.fogColor = dayFog;
     }
 
     public void OnNight() {
         isDay = false;
-        RenderSettings.skybox = (currentSeason.nightBox ?? defaultSkybox);
+        RenderSettings.skybox = (currentSeason?.nightBox ?? defaultSkybox);
         RenderSettings.fogColor = nightFog;
     }
 
