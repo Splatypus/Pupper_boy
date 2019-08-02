@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AIbase : Dialog2 {
     
     public Sprite[] Icons;
     public GameObject Player;
-    public Image iconRenderer;
+    public SpriteRenderer iconRenderer;
     public GameObject iconCanvas;
 
     // Use this for initialization
