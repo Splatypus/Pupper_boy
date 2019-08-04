@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
-using UnityEngine;
-using UnityEditor.SceneManagement;
 using System.Linq;
+
+using UnityEditor;
+using UnityEditor.SceneManagement;
+
+using UnityEngine;
 
 public class Tool_LoadScenesWindow : EditorWindow
 {
@@ -106,5 +108,113 @@ public class Tool_LoadScenesWindow : EditorWindow
       GUILayout.EndHorizontal(); ///-----
 
       GUILayout.EndVertical(); ///-----
+   }
+}
+
+class Tool_AddSceneToBuildSettings : EditorWindow
+{
+   [MenuItem("Assets/Add Scene To Build Settings")]
+   static void AddSceneToBuildSettings()
+   {
+      var selection = Selection.activeObject as SceneAsset;
+
+      var buildSettingsScenes = EditorBuildSettings.scenes;
+      var sceneToAdd = new EditorBuildSettingsScene(AssetDatabase.GetAssetPath(selection), true);
+
+      if (buildSettingsScenes.Contains(sceneToAdd) == false)
+      {
+         bool contains = false;
+         foreach (var item in buildSettingsScenes)
+         {
+            if (Path.GetFileName(item.path) == Path.GetFileName(sceneToAdd.path))
+            {
+               contains = true;
+               break;
+            }
+         }
+         if (contains == false)
+         {
+            var temp = buildSettingsScenes.ToList();
+            temp.Add(sceneToAdd);
+            buildSettingsScenes = temp.ToArray();
+         }
+      }
+
+      EditorBuildSettings.scenes = buildSettingsScenes;
+   }
+
+   [MenuItem("Assets/Add Scene To Build Settings", validate = true)]
+   static bool AddSceneToBuildSettingsValidate()
+   {
+      var selection = Selection.activeObject;
+
+      if (selection != null)
+         if (selection as SceneAsset)
+         {
+            var buildSettingsScenes = EditorBuildSettings.scenes;
+            var sceneToAdd = new EditorBuildSettingsScene(AssetDatabase.GetAssetPath(selection), true);
+
+            foreach (var item in buildSettingsScenes)
+               if (Path.GetFileName(item.path) == Path.GetFileName(sceneToAdd.path))
+                  return false;
+
+            return true;
+         }
+         else
+            return false;
+      else
+         return false;
+   }
+
+   [MenuItem("Assets/Remove Scene From Build Settings")]
+   static void RemoveSceneFromBuildSettings()
+   {
+      var selection = Selection.activeObject as SceneAsset;
+
+      var buildSettingsScenes = EditorBuildSettings.scenes;
+      var sceneToAdd = new EditorBuildSettingsScene(AssetDatabase.GetAssetPath(selection), true);
+
+      bool contains = false;
+      int index = 0;
+      for (int i = 0; i < buildSettingsScenes.Length; i++)
+      {
+         if (Path.GetFileName(buildSettingsScenes[i].path) == Path.GetFileName(sceneToAdd.path))
+         {
+            index = i;
+            contains = true;
+            break;
+         }
+      }
+      if (contains == true)
+      {
+         var temp = buildSettingsScenes.ToList();
+         temp.RemoveAt(index);
+         buildSettingsScenes = temp.ToArray();
+      }
+
+      EditorBuildSettings.scenes = buildSettingsScenes;
+   }
+
+   [MenuItem("Assets/Remove Scene From Build Settings", validate = true)]
+   static bool RemoveSceneFromBuildSettingsValidate()
+   {
+      var selection = Selection.activeObject;
+
+      if (selection != null)
+         if (selection as SceneAsset)
+         {
+            var buildSettingsScenes = EditorBuildSettings.scenes;
+            var sceneToAdd = new EditorBuildSettingsScene(AssetDatabase.GetAssetPath(selection), true);
+
+            foreach (var item in buildSettingsScenes)
+               if (Path.GetFileName(item.path) == Path.GetFileName(sceneToAdd.path))
+                  return true;
+
+            return false;
+         }
+         else
+            return false;
+      else
+         return false;
    }
 }
