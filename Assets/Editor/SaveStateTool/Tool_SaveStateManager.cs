@@ -17,8 +17,8 @@ public class Tool_SaveStateManager : EditorWindow
    {
       get
       {
-         StringBuilder sb = new StringBuilder(Path.GetDirectoryName(Application.persistentDataPath), 250);
-         sb.Append('/' + "Snapshots");
+         StringBuilder sb = new StringBuilder(Application.dataPath, 100);
+         sb.Append('/' + "Snapshots~");
          sb.Replace('\\', '/');
          var dir = sb.ToString();
 
