@@ -45,6 +45,11 @@ public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
         }
     }
 
+    public void OnDestroy() {
+        EventManager.OnTalk -= ClearUI;
+        EventManager.OnFenceDig -= ClearUI;
+    }
+
     // Update is called once per frame
     public void Update() {
         if (isPlaying) {
@@ -56,7 +61,6 @@ public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
             }
         }
     }
-
 
     //called when the minigame is started
     public void GameStart() {
@@ -86,20 +90,30 @@ public class BubbleGameManager : MonoBehaviour {//: MiniGameManager {
     public void GameEnd() {
         //end event, add scores n stuff
         isPlaying = false;
-        //clear time UI
-        canvasTimeField.text = "";
-        canvasTimeField.gameObject.SetActive(false);
-        //reset score text and particle systems
-        scoreText.gameObject.SetActive(true);
-        scoreText.text = "";
+        //clear particle system
         bubble_particle_system.SetActive(false);
         //disable objectives
         for (int i = 0; i < objectives.Length; i++) {
             objectives[i].SetIsVisible(false);
         }
-        if (score >= rewardScore) {
-            bubblesRef.FinishedGame(score >= rewardScore);
-        }
+        bubblesRef.FinishedGame(score >= rewardScore);
+
+        //wait to clear the UI until you talk to an npc or you dig out
+        EventManager.OnTalk += ClearUI;
+        EventManager.OnFenceDig += ClearUI;
+    }
+
+
+    //hides time and score UI
+    public void ClearUI(GameObject npc) {
+        ClearUI();
+    }
+    public void ClearUI() {
+        //clear time and score
+        canvasTimeField.text = "";
+        canvasTimeField.gameObject.SetActive(false);
+        scoreText.gameObject.SetActive(true);
+        scoreText.text = "";
     }
 
     //called when an objective (bubble) is reached

@@ -22,7 +22,7 @@ public class DogController : Controller {
     public ParticleSystem[] shakeParticles;
     public GameObject digHolePrefab;
 
-    #region new world order movement variables
+    #region movement variables
     [Header("Movement")]
     public float maxSpeed;
     public float acceleration;
@@ -33,6 +33,7 @@ public class DogController : Controller {
     public float hillSmoothingFactor;
     public float jumpForce;
     public float turnspeed = 5;
+    public float nonforwardEffectivenessRatio = 0.5f;
     public float freezeMovementAngle = 90.0f;
     public float SpeedMultScentMode = 0.5f;
     [Header("Sprinting")]
@@ -40,7 +41,6 @@ public class DogController : Controller {
     public float sprintDelay;
     public float sprintRampTime;
     private float moveStartTime;
-
     #endregion
 
 
@@ -177,9 +177,17 @@ public class DogController : Controller {
         if (!isGrounded) {
             a *= inAirMult;
         }
-        float newMaxSpeed = maxSpeed;
+        //find initial speed based off a weighted average of horizontal and vertical movement
+        float amountNotForward = Mathf.Max(Mathf.Abs(horizontal), Mathf.Clamp01(-vertical));  //highest number between left, right, and back inputs
+        float amountForward = Mathf.Clamp01(vertical);  //forward input
+        float movementDirectionMult = amountNotForward * nonforwardEffectivenessRatio + amountForward;  //weighted sum
+        movementDirectionMult = amountNotForward + amountForward == 0 ? 0 : movementDirectionMult / (amountNotForward + amountForward); //weighted average
+        
+        float newMaxSpeed = maxSpeed * movementDirectionMult;
+
+        //adjust max speed to account for sprinting/scent mode
         if (Time.time - moveStartTime > sprintDelay) {
-            newMaxSpeed *= Mathf.Lerp(1, sprintMultiplier, (Time.time - (moveStartTime + sprintDelay)) / sprintRampTime); //adjust max speed to account for sprinting
+            newMaxSpeed *= Mathf.Lerp(1, sprintMultiplier, (Time.time - (moveStartTime + sprintDelay)) / sprintRampTime); 
         }
         if (ScentManager.Instance.isEnabled) {
             newMaxSpeed *= SpeedMultScentMode;

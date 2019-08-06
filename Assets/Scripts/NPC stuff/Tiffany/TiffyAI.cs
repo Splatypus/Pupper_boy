@@ -59,12 +59,13 @@ public class TiffyAI : AIbase {
         }
     }
 
-    //called when a toy is brought in range. If its the bandana, progress the quest
-    public override void ToyInRange(BasicToy toy) {
-        base.ToyInRange(toy);
+    public override void ReactToItem(BasicToy toy) {
+        base.ReactToItem(toy);
         //check to make sure the quest characterState and toy tag are correct. If so, delete the bandana and do her stuff
-        if (toy.HasTag(BasicToy.Tag.TiffyQuestItem) && characterState == RESCUED) {
+        if (toy != null && toy.HasTag(BasicToy.Tag.TiffyQuestItem) && characterState == RESCUED) {
             progressionNum = 1;
+        } else {
+            progressionNum = 0;
         }
     }
 
