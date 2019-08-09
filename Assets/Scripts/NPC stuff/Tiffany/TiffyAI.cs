@@ -57,6 +57,14 @@ public class TiffyAI : AIbase {
         } else if (characterState == HAPPY) {
             Display(2);
         }
+        if (characterState <= RESCUED) {
+            TutorialManager.Instance.EnableWithText("Press F to talk to other dogs");
+        }
+    }
+
+    public override void OnExitRange() {
+        base.OnExitRange();
+        TutorialManager.Instance.DisableTutorial();
     }
 
     public override void ReactToItem(BasicToy toy) {
