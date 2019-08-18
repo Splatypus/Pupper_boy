@@ -81,14 +81,14 @@ public class PlayerDialog : Controller {
     public void AddOptions(List<string> opts) {
         for (int i = 0; i < opts.Count; i++) {
             buttons[i].SetActive(true);
-            buttons[i].GetComponentInChildren<Text>().text = opts[i];
+            buttons[i].GetComponentInChildren<TMP_Text>().text = opts[i];
         }
     }
 
     //adds a single UI option, at the button specified by "index"
     public void AddOption(int index, string opt){
         buttons[index].SetActive(true);
-        buttons[index].GetComponentInChildren<Text>().text = opt;
+        buttons[index].GetComponentInChildren<TMP_Text>().text = opt;
     }
 
     //when a button is clicked

@@ -30,7 +30,6 @@ public class SocksTutorial : Dialog2 {
         base.Start();
         //customCameraLocation = cameraReference.getCamera();
 
-        print(characterState);
         if (characterState != MET_TIFFANY) {
             EventManager.OnTalk += OnMetTiffany;
         }
@@ -110,7 +109,6 @@ public class SocksTutorial : Dialog2 {
 
     //Triggers the OnInteract function based on what the current objective count is
     void TriggerInteractFromcharacterState() {
-        print(progressionNum);
         if (characterState < FINISHED_TUTORIAL) { //12 are looking at object, 34 are movement, 5 is retreiving an item
             
             //save progress.
