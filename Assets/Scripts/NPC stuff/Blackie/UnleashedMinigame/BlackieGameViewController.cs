@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class BlackieGameViewController : Dialog2, BlackieGameBoard.IListener 
+public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener 
 {
 
     [Header("Game Files")]

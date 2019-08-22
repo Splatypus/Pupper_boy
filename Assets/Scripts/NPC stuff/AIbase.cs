@@ -5,15 +5,21 @@ using UnityEngine;
 public class AIbase : Dialog2 {
     
     public Sprite[] Icons;
-    public GameObject Player;
+    [HideInInspector]public GameObject Player;
     public SpriteRenderer iconRenderer;
     public GameObject iconCanvas;
 
     // Use this for initialization
-    new public void Start(){
+    public override void Start(){
         base.Start();
         Player = GameObject.FindGameObjectWithTag("Player");
         EndDisplay();
+    }
+
+    //override on interact to hide the currently displayed icon
+    public override void OnInteract() {
+        EndDisplay();
+        base.OnInteract();
     }
 
     public override void OnEnd() {

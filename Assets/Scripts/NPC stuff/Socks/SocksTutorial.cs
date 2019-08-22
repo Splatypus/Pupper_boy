@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SocksTutorial : Dialog2 {
+public class SocksTutorial : AIbase {
     protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "SocksSummerProgression";} }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "SocksSummerPN"; } }
     protected override string CHARACTER_STATE_SAVE_KEY {get { return "SocksSummerObjectives"; } }
