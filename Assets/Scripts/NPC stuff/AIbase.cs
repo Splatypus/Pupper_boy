@@ -5,15 +5,21 @@ using UnityEngine;
 public class AIbase : Dialog2 {
     
     public Sprite[] Icons;
-    public GameObject Player;
+    [HideInInspector]public GameObject Player;
     public SpriteRenderer iconRenderer;
     public GameObject iconCanvas;
 
     // Use this for initialization
-    new public void Start(){
+    public override void Start(){
         base.Start();
         Player = GameObject.FindGameObjectWithTag("Player");
         EndDisplay();
+    }
+
+    //override on interact to hide the currently displayed icon
+    public override void OnInteract() {
+        EndDisplay();
+        base.OnInteract();
     }
 
     public override void OnEnd() {
@@ -26,9 +32,6 @@ public class AIbase : Dialog2 {
     public virtual void OnInRange(GameObject player) {
         BasicToy toy = player.GetComponent<DogController>().mouth.itemInMouth?.GetComponent<BasicToy>();
         Display(0);
-        if (toy != null) {
-            ToyInRange(toy);
-        }
     }
     //Trigger when the player leaves range
     public virtual void OnExitRange() {
@@ -48,21 +51,26 @@ public class AIbase : Dialog2 {
             iconCanvas.SetActive(false);
     }
 
-    //called when something with the toy interaction script on it is brought within range
-    public virtual void ToyInRange(BasicToy toy) {
-        
-    }
-
     public GameObject GetCarriedItem() {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        return GetCarriedItem(player);
+        return GetCarriedItem(Player);
     }
     public GameObject GetCarriedItem(GameObject player) {
         if (player != null) {
+            //return it
             return player.GetComponentInChildren<PuppyPickup>().itemInMouth;
         }
         return null;
     }
+    //checks the item in the player's mouth and then calls react to item on it
+    public void InspectPlayerItem() {
+        //find the item in the player's mouth
+        GameObject toyItem = Player.GetComponentInChildren<PuppyPickup>().itemInMouth;
+        //if its a toy, give the AI a chance to do something with it
+        BasicToy toy = toyItem?.GetComponent<BasicToy>();
+        ReactToItem(toy);
+    }
+    //called when a check for a carried item is called
+    public virtual void ReactToItem(BasicToy toy) {}
     //destroys a gameobject and removes it from the player's mouth if its being held. Note that even if the object is not held, this function deltes it anyway
     public void DestoryObjectInMouth(GameObject toDestroy) {
         PuppyPickup inMouth = Player.GetComponent<DogController>().mouth;

@@ -49,9 +49,9 @@ public class RexAI : AIbase {
     }
 
     //if you bring rex his toys, incriment his toy count and delete the toy
-    public override void ToyInRange(BasicToy toy) {
-        base.ToyInRange(toy);
-        if (toy.HasTag(BasicToy.Tag.RexQuestItem) && characterState == READYFORTOYS) {
+    public override void ReactToItem(BasicToy toy) {
+        base.ReactToItem(toy);
+        if (toy != null && toy.HasTag(BasicToy.Tag.RexQuestItem) && characterState == READYFORTOYS) {
             progressionNum = 2;
         }
     }
@@ -94,6 +94,8 @@ public class RexAI : AIbase {
         } else {
             progressionNum = 1;
         }
+        //finally set things by inspecting player item (item in mouth will set progresssion num to 2)
+        InspectPlayerItem();
     }
     #endregion
 }

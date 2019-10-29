@@ -47,10 +47,12 @@ public class BubblesAI : AIbase {
     }
 
     //if soap is brought in range, destory it and progress quest
-    public override void ToyInRange(BasicToy toy) {
-        base.ToyInRange(toy);
-        if (toy.HasTag(BasicToy.Tag.Soap) && characterState == FIRST_REWARD_GIVEN) {
+    public override void ReactToItem(BasicToy toy) {
+        base.ReactToItem(toy);
+        if (toy != null && toy.HasTag(BasicToy.Tag.Soap) && characterState == FIRST_REWARD_GIVEN) {
             progressionNum = 1;
+        } else {
+            progressionNum = 0;
         }
     }
     public void AfterSoapTaken() {

@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SocksTutorial : Dialog2 {
+public class SocksTutorial : AIbase {
     protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "SocksSummerProgression";} }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "SocksSummerPN"; } }
     protected override string CHARACTER_STATE_SAVE_KEY {get { return "SocksSummerObjectives"; } }
-    readonly int FINISHED_TUTORIAL = 7;
-    readonly int MET_TIFFANY = 8;
+    //characterStates: 
+    //12 - Look
+    //34 - move  
+    //5 item
+    //6 finished tutorial
+    //7 talked to tiffany
+    readonly int FINISHED_TUTORIAL = 6; 
+    readonly int MET_TIFFANY = 7;
 
     [Header("Objective Info")]
     public GameObject[] lookTargets;
@@ -26,6 +32,9 @@ public class SocksTutorial : Dialog2 {
 
         if (characterState != MET_TIFFANY) {
             EventManager.OnTalk += OnMetTiffany;
+        }
+        if (characterState == FINISHED_TUTORIAL) {
+            SummonPopup("Press F to dig under fences or talk to other animals!");
         }
         if (characterState == 0) {
             MakeScreenBlack();
@@ -91,7 +100,7 @@ public class SocksTutorial : Dialog2 {
     //called whenever an objective is finished, such as looking at a thing or moving to the right spot
     public void ObjectiveComplete() {
         characterState++;
-        if (characterState > 3)
+        if (characterState > 2)
             progressionNum = 1;
         //trigger new dialog if needed
         TriggerInteractFromcharacterState();
@@ -100,7 +109,7 @@ public class SocksTutorial : Dialog2 {
 
     //Triggers the OnInteract function based on what the current objective count is
     void TriggerInteractFromcharacterState() {
-        if (characterState <= 7) { //123 are looking at object, 456 are movement, 7 is retreiving an item
+        if (characterState < FINISHED_TUTORIAL) { //12 are looking at object, 34 are movement, 5 is retreiving an item
             
             //save progress.
             SaveManager.getInstance().PutInt(CHARACTER_STATE_SAVE_KEY, characterState);
@@ -114,18 +123,13 @@ public class SocksTutorial : Dialog2 {
 
     //remove auto-saving of dialog.
     //sock's dialog will save after objectives are finished, since otherwise the forced OnInteract would cause desync
-    public override void SaveDialogProgress() {
+    public override void OnEnd() {
         //save progress after chatting after the last objective
-        if (characterState == 7) {
+        if (characterState == FINISHED_TUTORIAL-1) {
             characterState++;
-            SaveManager.getInstance().PutInt(CHARACTER_STATE_SAVE_KEY, characterState);
-            SaveManager.getInstance().PutInt(DIALOG_PROGRESS_SAVE_KEY, currentNode.index);
-            SaveManager.getInstance().SaveFile();
         }
-        //and then from now on treat dialog normally
-        else if (characterState > 7) {
-            base.SaveDialogProgress();
-        }
+
+        base.OnEnd();
     }
 
     //finds the current fence manager and unlocks fences of the given type
@@ -135,14 +139,16 @@ public class SocksTutorial : Dialog2 {
 
     //progresses dialog when tiffany is talked to
     void OnMetTiffany(GameObject npc) {
-        if (npc.GetComponent<TiffyAI>() && characterState > FINISHED_TUTORIAL) {
+        if (npc.GetComponent<TiffyAI>() && characterState >= FINISHED_TUTORIAL) {
             EventManager.OnTalk -= OnMetTiffany;
+            TutorialManager.Instance.DisableTutorial();
 
             characterState = MET_TIFFANY;
             progressionNum = 1;
             SaveDialogProgress();
         }
     }
+
 
     //sets the progression number to properly branch for the "whats new" dialog option
     public void SetProgressionForWhatsNew() {
