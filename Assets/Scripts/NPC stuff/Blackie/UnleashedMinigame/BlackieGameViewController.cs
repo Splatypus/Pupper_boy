@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 
 public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener 
 {
+    [Header("References")]
+    public ChipAI chip;
 
     [Header("Game Files")]
     public TextAsset[] files;
@@ -49,13 +51,15 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
     public void OnVictory() {
         print("You win!");
         progressionNum = 1;
-        OnInteract();
+        chip.FinishGame();
+        chip.OnInteract();
         foreach (GameObject g in bases) {
             Destroy(g);
         }
         foreach (GameObject g in pieces) {
             Destroy(g);
         }
+
     }
     public void OnFileLoaded() {
         GenerateBase();
