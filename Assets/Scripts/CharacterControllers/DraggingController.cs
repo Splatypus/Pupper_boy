@@ -48,6 +48,8 @@ public class DraggingController : Controller
         amountToRotate += amountToRotate > 180 ? -360 : (amountToRotate < -180 ? 360 : 0); //if above 180, subtract 360. If below -180, add 360
         
         StartCoroutine(InitialGrab(amountToRotate, grabRotationSpeed));
+        //start drag anim
+        anim.SetBool("IsDragging", true);
     }
 
     // Update is called once per frame
@@ -55,7 +57,7 @@ public class DraggingController : Controller
 
         if (!isMoving) {
             if (Input.GetButtonDown("Interact")) {
-                mouth.DoInputAction();
+                mouth.DoInputAction(); //This should drop the item
             }
             DoMovement();
         }
@@ -77,6 +79,12 @@ public class DraggingController : Controller
         } else if (draggedItem.setRotateAmount > 0 && horizontal != 0) {
             if (draggedItem.CanRotate(horizontal > 0)) {
                 StartCoroutine(Rotate(draggedItem.setRotateAmount / draggedItem.rotationSpeed, draggedItem.setRotateAmount, horizontal > 0));
+                //rotation animation
+                if (horizontal < 0) {
+                    anim.SetTrigger("RotateCCW");
+                } else {
+                    anim.SetTrigger("RotateCW");
+                }
             }
 
             //Otherwise normal dragging. this section should be looked at...
@@ -96,6 +104,11 @@ public class DraggingController : Controller
 
         }
 
+    }
+
+    public override void OnDeactivated() {
+        base.OnDeactivated();
+        anim.SetBool("IsDragging", false); //end drag animation
     }
 
     IEnumerator InitialGrab(float rotateAroundAmount, float speed) {
