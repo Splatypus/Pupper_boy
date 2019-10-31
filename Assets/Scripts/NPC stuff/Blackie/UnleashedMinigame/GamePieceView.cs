@@ -95,17 +95,13 @@ public class GamePieceView : BasicDraggable, BlackieGameBoard.IPieceListener
 
     public override void OnPickup(PuppyPickup source) {
         if (!piece.isLocked) {
-            source.itemInMouth = gameObject;
-            DraggingController control = (DraggingController)GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Dragging);
-            control.Init(this);
-            GetComponent<Collider>().enabled = false;
+            base.OnPickup(source);
         }
     }
 
     public override void OnDrop(Vector3 currentVelocity) {
         if (!piece.isLocked) {
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Walking);
-            GetComponent<Collider>().enabled = true;
+            base.OnDrop(currentVelocity);
         } else {
             Debug.LogError("ERROR: Attempting to drop a locked puzzle piece. This object should have never been able to be picked up");
         }

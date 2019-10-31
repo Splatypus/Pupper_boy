@@ -30,7 +30,6 @@ public class AIbase : Dialog2 {
 
     //Triggers when the player enters the range
     public virtual void OnInRange(GameObject player) {
-        BasicToy toy = player.GetComponent<DogController>().mouth.itemInMouth?.GetComponent<BasicToy>();
         Display(0);
     }
     //Trigger when the player leaves range

@@ -50,16 +50,14 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
     #region listener functions
     public void OnVictory() {
         print("You win!");
-        progressionNum = 1;
-        chip.FinishGame();
-        chip.OnInteract();
         foreach (GameObject g in bases) {
             Destroy(g);
         }
         foreach (GameObject g in pieces) {
             Destroy(g);
         }
-
+        chip.FinishGame();
+        StartCoroutine(StartDialogNextFrame()); //Since destroying a draggable returns you to walking, this has to be called on the next frame... for whatever reason.
     }
     public void OnFileLoaded() {
         GenerateBase();
@@ -172,5 +170,11 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
         public Color minColor;
         public Color maxColor;
         public Material material;
+    }
+
+    IEnumerator StartDialogNextFrame() {
+        yield return new WaitForEndOfFrame();
+        Debug.Log("Chip talking");
+        chip.OnInteract();
     }
 }

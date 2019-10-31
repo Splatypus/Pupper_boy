@@ -5,6 +5,6 @@ using UnityEngine;
 public class ChipAI : AIbase
 {
     public void FinishGame() {
-        progressionNum += 1;
+        progressionNum = 1;
     }
 }

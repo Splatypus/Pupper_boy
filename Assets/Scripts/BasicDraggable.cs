@@ -16,6 +16,8 @@ public class BasicDraggable : MonoBehaviour, PuppyPickup.IPickupItem
     [Header("Visual")]
     public MeshRenderer[] meshes;
 
+    bool isInMouth = false;
+
 
     //control functions
     //move
@@ -54,11 +56,20 @@ public class BasicDraggable : MonoBehaviour, PuppyPickup.IPickupItem
         DraggingController control = (DraggingController)GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Dragging);
         control.Init(this);
         GetComponent<Collider>().enabled = false;
+        isInMouth = true;
     }
 
     public virtual void OnDrop(Vector3 currentVelocity) {
         GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Walking);
         GetComponent<Collider>().enabled = true;
+        isInMouth = false;
+    }
+    public void OnDestroy() {
+        //remove item from mouth
+        if (isInMouth) {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<DogController>().mouth.itemInMouth = null;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControllerManager>().ChangeMode(PlayerControllerManager.Modes.Walking);
+        }
     }
     #endregion
 

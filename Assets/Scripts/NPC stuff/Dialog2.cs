@@ -72,7 +72,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
         SetCameraPosition();
 
         //set up dialog nodes
-        if (currentNode is DialogNodeBreak) {
+        if (currentNode is DialogNodeBreak || currentNode is DialogNodeStart) {
             bool canContinue = false;
             int numChoices = 0; //number of choice nodes attached. If 0, then continue to the next node no matter what
             foreach (DialogNode c in currentNode.connections) {
@@ -91,7 +91,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             } else {
                 progressionNum = 0; //reset progression num if its been used
             }
-        } else if (currentNode is DialogNodeStart) {
+        } /*else if (currentNode is DialogNodeStart) {
             //procede to the next node
             if (currentNode.connections != null) {
                 int numChoices = 0; //number of choice nodes attached. If 0, then continue to the next node no matter what
@@ -110,9 +110,8 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             } else {
                 Debug.LogError("Start node placed with no out connection. Dialog bugging out.");
             }
-        }
+        }*/
         
-
         //change player mode to dialog mode when they interact with this npc
         controlman.ChangeMode(PlayerControllerManager.Modes.Dialog);
         pdialog.npcDialog = this;
@@ -204,7 +203,7 @@ public class Dialog2 : InteractableObject, ISerializationCallbackReceiver {
             if (node.connections != null) {
                 ChangeNode(node.connections[0]);
             } else {
-                Debug.LogError("Choice node placed with no out connection. Dialog bugging out.");
+                Debug.LogError("Choice node placed with no out connection.");
             }
         } else if (node is DialogNodeFunction) {  //function
             //Run the function specified by the given number. If the number is out of bounds of the function array, dont run anything. Then procede to the next node if it exists.
