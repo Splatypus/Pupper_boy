@@ -49,7 +49,6 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
 
     #region listener functions
     public void OnVictory() {
-        print("You win!");
         foreach (GameObject g in bases) {
             Destroy(g);
         }
@@ -174,7 +173,6 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
 
     IEnumerator StartDialogNextFrame() {
         yield return new WaitForEndOfFrame();
-        Debug.Log("Chip talking");
         chip.OnInteract();
     }
 }
