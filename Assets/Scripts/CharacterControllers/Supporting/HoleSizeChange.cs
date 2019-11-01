@@ -42,7 +42,8 @@ public class HoleSizeChange : MonoBehaviour {
         Decay(decayTime);
     }
     public void Decay(float duration, bool destroyAtEnd = true, System.Action onComplete = null) {
-        snowImpact?.SetActive(false);
+        if(snowImpact != null)
+            snowImpact.SetActive(false);
         StartCoroutine(ShrinkHole(duration, destroyAtEnd, onComplete));
     }
 

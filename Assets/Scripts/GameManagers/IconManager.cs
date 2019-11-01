@@ -10,30 +10,17 @@ public enum Icons { Afraid, Angry, Bird, Corgi, Exclamation, Happy, Pomeranian, 
 public class IconManager : MonoBehaviour {
 
     [SerializeField]
-    private GameObject singleIconBubble;
+    private GameObject iconCanvas;
     [SerializeField]
     private Image singleIcon;
-
-    [SerializeField]
-    private GameObject doubleIconBubble;
-    [SerializeField]
-    private Image doubleIcon1;
-    [SerializeField]
-    private Image doubleIcon2;
 
     // should probably use a sprite sheet but meh
     [SerializeField]
     List<Sprite> icon_sprites;
-    
-    // TODO: make the in-between stuff work in here
-    // TODO: make the negative overlay work on top of any icon
 
     // Use this for initialization
     void Start () {
-        
-
-        singleIconBubble.SetActive(false);
-        doubleIconBubble.SetActive(false);
+        iconCanvas.SetActive(false);
     }
 	
 	public void set_single_icon(Icons icon)
@@ -41,23 +28,8 @@ public class IconManager : MonoBehaviour {
         singleIcon.sprite = icon_sprites[(int)icon];
     }
 
-    public void set_double_icon_first(Icons icon)
-    {
-        doubleIcon1.sprite = icon_sprites[(int)icon];
-    }
-
-    public void set_double_icon_second(Icons icon)
-    {
-        doubleIcon2.sprite = icon_sprites[(int)icon];
-    }
-
     public void set_single_bubble_active(bool isActive)
     {
-        singleIconBubble.SetActive(isActive);
-    }
-
-    public void set_double_bubble_active(bool isActive)
-    {
-        doubleIconBubble.SetActive(isActive);
+        iconCanvas.SetActive(isActive);
     }
 }
