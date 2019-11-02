@@ -25,7 +25,7 @@ public class BubblesAI : AIbase {
             progressionNum = 0; //if we somehow saved this number while a game was in progress, reset it to 0
         }
         //if bubbles has given the bandana out, but tiffany has not yet taken it, then spawn it
-        if (characterState == FIRST_REWARD_GIVEN && SaveManager.getInstance().GetInt("TiffanySummerState", 0) != 3) {
+        if (characterState >= FIRST_REWARD_GIVEN && SaveManager.getInstance().GetInt("TiffanySummerState", 0) < 3) {
             FirstReward();
         }
     }
