@@ -28162,32 +28162,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4136752533510278, guid: c046ef9dd8b7e034899db57b923e3acc, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.023652162
-      objectReference: {fileID: 0}
-    - target: {fileID: 4136752533510278, guid: c046ef9dd8b7e034899db57b923e3acc, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.029481167
-      objectReference: {fileID: 0}
-    - target: {fileID: 4136752533510278, guid: c046ef9dd8b7e034899db57b923e3acc, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.023652155
-      objectReference: {fileID: 0}
-    - target: {fileID: 114684380804246780, guid: c046ef9dd8b7e034899db57b923e3acc,
+    - target: {fileID: 5848803757407078670, guid: c046ef9dd8b7e034899db57b923e3acc,
         type: 3}
-      propertyPath: digAmountNeeded
+      propertyPath: m_havePropertiesChanged
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 114684380804246780, guid: c046ef9dd8b7e034899db57b923e3acc,
+    - target: {fileID: 5848803757407078670, guid: c046ef9dd8b7e034899db57b923e3acc,
         type: 3}
-      propertyPath: lowerSpawnVelocityBounds.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114684380804246780, guid: c046ef9dd8b7e034899db57b923e3acc,
-        type: 3}
-      propertyPath: upperSpawnVelocityBounds.y
-      value: 12
+      propertyPath: m_isInputParsingRequired
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c046ef9dd8b7e034899db57b923e3acc, type: 3}
@@ -37937,116 +37920,116 @@ MonoBehaviour:
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   serializedNodes:
-  - x: -1574
-    y: -131
+  - x: -1411
+    y: -166
     width: 70
     height: 70
     text: 
     num: -1
     type: 4
-  - x: 135
-    y: 24
+  - x: 298
+    y: -11
     width: 180
     height: 70
     text: No soap :(
     num: 0
     type: 1
-  - x: 130
-    y: 177
+  - x: 293
+    y: 142
     width: 180
     height: 70
     text: soap :D
     num: 1
     type: 1
-  - x: 352
-    y: -33
+  - x: 515
+    y: -68
     width: 200
     height: 150
     text: Hello again! My bubble machine is still <color="red>out of soap</color>.
       Hey, if you find some soap or somethin' lemme know!
     num: -1
     type: 0
-  - x: -1483
-    y: -176
+  - x: -1320
+    y: -211
     width: 200
     height: 150
     text: "Hiya! Hiya! My name is Bubbles! You gotta be new to the neighborhood! I
       love playin\u2019 with my bubble machine, they\u2019re a TON of fun to chase! "
     num: -1
     type: 0
-  - x: -1579
-    y: 73
+  - x: -1416
+    y: 38
     width: 180
     height: 70
     text: Sure!
     num: 0
     type: 1
-  - x: -1579
-    y: 175
+  - x: -1416
+    y: 140
     width: 180
     height: 70
     text: Not now.
     num: 1
     type: 1
-  - x: -896
-    y: 159
+  - x: -733
+    y: 124
     width: 80
     height: 70
     text: 
     num: 0
     type: 2
-  - x: -1108
-    y: 422
+  - x: -945
+    y: 387
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -795
+  - x: -632
+    y: 126
+    width: 70
+    height: 40
+    text: 
+    num: -1
+    type: 3
+  - x: -604
     y: 161
-    width: 70
-    height: 40
-    text: 
-    num: -1
-    type: 3
-  - x: -767
-    y: 196
     width: 180
     height: 70
     text: No victory
     num: 0
     type: 1
-  - x: -786
-    y: 92
+  - x: -623
+    y: 57
     width: 180
     height: 70
     text: victory
     num: 1
     type: 1
-  - x: -746
-    y: 270
+  - x: -583
+    y: 235
     width: 200
     height: 150
     text: "So close! That\u2019s okay, you can always try again sometime. I\u2019ll
       give you a special prize if you beat me!"
     num: -1
     type: 0
-  - x: -354
-    y: 268
+  - x: -191
+    y: 233
     width: 180
     height: 70
     text: Sure!
     num: 0
     type: 1
-  - x: -361
-    y: 363
+  - x: -198
+    y: 328
     width: 180
     height: 70
     text: No thanks.
     num: 1
     type: 1
-  - x: -596
-    y: 82
+  - x: -433
+    y: 47
     width: 200
     height: 150
     text: "Wow, you did it! That was so cool! Alright, let me get you somethin\u2019
@@ -38054,22 +38037,22 @@ MonoBehaviour:
       from their travels, why don\u2019t you take one? "
     num: -1
     type: 0
-  - x: -385
-    y: 52
+  - x: -222
+    y: 17
     width: 80
     height: 70
     text: 
     num: 2
     type: 2
-  - x: 152
-    y: 111
+  - x: 315
+    y: 76
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -163
-    y: 286
+  - x: 0
+    y: 251
     width: 200
     height: 150
     text: "Aww, you\u2019re so nice! I don\u2019t like Tiffany cause she thinks she\u2019s
@@ -38077,72 +38060,72 @@ MonoBehaviour:
       for her!"
     num: -1
     type: 0
-  - x: 42
-    y: 599
+  - x: 205
+    y: 564
     width: 180
     height: 70
     text: You're on!
     num: 0
     type: 1
-  - x: 43
-    y: 699
+  - x: 206
+    y: 664
     width: 180
     height: 70
     text: No thanks
     num: 1
     type: 1
-  - x: 540
-    y: 710
+  - x: 703
+    y: 675
     width: 80
     height: 70
     text: 
     num: 1
     type: 2
-  - x: 627
-    y: 720
+  - x: 790
+    y: 685
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 520
-    y: 787
+  - x: 683
+    y: 752
     width: 180
     height: 70
     text: No victory
     num: 0
     type: 1
-  - x: 520
-    y: 642
+  - x: 683
+    y: 607
     width: 180
     height: 70
     text: victory
     num: 1
     type: 1
-  - x: 709
-    y: 629
+  - x: 872
+    y: 594
     width: 200
     height: 150
     text: Wow! I'll have to keep training to be a better bubble catcher than you!
       You're welcome to come back anytime to play!
     num: -1
     type: 0
-  - x: 952
-    y: 641
+  - x: 1115
+    y: 606
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -290
-    y: 55
+  - x: -127
+    y: 20
     width: 200
     height: 150
     text: "I have a bunch of extras anyways, so don\u2019t worry about it. \n"
     num: -1
     type: 0
-  - x: 833
-    y: 146
+  - x: 996
+    y: 111
     width: 200
     height: 150
     text: "YOU BROUGHT ME MORE SOAP!!! Thank you! I knew you would!! I gotta give
@@ -38150,111 +38133,111 @@ MonoBehaviour:
       I gave you?"
     num: -1
     type: 0
-  - x: 132
-    y: 867
+  - x: 295
+    y: 832
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -389
-    y: 137
+  - x: -226
+    y: 102
     width: 80
     height: 70
     text: 
     num: 4
     type: 2
-  - x: -1266
-    y: -180
+  - x: -1103
+    y: -215
     width: 200
     height: 150
     text: "Have you tried <color=\"red>chasin\u2019 bubbles</color> before??"
     num: -1
     type: 0
-  - x: -1034
-    y: -192
+  - x: -871
+    y: -227
     width: 180
     height: 70
     text: Yes
     num: 1
     type: 1
-  - x: -1031
-    y: -85
+  - x: -868
+    y: -120
     width: 180
     height: 70
     text: No
     num: 0
     type: 1
-  - x: -843
-    y: -106
+  - x: -680
+    y: -141
     width: 200
     height: 150
     text: "You should try it sometime! My ears in the wind, flyin\u2019 through the
       air, it\u2019s great!"
     num: -1
     type: 0
-  - x: -619
-    y: -232
+  - x: -456
+    y: -267
     width: 200
     height: 150
     text: ' Sometimes I imagine I can fly, even out of my yard and into the sky, and
       maybe even around the world!!'
     num: -1
     type: 0
-  - x: -1802
-    y: 1
+  - x: -1639
+    y: -34
     width: 200
     height: 150
     text: "I just got a new bubble machine for my birthday, do you wanna give it a
       try?? It\u2019s got just enough soap in it for a few more rounds!"
     num: -1
     type: 0
-  - x: -840
-    y: -243
+  - x: -677
+    y: -278
     width: 200
     height: 150
     text: "Cool! I love chasin\u2019 them! My ears in the wind, flyin\u2019 through
       the air, it\u2019s great! "
     num: -1
     type: 0
-  - x: -1804
-    y: 171
+  - x: -1641
+    y: 136
     width: 200
     height: 150
     text: Back to try out my bubble machine?!
     num: -1
     type: 0
-  - x: -1306
-    y: 33
+  - x: -1143
+    y: -2
     width: 200
     height: 150
     text: "You\u2019ll have <color=\"red>30 seconds</color> to beat my record of <color=\"red>5
       bubbles</color>! Think you can do it?? Ready..."
     num: -1
     type: 0
-  - x: -1091
-    y: 27
+  - x: -928
+    y: -8
     width: 200
     height: 150
     text: Set...
     num: -1
     type: 0
-  - x: -1123
-    y: 173
+  - x: -960
+    y: 138
     width: 200
     height: 150
     text: Go!!!
     num: -1
     type: 0
-  - x: -547
-    y: 267
+  - x: -384
+    y: 232
     width: 200
     height: 150
     text: Wanna try again?
     num: -1
     type: 0
-  - x: -84
-    y: 51
+  - x: 79
+    y: 16
     width: 200
     height: 150
     text: "That was fun! I\u2019d love to play again, but I think that was the <color=\"red>last
@@ -38262,202 +38245,202 @@ MonoBehaviour:
       for now!"
     num: -1
     type: 0
-  - x: 489
-    y: 556
+  - x: 652
+    y: 521
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -188
-    y: 598
+  - x: -25
+    y: 563
     width: 200
     height: 150
     text: Oh, hi again! Do you wanna play again??
     num: -1
     type: 0
-  - x: 328
-    y: 645
+  - x: 491
+    y: 610
     width: 200
     height: 150
     text: Ready... Set... Chase!!!
     num: -1
     type: 0
-  - x: 705
-    y: 780
+  - x: 868
+    y: 745
     width: 200
     height: 150
     text: Just a bit to slow. My new record is <color="red>8 bubbles</color>! Betcha
       can't beat that!
     num: -1
     type: 0
-  - x: 333
-    y: 118
+  - x: 496
+    y: 83
     width: 200
     height: 150
     text: Oh Oh! Is that <color="red>soap</color> for me??
     num: -1
     type: 0
-  - x: 545
-    y: 188
+  - x: 708
+    y: 153
     width: 180
     height: 70
     text: Of course!
     num: 1
     type: 1
-  - x: 563
-    y: 122
+  - x: 726
+    y: 87
     width: 180
     height: 70
     text: No, sorry
     num: 0
     type: 1
-  - x: 743
-    y: 188
+  - x: 906
+    y: 153
     width: 80
     height: 70
     text: 
     num: 5
     type: 2
-  - x: 783
-    y: 8
+  - x: 946
+    y: -27
     width: 200
     height: 150
     text: Oh... ok... Well I hope you have fun with it.
     num: -1
     type: 0
-  - x: -1394
-    y: 51
+  - x: -1231
+    y: 16
     width: 80
     height: 70
     text: 
     num: 6
     type: 2
-  - x: 236
-    y: 655
+  - x: 399
+    y: 620
     width: 80
     height: 70
     text: 
     num: 6
     type: 2
-  - x: -779
-    y: 35
+  - x: -616
+    y: 0
     width: 180
     height: 70
     text: in progress
     num: 2
     type: 1
-  - x: -593
-    y: -53
+  - x: -430
+    y: -88
     width: 200
     height: 150
     text: Don't stand here talkin' to me! There's bubbles to catch!!!
     num: -1
     type: 0
-  - x: 499
-    y: 884
+  - x: 662
+    y: 849
     width: 180
     height: 70
     text: in progress
     num: 2
     type: 1
-  - x: 710
-    y: 937
+  - x: 873
+    y: 902
     width: 200
     height: 150
     text: You're never gonna beat my record if you stand here chatting!
     num: -1
     type: 0
-  - x: 231
-    y: 108
+  - x: 394
+    y: 73
     width: 80
     height: 70
     text: 
     num: 7
     type: 2
-  - x: 1055
-    y: 173
+  - x: 1218
+    y: 138
     width: 180
     height: 70
     text: Gave it to Tiffany
     num: 0
     type: 1
-  - x: 54
-    y: 277
+  - x: 217
+    y: 242
     width: 200
     height: 150
     text: Wait, before you go... Have you been to <color="red">Cherry Creek</color>
       yet?
     num: -1
     type: 0
-  - x: 279
-    y: 295
+  - x: 442
+    y: 260
     width: 180
     height: 70
     text: No, I haven't
     num: 0
     type: 1
-  - x: 517
-    y: 268
+  - x: 680
+    y: 233
     width: 200
     height: 150
-    text: "Oh, it's totally great! There are so many sticks there, I absolutely LOVE
-      sticks. Even if <color=\"red\">Muriel</color> always yells mean things at me
-      when I'm there, I always try to get \ra few sticks when I'm over there. \n"
+    text: 'Oh, it''s totally great! There are so many sticks there, I absolutely LOVE
+      sticks. Even if <color="red">Muriel</color> always yells mean things at me when
+      I''m there, I always try to get a few sticks when I''m over there. '
     num: -1
     type: 0
-  - x: 272
-    y: 385
+  - x: 435
+    y: 350
     width: 180
     height: 70
     text: I have. Who's the squirrel?
     num: 1
     type: 1
-  - x: 515
-    y: 408
+  - x: 678
+    y: 373
     width: 200
     height: 150
     text: "Oh, right. Muriel. Yeah she hates dogs. Not sure why, but she always tries
       to yell at me when I go to the creek to get sticks. \n"
     num: -1
     type: 0
-  - x: 733
-    y: 334
+  - x: 896
+    y: 299
     width: 200
     height: 150
     text: "<color=\"red>Chip's yard</color> is also over there, but I don't talk to
       him much. Have you met him yet?\r"
     num: -1
     type: 0
-  - x: 941
-    y: 317
+  - x: 1104
+    y: 282
     width: 180
     height: 70
     text: I don't think so
     num: 0
     type: 1
-  - x: 944
-    y: 420
+  - x: 1107
+    y: 385
     width: 180
     height: 70
     text: He seems interesting
     num: 1
     type: 1
-  - x: 1152
-    y: 277
+  - x: 1315
+    y: 242
     width: 200
     height: 150
     text: "He's an odd one, for sure. Doesn't chase bubbles like I do. He mentioned
       something about building an airship once. I think he's kinda crazy, but he's
-      \rnice. You should go say hi! Bring me back a stick or two on your way!\r\n"
+      nice. You should go say hi! Bring me back a stick or two on your way!\r"
     num: -1
     type: 0
-  - x: 1150
-    y: 417
+  - x: 1313
+    y: 382
     width: 200
     height: 150
-    text: "Yeah, he's pretty strange alright. I'll never understand \rthose puzzles
-      of his. But, to each doggo their own, I suppose!\r\n"
+    text: Yeah, he's pretty strange alright. I'll never understand those puzzles of
+      his. But, to each doggo their own, I suppose!
     num: -1
     type: 0
   serializedConnections:
@@ -38626,8 +38609,6 @@ MonoBehaviour:
   - outIndex: 68
     inIndex: 70
   - outIndex: 69
-    inIndex: 44
-  - outIndex: 70
     inIndex: 44
   Icons:
   - {fileID: 21300000, guid: 7fd5544211d726f4da8f938fcd91270d, type: 3}
