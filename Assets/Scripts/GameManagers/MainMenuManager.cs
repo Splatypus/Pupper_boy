@@ -25,6 +25,7 @@ public class MainMenuManager : MonoBehaviour {
 
     [Header("Loading Screen")]
     public string sceneToLoad = "UnleashedBackyard";
+    public string[] seasonStrings = { "UnleashedSummer", "UnleashedFall", "UnleashedWinter", "UnleashedSpring" };
     public GameObject loadingScreen;
     public Text loadingText;
 
@@ -78,7 +79,7 @@ public class MainMenuManager : MonoBehaviour {
     //Used to continue on last save
     public void Continue() {
         mySaveManager.LoadFile(mySaveManager.GetLastOpenID());
-        LoadScene(sceneToLoad);
+        LoadScene(sceneToLoad, seasonStrings[mySaveManager.GetInt(SeasonManager.SEASON_KEY, 0)]);
     }
 
     //Used For Creating a New Save
@@ -109,13 +110,13 @@ public class MainMenuManager : MonoBehaviour {
 
     #region loading screen
     public void LoadScene() {
-        LoadScene(sceneToLoad);
+        LoadScene(sceneToLoad, seasonStrings[0]);
     }
-    public void LoadScene(string sceneName) {
+    public void LoadScene(string sceneName, string season) {
         loadingScreen.SetActive(true);
         mainUI.SetActive(false);
         StartCoroutine(DotLoading(0.4f));
-        StartCoroutine(LoadNewSceneAsync(sceneName));
+        StartCoroutine(LoadNewSceneAsync(sceneName, season));
     }
 
 
@@ -133,9 +134,10 @@ public class MainMenuManager : MonoBehaviour {
         }
     }
 
-    IEnumerator LoadNewSceneAsync(string name) {
-        AsyncOperation async = SceneManager.LoadSceneAsync(name);
-        while (!async.isDone)
+    IEnumerator LoadNewSceneAsync(string name, string season) {
+        AsyncOperation asyncScene = SceneManager.LoadSceneAsync(name);
+        AsyncOperation asyncSeason = SceneManager.LoadSceneAsync(season, LoadSceneMode.Additive);
+        while (!asyncScene.isDone && !asyncSeason.isDone)
             yield return null;
         
         StopCoroutine("DotLoading");

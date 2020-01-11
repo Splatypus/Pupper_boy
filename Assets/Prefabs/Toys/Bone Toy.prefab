@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 54069598564394666}
   - component: {fileID: 114904858507822718}
   - component: {fileID: 82789961470304638}
+  - component: {fileID: 6548369313288219180}
+  - component: {fileID: 1812331822485146527}
+  - component: {fileID: 415462143}
   m_Layer: 15
   m_Name: Bone Toy
   m_TagString: Pickup
@@ -27,13 +30,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1573242260750698}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 212.98999, y: 0.38, z: 321.997}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.69992, y: 1.8868834, z: 1.69992}
   m_Children:
-  - {fileID: 4347440609346506}
-  - {fileID: 4506249573873582}
-  - {fileID: 4703224528376894}
+  - {fileID: 4764421750411974}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -60,7 +61,7 @@ Rigidbody:
   m_GameObject: {fileID: 1573242260750698}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
+  m_Drag: 1
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -90,7 +91,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7e9ad06e5e0c319409a163962d0f6bcd, type: 3}
   meshes:
   - {fileID: 23320643270228060}
-  tagList: 
+  tagList: 05000000
   isCurrentlyHeld: 0
 --- !u!82 &82789961470304638
 AudioSource:
@@ -104,7 +105,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0a77ab3cb3e631244a67734d6fd79f97, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.499
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -188,147 +189,85 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!1 &1640676055005366
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4347440609346506}
-  - component: {fileID: 136649543250364514}
-  m_Layer: 2
-  m_Name: collider1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4347440609346506
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1640676055005366}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.335, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4781535565290840}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &136649543250364514
+--- !u!136 &6548369313288219180
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1640676055005366}
+  m_GameObject: {fileID: 1573242260750698}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.13
   m_Height: 0.5
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1783394918746670
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4506249573873582}
-  - component: {fileID: 136510020710773938}
-  m_Layer: 2
-  m_Name: collider2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4506249573873582
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783394918746670}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.418, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4781535565290840}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &136510020710773938
+  m_Center: {x: -0.34, y: 0, z: 0}
+--- !u!136 &1812331822485146527
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783394918746670}
+  m_GameObject: {fileID: 1573242260750698}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.13
   m_Height: 0.5
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1825133515359642
-GameObject:
+  m_Center: {x: 0.41, y: 0, z: 0}
+--- !u!114 &415462143
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4703224528376894}
-  - component: {fileID: 95235282071857886}
-  m_Layer: 2
-  m_Name: dogtoy2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4703224528376894
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1825133515359642}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
-  m_Children:
-  - {fileID: 4764421750411974}
-  m_Father: {fileID: 4781535565290840}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &95235282071857886
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1825133515359642}
+  m_GameObject: {fileID: 1573242260750698}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 7f17cc44b860e4077b1b086c2996cb98, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b210edfee16ad64492b9a3870ef6137, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: Bone Toy
+  image: {fileID: 21300000, guid: ca56b6d4d1e9aae43a9e65adbf5313d4, type: 3}
+  useAutomaticPlacement: 1
+  dynamicCameraDistance: 4
+  dynamicCameraHeight: 2.5
+  dynamicCameraTime: 1
+  customCameraLocation: {fileID: 0}
+  progressionNum: 0
+  functions: []
+  serializedNodes:
+  - x: 824
+    y: 482
+    width: 70
+    height: 70
+    text: 
+    num: -1
+    type: 4
+  - x: 994
+    y: 480
+    width: 200
+    height: 150
+    text: "A rubbery, squishy, squeaky bone toy covered in dog slobber. It\u2019s
+      one of my favorites! "
+    num: -1
+    type: 0
+  - x: 1052
+    y: 668
+    width: 70
+    height: 40
+    text: 
+    num: -1
+    type: 3
+  serializedConnections:
+  - outIndex: 0
+    inIndex: 1
+  - outIndex: 1
+    inIndex: 2
+  - outIndex: 2
+    inIndex: 1
 --- !u!1 &1844012652580384
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,7 +279,7 @@ GameObject:
   - component: {fileID: 4764421750411974}
   - component: {fileID: 33077276006259142}
   - component: {fileID: 23320643270228060}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: pCylinder2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -354,11 +293,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844012652580384}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0020977682, y: 0, z: -0.0004984429}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.04196167, y: 0, z: -0.009979248}
+  m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children: []
-  m_Father: {fileID: 4703224528376894}
+  m_Father: {fileID: 4781535565290840}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &33077276006259142

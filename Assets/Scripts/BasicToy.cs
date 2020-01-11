@@ -51,20 +51,25 @@ public class BasicToy : MonoBehaviour, PuppyPickup.IPickupItem {
 
     }
 
+    public void PlayPickupSound() {
+        if (!m_source)
+            m_source = GetComponent<AudioSource>();
+
+        if (m_source && pickup_sounds.Length > 0) {
+            int sound_index = Random.Range(0, pickup_sounds.Length);
+            m_source.clip = pickup_sounds[sound_index];
+            m_source.Play();
+        }
+    }
+
     public void OnPickup(PuppyPickup source) {
         //trigger events
         EventManager.Instance.TriggerOnItemPickup(gameObject);
-        //run sounds
-        isCurrentlyHeld = true;
-        if (play_sound) {
-            if (!m_source)
-                m_source = GetComponent<AudioSource>();
 
-            if (m_source) {
-                int sound_index = Random.Range(0, pickup_sounds.Length);
-                m_source.clip = pickup_sounds[sound_index];
-                m_source.Play();
-            }
+        isCurrentlyHeld = true;
+        //run sounds
+        if (play_sound) {
+            PlayPickupSound();
         }
         //attach to mouth
         source.itemInMouth = gameObject;

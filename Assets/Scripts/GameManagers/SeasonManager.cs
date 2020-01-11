@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SeasonManager : MonoBehaviour {
-    private readonly string SEASON_KEY = "Season";
+    public static readonly string SEASON_KEY = "Season";
 
     public static SeasonManager Instance;
     public enum Seasons { SUMMER, FALL, WINTER, SPRING }

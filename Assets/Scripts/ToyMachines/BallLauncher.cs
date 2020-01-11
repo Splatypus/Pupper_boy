@@ -1,52 +1,168 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BallLauncher : MonoBehaviour {
 
-    [SerializeField] private Vector3 launchDirection;           //direction of ball launch
-    [SerializeField] private float launchForce;                 //force of launch, applied in direction specified above
+    [Header("Variables")]
+    public List<BasicToy.Tag> acceptedTags;
+    public float launchTimer;
+    public float rejectTimer;
+    public AnimationCurve suckCurve;
+    public float launchVelocity;
+    public float rejectVelocity;
+    [Header("Related Components")]
+    public Transform input;
+    public Transform output;
+    public Transform center;
+    public GameObject rejectParticleSystem;
+    [Header("Sounds")]
+    public AudioSource audioSource;
+    public AudioClip suckSound;
+    public AudioClip shakeSound;
+    public AudioClip launchSound;
+    public AudioClip rejectSound;
 
-    [SerializeField] private Vector3 storePosition;           //position within ball launcher to store it until launch
+    [HideInInspector]public GameObject objectLoaded = null;
+    [HideInInspector] public GameObject deniedInput = null; //used so that the intake doesnt immediatly suck in a rejected item
 
-    private GameObject ballForLaunch = null;                    //ball about to be launched
-
-    [SerializeField] private float waitTime;                    //time between ball being loaded and ball being launched
-    private float timer = 0f;                                   //current time from load to launch
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if(ballForLaunch != null)
-		{
-            ballForLaunch.transform.rotation = this.transform.rotation;
-            ballForLaunch.transform.localPosition = storePosition;
-
-            timer += Time.deltaTime;
-            if (timer >= waitTime)
-                LaunchBall();
+    //Launches the item placed inside
+    public void LaunchBall() {
+        //play sounds
+        PlaySound(launchSound, false);
+        BasicToy toy = objectLoaded.GetComponent<BasicToy>();
+        if (toy) {
+            toy.PlayPickupSound();
         }
-	}
 
+        //move object to output location
+        objectLoaded.transform.position = output.transform.position;
+        objectLoaded.transform.rotation = output.transform.rotation;
+        //enable colliders/gravity on the item
+        foreach (Collider c in objectLoaded.GetComponents<Collider>()) {
+            c.enabled = true;
+        }
+        Rigidbody rb = objectLoaded.GetComponent<Rigidbody>();
+        if (rb == null) {
+            return;
+        }
+        rb.useGravity = true;
 
-    public void LoadBall( GameObject ball)
-    {
-        ballForLaunch = ball;
-        ballForLaunch.transform.parent = this.transform;
-        ballForLaunch.transform.localPosition = storePosition;
-        ballForLaunch.GetComponent<Rigidbody>().useGravity = false;
-        timer = 0f;
+        //then launch it
+        rb.velocity = output.transform.right * launchVelocity;
+        objectLoaded = null;
     }
 
-    void LaunchBall()
-    {
-        ballForLaunch.transform.parent = null;
-        ballForLaunch.GetComponent<Rigidbody>().useGravity = true;
-        ballForLaunch.GetComponent<Rigidbody>().AddForce(launchDirection * launchForce, ForceMode.Impulse);
-        ballForLaunch = null;
+    //Rejects the item placed inside. Smoke effect
+    public void RejectBall() {
+        //play sounds
+        PlaySound(rejectSound, false);
+        BasicToy toy = objectLoaded.GetComponent<BasicToy>();
+        if (toy) {
+            toy.PlayPickupSound();
+        }
+        //move object to output location
+        objectLoaded.transform.position = input.transform.position;
+        objectLoaded.transform.rotation = input.transform.rotation;
+        //enable colliders/gravity on the item
+        foreach (Collider c in objectLoaded.GetComponents<Collider>()) {
+            c.enabled = true;
+        }
+        Rigidbody rb = objectLoaded.GetComponent<Rigidbody>();
+        if (rb == null) {
+            return;
+        }
+        rb.useGravity = true;
+
+        //then launch it
+        rb.velocity = input.transform.right * rejectVelocity;
+        Destroy(Instantiate(rejectParticleSystem, input.transform.position, Quaternion.LookRotation(input.transform.forward, input.transform.right) ), 3.0f);
+
+        //stop the same item from being loaded for the next 2 seconds (so the machine doesnt grab it as it moves thru the input zone)
+        deniedInput = objectLoaded;
+        objectLoaded = null;
+        StartCoroutine(DoActionAfterDelay(2.0f, () => { deniedInput = null; }));
+    }
+
+    public void LoadBall(GameObject ball) {
+        //if the machine cant take the input item, do nothing with it
+        if (objectLoaded != null || ball == deniedInput) {
+            return;
+        }
+        objectLoaded = ball;
+        //animate the object being pulled into the input
+        StartCoroutine(SuckItemIn(1.0f, ball));
+    }
+
+    //Once a ball has been sucked into the machine, decide what to do with it
+    public void BallEntered() {
+        //check to see if its flagged as a toy
+        BasicToy toyComponent = objectLoaded.GetComponent<BasicToy>();
+        if (!toyComponent) {
+            StartCoroutine(ShakeMachine(rejectTimer, RejectBall));
+        }
+        //check if any of the objects tags overlap, if they do launch it, if not reject it
+        bool hasTagMatch = false;
+        foreach (BasicToy.Tag tag in acceptedTags) {
+            if (toyComponent.HasTag(tag)) {
+                hasTagMatch = true;
+                break;
+            }
+        }
+        if (!hasTagMatch) {
+            StartCoroutine(ShakeMachine(rejectTimer, RejectBall));
+        } else {
+            StartCoroutine(ShakeMachine(launchTimer, LaunchBall));
+        }
+    }
+
+    //sets the audio source to play a specific sound, flag for if it should loop
+    void PlaySound(AudioClip sound, bool doesLoop) {
+        audioSource.clip = sound;
+        audioSource.loop = doesLoop;
+        audioSource.Play();
+    }
+
+    //applies a squash and stretch shader to the machine
+    IEnumerator ShakeMachine(float duration, Action endAction) {
+        //play sounds
+        PlaySound(shakeSound, true);
+
+        yield return new WaitForSeconds(duration);
+        endAction.Invoke();
+    }
+
+    //Pulls and item from its current location into the machine
+    IEnumerator SuckItemIn(float duration, GameObject item) {
+        //play sounds
+        PlaySound(suckSound, false);
+        //disable colliders/gravity on the item
+        foreach (Collider c in item.GetComponents<Collider>()) {
+            c.enabled = false;
+        }
+        Rigidbody rb = item.GetComponent<Rigidbody>();
+        if (rb != null) {
+            rb.useGravity = false;
+            rb.velocity = Vector3.zero;
+        }
+
+        //initial values
+        Vector3 startPosition = item.transform.position;
+        float startTime = Time.time;
+
+        //lerp item in
+        while (startTime + duration > Time.time) {
+            item.transform.position = Vector3.Lerp(startPosition, center.transform.position, suckCurve.Evaluate((Time.time - startTime) / duration));
+            yield return new WaitForFixedUpdate();
+        }
+        item.transform.position = center.transform.position;
+
+        BallEntered();
+    }
+
+    IEnumerator DoActionAfterDelay(float duration, Action endAction) {
+        yield return new WaitForSeconds(duration);
+        endAction.Invoke();
     }
 }
