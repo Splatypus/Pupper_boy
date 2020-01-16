@@ -12,11 +12,13 @@ public class BallLauncher : MonoBehaviour {
     public AnimationCurve suckCurve;
     public float launchVelocity;
     public float rejectVelocity;
+    public float squishAmount;
     [Header("Related Components")]
     public Transform input;
     public Transform output;
     public Transform center;
     public GameObject rejectParticleSystem;
+    public Material mat;
     [Header("Sounds")]
     public AudioSource audioSource;
     public AudioClip suckSound;
@@ -129,7 +131,10 @@ public class BallLauncher : MonoBehaviour {
         //play sounds
         PlaySound(shakeSound, true);
 
+        mat.SetFloat("_Amount", squishAmount);
+
         yield return new WaitForSeconds(duration);
+        mat.SetFloat("_Amount", 0);
         endAction.Invoke();
     }
 
