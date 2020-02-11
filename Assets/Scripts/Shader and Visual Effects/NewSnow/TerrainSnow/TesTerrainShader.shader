@@ -114,10 +114,15 @@
 			float3 pixelLoc = (_CameraLocation - mul(unity_ObjectToWorld, v.vertex)) * _WorldToPixel;
 			float d = tex2Dlod(_DispTex, float4(1 - (pixelLoc.x / _CameraWidth + 0.5), (pixelLoc.z / _CameraWidth + 0.5), 0, 0)).r;
 
+			/*If d is the vertically highest possible value, then allow the terrain to go to any height it wants
+			the below equation is roughly equivalent to the following:
+			if(d < 0.05){
+				d=-1000;
+			}*/
+			d += (step(0.05, d) -1 ) * 1000;
 			//y position is the lower of the worldspace position of displaced snow and the snow max height
 			v.vertex.y = min(	_CameraLocation.y + 1 + _Range - _Range*d,	mul(unity_ObjectToWorld, v.vertex).y + _SnowDepth	) + 150;
 			
-		
 		}
 
 		/**
