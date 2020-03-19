@@ -10,6 +10,7 @@ public class SeasonTerrainChange : MonoBehaviour
     public TerrainData summer;
     public TerrainData fall, winter, spring;
     [Header("Terrain Material")]
+    public Material summerSnowMat;
     public Material winterSnowMat;
 
 
@@ -34,20 +35,19 @@ public class SeasonTerrainChange : MonoBehaviour
         switch (s) {
             case SeasonManager.Seasons.SUMMER:
                 newData = summer;
-                target.materialType = Terrain.MaterialType.BuiltInStandard;
+                target.materialTemplate = summerSnowMat;
                 break;
             case SeasonManager.Seasons.FALL:
                 newData = fall;
-                target.materialType = Terrain.MaterialType.BuiltInStandard;
+                target.materialTemplate = summerSnowMat;
                 break;
             case SeasonManager.Seasons.WINTER:
                 newData = winter;
-                target.materialType = Terrain.MaterialType.Custom;
                 target.materialTemplate = winterSnowMat;
                 break;
             case SeasonManager.Seasons.SPRING:
                 newData = spring;
-                target.materialType = Terrain.MaterialType.BuiltInStandard;
+                target.materialTemplate = summerSnowMat;
                 break;
             default:
                 break;
