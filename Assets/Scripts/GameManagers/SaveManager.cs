@@ -176,7 +176,7 @@ public class SaveManager {
     }
 
     //saves the current JSON data
-    public void SaveFile() {
+    public async void SaveFile(Action callback = null) {
         if (loadedSaveData == null) {
             return;
         }
@@ -187,9 +187,10 @@ public class SaveManager {
         string path = Path.Combine(Application.persistentDataPath, SAVE_DATA_FILE + currentOpenFile + FILE_EXTENSION);
         string jsonString = JsonUtility.ToJson(loadedSaveData);
         using (StreamWriter writer = File.CreateText(path)) {
-            writer.Write(jsonString);
+            await writer.WriteAsync(jsonString);
         }
-
+        //do callback function is set
+        callback?.Invoke();
     }
 
     //puts an string int pair into data. To save, call SaveFile afterward.

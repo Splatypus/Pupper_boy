@@ -25,7 +25,6 @@ public class MainMenuManager : MonoBehaviour {
 
     [Header("Loading Screen")]
     public string sceneToLoad = "UnleashedBackyard";
-    public string[] seasonStrings = { "UnleashedSummer", "UnleashedFall", "UnleashedWinter", "UnleashedSpring" };
     public GameObject loadingScreen;
     public Text loadingText;
 
@@ -43,6 +42,9 @@ public class MainMenuManager : MonoBehaviour {
         //reset static classes
         DayNightManager.Reset();
         CrossSceneReferences.Reset();
+
+        //dont destroy on load - we need this around to load the next scene
+        DontDestroyOnLoad(this);
     }
 
     private void OnEnable() {
@@ -79,7 +81,7 @@ public class MainMenuManager : MonoBehaviour {
     //Used to continue on last save
     public void Continue() {
         mySaveManager.LoadFile(mySaveManager.GetLastOpenID());
-        LoadScene(sceneToLoad, seasonStrings[mySaveManager.GetInt(SeasonManager.SEASON_KEY, 0)]);
+        LoadScene(sceneToLoad, mySaveManager.GetInt(SeasonManager.SEASON_KEY, 0));
     }
 
     //Used For Creating a New Save
@@ -110,12 +112,12 @@ public class MainMenuManager : MonoBehaviour {
 
     #region loading screen
     public void LoadScene() {
-        LoadScene(sceneToLoad, seasonStrings[0]);
+        LoadScene(sceneToLoad,0);
     }
-    public void LoadScene(string sceneName, string season) {
+    public void LoadScene(string sceneName, int season) {
         loadingScreen.SetActive(true);
         mainUI.SetActive(false);
-        StartCoroutine(DotLoading(0.4f));
+        //StartCoroutine(DotLoading(0.4f));
         StartCoroutine(LoadNewSceneAsync(sceneName, season));
     }
 
@@ -134,13 +136,35 @@ public class MainMenuManager : MonoBehaviour {
         }
     }
 
-    IEnumerator LoadNewSceneAsync(string name, string season) {
-        AsyncOperation asyncScene = SceneManager.LoadSceneAsync(name);
-        AsyncOperation asyncSeason = SceneManager.LoadSceneAsync(season, LoadSceneMode.Additive);
-        while (!asyncScene.isDone && !asyncSeason.isDone)
-            yield return null;
+    IEnumerator LoadNewSceneAsync(string name, int season) {
+
+        AsyncOperation asyncScene = SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+        AsyncOperation asyncSeason = SeasonManager.Instance.SetSeason(season);
+
+        //prevent activating scenes until both are ready
+        asyncScene.allowSceneActivation = false;
+        asyncSeason.allowSceneActivation = false;
         
-        StopCoroutine("DotLoading");
+        //wait for loads
+        while (!asyncScene.isDone || !asyncSeason.isDone)
+        {
+            //update loading screen
+            float percentLoaded = Mathf.Min(asyncScene.progress, asyncSeason.progress);
+            loadingText.text = "Loading..." + (percentLoaded * 100.0f) + "%";
+
+            //if the scenes are both ready to be loaded, allow activation
+            if (asyncScene.progress >= 0.9f && asyncSeason.progress >= 0.9f) {
+                //make sure backyard activates before season
+                asyncScene.allowSceneActivation = true;
+                while (!asyncScene.isDone) {
+                    yield return null;
+                }
+                asyncSeason.allowSceneActivation = true;
+            }
+            yield return null;
+        }
+
+        Destroy(this);
     }
     #endregion
 }
