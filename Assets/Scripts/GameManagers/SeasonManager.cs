@@ -26,7 +26,7 @@ public class SeasonManager {
     public Seasons GetSeason() {
         return currentSeason;
     }
-    public AsyncOperation SetSeason(Seasons newSeason) {
+    public void SetSeason(Seasons newSeason, bool save = true) {
         //first, start unloading the old scene
         if (SceneManager.GetSceneByName(sceneNames[(int)currentSeason]).isLoaded) {
             SceneManager.UnloadSceneAsync(sceneNames[(int)currentSeason]);
@@ -34,17 +34,21 @@ public class SeasonManager {
         //change season and trigger events
         currentSeason = newSeason;
         //Load in the correct season
-        AsyncOperation async = SceneManager.LoadSceneAsync(sceneNames[(int)currentSeason], LoadSceneMode.Additive);
-        //save scene change
-        SaveManager.getInstance().PutInt(SEASON_KEY, (int)currentSeason);
-        SaveManager.getInstance().SaveFile();
+        string[] scenes = { "UnleashedBackyard", sceneNames[(int)currentSeason] };
+        LoadingScreen.LoadingScreenToScenes(scenes);
 
-        return async;
-    }
-    public AsyncOperation SetSeason(int newSeason) {
-        if (newSeason < 0 || newSeason >= 4) {
-            return null;
+        if (save){
+            //save scene change
+            SaveManager.getInstance().PutInt(SEASON_KEY, (int)currentSeason);
+            SaveManager.getInstance().SaveFile();
         }
-        return SetSeason((Seasons)newSeason);
+        
+    }
+    public void SetSeason(int newSeason, bool save = true) {
+        if (newSeason < 0 || newSeason >= 4) {
+            Debug.LogError("Set Season called on invalid season number");
+            return;
+        }
+        SetSeason((Seasons)newSeason, save);
     }
 }

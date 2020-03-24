@@ -100,8 +100,7 @@ public class SocksTutorial : AIbase {
     //called whenever an objective is finished, such as looking at a thing or moving to the right spot
     public void ObjectiveComplete() {
         characterState++;
-        if (characterState > 2)
-            progressionNum = 1;
+        progressionNum = 1;
         //trigger new dialog if needed
         TriggerInteractFromcharacterState();
         TutorialManager.Instance.DisableTutorial();

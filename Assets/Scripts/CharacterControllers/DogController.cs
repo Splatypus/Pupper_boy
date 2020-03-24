@@ -12,7 +12,6 @@ public class DogController : Controller {
     PlayerControllerManager manager;
     Animator anim;
     Transform cam;
-    FreeCameraLook cameraScript;
     [HideInInspector] public PuppyPickup mouth;
     [HideInInspector] public EscMenuManager escMenu;
     #endregion
@@ -21,6 +20,7 @@ public class DogController : Controller {
     public ParticleSystem digParticles;
     public ParticleSystem[] shakeParticles;
     public GameObject digHolePrefab;
+    public FreeCameraLook cameraScript;
 
     #region movement variables
     [Header("Movement")]
@@ -79,7 +79,9 @@ public class DogController : Controller {
     void Start() {
         manager = GetComponent<PlayerControllerManager>();
         controller = GetComponent<CharacterController>();
-        cameraScript = Camera.main.GetComponent<FreeCameraLook>();
+        if (!cameraScript) { 
+            cameraScript = Camera.main.GetComponent<FreeCameraLook>();
+        }
         cam = cameraScript.phantomCamera.transform; //Camera.main.transform;
         mouth = GetComponentInChildren<PuppyPickup>();
         anim = GetComponentInChildren<Animator>();
