@@ -48,7 +48,7 @@
         {
             for (int i = 0; i < materials.Count; i++)
             {
-                if (materials[i].selectedProperty > 0 && materials[i].selectedProperty < materials[i].properties.Count)
+                if (materials[i].selectedProperty >= 0 && materials[i].selectedProperty < materials[i].properties.Count)
                 {
                     materials[i].meterial.color = materials[i].properties[materials[i].selectedProperty].color;
                     materials[i].meterial.mainTexture = materials[i].properties[materials[i].selectedProperty].mainTex;
@@ -60,9 +60,9 @@
         {
             for (int i = 0; i < materials.Count; i++)
             {
-                if (materials[i].properties.Count > slot - 1)
+                if (materials[i].properties.Count > slot)
                 {
-                    materials[i].selectedProperty = slot - 1;
+                    materials[i].selectedProperty = slot;
                 }
             }
             Refresh();
