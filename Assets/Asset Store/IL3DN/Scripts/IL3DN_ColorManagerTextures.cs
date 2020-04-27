@@ -48,8 +48,11 @@
         {
             for (int i = 0; i < materials.Count; i++)
             {
-                materials[i].meterial.color = materials[i].properties[materials[i].selectedProperty].color;
-                materials[i].meterial.mainTexture = materials[i].properties[materials[i].selectedProperty].mainTex;
+                if (materials[i].selectedProperty > 0 && materials[i].selectedProperty < materials[i].properties.Count)
+                {
+                    materials[i].meterial.color = materials[i].properties[materials[i].selectedProperty].color;
+                    materials[i].meterial.mainTexture = materials[i].properties[materials[i].selectedProperty].mainTex;
+                }
             }
         }
 

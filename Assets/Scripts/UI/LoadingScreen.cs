@@ -40,7 +40,6 @@ public class LoadingScreen : MonoBehaviour
         DontDestroyOnLoad(loadingCanvas);
 
         StartCoroutine(DoLoadingAsync());
-
     }
 
     //updates the UI to a given progress amount (0 is 0%, 1 is 100%)
@@ -58,7 +57,7 @@ public class LoadingScreen : MonoBehaviour
             while (baseOp.progress < 0.9f)
             {
                 UpdateUI(baseOp.progress / nextScenes.Length);
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             baseOp.allowSceneActivation = true;
         }
@@ -71,7 +70,7 @@ public class LoadingScreen : MonoBehaviour
             AsyncOperation seasonOP = SceneManager.LoadSceneAsync(nextScenes[i], LoadSceneMode.Additive);
             while (seasonOP.progress < 0.9f) {
                 UpdateUI( (seasonOP.progress + i) / nextScenes.Length);
-                yield return new WaitForEndOfFrame();
+                yield return null;
             }
             seasonOP.allowSceneActivation = true;
         }
