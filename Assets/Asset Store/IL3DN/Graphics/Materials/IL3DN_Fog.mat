@@ -9,11 +9,11 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: IL3DN_Fog
   m_Shader: {fileID: 4800000, guid: dd1eee02f688e704ea9e6dc90a8b1cfb, type: 3}
-  m_ShaderKeywords: _KEYWORD0_ON
+  m_ShaderKeywords: _EXCLUDESKYBOX_ON _KEYWORD0_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
@@ -86,10 +86,10 @@ Material:
     m_Floats:
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _Density: 20
+    - _Density: 10
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _ExcludeSkybox: 0
+    - _ExcludeSkybox: 1
     - _FogAmount: 15
     - _FogIntensity: 1
     - _GlossMapScale: 1
@@ -113,9 +113,9 @@ Material:
     - _Color0: {r: 0.015686274, g: 1, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EndColor: {r: 0, g: 1, b: 0, a: 0}
-    - _FarColor: {r: 0.15566039, g: 0.5402109, b: 1, a: 0.6784314}
-    - _GlowColor: {r: 0.2830189, g: 0.2830189, b: 0.2830189, a: 0.5372549}
-    - _NearColor: {r: 0.9529412, g: 0.38855228, b: 0, a: 0}
+    - _FarColor: {r: 0.21226338, g: 0.5812036, b: 1, a: 0.91764706}
+    - _GlowColor: {r: 0.23371306, g: 0.49056602, b: 0.23865256, a: 0}
+    - _NearColor: {r: 0.54519707, g: 0.7169812, b: 0.40245634, a: 0.019607844}
     - _SF_NoiseSpeed: {r: 0, g: 0, b: 0, a: 0}
     - _SF_NoiseTiling: {r: 1, g: 1, b: 1, a: 1}
     - _StartColor: {r: 1, g: 0, b: 0, a: 0}

@@ -27,10 +27,6 @@ public class SeasonManager {
         return currentSeason;
     }
     public void SetSeason(Seasons newSeason, bool save = true) {
-        //first, start unloading the old scene
-        if (SceneManager.GetSceneByName(sceneNames[(int)currentSeason]).isLoaded) {
-            SceneManager.UnloadSceneAsync(sceneNames[(int)currentSeason]);
-        }
         //change season and trigger events
         currentSeason = newSeason;
         //Load in the correct season

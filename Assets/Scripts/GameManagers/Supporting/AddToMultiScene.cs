@@ -10,4 +10,8 @@ public class AddToMultiScene : MonoBehaviour
     private void Awake() {
         CrossSceneReferences.GetInstance().PutObject(key, gameObject);
     }
+    private void OnDestroy()
+    {
+        CrossSceneReferences.GetInstance().RemoveObject(key);
+    }
 }

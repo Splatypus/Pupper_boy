@@ -22,6 +22,9 @@ public class CrossSceneReferences
     public void PutObject(string key, GameObject g) {
         references.Add(key, g);
     }
+    public void RemoveObject(string key) {
+        references.Remove(key);
+    }
     public GameObject GetObject(string key) {
         return references[key];
     }
