@@ -36,7 +36,7 @@ public class TiffyFall : AIbase
     public override void ReactToItem(BasicToy toy)
     {
         base.ReactToItem(toy);
-        if (toy != null && toy.HasTag(BasicToy.Tag.RexQuestItem))
+        if (toy != null && toy.HasTag(BasicToy.Tag.TiffyQuestItem))
         {
             progressionNum = 1;
         }

@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class ChipAI : AIbase
 {
-    public void FinishGame() {
-        progressionNum = 1;
+    public BlackieGameViewController game;
+
+    public void StartGame(int index) {
+        game.LoadFile(index, () => {
+            progressionNum = 1;
+            OnInteract();
+        });
     }
 }

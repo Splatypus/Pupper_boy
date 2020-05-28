@@ -6,9 +6,6 @@ using Random = UnityEngine.Random;
 
 public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener 
 {
-    [Header("References")]
-    public ChipAI chip;
-
     [Header("Game Files")]
     public TextAsset[] files;
 
@@ -34,6 +31,10 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
     public float pieceHeight;
     [Range(0, 1)] public float stoneSpawnChance;
 
+    //Callbacks
+    System.Action OnFinishCallback;
+    int currentPuzzleIndex = -1;
+
     [HideInInspector] public BlackieGameBoard game { get; private set; }
 
     //runtime references
@@ -49,13 +50,13 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
 
     #region listener functions
     public void OnVictory() {
+        currentPuzzleIndex = -1;
         foreach (GameObject g in bases) {
             Destroy(g);
         }
         foreach (GameObject g in pieces) {
             Destroy(g);
         }
-        chip.FinishGame();
         StartCoroutine(StartDialogNextFrame()); //Since destroying a draggable returns you to walking, this has to be called on the next frame... for whatever reason.
     }
     public void OnFileLoaded() {
@@ -63,7 +64,8 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
     }
     #endregion
 
-    public void LoadFile(int index) {
+    public void LoadFile(int index, System.Action completionCallback = null) {
+        currentPuzzleIndex = index;
         //clear bases
         if (bases != null) {
             for (int i = 0; i < bases.Count; i++) {
@@ -80,6 +82,11 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
         pieces = new List<GameObject>();
 
         game.LoadBoard(files[index]);
+    }
+
+    //reloads the current puzzle
+    public void Reload() {
+        LoadFile(currentPuzzleIndex, OnFinishCallback);
     }
 
     //draws the base tiles
@@ -173,6 +180,6 @@ public class BlackieGameViewController : AIbase, BlackieGameBoard.IListener
 
     IEnumerator StartDialogNextFrame() {
         yield return new WaitForEndOfFrame();
-        chip.OnInteract();
+        OnFinishCallback.Invoke();
     }
 }
