@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Trampoline : MonoBehaviour {
 
+    [Tooltip("The force to apply upwards on objects dropped on the trampoline. (adds force)")]
     public float bounceAmount;
+    [Tooltip("The amount of the initial veleocity to keep (inverted).")]
+    public float velocitySaved;
     AudioSource audioSource;
 
 	// Use this for initialization
@@ -20,15 +23,15 @@ public class Trampoline : MonoBehaviour {
         if (other.CompareTag("Player")) {
             //if the player collides with this while moving downward, bounce them
             PlayerControllerManager control = other.GetComponent<PlayerControllerManager>();
-            if (control.v.y < -1.0f) {
-                control.v = new Vector3(control.v.x, bounceAmount, control.v.z);
-                audioSource.Play();
+            if (control.v.y < -0.3f) {
+                control.v = new Vector3(control.v.x, bounceAmount + (-velocitySaved * control.v.y), control.v.z);
+                audioSource?.Play();
             }
         } else if (rb != null && rb.useGravity) {
             //if an object collides with this while moving downward, bounce it
             if (rb.velocity.y < 1.0f) {
-                rb.velocity = new Vector3(rb.velocity.x, bounceAmount, rb.velocity.z);
-                audioSource.Play();
+                rb.velocity = new Vector3(rb.velocity.x, bounceAmount + (-velocitySaved * rb.velocity.y), rb.velocity.z);
+                audioSource?.Play();
             }
         }
     }
