@@ -7,6 +7,7 @@ public class TiffyFall : AIbase
     protected override string DIALOG_PROGRESS_SAVE_KEY { get { return "TiffanyFallProgression"; } }
     protected override string PROGRESSION_NUM_SAVE_KEY { get { return "TiffanyFallPN"; } }
     protected override string CHARACTER_STATE_SAVE_KEY { get { return "TiffanyFallState"; } }
+    //used for characterstate
     const int START = 0;
     const int FINISHED = 1;
 

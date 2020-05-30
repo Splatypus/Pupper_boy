@@ -379,7 +379,7 @@ MonoBehaviour:
   pickup_sounds: []
   drop_sounds: []
   meshes:
-  - {fileID: 0}
+  - {fileID: 1428209322}
   tagList: 02000000
   isCurrentlyHeld: 0
 --- !u!65 &85332362
@@ -407,7 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b210edfee16ad64492b9a3870ef6137, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterName: 
+  characterName: '[Tiffany Objective]'
   image: {fileID: 21300000, guid: ca56b6d4d1e9aae43a9e65adbf5313d4, type: 3}
   useAutomaticPlacement: 1
   dynamicCameraDistance: 4
@@ -6685,7 +6685,8 @@ MonoBehaviour:
   serializedConnections:
   - outIndex: 0
     inIndex: 1
-  Icons: []
+  Icons:
+  - {fileID: 21300000, guid: 7fd5544211d726f4da8f938fcd91270d, type: 3}
   Player: {fileID: 0}
   iconRenderer: {fileID: 2027973647}
   iconCanvas: {fileID: 816960608}
@@ -6813,6 +6814,7 @@ GameObject:
   m_Component:
   - component: {fileID: 835517658}
   - component: {fileID: 835517659}
+  - component: {fileID: 835517660}
   m_Layer: 14
   m_Name: Chip
   m_TagString: Untagged
@@ -6911,15 +6913,15 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   serializedNodes:
-  - x: -2817
-    y: 714
+  - x: -94
+    y: 506
     width: 70
     height: 70
     text: 
     num: -1
     type: 4
-  - x: -2703
-    y: 673
+  - x: 20
+    y: 465
     width: 200
     height: 150
     text: "Hi Doggo! I need your help. I\u2019d just finished my blueprints up for
@@ -6928,193 +6930,193 @@ MonoBehaviour:
       a while"
     num: -1
     type: 0
-  - x: -2482
-    y: 671
+  - x: 241
+    y: 463
     width: 200
     height: 150
     text: "Would you mind giving me a hand? We\u2019ve got to get these blueprints
       done in time\u2026"
     num: -1
     type: 0
-  - x: -2234
-    y: 681
+  - x: 489
+    y: 473
     width: 180
     height: 70
     text: Sure !
     num: 0
     type: 1
-  - x: -2234
-    y: 752
+  - x: 489
+    y: 544
     width: 180
     height: 70
     text: Now right now...
     num: 1
     type: 1
-  - x: -2022
-    y: 747
+  - x: 701
+    y: 539
     width: 200
     height: 150
     text: "That\u2019s okay. I will need your help at some point though, so please
       come back when you\u2019ve got a minute\u2026"
     num: -1
     type: 0
-  - x: -1981
-    y: 926
+  - x: 742
+    y: 718
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -2022
-    y: 603
+  - x: 701
+    y: 395
     width: 200
     height: 150
     text: "Great! It\u2019s just like working with my circuit puzzles, so you should
       be able to handle it."
     num: -1
     type: 0
-  - x: -1814
-    y: 601
+  - x: 909
+    y: 393
     width: 200
     height: 150
     text: '[insert other useful instructions here]'
     num: -1
     type: 0
-  - x: -1604
-    y: 602
+  - x: 1119
+    y: 394
     width: 200
     height: 150
     text: '[insert other useful instructions here]'
     num: -1
     type: 0
-  - x: -1296
-    y: 653
+  - x: 1427
+    y: 445
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -1392
-    y: 638
+  - x: 1331
+    y: 430
     width: 80
     height: 70
     text: 
     num: 0
     type: 2
-  - x: -1209
-    y: 723
+  - x: 1514
+    y: 515
     width: 180
     height: 70
     text: Not done
     num: 0
     type: 1
-  - x: -1213
-    y: 626
+  - x: 1510
+    y: 418
     width: 180
     height: 70
     text: Done
     num: 1
     type: 1
-  - x: -1225
-    y: 806
+  - x: 1498
+    y: 598
     width: 200
     height: 150
     text: "Hi Doggo! Got a minute to lend me a paw? These blueprints are just a mess\u2026"
     num: -1
     type: 0
-  - x: -1025
-    y: 586
+  - x: 1698
+    y: 378
     width: 200
     height: 150
     text: '[nice work, second puzzle incomming]'
     num: -1
     type: 0
-  - x: -812
-    y: 628
+  - x: 1911
+    y: 420
     width: 80
     height: 70
     text: 
     num: 1
     type: 2
-  - x: -721
-    y: 650
+  - x: 2002
+    y: 442
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -634
-    y: 725
+  - x: 2089
+    y: 517
     width: 180
     height: 70
     text: ongoing
     num: 0
     type: 1
-  - x: -629
-    y: 588
+  - x: 2094
+    y: 380
     width: 180
     height: 70
     text: done
     num: 1
     type: 1
-  - x: -630
-    y: 795
+  - x: 2093
+    y: 587
     width: 200
     height: 150
     text: "Hi Doggo! Got a minute to lend me a paw? These blueprints are just a mess\u2026"
     num: -1
     type: 0
-  - x: -434
-    y: 581
+  - x: 2289
+    y: 373
     width: 200
     height: 150
     text: '[Nice work, final puzzle incomming]'
     num: -1
     type: 0
-  - x: -213
-    y: 618
+  - x: 2510
+    y: 410
     width: 80
     height: 70
     text: 
     num: 2
     type: 2
-  - x: -117
-    y: 632
+  - x: 2606
+    y: 424
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: -43
-    y: 586
+  - x: 2680
+    y: 378
     width: 180
     height: 70
     text: Done
     num: 1
     type: 1
-  - x: -43
-    y: 659
+  - x: 2680
+    y: 451
     width: 180
     height: 70
     text: Ongoing
     num: 0
     type: 1
-  - x: -42
-    y: 751
+  - x: 2681
+    y: 543
     width: 200
     height: 150
     text: "Hi Doggo! Got a minute to lend me a paw? These blueprints are just a mess\u2026"
     num: -1
     type: 0
-  - x: 155
-    y: 603
+  - x: 2878
+    y: 395
     width: 80
     height: 70
     text: 
     num: 3
     type: 2
-  - x: 264
-    y: 565
+  - x: 2987
+    y: 357
     width: 200
     height: 150
     text: "Those look so much better! Thank you, Doggo! \u2026 What do you mean there\u2019s
@@ -7122,16 +7124,16 @@ MonoBehaviour:
       machination plans! "
     num: -1
     type: 0
-  - x: 700
-    y: 657
+  - x: 3423
+    y: 449
     width: 200
     height: 150
     text: "Now that my designs are finalized, we\u2019re ready for the final step.
       Meet me by the [insert location here] and we\u2019ll get started!"
     num: -1
     type: 0
-  - x: 702
-    y: 494
+  - x: 3425
+    y: 286
     width: 200
     height: 150
     text: "Anyway, I\u2019ve got to continue finalizing these designs, so I\u2019m
@@ -7139,51 +7141,51 @@ MonoBehaviour:
       this all goes to plan!"
     num: -1
     type: 0
-  - x: 489
-    y: 548
+  - x: 3212
+    y: 340
     width: 180
     height: 70
     text: Done
     num: 1
     type: 1
-  - x: 490
-    y: 651
+  - x: 3213
+    y: 443
     width: 180
     height: 70
     text: Done + last dog
     num: 2
     type: 1
-  - x: 990
-    y: 622
+  - x: 3713
+    y: 414
     width: 70
     height: 40
     text: 
     num: -1
     type: 3
-  - x: 1387
-    y: 528
+  - x: 4110
+    y: 320
     width: 200
     height: 150
     text: "I can\u2019t talk much now, Doggo, I\u2019m still finalizing these designs!
       Have you talked to the others?"
     num: -1
     type: 0
-  - x: 1085
-    y: 605
+  - x: 3808
+    y: 397
     width: 80
     height: 70
     text: 
     num: 3
     type: 2
-  - x: 1183
-    y: 570
+  - x: 3906
+    y: 362
     width: 180
     height: 70
     text: Done
     num: 1
     type: 1
-  - x: 1184
-    y: 644
+  - x: 3907
+    y: 436
     width: 180
     height: 70
     text: Done + last dog
@@ -7284,6 +7286,19 @@ MonoBehaviour:
   iconCanvas: {fileID: 222746352}
   game: {fileID: 1890946306}
   manager: {fileID: 346730065}
+--- !u!135 &835517660
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835517657}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.52
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &843951789
 GameObject:
   m_ObjectHideFlags: 0
@@ -18004,7 +18019,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1890946304}
   m_LocalRotation: {x: -0, y: 0.90486795, z: -0, w: 0.42569226}
-  m_LocalPosition: {x: 3.64, y: 0.1500001, z: 2.56}
+  m_LocalPosition: {x: 1.93, y: 0.1500001, z: 5.34}
   m_LocalScale: {x: 0.97203326, y: 0.97203374, z: 0.97203326}
   m_Children:
   - {fileID: 1382975383}
